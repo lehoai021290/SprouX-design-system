@@ -28,9 +28,9 @@ const buttonVariants = cva(
         "ghost-muted":
           "bg-ghost text-muted-foreground hover:bg-ghost-hover active:bg-ghost-hover focus-visible:ring-ring",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-red-700 active:bg-red-700 focus-visible:ring-ring-error",
+          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:ring-ring-error",
         "destructive-secondary":
-          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-red-100 active:bg-red-100 focus-visible:ring-ring-error",
+          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:ring-ring-error",
       },
       size: {
         lg: "h-10 px-6 gap-2 text-sm tracking-[0.07px] [&_svg:not([class*='size-'])]:size-5",
