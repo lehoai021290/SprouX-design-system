@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
  * States: default | focus | error (aria-invalid) | error+focus | disabled
  */
 const inputVariants = cva(
-  "flex w-full bg-input border border-border font-body font-normal text-foreground transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-border focus-visible:not-placeholder-shown:border-[#afafab] disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-red-500 aria-invalid:focus-visible:ring-red-200 aria-invalid:focus-visible:not-placeholder-shown:border-red-500",
+  "flex w-full bg-input border border-border font-body font-normal text-foreground transition-colors file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:not-placeholder-shown:border-border-strong disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive-border aria-invalid:focus-visible:ring-ring-error aria-invalid:focus-visible:not-placeholder-shown:border-destructive-border",
   {
     variants: {
       size: {

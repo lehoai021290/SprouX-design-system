@@ -18,19 +18,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-teal-600 active:bg-teal-600 focus-visible:ring-border",
+          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:ring-ring",
         secondary:
-          "bg-slate-200 text-slate-900 hover:bg-slate-100 active:bg-slate-100 focus-visible:ring-border",
+          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:ring-ring",
         outline:
-          "border border-border bg-transparent text-foreground hover:bg-slate-100 active:bg-slate-100 focus-visible:ring-border",
+          "border border-border bg-transparent text-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:ring-ring",
         ghost:
-          "bg-transparent text-slate-700 hover:bg-black/5 active:bg-black/5 focus-visible:ring-border",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover active:bg-ghost-hover focus-visible:ring-ring",
         "ghost-muted":
-          "bg-transparent text-muted-foreground hover:bg-black/5 active:bg-black/5 focus-visible:ring-border",
+          "bg-ghost text-muted-foreground hover:bg-ghost-hover active:bg-ghost-hover focus-visible:ring-ring",
         destructive:
-          "bg-destructive text-white hover:bg-red-700 active:bg-red-700 focus-visible:ring-red-200",
+          "bg-destructive text-destructive-foreground hover:bg-red-700 active:bg-red-700 focus-visible:ring-ring-error",
         "destructive-secondary":
-          "bg-red-50 text-red-600 border border-red-500 hover:bg-red-100 active:bg-red-100 focus-visible:ring-red-200",
+          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-red-100 active:bg-red-100 focus-visible:ring-ring-error",
       },
       size: {
         lg: "h-10 px-6 gap-2 text-sm tracking-[0.07px] [&_svg:not([class*='size-'])]:size-5",
