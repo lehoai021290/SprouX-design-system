@@ -300,6 +300,20 @@ function ButtonTokensTable() {
 }
 
 function ButtonDocs() {
+  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [confirmed, setConfirmed] = useState(false)
+
+  const handleAsyncSave = async () => {
+    setLoading(true)
+    setSaved(false)
+    await new Promise((r) => setTimeout(r, 1500))
+    setLoading(false)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
   return (
     <div className="space-y-12">
       {/* ---- Header ---- */}
@@ -551,6 +565,121 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
               Cancel
             </Button>
           </div>
+        </Example>
+
+        {/* onClick handler */}
+        <Example
+          title="Click handler (onClick)"
+          description="Pass an onClick handler to respond to user interaction. The component forwards all native button events."
+          code={`const [count, setCount] = useState(0)
+
+<Button onClick={() => setCount((c) => c + 1)}>
+  Clicked {count} times
+</Button>
+<Button variant="secondary" onClick={() => setCount(0)}>
+  Reset
+</Button>`}
+        >
+          <Button onClick={() => setCount((c) => c + 1)}>
+            Clicked {count} times
+          </Button>
+          <Button variant="secondary" onClick={() => setCount(0)}>
+            Reset
+          </Button>
+        </Example>
+
+        {/* Async loading */}
+        <Example
+          title="Async action (loading pattern)"
+          description="A real-world pattern: disable the button and show a spinner during an async operation, then show success feedback."
+          code={`const [loading, setLoading] = useState(false)
+const [saved, setSaved] = useState(false)
+
+const handleAsyncSave = async () => {
+  setLoading(true)
+  setSaved(false)
+  await new Promise((r) => setTimeout(r, 1500))
+  setLoading(false)
+  setSaved(true)
+  setTimeout(() => setSaved(false), 2000)
+}
+
+<Button onClick={handleAsyncSave} disabled={loading}>
+  {loading ? (
+    <><Loader2 className="animate-spin" /> Saving...</>
+  ) : saved ? (
+    <><Check /> Saved!</>
+  ) : (
+    "Save changes"
+  )}
+</Button>`}
+        >
+          <Button onClick={handleAsyncSave} disabled={loading}>
+            {loading ? (
+              <><Loader2 className="animate-spin" /> Saving...</>
+            ) : saved ? (
+              <><Check /> Saved!</>
+            ) : (
+              "Save changes"
+            )}
+          </Button>
+        </Example>
+
+        {/* Confirm destructive */}
+        <Example
+          title="Confirm destructive action"
+          description="A two-step confirmation pattern for dangerous actions. First click reveals the confirm button, second click executes."
+          code={`const [confirmed, setConfirmed] = useState(false)
+
+{!confirmed ? (
+  <Button
+    variant="destructive-secondary"
+    onClick={() => setConfirmed(true)}
+  >
+    <Trash2 /> Delete project
+  </Button>
+) : (
+  <div className="flex gap-2 items-center">
+    <span className="text-xs text-red-500 font-medium">Are you sure?</span>
+    <Button
+      variant="destructive"
+      onClick={() => {
+        alert("Deleted!")
+        setConfirmed(false)
+      }}
+    >
+      Yes, delete
+    </Button>
+    <Button variant="secondary" onClick={() => setConfirmed(false)}>
+      Cancel
+    </Button>
+  </div>
+)}`}
+        >
+          {!confirmed ? (
+            <Button
+              variant="destructive-secondary"
+              onClick={() => setConfirmed(true)}
+            >
+              <Trash2 /> Delete project
+            </Button>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <span className="text-xs text-red-500 font-medium">Are you sure?</span>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  alert("Deleted!")
+                  setConfirmed(false)
+                }}
+              >
+                Yes, delete
+              </Button>
+              <Button variant="secondary" onClick={() => setConfirmed(false)}>
+                Cancel
+              </Button>
+            </div>
+          )}
         </Example>
       </section>
 
@@ -1079,8 +1208,43 @@ function InputTokensTable() {
   )
 }
 
+function FocusBlurDemo() {
+  const [focused, setFocused] = useState(false)
+  return (
+    <div className="max-w-sm w-full space-y-2">
+      <Input
+        placeholder="Click to focus, click away to blur"
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+      />
+      <p className="text-xs text-muted-foreground">
+        Status: {focused ? "Focused" : "Not focused"}
+      </p>
+    </div>
+  )
+}
+
 function InputDocs() {
   const [showPw, setShowPw] = useState(false)
+  const [controlled, setControlled] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
+  const [formData, setFormData] = useState({ name: "", email: "" })
+  const [formErrors, setFormErrors] = useState<{ name?: string; email?: string }>({})
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const errors: { name?: string; email?: string } = {}
+    if (!formData.name.trim()) errors.name = "Name is required."
+    if (!formData.email.trim()) errors.email = "Email is required."
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+      errors.email = "Please enter a valid email address."
+    setFormErrors(errors)
+    if (Object.keys(errors).length === 0) {
+      setFormSubmitted(true)
+      setTimeout(() => setFormSubmitted(false), 3000)
+    }
+  }
 
   return (
     <div className="space-y-12">
@@ -1142,10 +1306,37 @@ pnpm add class-variance-authority clsx tailwind-merge
           </div>
         </Example>
 
-        {/* With value */}
+        {/* Controlled input */}
         <Example
-          title="With value"
-          description="Input displaying an entered value. The text uses foreground color (#252522) in Geist Regular weight."
+          title="Controlled input (onChange)"
+          description="Use value + onChange for controlled inputs. The component forwards all native input events (onChange, onFocus, onBlur, onKeyDown, etc.)."
+          code={`const [controlled, setControlled] = useState("")
+
+<Input
+  value={controlled}
+  onChange={(e) => setControlled(e.target.value)}
+  placeholder="Type something..."
+/>
+<p className="text-xs text-muted-foreground">
+  Value: "{controlled}" ({controlled.length} chars)
+</p>`}
+        >
+          <div className="max-w-sm w-full space-y-2">
+            <Input
+              value={controlled}
+              onChange={(e) => setControlled(e.target.value)}
+              placeholder="Type something..."
+            />
+            <p className="text-xs text-muted-foreground">
+              Value: "{controlled}" ({controlled.length} chars)
+            </p>
+          </div>
+        </Example>
+
+        {/* Uncontrolled with defaultValue */}
+        <Example
+          title="Uncontrolled (defaultValue)"
+          description="Use defaultValue for uncontrolled inputs when you only need the value on submit, not on every keystroke."
           code={`<Input defaultValue="john@example.com" />`}
         >
           <Input defaultValue="john@example.com" className="max-w-sm" />
@@ -1230,29 +1421,71 @@ pnpm add class-variance-authority clsx tailwind-merge
           <Input type="file" className="max-w-sm" />
         </Example>
 
-        {/* With icon (composition pattern) */}
+        {/* With icon — interactive search */}
         <Example
-          title="With icon (composition pattern)"
-          description="Wrap Input in a relative container and position icons absolutely. This is a composition pattern — the Input component itself doesn't have icon slots."
-          code={`<div className="relative max-w-sm">
-  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-  <Input className="pl-9" placeholder="Search..." />
-</div>
+          title="With icon — interactive search (composition)"
+          description="Wrap Input in a relative container and position icons absolutely. This example shows a working search input with real-time filtering."
+          code={`const [searchQuery, setSearchQuery] = useState("")
+const items = ["Dashboard", "Settings", "Profile", "Billing", "Notifications"]
+const filtered = items.filter((i) =>
+  i.toLowerCase().includes(searchQuery.toLowerCase())
+)
 
 <div className="relative max-w-sm">
+  <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+  <Input
+    className="pl-9"
+    placeholder="Search pages..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+</div>
+{searchQuery && (
+  <ul className="text-xs space-y-1">
+    {filtered.map((item) => <li key={item}>{item}</li>)}
+    {filtered.length === 0 && <li className="text-muted-foreground">No results</li>}
+  </ul>
+)}`}
+        >
+          <div className="w-full max-w-sm space-y-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+              <Input
+                className="pl-9"
+                placeholder="Search pages..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            {searchQuery && (
+              <ul className="text-xs space-y-1 px-1">
+                {["Dashboard", "Settings", "Profile", "Billing", "Notifications"]
+                  .filter((i) => i.toLowerCase().includes(searchQuery.toLowerCase()))
+                  .map((item) => (
+                    <li key={item} className="py-1 px-2 rounded hover:bg-slate-100">{item}</li>
+                  ))}
+                {["Dashboard", "Settings", "Profile", "Billing", "Notifications"]
+                  .filter((i) => i.toLowerCase().includes(searchQuery.toLowerCase()))
+                  .length === 0 && (
+                  <li className="py-1 px-2 text-muted-foreground">No results</li>
+                )}
+              </ul>
+            )}
+          </div>
+        </Example>
+
+        {/* With icon — static */}
+        <Example
+          title="With icon — username (composition)"
+          description="Another icon composition pattern with a user icon on the left."
+          code={`<div className="relative max-w-sm">
   <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
   <Input className="pl-9" placeholder="Username" />
 </div>`}
         >
-          <div className="w-full max-w-sm space-y-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <Input className="pl-9" placeholder="Search..." />
-            </div>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <Input className="pl-9" placeholder="Username" />
-            </div>
+          <div className="relative max-w-sm w-full">
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Input className="pl-9" placeholder="Username" />
           </div>
         </Example>
 
@@ -1316,35 +1549,123 @@ pnpm add class-variance-authority clsx tailwind-merge
           </div>
         </Example>
 
-        {/* Form example */}
+        {/* Interactive form with validation */}
         <Example
-          title="Form example"
-          description="A typical form layout combining Input with labels, helper text, and error messages."
-          code={`<form className="space-y-4 max-w-sm">
+          title="Form with validation (fully interactive)"
+          description="A complete form with real validation on submit. Try submitting empty or with an invalid email — errors appear dynamically. This is ready to copy into your project."
+          code={`const [formData, setFormData] = useState({ name: "", email: "" })
+const [formErrors, setFormErrors] = useState<{ name?: string; email?: string }>({})
+const [formSubmitted, setFormSubmitted] = useState(false)
+
+const handleFormSubmit = (e: React.FormEvent) => {
+  e.preventDefault()
+  const errors: { name?: string; email?: string } = {}
+  if (!formData.name.trim()) errors.name = "Name is required."
+  if (!formData.email.trim()) errors.email = "Email is required."
+  else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(formData.email))
+    errors.email = "Please enter a valid email address."
+  setFormErrors(errors)
+  if (Object.keys(errors).length === 0) {
+    setFormSubmitted(true)
+    setTimeout(() => setFormSubmitted(false), 3000)
+  }
+}
+
+<form onSubmit={handleFormSubmit} className="space-y-4 max-w-sm">
   <div className="space-y-1.5">
     <label htmlFor="name" className="text-sm font-medium">Name</label>
-    <Input id="name" placeholder="Your full name" />
+    <Input
+      id="name"
+      placeholder="Your full name"
+      value={formData.name}
+      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+      aria-invalid={!!formErrors.name || undefined}
+    />
+    {formErrors.name && <p className="text-xs text-red-500">{formErrors.name}</p>}
   </div>
   <div className="space-y-1.5">
     <label htmlFor="email" className="text-sm font-medium">Email</label>
-    <Input id="email" type="email" placeholder="you@example.com" aria-invalid />
-    <p className="text-xs text-red-500">Email is required.</p>
+    <Input
+      id="email"
+      type="email"
+      placeholder="you@example.com"
+      value={formData.email}
+      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+      aria-invalid={!!formErrors.email || undefined}
+    />
+    {formErrors.email && <p className="text-xs text-red-500">{formErrors.email}</p>}
   </div>
-  <Button type="submit" className="w-full">Submit</Button>
+  <Button type="submit" className="w-full">
+    {formSubmitted ? <><Check /> Submitted!</> : "Submit"}
+  </Button>
 </form>`}
         >
-          <form className="space-y-4 max-w-sm w-full" onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={handleFormSubmit} className="space-y-4 max-w-sm w-full">
             <div className="space-y-1.5">
               <label htmlFor="form-name" className="text-sm font-medium">Name</label>
-              <Input id="form-name" placeholder="Your full name" />
+              <Input
+                id="form-name"
+                placeholder="Your full name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                aria-invalid={!!formErrors.name || undefined}
+              />
+              {formErrors.name && <p className="text-xs text-red-500">{formErrors.name}</p>}
             </div>
             <div className="space-y-1.5">
               <label htmlFor="form-email" className="text-sm font-medium">Email</label>
-              <Input id="form-email" type="email" placeholder="you@example.com" aria-invalid />
-              <p className="text-xs text-red-500">Email is required.</p>
+              <Input
+                id="form-email"
+                type="email"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                aria-invalid={!!formErrors.email || undefined}
+              />
+              {formErrors.email && <p className="text-xs text-red-500">{formErrors.email}</p>}
             </div>
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button type="submit" className="w-full">
+              {formSubmitted ? <><Check /> Submitted!</> : "Submit"}
+            </Button>
           </form>
+        </Example>
+
+        {/* onKeyDown handler */}
+        <Example
+          title="Keyboard events (onKeyDown)"
+          description="Use onKeyDown for keyboard shortcuts like Enter to submit. All native keyboard events are forwarded."
+          code={`<Input
+  placeholder="Press Enter to alert"
+  onKeyDown={(e) => {
+    if (e.key === "Enter") alert("Enter pressed! Value: " + e.currentTarget.value)
+  }}
+/>`}
+        >
+          <Input
+            className="max-w-sm"
+            placeholder="Press Enter to alert"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") alert("Enter pressed! Value: " + e.currentTarget.value)
+            }}
+          />
+        </Example>
+
+        {/* onFocus / onBlur */}
+        <Example
+          title="Focus & blur events (onFocus / onBlur)"
+          description="Use onFocus and onBlur for focus-dependent logic like showing hints or triggering validation."
+          code={`const [focused, setFocused] = useState(false)
+
+<Input
+  placeholder="Click to focus, click away to blur"
+  onFocus={() => setFocused(true)}
+  onBlur={() => setFocused(false)}
+/>
+<p className="text-xs text-muted-foreground">
+  Status: {focused ? "Focused ✓" : "Not focused"}
+</p>`}
+        >
+          <FocusBlurDemo />
         </Example>
       </section>
 
