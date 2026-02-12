@@ -22,11 +22,11 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:ring-ring",
         outline:
-          "border border-border bg-transparent text-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:ring-ring",
+          "border border-border bg-transparent text-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:ring-ring focus-visible:border-border-strong",
         ghost:
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover active:bg-ghost-hover focus-visible:ring-ring",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-ring",
         "ghost-muted":
-          "bg-ghost text-muted-foreground hover:bg-ghost-hover active:bg-ghost-hover focus-visible:ring-ring",
+          "bg-ghost text-muted-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-ring",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:ring-ring-error",
         "destructive-secondary":
