@@ -33,14 +33,14 @@ const buttonVariants = cva(
           "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:ring-ring-error",
       },
       size: {
-        lg: "h-3xl px-xl gap-xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-lg",
+        lg: "h-3xl px-xl gap-xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-md",
         default:
-          "h-9 px-md gap-xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-lg",
-        sm: "h-2xl px-sm gap-2xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-lg",
+          "h-9 px-md gap-xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-md",
+        sm: "h-2xl px-sm gap-2xs text-sm tracking-sm [&_svg:not([class*='size-'])]:size-md",
         xs: "h-xl px-xs gap-2xs text-xs tracking-xs [&_svg:not([class*='size-'])]:size-md",
-        icon: "size-9 [&_svg:not([class*='size-'])]:size-lg",
-        "icon-sm": "size-2xl [&_svg:not([class*='size-'])]:size-lg",
-        "icon-lg": "size-3xl [&_svg:not([class*='size-'])]:size-lg",
+        icon: "size-9 [&_svg:not([class*='size-'])]:size-md",
+        "icon-sm": "size-2xl [&_svg:not([class*='size-'])]:size-md",
+        "icon-lg": "size-3xl [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {
