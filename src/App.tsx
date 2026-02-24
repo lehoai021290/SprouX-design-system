@@ -336,6 +336,58 @@ function DontItem({ children, text }: { children?: React.ReactNode; text?: strin
   )
 }
 
+function FigmaMapping({
+  nodeId,
+  rows,
+}: {
+  nodeId?: string
+  rows: [string, string, string, string][]
+}) {
+  return (
+    <section className="space-y-4 pt-3xl">
+      <h2 className="font-heading font-semibold text-xl">
+        Figma Component Mapping
+      </h2>
+      <p className="text-paragraph-sm text-muted-foreground">
+        Reference for mapping Figma component properties to code props, based
+        on the{" "}
+        <strong>[SprouX - DS] Foundation & Component</strong>
+        {nodeId && <> file (node {nodeId}).</>}
+        {!nodeId && <> Figma file.</>}
+      </p>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Figma Property</th>
+              <th className="px-4 py-3 font-semibold">Figma Value</th>
+              <th className="px-4 py-3 font-semibold">Code Prop</th>
+              <th className="px-4 py-3 font-semibold">Code Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(([figProp, figVal, codeProp, codeVal], i) => (
+              <tr
+                key={i}
+                className="border-b border-border last:border-0"
+              >
+                <td className="px-4 py-2.5 font-semibold">{figProp}</td>
+                <td className="px-4 py-2.5">{figVal}</td>
+                <td className="px-4 py-2.5 font-mono text-primary">
+                  {codeProp}
+                </td>
+                <td className="px-4 py-2.5 font-mono text-muted-foreground">
+                  {codeVal}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
 function ColorSwatch({ hex, label }: { hex: string; label: string }) {
   const [copied, setCopied] = useState(false)
   const handleCopy = () => {
@@ -2064,71 +2116,25 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">
-          Figma Component Mapping
-        </h2>
-        <p className="text-paragraph-sm text-muted-foreground">
-          Reference for mapping Figma component properties to code props, based
-          on the{" "}
-          <strong>
-            [SprouX - DS] Foundation & Component
-          </strong>{" "}
-          file (node 9:1071).
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Figma Property</th>
-                <th className="px-4 py-3 font-semibold">Figma Value</th>
-                <th className="px-4 py-3 font-semibold">Code Prop</th>
-                <th className="px-4 py-3 font-semibold">Code Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Variant", "Primary", "variant", '"default"'],
-                ["Variant", "Secondary", "variant", '"secondary"'],
-                ["Variant", "Outline", "variant", '"outline"'],
-                ["Variant", "Ghost", "variant", '"ghost"'],
-                ["Variant", "Ghost Muted", "variant", '"ghost-muted"'],
-                ["Variant", "Destructive", "variant", '"destructive"'],
-                [
-                  "Variant",
-                  "Destructive Secondary",
-                  "variant",
-                  '"destructive-secondary"',
-                ],
-                ["Size", "Large (40px)", "size", '"lg"'],
-                ["Size", "Regular (36px)", "size", '"default"'],
-                ["Size", "Small (32px)", "size", '"sm"'],
-                ["Size", "Mini (24px)", "size", '"xs"'],
-                ["State", "Default", "—", "default"],
-                ["State", "Hover & Active", "—", "CSS :hover / :active"],
-                ["State", "Focus", "—", "CSS :focus-visible"],
-                ["State", "Disabled", "disabled", "true"],
-                ["Show Left Icon", "true", "children", "<Icon /> Label"],
-                ["Show Right Icon", "true", "children", "Label <Icon />"],
-              ].map(([figProp, figVal, codeProp, codeVal], i) => (
-                <tr
-                  key={i}
-                  className="border-b border-border last:border-0"
-                >
-                  <td className="px-4 py-2.5 font-semibold">{figProp}</td>
-                  <td className="px-4 py-2.5">{figVal}</td>
-                  <td className="px-4 py-2.5 font-mono text-primary">
-                    {codeProp}
-                  </td>
-                  <td className="px-4 py-2.5 font-mono text-muted-foreground">
-                    {codeVal}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <FigmaMapping nodeId="9:1071" rows={[
+        ["Variant", "Primary", "variant", '"default"'],
+        ["Variant", "Secondary", "variant", '"secondary"'],
+        ["Variant", "Outline", "variant", '"outline"'],
+        ["Variant", "Ghost", "variant", '"ghost"'],
+        ["Variant", "Ghost Muted", "variant", '"ghost-muted"'],
+        ["Variant", "Destructive", "variant", '"destructive"'],
+        ["Variant", "Destructive Secondary", "variant", '"destructive-secondary"'],
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Regular (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["Size", "Mini (24px)", "size", '"xs"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Hover & Active", "—", "CSS :hover / :active"],
+        ["State", "Focus", "—", "CSS :focus-visible"],
+        ["State", "Disabled", "disabled", "true"],
+        ["Show Left Icon", "true", "children", "<Icon /> Label"],
+        ["Show Right Icon", "true", "children", "Label <Icon />"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -3065,64 +3071,23 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">
-          Figma Component Mapping
-        </h2>
-        <p className="text-paragraph-sm text-muted-foreground">
-          Reference for mapping Figma component properties to code props, based
-          on the{" "}
-          <strong>
-            [SprouX - DS] Foundation & Component
-          </strong>{" "}
-          file (node 2250:904).
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Figma Property</th>
-                <th className="px-4 py-3 font-semibold">Figma Value</th>
-                <th className="px-4 py-3 font-semibold">Code Prop</th>
-                <th className="px-4 py-3 font-semibold">Code Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Size", "Large (40px)", "size", '"lg"'],
-                ["Size", "Regular (36px)", "size", '"default"'],
-                ["Size", "Small (32px)", "size", '"sm"'],
-                ["Size", "Mini (24px)", "size", '"xs"'],
-                ["State", "Default", "—", "default"],
-                ["State", "Focus", "—", "CSS :focus-visible"],
-                ["State", "Error", "aria-invalid", "true"],
-                ["State", "Error + Focus", "aria-invalid", "true + :focus-visible"],
-                ["State", "Disabled", "disabled", "true"],
-                ["Content", "Placeholder", "placeholder", '"Hint text"'],
-                ["Content", "Value", "value / defaultValue", '"Entered text"'],
-                ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
-                ["Font", "Geist Regular 12/16", "—", "text-xs (xs size)"],
-                ["Show Left Icon", "true", "—", "Compose: icon + pl-9"],
-                ["Show Right Icon", "true", "—", "Compose: icon + pr-9"],
-              ].map(([figProp, figVal, codeProp, codeVal], i) => (
-                <tr
-                  key={i}
-                  className="border-b border-border last:border-0"
-                >
-                  <td className="px-4 py-2.5 font-semibold">{figProp}</td>
-                  <td className="px-4 py-2.5">{figVal}</td>
-                  <td className="px-4 py-2.5 font-mono text-primary">
-                    {codeProp}
-                  </td>
-                  <td className="px-4 py-2.5 font-mono text-muted-foreground">
-                    {codeVal}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <FigmaMapping nodeId="2250:904" rows={[
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Regular (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["Size", "Mini (24px)", "size", '"xs"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible"],
+        ["State", "Error", "aria-invalid", "true"],
+        ["State", "Error + Focus", "aria-invalid", "true + :focus-visible"],
+        ["State", "Disabled", "disabled", "true"],
+        ["Content", "Placeholder", "placeholder", '"Hint text"'],
+        ["Content", "Value", "value / defaultValue", '"Entered text"'],
+        ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
+        ["Font", "Geist Regular 12/16", "—", "text-xs (xs size)"],
+        ["Show Left Icon", "true", "—", "Compose: icon + pl-9"],
+        ["Show Right Icon", "true", "—", "Compose: icon + pr-9"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -3893,59 +3858,18 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">
-          Figma Component Mapping
-        </h2>
-        <p className="text-paragraph-sm text-muted-foreground">
-          Reference for mapping Figma component properties to code props, based
-          on the{" "}
-          <strong>
-            [SprouX - DS] Foundation & Component
-          </strong>{" "}
-          file (node 2256:175).
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Figma Property</th>
-                <th className="px-4 py-3 font-semibold">Figma Value</th>
-                <th className="px-4 py-3 font-semibold">Code Prop</th>
-                <th className="px-4 py-3 font-semibold">Code Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Roundness", "Default (8px)", "—", "rounded-lg (default)"],
-                ["State", "Default", "—", "default"],
-                ["State", "Focus", "—", "CSS :focus-visible"],
-                ["State", "Error", "aria-invalid", "true"],
-                ["State", "Error Focus", "aria-invalid", "true + :focus-visible"],
-                ["State", "Disabled", "disabled", "true"],
-                ["Value", "Empty", "—", "no value"],
-                ["Value", "Placeholder", "placeholder", '"Type your message here."'],
-                ["Value", "Value", "value / defaultValue", '"Entered text"'],
-                ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
-              ].map(([figProp, figVal, codeProp, codeVal], i) => (
-                <tr
-                  key={i}
-                  className="border-b border-border last:border-0"
-                >
-                  <td className="px-4 py-2.5 font-semibold">{figProp}</td>
-                  <td className="px-4 py-2.5">{figVal}</td>
-                  <td className="px-4 py-2.5 font-mono text-primary">
-                    {codeProp}
-                  </td>
-                  <td className="px-4 py-2.5 font-mono text-muted-foreground">
-                    {codeVal}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <FigmaMapping nodeId="2256:175" rows={[
+        ["Roundness", "Default (8px)", "—", "rounded-lg (default)"],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible"],
+        ["State", "Error", "aria-invalid", "true"],
+        ["State", "Error Focus", "aria-invalid", "true + :focus-visible"],
+        ["State", "Disabled", "disabled", "true"],
+        ["Value", "Empty", "—", "no value"],
+        ["Value", "Placeholder", "placeholder", '"Type your message here."'],
+        ["Value", "Value", "value / defaultValue", '"Entered text"'],
+        ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -4962,61 +4886,20 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">
-          Figma Component Mapping
-        </h2>
-        <p className="text-paragraph-sm text-muted-foreground">
-          Reference for mapping Figma component properties to code props, based
-          on the{" "}
-          <strong>
-            [SprouX - DS] Foundation & Component
-          </strong>{" "}
-          file (node 16:1732).
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Figma Property</th>
-                <th className="px-4 py-3 font-semibold">Figma Value</th>
-                <th className="px-4 py-3 font-semibold">Code Prop</th>
-                <th className="px-4 py-3 font-semibold">Code Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Size", "Large (40px)", "size", '"lg"'],
-                ["Size", "Regular (36px)", "size", '"default"'],
-                ["Size", "Small (32px)", "size", '"sm"'],
-                ["Size", "Mini (24px)", "size", '"xs"'],
-                ["State", "Default", "—", "default"],
-                ["State", "Focus", "—", "CSS :focus-visible"],
-                ["State", "Error", "aria-invalid", "true"],
-                ["State", "Error Focus", "aria-invalid", "true + :focus-visible"],
-                ["State", "Disabled", "disabled", "true (on Select root)"],
-                ["Value", "Placeholder", "—", '<SelectValue placeholder="..." />'],
-                ["Value", "Value", "value / defaultValue", "string"],
-                ["Lines", "1 Line", "—", "[&>span]:line-clamp-1"],
-              ].map(([figProp, figVal, codeProp, codeVal], i) => (
-                <tr
-                  key={i}
-                  className="border-b border-border last:border-0"
-                >
-                  <td className="px-4 py-2.5 font-semibold">{figProp}</td>
-                  <td className="px-4 py-2.5">{figVal}</td>
-                  <td className="px-4 py-2.5 font-mono text-primary">
-                    {codeProp}
-                  </td>
-                  <td className="px-4 py-2.5 font-mono text-muted-foreground">
-                    {codeVal}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <FigmaMapping nodeId="16:1732" rows={[
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Regular (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["Size", "Mini (24px)", "size", '"xs"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible"],
+        ["State", "Error", "aria-invalid", "true"],
+        ["State", "Error Focus", "aria-invalid", "true + :focus-visible"],
+        ["State", "Disabled", "disabled", "true (on Select root)"],
+        ["Value", "Placeholder", "—", '<SelectValue placeholder="..." />'],
+        ["Value", "Value", "value / defaultValue", "string"],
+        ["Lines", "1 Line", "—", "[&>span]:line-clamp-1"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -5731,60 +5614,15 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Figma Mapping</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="text-left px-4 py-2 font-medium">Figma Property</th>
-                <th className="text-left px-4 py-2 font-medium">Code Prop</th>
-                <th className="text-left px-4 py-2 font-medium">Notes</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">Checked = False</td>
-                <td className="px-4 py-2 font-mono text-xs">checked=&#123;false&#125;</td>
-                <td className="px-4 py-2 text-muted-foreground">Default unchecked state</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">Checked = True</td>
-                <td className="px-4 py-2 font-mono text-xs">checked=&#123;true&#125;</td>
-                <td className="px-4 py-2 text-muted-foreground">Shows check icon</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">Checked = Indeterminate</td>
-                <td className="px-4 py-2 font-mono text-xs">checked="indeterminate"</td>
-                <td className="px-4 py-2 text-muted-foreground">Shows minus icon</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Default</td>
-                <td className="px-4 py-2 font-mono text-xs">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Resting state</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Focus</td>
-                <td className="px-4 py-2 font-mono text-xs">:focus-visible</td>
-                <td className="px-4 py-2 text-muted-foreground">3px ring</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Error</td>
-                <td className="px-4 py-2 font-mono text-xs">aria-invalid</td>
-                <td className="px-4 py-2 text-muted-foreground">Destructive colors</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Disabled</td>
-                <td className="px-4 py-2 font-mono text-xs">disabled</td>
-                <td className="px-4 py-2 text-muted-foreground">50% opacity, no-pointer</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Figma component set: <code className="bg-muted px-1.5 py-0.5 rounded">node 16:1790</code> in [SprouX - DS] Foundation & Component
-        </p>
-      </section>
+      <FigmaMapping nodeId="16:1790" rows={[
+        ["Checked", "False", "checked", "{false}"],
+        ["Checked", "True", "checked", "{true}"],
+        ["Checked", "Indeterminate", "checked", '"indeterminate"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
+        ["State", "Error", "aria-invalid", "true (destructive colors)"],
+        ["State", "Disabled", "disabled", "true (50% opacity)"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -6341,51 +6179,16 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Figma Mapping</h2>
-        <div className="overflow-x-auto rounded-lg border border-border">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="text-left px-4 py-2 font-medium">Figma Property</th>
-                <th className="text-left px-4 py-2 font-medium">Code Prop</th>
-                <th className="text-left px-4 py-2 font-medium">Notes</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">Checked? = False</td>
-                <td className="px-4 py-2 font-mono text-xs">checked=&#123;false&#125;</td>
-                <td className="px-4 py-2 text-muted-foreground">Neutral track, thumb left</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">Checked? = True</td>
-                <td className="px-4 py-2 font-mono text-xs">checked=&#123;true&#125;</td>
-                <td className="px-4 py-2 text-muted-foreground">Primary track, thumb right</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Default</td>
-                <td className="px-4 py-2 font-mono text-xs">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Resting state</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Focus</td>
-                <td className="px-4 py-2 font-mono text-xs">:focus-visible</td>
-                <td className="px-4 py-2 text-muted-foreground">3px ring via box-shadow</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">State = Disabled</td>
-                <td className="px-4 py-2 font-mono text-xs">disabled</td>
-                <td className="px-4 py-2 text-muted-foreground">50% opacity, no pointer</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Figma component set: <code className="bg-muted px-1.5 py-0.5 rounded">node 16:1801</code> in [SprouX - DS] Foundation & Component.
-          Track 33×18px, thumb 16×16px circle, 1px inset padding, 12px border-radius (pill).
-        </p>
-      </section>
+      <FigmaMapping nodeId="16:1801" rows={[
+        ["Checked", "False", "checked", "{false} — neutral track, thumb left"],
+        ["Checked", "True", "checked", "{true} — primary track, thumb right"],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
+        ["State", "Disabled", "disabled", "true (50% opacity)"],
+        ["Track Size", "33×18px", "—", "h-[18px] w-[33px]"],
+        ["Thumb Size", "16×16px circle", "—", "size-md rounded-full"],
+        ["Radius", "Pill (12px)", "—", "rounded-full"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
@@ -6598,6 +6401,14 @@ function LabelDocs() {
           </div>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["State", "Default", "—", "default"],
+        ["State", "Disabled", "—", "peer-disabled:opacity-50"],
+        ["Font", "Geist Medium 14/20", "—", "text-sm font-medium"],
+        ["Required Indicator", "Visible", "data-required", "Shows * indicator"],
+      ]} />
     </div>
   )
 }
@@ -6733,6 +6544,17 @@ function SliderDocs() {
           </div>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Track Height", "6px", "—", "h-1.5"],
+        ["Thumb Size", "16×16px", "—", "size-md rounded-full"],
+        ["State", "Default", "—", "default"],
+        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
+        ["State", "Disabled", "disabled", "true (opacity-50)"],
+        ["Range", "Single thumb", "defaultValue", "[50]"],
+        ["Range", "Dual thumb", "defaultValue", "[25, 75]"],
+      ]} />
     </div>
   )
 }
@@ -6836,6 +6658,20 @@ function ToggleDocs() {
           <DontItem text="Don't use Toggle for navigation — use Tabs or Buttons instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Variant", "Default", "variant", '"default"'],
+        ["Variant", "Outline", "variant", '"outline"'],
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Default (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Hover", "—", "CSS :hover (bg-muted)"],
+        ["State", "Pressed / On", "—", 'data-[state=on] (bg-muted)'],
+        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
+        ["State", "Disabled", "disabled", "true (opacity-50)"],
+      ]} />
     </div>
   )
 }
@@ -6944,6 +6780,20 @@ function ToggleGroupDocs() {
           <DontItem text="Don't use ToggleGroup for navigation — use Tabs instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Type", "Single", "type", '"single" — one at a time'],
+        ["Type", "Multiple", "type", '"multiple" — any number'],
+        ["Variant", "Default", "variant", '"default" (inherits Toggle)'],
+        ["Variant", "Outline", "variant", '"outline" (inherits Toggle)'],
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Default (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["State", "Default", "—", "default"],
+        ["State", "Pressed / On", "—", "data-[state=on]"],
+        ["State", "Disabled", "disabled", "true"],
+      ]} />
     </div>
   )
 }
@@ -7014,6 +6864,16 @@ function CardDocs() {
           </table>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Container", "Card", "—", "rounded-xl border shadow-sm"],
+        ["Sub-component", "Header", "CardHeader", "gap-2xs p-md"],
+        ["Sub-component", "Title", "CardTitle", "font-semibold tracking-tight"],
+        ["Sub-component", "Description", "CardDescription", "text-sm text-muted-foreground"],
+        ["Sub-component", "Content", "CardContent", "p-md pt-0"],
+        ["Sub-component", "Footer", "CardFooter", "flex items-center p-md pt-0"],
+      ]} />
     </div>
   )
 }
@@ -7064,6 +6924,14 @@ function AvatarDocs() {
           <DontItem text="Don't use Avatar for decorative images — use a regular img tag." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Shape", "Circle", "—", "rounded-full"],
+        ["Size", "40×40px", "—", "size-10"],
+        ["Sub-component", "Image", "AvatarImage", "aspect-square, object-cover"],
+        ["Sub-component", "Fallback", "AvatarFallback", "bg-muted, initials or icon"],
+      ]} />
     </div>
   )
 }
@@ -7108,6 +6976,15 @@ function ProgressDocs() {
           </table>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Track Height", "6px", "—", "h-1.5"],
+        ["Track Color", "Muted", "—", "bg-muted"],
+        ["Indicator Color", "Primary", "—", "bg-primary"],
+        ["Value", "0–100", "value", "number (0–100)"],
+        ["Radius", "Full (pill)", "—", "rounded-full"],
+      ]} />
     </div>
   )
 }
@@ -7185,6 +7062,16 @@ function AlertDocs() {
           <DontItem text="Don't use Alert for transient notifications — use Toast instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Variant", "Default", "variant", '"default"'],
+        ["Variant", "Destructive", "variant", '"destructive"'],
+        ["Sub-component", "Title", "AlertTitle", "font-medium leading-none"],
+        ["Sub-component", "Description", "AlertDescription", "text-sm"],
+        ["Icon", "Left icon slot", "children", "<Icon /> before AlertTitle"],
+        ["Icon Size", "16px", "—", "[&>svg]:size-md"],
+      ]} />
     </div>
   )
 }
@@ -7241,6 +7128,16 @@ function BadgeDocs() {
           <DontItem text="Don't use Badge for interactive actions — use Button instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Variant", "Default", "variant", '"default" (primary bg)'],
+        ["Variant", "Secondary", "variant", '"secondary"'],
+        ["Variant", "Outline", "variant", '"outline" (border only)'],
+        ["Variant", "Destructive", "variant", '"destructive"'],
+        ["Size", "Fixed", "—", "px-xs py-3xs text-xs"],
+        ["Radius", "Full (pill)", "—", "rounded-full"],
+      ]} />
     </div>
   )
 }
@@ -7288,6 +7185,14 @@ function SeparatorDocs() {
           </table>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Orientation", "Horizontal", "orientation", '"horizontal" — h-px w-full'],
+        ["Orientation", "Vertical", "orientation", '"vertical" — h-full w-px'],
+        ["Color", "Border", "—", "bg-border"],
+        ["Decorative", "true", "decorative", "true (hidden from screen readers)"],
+      ]} />
     </div>
   )
 }
@@ -7332,6 +7237,14 @@ function SkeletonDocs() {
           <DontItem text="Don't use Skeleton for instant content — it should only appear during loading." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Animation", "Pulse", "—", "animate-pulse"],
+        ["Shape", "Rounded", "—", "rounded-lg"],
+        ["Color", "Muted", "—", "bg-muted"],
+        ["Sizing", "Custom via className", "className", "h-4 w-[200px]"],
+      ]} />
     </div>
   )
 }
@@ -7412,6 +7325,19 @@ function TableDocs() {
           <DontItem text="Don't nest tables — flatten data or use expandable rows instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Sub-component", "Table", "Table", "table root with overflow wrapper"],
+        ["Sub-component", "Header", "TableHeader", "thead element"],
+        ["Sub-component", "Body", "TableBody", "tbody element"],
+        ["Sub-component", "Footer", "TableFooter", "tfoot element, bg-muted/50"],
+        ["Sub-component", "Row", "TableRow", "tr with hover:bg-muted/50"],
+        ["Sub-component", "Head cell", "TableHead", "th, h-3xl (40px), font-medium"],
+        ["Sub-component", "Cell", "TableCell", "td, p-md padding"],
+        ["Row State", "Hover", "—", "hover:bg-muted/50"],
+        ["Row State", "Selected", "—", "data-[state=selected]:bg-muted"],
+      ]} />
     </div>
   )
 }
@@ -7492,6 +7418,19 @@ function DialogDocs() {
           <DontItem text="Don't use Dialog for simple confirmations — use Alert Dialog instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Overlay", "Black 80%", "—", "bg-black/80, fixed inset-0"],
+        ["Content Width", "max-w-lg", "—", "sm:max-w-lg"],
+        ["Animation", "Open", "—", "zoom-in-95, fade-in-0"],
+        ["Animation", "Close", "—", "zoom-out-95, fade-out-0"],
+        ["Sub-component", "Header", "DialogHeader", "flex flex-col gap-2xs"],
+        ["Sub-component", "Footer", "DialogFooter", "flex flex-col-reverse sm:flex-row"],
+        ["Sub-component", "Title", "DialogTitle", "text-lg font-semibold"],
+        ["Sub-component", "Description", "DialogDescription", "text-sm text-muted-foreground"],
+        ["Close Button", "X icon", "DialogClose", "top-right corner, size-md icon"],
+      ]} />
     </div>
   )
 }
@@ -7545,6 +7484,16 @@ function AlertDialogDocs() {
           <DontItem text="Don't use for simple info display — use Dialog or Toast instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Overlay", "Black 80%", "—", "bg-black/80, fixed inset-0"],
+        ["Content Width", "max-w-lg", "—", "sm:max-w-lg"],
+        ["Sub-component", "Action", "AlertDialogAction", "Primary button"],
+        ["Sub-component", "Cancel", "AlertDialogCancel", "Outline button (mt-sm on mobile)"],
+        ["Behavior", "Non-dismissible", "—", "Cannot close by clicking overlay"],
+        ["Animation", "Open/Close", "—", "zoom-in-95 / zoom-out-95"],
+      ]} />
     </div>
   )
 }
@@ -7628,6 +7577,18 @@ function SheetDocs() {
           <DontItem text="Don't put complex multi-step flows in a Sheet — use a page instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Side", "Right (default)", "side", '"right" — inset-y-0 right-0'],
+        ["Side", "Left", "side", '"left" — inset-y-0 left-0'],
+        ["Side", "Top", "side", '"top" — inset-x-0 top-0'],
+        ["Side", "Bottom", "side", '"bottom" — inset-x-0 bottom-0'],
+        ["Width", "3/4 viewport", "—", "w-3/4 sm:max-w-sm (left/right)"],
+        ["Overlay", "Black 80%", "—", "bg-black/80"],
+        ["Animation", "Slide in/out", "—", "slide-in-from-{side}"],
+        ["Close Button", "X icon", "SheetClose", "focus-visible:ring-[3px]"],
+      ]} />
     </div>
   )
 }
@@ -7686,6 +7647,16 @@ function DrawerDocs() {
           <DontItem text="Don't use Drawer on desktop where Dialog or Sheet is more appropriate." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Position", "Bottom", "—", "fixed inset-x-0 bottom-0"],
+        ["Handle Bar", "100×4px", "—", "w-[100px] h-2xs rounded-full bg-muted"],
+        ["Top Radius", "10px", "—", "rounded-t-[10px]"],
+        ["Overlay", "Black 80%", "—", "bg-black/80"],
+        ["Gesture", "Swipe to close", "—", "vaul library built-in"],
+        ["Scale Background", "true", "shouldScaleBackground", "true (default)"],
+      ]} />
     </div>
   )
 }
@@ -7745,6 +7716,17 @@ function PopoverDocs() {
           <DontItem text="Don't use Popover for simple text hints — use Tooltip instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Content Width", "288px", "—", "w-72"],
+        ["Alignment", "Center (default)", "align", '"center"'],
+        ["Side Offset", "4px", "sideOffset", "4"],
+        ["Animation", "Open", "—", "zoom-in-95, fade-in-0"],
+        ["Animation", "Close", "—", "zoom-out-95, fade-out-0"],
+        ["Border", "Border", "—", "border border-border"],
+        ["Shadow", "Medium", "—", "shadow-md"],
+      ]} />
     </div>
   )
 }
@@ -7809,6 +7791,16 @@ function TooltipDocs() {
           <DontItem text="Don't put interactive content inside Tooltip — use Popover instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Background", "Primary", "—", "bg-primary text-primary-foreground"],
+        ["Padding", "px-sm py-2xs", "—", "px-sm py-2xs"],
+        ["Font", "Geist 12px", "—", "text-xs"],
+        ["Radius", "6px", "—", "rounded-md"],
+        ["Side Offset", "4px", "sideOffset", "4"],
+        ["Animation", "Fade + zoom", "—", "fade-in-0, zoom-in-95"],
+      ]} />
     </div>
   )
 }
@@ -7866,6 +7858,19 @@ function ToastDocs() {
           <DontItem text="Don't use toast for critical actions — use Alert Dialog for confirmations." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Style", "Background", "—", "bg-background text-foreground"],
+        ["Style", "Border", "—", "border-border"],
+        ["Style", "Shadow", "—", "shadow-lg"],
+        ["Variant", "Default", "toast()", "Neutral toast"],
+        ["Variant", "Success", "toast.success()", "Success with icon"],
+        ["Variant", "Error", "toast.error()", "Error with icon"],
+        ["Variant", "Warning", "toast.warning()", "Warning with icon"],
+        ["Action Button", "Primary", "action", "bg-primary text-primary-foreground"],
+        ["Cancel Button", "Muted", "cancel", "bg-muted text-muted-foreground"],
+      ]} />
     </div>
   )
 }
@@ -7958,6 +7963,17 @@ function TabsDocs() {
           <DontItem text="Don't use Tabs for sequential steps — use a Stepper pattern instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["List Height", "36px", "—", "h-9"],
+        ["List Background", "Muted", "—", "bg-muted, rounded-lg"],
+        ["Trigger State", "Active", "—", "data-[state=active]:bg-background shadow"],
+        ["Trigger State", "Inactive", "—", "text-muted-foreground"],
+        ["Trigger State", "Focus", "—", "focus-visible:ring-[3px]"],
+        ["Trigger State", "Disabled", "disabled", "true (opacity-50)"],
+        ["Content Spacing", "Top margin", "—", "mt-xs"],
+      ]} />
     </div>
   )
 }
@@ -8009,6 +8025,16 @@ function BreadcrumbDocs() {
           <DontItem text="Don't make the current page a link — it should be plain text." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Separator", "ChevronRight", "BreadcrumbSeparator", "size-3.5 icon"],
+        ["Link State", "Default", "BreadcrumbLink", "text-muted-foreground hover:text-foreground"],
+        ["Current Page", "Non-interactive", "BreadcrumbPage", "text-foreground, aria-current=page"],
+        ["Font", "Geist 14px", "—", "text-sm"],
+        ["Gap", "Between items", "—", "gap-2xs"],
+        ["Ellipsis", "Overflow", "BreadcrumbEllipsis", "MoreHorizontal icon"],
+      ]} />
     </div>
   )
 }
@@ -8067,6 +8093,15 @@ function PaginationDocs() {
           <DontItem text="Don't show too many page numbers — use ellipsis for large ranges." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Active Page", "Outline variant", "isActive", "true (outline button style)"],
+        ["Inactive Page", "Ghost variant", "isActive", "false (ghost button style)"],
+        ["Previous/Next", "With icon", "PaginationPrevious/Next", "ChevronLeft/Right icon"],
+        ["Ellipsis", "Overflow", "PaginationEllipsis", "MoreHorizontal icon"],
+        ["Icon Size", "16px", "—", "size-md"],
+      ]} />
     </div>
   )
 }
@@ -8147,6 +8182,19 @@ function DropdownMenuDocs() {
           <DontItem text="Don't nest sub-menus more than one level deep." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Content Min Width", "8rem", "—", "min-w-[8rem]"],
+        ["Item Padding", "px-xs py-2xs", "—", "px-xs py-2xs text-sm"],
+        ["Item State", "Focus", "—", "focus:bg-muted focus:text-foreground"],
+        ["Item State", "Disabled", "disabled", "data-[disabled]:opacity-50"],
+        ["Sub-menu", "Trigger", "DropdownMenuSubTrigger", "ChevronRight icon ml-auto"],
+        ["Checkbox Item", "Checked", "DropdownMenuCheckboxItem", "Check icon indicator"],
+        ["Radio Item", "Selected", "DropdownMenuRadioItem", "Circle icon indicator"],
+        ["Shortcut", "Right-aligned", "DropdownMenuShortcut", "ml-auto text-xs opacity-60"],
+        ["Icon Size", "16px", "—", "[&_svg]:size-md"],
+      ]} />
     </div>
   )
 }
@@ -8240,6 +8288,18 @@ function CommandDocs() {
           <DontItem text="Don't put too many items without grouping — use headings to organize." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Input Height", "40px", "—", "h-3xl, bg-transparent"],
+        ["Input Icon", "Search", "CommandInput", "Search icon, size-md"],
+        ["List Max Height", "300px", "—", "max-h-[300px]"],
+        ["Item State", "Selected", "—", "data-[selected=true]:bg-muted"],
+        ["Item Padding", "px-xs py-2xs", "—", "px-xs py-2xs text-sm"],
+        ["Group Heading", "Label", "CommandGroup", "px-xs py-2xs text-xs font-medium"],
+        ["Empty State", "Centered", "CommandEmpty", "py-lg text-center text-sm"],
+        ["Icon Size", "16px", "—", "[&_svg]:size-md"],
+      ]} />
     </div>
   )
 }
@@ -8303,6 +8363,17 @@ function AccordionDocs() {
           <DontItem text="Don't nest Accordions inside Accordions — keep the hierarchy flat." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Type", "Single", "type", '"single" — one item open at a time'],
+        ["Type", "Multiple", "type", '"multiple" — any number open'],
+        ["Collapsible", "true", "collapsible", "true (allows all closed)"],
+        ["Item Border", "Bottom", "—", "border-b on AccordionItem"],
+        ["Trigger Padding", "py-md", "—", "py-md, font-medium"],
+        ["Icon", "ChevronDown", "AccordionTrigger", "size-md, rotates 180° on open"],
+        ["Animation", "Open/Close", "—", "animate-accordion-down/up"],
+      ]} />
     </div>
   )
 }
@@ -8357,6 +8428,14 @@ function CollapsibleDocs() {
           <DontItem text="Don't use Collapsible for multiple expandable items — use Accordion." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["State", "Open", "open", "true — content visible"],
+        ["State", "Closed", "open", "false — content hidden"],
+        ["Sub-component", "Trigger", "CollapsibleTrigger", "Toggle button"],
+        ["Sub-component", "Content", "CollapsibleContent", "Animated visibility"],
+      ]} />
     </div>
   )
 }
@@ -8408,6 +8487,14 @@ function ScrollAreaDocs() {
           <DontItem text="Don't use ScrollArea where native scroll is sufficient." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Orientation", "Vertical (default)", "orientation", '"vertical" — w-2.5 scrollbar'],
+        ["Orientation", "Horizontal", "orientation", '"horizontal" — h-2.5 scrollbar'],
+        ["Thumb", "Rounded pill", "—", "rounded-full bg-border"],
+        ["Viewport", "Full coverage", "—", "overflow-hidden rounded-[inherit]"],
+      ]} />
     </div>
   )
 }
@@ -8452,6 +8539,19 @@ function CalendarDocs() {
           <DontItem text="Don't use Calendar inline when a Date Picker popover is more space-efficient." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Mode", "Single", "mode", '"single" — pick one date'],
+        ["Mode", "Range", "mode", '"range" — pick start/end'],
+        ["Day Cell Size", "32px", "—", "size-2xl square"],
+        ["State", "Selected", "—", "bg-primary text-primary-foreground"],
+        ["State", "Today", "—", "bg-muted text-foreground"],
+        ["State", "Outside Month", "—", "text-muted-foreground opacity-50"],
+        ["State", "Disabled", "disabled", "opacity-50"],
+        ["State", "Range Middle", "—", "bg-muted rounded-none"],
+        ["Navigation", "Prev/Next", "—", "ChevronLeft/Right buttons"],
+      ]} />
     </div>
   )
 }
@@ -8491,6 +8591,14 @@ function DatePickerDocs() {
           <DontItem text="Don't use DatePicker for date ranges — compose Calendar with custom UI." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Trigger", "Outline button", "—", "Button variant=outline, w-[280px]"],
+        ["Icon", "Calendar", "—", "CalendarIcon, size-md"],
+        ["Popover", "Calendar inside", "—", "Popover + Calendar composition"],
+        ["Callback", "Date selected", "onDateChange", "(date: Date) => void"],
+      ]} />
     </div>
   )
 }
@@ -8566,6 +8674,17 @@ function ComboboxDocs() {
           <DontItem text="Don't use Combobox for less than 5 options — use Select instead." />
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Trigger", "Outline button", "—", "Button variant=outline, w-[200px]"],
+        ["Icon", "ChevronsUpDown", "—", "ChevronsUpDown icon, size-md"],
+        ["Popover Width", "200px", "—", "w-[200px] (matches button)"],
+        ["Search", "Command input", "searchPlaceholder", "Search input inside popover"],
+        ["Selected", "Check icon", "—", "Check icon, size-md"],
+        ["Empty State", "Text", "emptyText", '"No results found."'],
+        ["Options", "Array", "options", "{ value, label }[]"],
+      ]} />
     </div>
   )
 }
@@ -8778,6 +8897,18 @@ function RadioGroupDocs() {
           </div>
         </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Item Size", "16×16px", "—", "size-md"],
+        ["State", "Default", "—", "border-border-strong bg-input"],
+        ["State", "Checked", "—", "data-[state=checked]:border-primary bg-primary"],
+        ["State", "Focus", "—", "focus-visible:ring-[3px] ring-ring"],
+        ["State", "Error", "aria-invalid", "destructive border + ring-error"],
+        ["State", "Disabled", "disabled", "opacity-50"],
+        ["Indicator", "Circle", "—", "size-2.5 fill-primary-foreground"],
+        ["Group Gap", "Gap sm", "—", "gap-sm"],
+      ]} />
     </div>
   )
 }
@@ -8840,6 +8971,17 @@ function InputOTPDocs() {
           </InputOTP>
         </Example>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Cell Size", "32×32px", "—", "size-3xl"],
+        ["Cell Border", "Shared borders", "—", "border-y border-r, first:border-l"],
+        ["Cell Radius", "First/Last rounded", "—", "first:rounded-l-md last:rounded-r-md"],
+        ["Active State", "Ring", "—", "ring-[3px] ring-ring"],
+        ["Caret", "Blinking", "—", "animate-caret-blink duration-1000"],
+        ["Separator", "Minus icon", "InputOTPSeparator", "Minus icon between groups"],
+        ["Gap", "Between cells", "—", "gap-xs"],
+      ]} />
     </div>
   )
 }
@@ -8897,6 +9039,15 @@ function SpinnerDocs() {
           </div>
         </Example>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Size", "Small (16px)", "size", '"sm" — size-md'],
+        ["Size", "Default (24px)", "size", '"default" — size-xl'],
+        ["Size", "Large (32px)", "size", '"lg" — size-2xl'],
+        ["Animation", "Spin", "—", "animate-spin"],
+        ["Color", "Muted foreground", "—", "text-muted-foreground"],
+      ]} />
     </div>
   )
 }
@@ -8944,6 +9095,17 @@ function HoverCardDocs() {
           </HoverCard>
         </Example>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Content Width", "256px", "—", "w-64"],
+        ["Alignment", "Center (default)", "align", '"center"'],
+        ["Side Offset", "4px", "sideOffset", "4"],
+        ["Animation", "Open", "—", "zoom-in-95, fade-in-0"],
+        ["Animation", "Close", "—", "zoom-out-95, fade-out-0"],
+        ["Border", "Border", "—", "border border-border"],
+        ["Shadow", "Medium", "—", "shadow-md"],
+      ]} />
     </div>
   )
 }
@@ -9013,6 +9175,14 @@ function AspectRatioDocs() {
           </div>
         </Example>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Ratio", "16:9", "ratio", "{16 / 9}"],
+        ["Ratio", "1:1 (Square)", "ratio", "{1}"],
+        ["Ratio", "4:3", "ratio", "{4 / 3}"],
+        ["Container", "Radix primitive", "AspectRatio", "Constrains child to ratio"],
+      ]} />
     </div>
   )
 }
@@ -9068,6 +9238,20 @@ function ContextMenuDocs() {
           </ContextMenu>
         </Example>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Trigger", "Right-click area", "ContextMenuTrigger", "Any element as trigger"],
+        ["Content Min Width", "8rem", "—", "min-w-[8rem]"],
+        ["Item Padding", "px-xs py-2xs", "—", "px-xs py-2xs text-sm"],
+        ["Item State", "Focus", "—", "focus:bg-muted focus:text-foreground"],
+        ["Item State", "Disabled", "disabled", "data-[disabled]:opacity-50"],
+        ["Sub-menu", "Trigger", "ContextMenuSubTrigger", "ChevronRight icon ml-auto"],
+        ["Checkbox Item", "Checked", "ContextMenuCheckboxItem", "Check icon indicator"],
+        ["Radio Item", "Selected", "ContextMenuRadioItem", "Circle icon indicator"],
+        ["Shortcut", "Right-aligned", "ContextMenuShortcut", "ml-auto text-xs"],
+        ["Icon Size", "16px", "—", "[&_svg]:size-md"],
+      ]} />
     </div>
   )
 }
@@ -9155,6 +9339,23 @@ function SidebarDocs() {
           <li>Composable sub-components for menus, groups, headers, footers</li>
         </ul>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping rows={[
+        ["Width", "Expanded", "—", "16rem (256px)"],
+        ["Width", "Icon only", "—", "3rem (48px)"],
+        ["Width", "Mobile", "—", "18rem (288px)"],
+        ["Side", "Left (default)", "side", '"left"'],
+        ["Side", "Right", "side", '"right"'],
+        ["Variant", "Sidebar", "variant", '"sidebar" — fixed'],
+        ["Variant", "Floating", "variant", '"floating" — rounded, shadow'],
+        ["Variant", "Inset", "variant", '"inset" — inside content'],
+        ["Collapsible", "Offcanvas", "collapsible", '"offcanvas" — slides away'],
+        ["Collapsible", "Icon", "collapsible", '"icon" — shrinks to icons'],
+        ["Collapsible", "None", "collapsible", '"none" — always expanded'],
+        ["Keyboard", "Toggle", "—", "⌘B / Ctrl+B"],
+        ["Mobile", "Sheet overlay", "—", "Sheet on < 768px"],
+      ]} />
     </div>
   )
 }
