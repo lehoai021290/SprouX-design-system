@@ -466,7 +466,7 @@ function ColorsDocs() {
       ))}
 
       {/* Semantic Colors */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Semantic Tokens</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           These tokens adapt automatically between light and dark mode.
@@ -508,7 +508,7 @@ function ColorsDocs() {
       </section>
 
       {/* Usage Guidelines */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Usage Guidelines</h2>
         <div className="flex gap-4">
           <DoItem>
@@ -588,9 +588,9 @@ function TypographyDocs() {
       </header>
 
       {/* Font Families */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Font Families</h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           <Example
             title="Fraunces (Headings)"
             description="Variable optical-size serif used for headings H1-H5. Semibold weight (600)."
@@ -626,7 +626,7 @@ function TypographyDocs() {
       </section>
 
       {/* Heading Scale */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Heading Scale</h2>
         <div className="space-y-4">
           {headings.map((h) => (
@@ -642,7 +642,7 @@ function TypographyDocs() {
       </section>
 
       {/* Body Text Scale */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Body Text Scale</h2>
         <div className="space-y-4">
           {bodyStyles.map((b) => (
@@ -658,7 +658,7 @@ function TypographyDocs() {
       </section>
 
       {/* Type Scale Reference Table */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Type Scale Reference</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-xs">
@@ -689,9 +689,9 @@ function TypographyDocs() {
       </section>
 
       {/* Usage Examples */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Usage Examples</h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           <Example
             title="Page title"
             description="Use Heading 1 or 2 for page-level titles."
@@ -784,7 +784,7 @@ function SpacingDocs() {
       </header>
 
       {/* Visual Scale */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Visual Scale</h2>
         <div className="space-y-3">
           {spacingScale.map((s) => (
@@ -801,9 +801,9 @@ function SpacingDocs() {
       </section>
 
       {/* Examples */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           <Example
             title="Padding"
             description="Apply consistent internal spacing to containers."
@@ -872,7 +872,7 @@ function SpacingDocs() {
       </section>
 
       {/* Token Reference Table */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Token Reference</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-xs">
@@ -944,7 +944,7 @@ function BorderRadiusDocs() {
       </header>
 
       {/* Visual Scale */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Visual Scale</h2>
         <div className="flex gap-8 items-end">
           {radii.map((r) => (
@@ -963,9 +963,9 @@ function BorderRadiusDocs() {
       </section>
 
       {/* Examples */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           <Example
             title="Small (4px)"
             description="Used for compact elements like mini inputs, tags, and badges."
@@ -1003,7 +1003,7 @@ function BorderRadiusDocs() {
       </section>
 
       {/* Token Reference Table */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Token Reference</h2>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-xs">
@@ -1322,12 +1322,12 @@ function IconsDocs() {
         </p>
       </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`// Lucide icons (primary library)\nimport { Home, Search, Plus, Check } from "lucide-react"\n\n// Custom social icons (SVG imports)\nimport tiktokIcon from "@/assets/icons/tiktok.svg"\nimport instagramIcon from "@/assets/icons/instagram.svg"`} />
       </section>
 
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Icon Sizes</h2>
         <p className="text-sm text-muted-foreground">
           Three standard sizes are used across the design system, matching the Figma token scale.
@@ -1347,7 +1347,7 @@ function IconsDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Lucide Icon Catalog</h2>
         <p className="text-sm text-muted-foreground">
           All {allLucideIcons.length} icons from the Lucide library. Search or browse by page.
@@ -1410,7 +1410,7 @@ function IconsDocs() {
         )}
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Custom / Social Icons</h2>
         <p className="text-sm text-muted-foreground">
           Brand and social icons exported from the Figma design system as SVGs.
@@ -1428,7 +1428,7 @@ function IconsDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Usage Guidelines</h2>
         <div className="flex gap-4">
           <DoItem>
@@ -1487,12 +1487,12 @@ function IllustrationsDocs() {
         </p>
       </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import illustSuccess from "@/assets/illustrations/success.svg"\nimport illustError from "@/assets/illustrations/error.svg"\nimport illustEmpty from "@/assets/illustrations/empty.svg"\n\n// Usage\n<img src={illustSuccess} alt="Success" className="w-48" />`} />
       </section>
 
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Safezone Rule</h2>
         <div className="rounded-xl border border-border p-6 bg-muted/30 max-w-lg">
           <div className="flex items-center gap-4">
@@ -1510,7 +1510,7 @@ function IllustrationsDocs() {
         </div>
       </section>
 
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Gallery</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {illustrations.map((item) => (
@@ -1530,7 +1530,7 @@ function IllustrationsDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Usage Guidelines</h2>
         <div className="flex gap-4">
           <DoItem>
@@ -1581,8 +1581,17 @@ function ButtonDocs() {
         </p>
       </header>
 
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center gap-lg flex-wrap">
+        <Button>Default</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="destructive">Destructive</Button>
+        <Button variant="outline">Outline</Button>
+        <Button variant="ghost">Ghost</Button>
+      </div>
+
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies
@@ -1597,10 +1606,10 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default button"
@@ -1938,7 +1947,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Button extends all native{" "}
@@ -1951,7 +1960,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -1965,7 +1974,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -2062,7 +2071,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Figma Component Mapping
         </h2>
@@ -2129,7 +2138,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 text-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -2527,8 +2536,14 @@ function InputDocs() {
         </p>
       </header>
 
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center gap-lg flex-wrap">
+        <Input placeholder="Default input" className="max-w-xs" />
+        <Input placeholder="Disabled" disabled className="max-w-xs" />
+      </div>
+
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies (if not already installed)
@@ -2543,10 +2558,10 @@ pnpm add class-variance-authority clsx tailwind-merge
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default input"
@@ -2938,7 +2953,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Input extends all native{" "}
@@ -2951,7 +2966,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -2965,7 +2980,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -3057,7 +3072,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Figma Component Mapping
         </h2>
@@ -3117,7 +3132,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 text-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -3494,7 +3509,7 @@ function TextareaDocs() {
       </header>
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies (if not already installed)
@@ -3509,10 +3524,10 @@ pnpm add clsx tailwind-merge
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default textarea"
@@ -3779,7 +3794,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Textarea extends all native{" "}
@@ -3792,7 +3807,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -3806,7 +3821,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -3885,7 +3900,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Figma Component Mapping
         </h2>
@@ -3940,7 +3955,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 text-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -4367,8 +4382,22 @@ function SelectDocs() {
         </p>
       </header>
 
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center">
+        <Select>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select option" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="option1">Option 1</SelectItem>
+            <SelectItem value="option2">Option 2</SelectItem>
+            <SelectItem value="option3">Option 3</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies
@@ -4392,10 +4421,10 @@ pnpm add @radix-ui/react-select class-variance-authority clsx tailwind-merge luc
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default select"
@@ -4829,7 +4858,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Select is a compound component built on{" "}
@@ -4842,7 +4871,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -4856,7 +4885,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -4940,7 +4969,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Figma Component Mapping
         </h2>
@@ -4997,7 +5026,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 text-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -5211,8 +5240,24 @@ function CheckboxDocs() {
         </p>
       </header>
 
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center gap-xl">
+        <div className="flex items-center gap-xs">
+          <Checkbox id="preview-checked" defaultChecked />
+          <Label htmlFor="preview-checked">Checked</Label>
+        </div>
+        <div className="flex items-center gap-xs">
+          <Checkbox id="preview-unchecked" />
+          <Label htmlFor="preview-unchecked">Unchecked</Label>
+        </div>
+        <div className="flex items-center gap-xs">
+          <Checkbox id="preview-disabled" disabled />
+          <Label htmlFor="preview-disabled">Disabled</Label>
+        </div>
+      </div>
+
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies
@@ -5227,10 +5272,10 @@ pnpm add @radix-ui/react-checkbox lucide-react
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           {/* Default */}
           <Example
             title="Default checkbox"
@@ -5545,7 +5590,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Extends <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
@@ -5622,7 +5667,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -5680,7 +5725,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Always pair with a visible <label> linked via id/htmlFor for accessibility." />
@@ -5693,7 +5738,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Figma Mapping</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -5749,7 +5794,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
           <li>Built on Radix Checkbox — renders a native <code className="text-xs bg-muted px-1.5 py-0.5 rounded">button</code> with <code className="text-xs bg-muted px-1.5 py-0.5 rounded">role="checkbox"</code>.</li>
@@ -5762,7 +5807,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -5835,8 +5880,20 @@ function SwitchDocs() {
         </p>
       </header>
 
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center gap-xl">
+        <div className="flex items-center gap-xs">
+          <Switch id="preview-on" defaultChecked />
+          <Label htmlFor="preview-on">On</Label>
+        </div>
+        <div className="flex items-center gap-xs">
+          <Switch id="preview-off" />
+          <Label htmlFor="preview-off">Off</Label>
+        </div>
+      </div>
+
       {/* ---- Installation ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies
@@ -5851,10 +5908,10 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6">
+      <section className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           {/* Default */}
           <Example
             title="Default switch"
@@ -6169,7 +6226,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="text-paragraph-sm text-muted-foreground">
           Extends <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
@@ -6240,7 +6297,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6278,7 +6335,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Switch for settings that take immediate effect (e.g. dark mode, notifications)." />
@@ -6291,7 +6348,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Figma Mapping</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6338,7 +6395,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
           <li>Built on Radix Switch — renders a native <code className="text-xs bg-muted px-1.5 py-0.5 rounded">button</code> with <code className="text-xs bg-muted px-1.5 py-0.5 rounded">role="switch"</code>.</li>
@@ -6351,7 +6408,7 @@ pnpm add @radix-ui/react-switch
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -6401,20 +6458,20 @@ pnpm add @radix-ui/react-switch
 
 function LabelDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
+    <div className="space-y-12">
       {/* ---- Header ---- */}
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-          Forms
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+          Components / Forms
         </p>
         <h1 className="text-heading-3">Label</h1>
-        <p className="text-paragraph-md text-muted-foreground">
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Renders an accessible label associated with form controls. Supports required indicator and disabled state via peer utilities.
         </p>
-      </section>
+      </header>
 
       {/* ---- Import ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example
           title="Import"
@@ -6427,7 +6484,7 @@ function LabelDocs() {
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Label htmlFor="email">Email address</Label>\n<Input id="email" type="email" placeholder="you@example.com" />`}>
@@ -6460,7 +6517,7 @@ function LabelDocs() {
       </section>
 
       {/* ---- API Reference ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6497,7 +6554,7 @@ function LabelDocs() {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Always pair every form control with a visible Label linked via htmlFor/id." />
@@ -6508,7 +6565,7 @@ function LabelDocs() {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -6558,23 +6615,23 @@ function LabelDocs() {
 
 function SliderDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Slider</h1>
-        <p className="text-paragraph-md text-muted-foreground">
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           A range input that allows users to select a value or range by dragging a thumb along a track. Supports single and dual thumb.
         </p>
-      </section>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { Slider } from "@/components/ui/slider"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Slider defaultValue={[50]} max={100} step={1} />`}>
@@ -6594,7 +6651,7 @@ function SliderDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6654,7 +6711,7 @@ function SliderDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Slider for numeric ranges like volume, price, or brightness." />
@@ -6664,7 +6721,7 @@ function SliderDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
         <div className="rounded-lg border border-border divide-y divide-border">
           <div className="px-5 py-3.5 flex justify-between items-center">
@@ -6693,23 +6750,23 @@ function SliderDocs() {
 
 function ToggleDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Toggle</h1>
-        <p className="text-paragraph-md text-muted-foreground">
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           A two-state button that can be toggled on or off. Commonly used for formatting options like bold, italic, underline.
         </p>
-      </section>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { Toggle } from "@/components/ui/toggle"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Toggle aria-label="Toggle bold">\n  <Bold className="size-4" />\n</Toggle>`}>
@@ -6737,7 +6794,7 @@ function ToggleDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6779,7 +6836,7 @@ function ToggleDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Always provide an aria-label when using icon-only toggles." />
@@ -6796,23 +6853,23 @@ function ToggleDocs() {
 
 function ToggleGroupDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Toggle Group</h1>
-        <p className="text-paragraph-md text-muted-foreground">
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           A group of toggle buttons supporting single or multiple selection. Ideal for toolbar actions, text formatting, view modes.
         </p>
-      </section>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Single selection" code={`<ToggleGroup type="single" defaultValue="center">\n  <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
@@ -6848,7 +6905,7 @@ function ToggleGroupDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <h3 className="font-heading font-semibold text-lg">ToggleGroup</h3>
         <div className="overflow-x-auto rounded-lg border border-border">
@@ -6885,7 +6942,7 @@ function ToggleGroupDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use type='single' for mutually exclusive options like text alignment." />
@@ -6904,14 +6961,27 @@ function ToggleGroupDocs() {
 
 function CardDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Card</h1>
-        <p className="text-paragraph-md text-muted-foreground">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
+      </header>
 
-      <section className="space-y-4">
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center">
+        <Card className="w-[280px]">
+          <CardHeader>
+            <CardTitle className="text-sm">Preview Card</CardTitle>
+            <CardDescription className="text-xs">A sample card component.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-xs text-muted-foreground">Content area</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Default" code={`<Card className="w-[350px]">\n  <CardHeader>\n    <CardTitle>Card Title</CardTitle>\n    <CardDescription>Card description goes here.</CardDescription>\n  </CardHeader>\n  <CardContent>\n    <p>Card content area.</p>\n  </CardContent>\n  <CardFooter>\n    <Button>Action</Button>\n  </CardFooter>\n</Card>`}>
           <Card className="w-[350px]">
@@ -6935,7 +7005,7 @@ function CardDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Sub-components</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -6961,14 +7031,14 @@ function CardDocs() {
 
 function AvatarDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Avatar</h1>
-        <p className="text-paragraph-md text-muted-foreground">User avatar with image and fallback support (initials or icon).</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">User avatar with image and fallback support (initials or icon).</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="With image" code={`<Avatar>\n  <AvatarImage src="https://github.com/shadcn.png" alt="User" />\n  <AvatarFallback>CN</AvatarFallback>\n</Avatar>`}>
           <Avatar>
@@ -6994,7 +7064,7 @@ function AvatarDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Always provide a fallback (initials or icon) for when the image fails to load." />
@@ -7011,14 +7081,14 @@ function AvatarDocs() {
 
 function ProgressDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Progress</h1>
-        <p className="text-paragraph-md text-muted-foreground">Progress bar indicating completion status. Supports determinate values (0-100).</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Progress bar indicating completion status. Supports determinate values (0-100).</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="25%" code={`<Progress value={25} />`}>
           <Progress value={25} className="w-60" />
@@ -7034,7 +7104,7 @@ function ProgressDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -7055,14 +7125,28 @@ function ProgressDocs() {
 
 function AlertDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Alert</h1>
-        <p className="text-paragraph-md text-muted-foreground">Inline alert messages for info, warning, error, and success feedback.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Inline alert messages for info, warning, error, and success feedback.</p>
+      </header>
 
-      <section className="space-y-4">
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex flex-col items-center gap-md max-w-lg mx-auto">
+        <Alert>
+          <Terminal className="size-4" />
+          <AlertTitle>Default alert</AlertTitle>
+          <AlertDescription>Informational message.</AlertDescription>
+        </Alert>
+        <Alert variant="destructive">
+          <AlertCircle className="size-4" />
+          <AlertTitle>Destructive alert</AlertTitle>
+          <AlertDescription>Error message.</AlertDescription>
+        </Alert>
+      </div>
+
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Default" code={`<Alert>\n  <Terminal className="size-4" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can add components to your app using the CLI.</AlertDescription>\n</Alert>`}>
           <Alert>
@@ -7089,7 +7173,7 @@ function AlertDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -7101,7 +7185,7 @@ function AlertDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Alert for persistent, inline messages related to a page section." />
@@ -7118,14 +7202,22 @@ function AlertDocs() {
 
 function BadgeDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Badge</h1>
-        <p className="text-paragraph-md text-muted-foreground">Status tags, labels, and notification counts.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Status tags, labels, and notification counts.</p>
+      </header>
 
-      <section className="space-y-4">
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center gap-sm">
+        <Badge>Default</Badge>
+        <Badge variant="secondary">Secondary</Badge>
+        <Badge variant="outline">Outline</Badge>
+        <Badge variant="destructive">Destructive</Badge>
+      </div>
+
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Variants" code={`<Badge>Default</Badge>\n<Badge variant="secondary">Secondary</Badge>\n<Badge variant="outline">Outline</Badge>\n<Badge variant="destructive">Destructive</Badge>`}>
           <div className="flex gap-2 flex-wrap">
@@ -7137,7 +7229,7 @@ function BadgeDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -7149,7 +7241,7 @@ function BadgeDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Badge for status indicators, counts, or category labels." />
@@ -7166,14 +7258,14 @@ function BadgeDocs() {
 
 function SeparatorDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Separator</h1>
-        <p className="text-paragraph-md text-muted-foreground">Visually separates content with a horizontal or vertical line.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Visually separates content with a horizontal or vertical line.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Horizontal" code={`<Separator />`}>
           <div className="space-y-4 w-60">
@@ -7191,7 +7283,7 @@ function SeparatorDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -7213,14 +7305,14 @@ function SeparatorDocs() {
 
 function SkeletonDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Skeleton</h1>
-        <p className="text-paragraph-md text-muted-foreground">Loading placeholder with a pulse animation. Use to indicate content is being loaded.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Loading placeholder with a pulse animation. Use to indicate content is being loaded.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Card skeleton" code={`<div className="flex items-center gap-4">\n  <Skeleton className="size-12 rounded-full" />\n  <div className="space-y-2">\n    <Skeleton className="h-4 w-[200px]" />\n    <Skeleton className="h-4 w-[160px]" />\n  </div>\n</div>`}>
           <div className="flex items-center gap-4">
@@ -7240,7 +7332,7 @@ function SkeletonDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Match the skeleton shape and size to the actual content it replaces." />
@@ -7257,14 +7349,14 @@ function SkeletonDocs() {
 
 function TableDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="text-heading-3">Table</h1>
-        <p className="text-paragraph-md text-muted-foreground">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Default" code={`<Table>\n  <TableCaption>A list of recent invoices.</TableCaption>\n  <TableHeader>\n    <TableRow>\n      <TableHead className="w-[100px]">Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead>Method</TableHead>\n      <TableHead className="text-right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    <TableRow>\n      <TableCell className="font-medium">INV001</TableCell>\n      <TableCell>Paid</TableCell>\n      <TableCell>Credit Card</TableCell>\n      <TableCell className="text-right">$250.00</TableCell>\n    </TableRow>\n  </TableBody>\n</Table>`}>
           <Table>
@@ -7301,7 +7393,7 @@ function TableDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Sub-components</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -7320,7 +7412,7 @@ function TableDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use TableCaption to describe the table content for accessibility." />
@@ -7337,21 +7429,39 @@ function TableDocs() {
 
 function DialogDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Dialog</h1>
-        <p className="text-paragraph-md text-muted-foreground">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
+      </header>
 
-      <section className="space-y-4">
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Open Dialog</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[400px]">
+            <DialogHeader>
+              <DialogTitle>Preview Dialog</DialogTitle>
+              <DialogDescription>This is a preview of the Dialog component.</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button size="sm">Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import {\n  Dialog, DialogTrigger, DialogContent,\n  DialogHeader, DialogFooter,\n  DialogTitle, DialogDescription,\n} from "@/components/ui/dialog"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Dialog>\n  <DialogTrigger asChild>\n    <Button variant="outline">Edit Profile</Button>\n  </DialogTrigger>\n  <DialogContent className="sm:max-w-[425px]">\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>Make changes to your profile here.</DialogDescription>\n    </DialogHeader>\n    <div className="grid gap-4 py-4">\n      <div className="grid grid-cols-4 items-center gap-4">\n        <Label htmlFor="name" className="text-right">Name</Label>\n        <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />\n      </div>\n    </div>\n    <DialogFooter>\n      <Button type="submit">Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`}>
@@ -7382,7 +7492,7 @@ function DialogDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Dialog for forms and complex interactions that need user focus." />
@@ -7399,19 +7509,19 @@ function DialogDocs() {
 
 function AlertDialogDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Alert Dialog</h1>
-        <p className="text-paragraph-md text-muted-foreground">Modal for confirmations and destructive actions. Cannot be dismissed by clicking outside.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Modal for confirmations and destructive actions. Cannot be dismissed by clicking outside.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  AlertDialog,\n  AlertDialogTrigger,\n  AlertDialogContent,\n  AlertDialogHeader,\n  AlertDialogFooter,\n  AlertDialogTitle,\n  AlertDialogDescription,\n  AlertDialogAction,\n  AlertDialogCancel,\n} from "@/components/ui/alert-dialog"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Destructive Confirmation" code={`<AlertDialog>\n  <AlertDialogTrigger asChild>\n    <Button variant="destructive">Delete Account</Button>\n  </AlertDialogTrigger>\n  <AlertDialogContent>\n    <AlertDialogHeader>\n      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>\n      <AlertDialogDescription>\n        This action cannot be undone.\n      </AlertDialogDescription>\n    </AlertDialogHeader>\n    <AlertDialogFooter>\n      <AlertDialogCancel>Cancel</AlertDialogCancel>\n      <AlertDialogAction>Continue</AlertDialogAction>\n    </AlertDialogFooter>\n  </AlertDialogContent>\n</AlertDialog>`}>
@@ -7435,7 +7545,7 @@ function AlertDialogDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Alert Dialog for destructive or irreversible actions." />
@@ -7452,14 +7562,14 @@ function AlertDialogDocs() {
 
 function SheetDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Sheet</h1>
-        <p className="text-paragraph-md text-muted-foreground">Slide-out panel from any edge of the screen. Great for navigation, filters, or detail views.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Slide-out panel from any edge of the screen. Great for navigation, filters, or detail views.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Right (Default)" code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Open Sheet</Button>\n  </SheetTrigger>\n  <SheetContent>\n    <SheetHeader>\n      <SheetTitle>Edit profile</SheetTitle>\n      <SheetDescription>Make changes to your profile.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
@@ -7518,7 +7628,7 @@ function SheetDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Sheet for supplementary content that doesn't need a full page." />
@@ -7535,14 +7645,14 @@ function SheetDocs() {
 
 function DrawerDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Drawer</h1>
-        <p className="text-paragraph-md text-muted-foreground">Mobile-first bottom drawer with swipe-to-close. Built on vaul.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Mobile-first bottom drawer with swipe-to-close. Built on vaul.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Drawer>\n  <DrawerTrigger asChild>\n    <Button variant="outline">Open Drawer</Button>\n  </DrawerTrigger>\n  <DrawerContent>\n    <DrawerHeader className="text-left">\n      <DrawerTitle>Move Goal</DrawerTitle>\n      <DrawerDescription>Set your daily activity goal.</DrawerDescription>\n    </DrawerHeader>\n    <div className="p-4">\n      <p>Drawer body content goes here.</p>\n    </div>\n    <DrawerFooter>\n      <Button>Submit</Button>\n      <DrawerClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DrawerClose>\n    </DrawerFooter>\n  </DrawerContent>\n</Drawer>`}>
@@ -7576,7 +7686,7 @@ function DrawerDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Drawer on mobile for actions and confirmations." />
@@ -7593,19 +7703,19 @@ function DrawerDocs() {
 
 function PopoverDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Popover</h1>
-        <p className="text-paragraph-md text-muted-foreground">Floating content panel anchored to a trigger. For rich interactive content.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Floating content panel anchored to a trigger. For rich interactive content.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Popover,\n  PopoverTrigger,\n  PopoverContent,\n} from "@/components/ui/popover"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Popover>\n  <PopoverTrigger asChild>\n    <Button variant="outline">Open Popover</Button>\n  </PopoverTrigger>\n  <PopoverContent className="w-80">\n    <div className="grid gap-4">\n      <div className="space-y-2">\n        <h4 className="font-medium leading-none">Dimensions</h4>\n        <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>\n      </div>\n      <div className="grid gap-2">\n        <div className="grid grid-cols-3 items-center gap-4">\n          <Label htmlFor="width">Width</Label>\n          <Input id="width" defaultValue="100%" className="col-span-2 h-8" />\n        </div>\n      </div>\n    </div>\n  </PopoverContent>\n</Popover>`}>
@@ -7635,7 +7745,7 @@ function PopoverDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Popover for interactive floating content like forms or settings." />
@@ -7652,19 +7762,19 @@ function PopoverDocs() {
 
 function TooltipDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Tooltip</h1>
-        <p className="text-paragraph-md text-muted-foreground">Informational popup shown on hover or focus. For brief, non-interactive hints.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Informational popup shown on hover or focus. For brief, non-interactive hints.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Tooltip,\n  TooltipTrigger,\n  TooltipContent,\n  TooltipProvider,\n} from "@/components/ui/tooltip"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<TooltipProvider>\n  <Tooltip>\n    <TooltipTrigger asChild>\n      <Button variant="outline">Hover me</Button>\n    </TooltipTrigger>\n    <TooltipContent>\n      <p>Add to library</p>\n    </TooltipContent>\n  </Tooltip>\n</TooltipProvider>`}>
@@ -7699,7 +7809,7 @@ function TooltipDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Tooltip for icon-only buttons to provide accessible labels." />
@@ -7716,21 +7826,21 @@ function TooltipDocs() {
 
 function ToastDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="text-heading-3">Toast (Sonner)</h1>
-        <p className="text-paragraph-md text-muted-foreground">Non-intrusive notification toasts. Uses the sonner library.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Non-intrusive notification toasts. Uses the sonner library.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { toast } from "sonner"\nimport { Toaster } from "@/components/ui/sonner"\n\n// Place <Toaster /> at app root`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Variants" code={`toast("Default notification")\ntoast.success("Success!")\ntoast.error("Something went wrong")\ntoast.warning("Careful!")\ntoast.info("FYI...")`}>
@@ -7756,7 +7866,7 @@ function ToastDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use toast for non-blocking feedback (saved, deleted, sent, etc.)." />
@@ -7773,19 +7883,33 @@ function ToastDocs() {
 
 function TabsDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Navigation</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="text-heading-3">Tabs</h1>
-        <p className="text-paragraph-md text-muted-foreground">Tabbed interface for switching between different views or content panels.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Tabbed interface for switching between different views or content panels.</p>
+      </header>
 
-      <section className="space-y-3">
+      {/* Component preview */}
+      <div className="rounded-xl border border-border bg-muted/30 p-3xl flex items-center justify-center">
+        <Tabs defaultValue="tab1" className="w-[300px]">
+          <TabsList>
+            <TabsTrigger value="tab1">Overview</TabsTrigger>
+            <TabsTrigger value="tab2">Settings</TabsTrigger>
+            <TabsTrigger value="tab3">More</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1">
+            <p className="text-sm text-muted-foreground p-md">Tab content area</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Tabs defaultValue="account" className="w-[400px]">\n  <TabsList>\n    <TabsTrigger value="account">Account</TabsTrigger>\n    <TabsTrigger value="password">Password</TabsTrigger>\n  </TabsList>\n  <TabsContent value="account">\n    <Card>\n      <CardHeader>\n        <CardTitle>Account</CardTitle>\n        <CardDescription>Make changes to your account.</CardDescription>\n      </CardHeader>\n      <CardContent className="space-y-2">\n        <div className="space-y-1">\n          <Label htmlFor="tab-name">Name</Label>\n          <Input id="tab-name" defaultValue="Pedro Duarte" />\n        </div>\n      </CardContent>\n    </Card>\n  </TabsContent>\n</Tabs>`}>
@@ -7834,7 +7958,7 @@ function TabsDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Tabs for content that is related but independent." />
@@ -7851,19 +7975,19 @@ function TabsDocs() {
 
 function BreadcrumbDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Navigation</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="text-heading-3">Breadcrumb</h1>
-        <p className="text-paragraph-md text-muted-foreground">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Breadcrumb,\n  BreadcrumbList,\n  BreadcrumbItem,\n  BreadcrumbLink,\n  BreadcrumbPage,\n  BreadcrumbSeparator,\n} from "@/components/ui/breadcrumb"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Breadcrumb>\n  <BreadcrumbList>\n    <BreadcrumbItem>\n      <BreadcrumbLink href="/">Home</BreadcrumbLink>\n    </BreadcrumbItem>\n    <BreadcrumbSeparator />\n    <BreadcrumbItem>\n      <BreadcrumbLink href="/components">Components</BreadcrumbLink>\n    </BreadcrumbItem>\n    <BreadcrumbSeparator />\n    <BreadcrumbItem>\n      <BreadcrumbPage>Breadcrumb</BreadcrumbPage>\n    </BreadcrumbItem>\n  </BreadcrumbList>\n</Breadcrumb>`}>
@@ -7885,7 +8009,7 @@ function BreadcrumbDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Always include the current page as the last non-linked item." />
@@ -7902,19 +8026,19 @@ function BreadcrumbDocs() {
 
 function PaginationDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Navigation</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="text-heading-3">Pagination</h1>
-        <p className="text-paragraph-md text-muted-foreground">Page navigation with previous/next and numbered links.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Page navigation with previous/next and numbered links.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Pagination,\n  PaginationContent,\n  PaginationItem,\n  PaginationLink,\n  PaginationPrevious,\n  PaginationNext,\n  PaginationEllipsis,\n} from "@/components/ui/pagination"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem>\n      <PaginationPrevious href="#" />\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#">1</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#" isActive>2</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#">3</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationEllipsis />\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationNext href="#" />\n    </PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
@@ -7943,7 +8067,7 @@ function PaginationDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Highlight the current page for clear context." />
@@ -7960,19 +8084,19 @@ function PaginationDocs() {
 
 function DropdownMenuDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Navigation</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="text-heading-3">Dropdown Menu</h1>
-        <p className="text-paragraph-md text-muted-foreground">Contextual menu triggered by a button. Supports labels, separators, checkbox items, sub-menus, and keyboard shortcuts.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Contextual menu triggered by a button. Supports labels, separators, checkbox items, sub-menus, and keyboard shortcuts.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  DropdownMenu,\n  DropdownMenuTrigger,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuShortcut,\n  DropdownMenuGroup,\n  DropdownMenuSub,\n  DropdownMenuSubTrigger,\n  DropdownMenuSubContent,\n} from "@/components/ui/dropdown-menu"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<DropdownMenu>\n  <DropdownMenuTrigger asChild>\n    <Button variant="outline">Open</Button>\n  </DropdownMenuTrigger>\n  <DropdownMenuContent className="w-56">\n    <DropdownMenuLabel>My Account</DropdownMenuLabel>\n    <DropdownMenuSeparator />\n    <DropdownMenuGroup>\n      <DropdownMenuItem>\n        <User className="mr-2 size-4" /> Profile\n        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>\n      </DropdownMenuItem>\n      <DropdownMenuItem>\n        <Settings className="mr-2 size-4" /> Settings\n        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>\n      </DropdownMenuItem>\n    </DropdownMenuGroup>\n    <DropdownMenuSeparator />\n    <DropdownMenuItem>\n      <LogOut className="mr-2 size-4" /> Log out\n    </DropdownMenuItem>\n  </DropdownMenuContent>\n</DropdownMenu>`}>
@@ -8023,7 +8147,7 @@ function DropdownMenuDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Group related items and use separators for clarity." />
@@ -8053,19 +8177,19 @@ function CommandDocs() {
   }, [])
 
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Navigation</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="text-heading-3">Command</h1>
-        <p className="text-paragraph-md text-muted-foreground">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Command,\n  CommandInput,\n  CommandList,\n  CommandEmpty,\n  CommandGroup,\n  CommandItem,\n  CommandShortcut,\n  CommandSeparator,\n  CommandDialog,\n} from "@/components/ui/command"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Inline" code={`<Command className="rounded-lg border shadow-md">\n  <CommandInput placeholder="Type a command or search..." />\n  <CommandList>\n    <CommandEmpty>No results found.</CommandEmpty>\n    <CommandGroup heading="Suggestions">\n      <CommandItem><CalendarIcon className="mr-2 size-4" /> Calendar</CommandItem>\n      <CommandItem><Smile className="mr-2 size-4" /> Search Emoji</CommandItem>\n      <CommandItem><Calculator className="mr-2 size-4" /> Calculator</CommandItem>\n    </CommandGroup>\n    <CommandSeparator />\n    <CommandGroup heading="Settings">\n      <CommandItem><User className="mr-2 size-4" /> Profile<CommandShortcut>⌘P</CommandShortcut></CommandItem>\n      <CommandItem><Settings className="mr-2 size-4" /> Settings<CommandShortcut>⌘S</CommandShortcut></CommandItem>\n    </CommandGroup>\n  </CommandList>\n</Command>`}>
@@ -8116,7 +8240,7 @@ function CommandDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Command for searchable lists and keyboard-first interactions." />
@@ -8133,19 +8257,19 @@ function CommandDocs() {
 
 function AccordionDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Layout</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="text-heading-3">Accordion</h1>
-        <p className="text-paragraph-md text-muted-foreground">Vertically collapsible content sections. Single or multiple items can be open.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Vertically collapsible content sections. Single or multiple items can be open.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Accordion,\n  AccordionItem,\n  AccordionTrigger,\n  AccordionContent,\n} from "@/components/ui/accordion"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Single (default)" code={`<Accordion type="single" collapsible className="w-full">\n  <AccordionItem value="item-1">\n    <AccordionTrigger>Is it accessible?</AccordionTrigger>\n    <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-2">\n    <AccordionTrigger>Is it styled?</AccordionTrigger>\n    <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-3">\n    <AccordionTrigger>Is it animated?</AccordionTrigger>\n    <AccordionContent>Yes. It's animated by default with smooth transitions.</AccordionContent>\n  </AccordionItem>\n</Accordion>`}>
@@ -8179,7 +8303,7 @@ function AccordionDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Accordion for FAQ sections and collapsible settings." />
@@ -8198,19 +8322,19 @@ function CollapsibleDocs() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Layout</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="text-heading-3">Collapsible</h1>
-        <p className="text-paragraph-md text-muted-foreground">Toggle visibility of a content section. Simpler than Accordion for single-item toggling.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Toggle visibility of a content section. Simpler than Accordion for single-item toggling.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Collapsible,\n  CollapsibleTrigger,\n  CollapsibleContent,\n} from "@/components/ui/collapsible"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[350px] space-y-2">\n  <div className="flex items-center justify-between space-x-4 px-4">\n    <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>\n    <CollapsibleTrigger asChild>\n      <Button variant="ghost" size="sm">\n        <ChevronsUpDown className="size-4" />\n        <span className="sr-only">Toggle</span>\n      </Button>\n    </CollapsibleTrigger>\n  </div>\n  <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/primitives</div>\n  <CollapsibleContent className="space-y-2">\n    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/colors</div>\n    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@stitches/react</div>\n  </CollapsibleContent>\n</Collapsible>`}>
@@ -8233,7 +8357,7 @@ function CollapsibleDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Collapsible for toggling a single section of content." />
@@ -8254,19 +8378,19 @@ function ScrollAreaDocs() {
   )
 
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Layout</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="text-heading-3">Scroll Area</h1>
-        <p className="text-paragraph-md text-muted-foreground">Custom scrollbar overlay for constrained regions. Cross-browser consistent.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Custom scrollbar overlay for constrained regions. Cross-browser consistent.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Vertical" code={`<ScrollArea className="h-72 w-48 rounded-md border">\n  <div className="p-4">\n    <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>\n    {tags.map((tag) => (\n      <div key={tag} className="text-sm">{tag}</div>\n    ))}\n  </div>\n</ScrollArea>`}>
@@ -8284,7 +8408,7 @@ function ScrollAreaDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use ScrollArea for constrained containers with lots of content." />
@@ -8303,19 +8427,19 @@ function CalendarDocs() {
   const [date, setDate] = useState<Date | undefined>(new Date())
 
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Calendar</h1>
-        <p className="text-paragraph-md text-muted-foreground">Date picker calendar component built on react-day-picker v9.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Date picker calendar component built on react-day-picker v9.</p>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { Calendar } from "@/components/ui/calendar"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Single Date" code={`<Calendar\n  mode="single"\n  selected={date}\n  onSelect={setDate}\n  className="rounded-md border"\n/>`}>
@@ -8328,7 +8452,7 @@ function CalendarDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Calendar for date range selection and scheduling UIs." />
@@ -8345,21 +8469,21 @@ function CalendarDocs() {
 
 function DatePickerDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Date Picker</h1>
-        <p className="text-paragraph-md text-muted-foreground">Date selection using a Calendar in a Popover. Compact input pattern.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Date selection using a Calendar in a Popover. Compact input pattern.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { DatePicker } from "@/components/ui/date-picker"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<DatePicker />`}>
@@ -8367,7 +8491,7 @@ function DatePickerDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use DatePicker for form fields where a single date is needed." />
@@ -8392,21 +8516,21 @@ function ComboboxDocs() {
   ]
 
   return (
-    <div className="space-y-12 max-w-4xl">
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="text-heading-3">Combobox</h1>
-        <p className="text-paragraph-md text-muted-foreground">Searchable select dropdown. Composition of Command + Popover.</p>
-      </section>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">Searchable select dropdown. Composition of Command + Popover.</p>
+      </header>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { Combobox } from "@/components/ui/combobox"`}>
           <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`const frameworks = [\n  { value: "next", label: "Next.js" },\n  { value: "sveltekit", label: "SvelteKit" },\n  { value: "nuxt", label: "Nuxt.js" },\n  { value: "remix", label: "Remix" },\n  { value: "astro", label: "Astro" },\n]\n\n<Combobox\n  options={frameworks}\n  placeholder="Select framework..."\n  searchPlaceholder="Search framework..."\n/>`}>
@@ -8418,7 +8542,7 @@ function ComboboxDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
@@ -8442,7 +8566,7 @@ function ComboboxDocs() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Combobox when you have more than 7 options to search through." />
@@ -8459,20 +8583,20 @@ function ComboboxDocs() {
 
 function RadioGroupDocs() {
   return (
-    <div className="space-y-12 max-w-4xl">
+    <div className="space-y-12">
       {/* ---- Header ---- */}
-      <section className="space-y-4">
-        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-          Forms
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+          Components / Forms
         </p>
         <h1 className="text-heading-3">Radio Group</h1>
-        <p className="text-paragraph-md text-muted-foreground">
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           A set of checkable buttons — known as radio buttons — where only one can be checked at a time.
         </p>
-      </section>
+      </header>
 
       {/* ---- Import ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example
           title="Import"
@@ -8485,7 +8609,7 @@ function RadioGroupDocs() {
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <Example title="Default" code={`<RadioGroup defaultValue="option-1">\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-1" id="r1" />\n    <Label htmlFor="r1">Option One</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-2" id="r2" />\n    <Label htmlFor="r2">Option Two</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-3" id="r3" />\n    <Label htmlFor="r3">Option Three</Label>\n  </div>\n</RadioGroup>`}>
@@ -8537,7 +8661,7 @@ function RadioGroupDocs() {
       </section>
 
       {/* ---- API Reference ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">API Reference</h2>
 
         <h3 className="font-heading font-semibold text-lg">RadioGroup</h3>
@@ -8610,7 +8734,7 @@ function RadioGroupDocs() {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Radio Group for mutually exclusive choices (e.g. size, plan, payment method)." />
@@ -8621,7 +8745,7 @@ function RadioGroupDocs() {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -8671,20 +8795,21 @@ function RadioGroupDocs() {
 
 function InputOTPDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Input OTP</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
+        <h1 className="text-heading-3">Input OTP</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Multi-cell one-time-password input. Built on <code className="text-xs bg-muted px-1 py-0.5 rounded">input-otp</code>.
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -8732,20 +8857,21 @@ function InputOTPDocs() {
 
 function SpinnerDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Spinner</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
+        <h1 className="text-heading-3">Spinner</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Animated loading indicator. Three sizes: sm (16px), default (24px), lg (32px).
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { Spinner } from "@/components/ui/spinner"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -8788,20 +8914,21 @@ function SpinnerDocs() {
 
 function HoverCardDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Hover Card</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
+        <h1 className="text-heading-3">Hover Card</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Rich preview card that appears on hover. Built on Radix HoverCard.
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  HoverCard,\n  HoverCardTrigger,\n  HoverCardContent,\n} from "@/components/ui/hover-card"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -8834,20 +8961,21 @@ function HoverCardDocs() {
 
 function AspectRatioDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Aspect Ratio</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
+        <h1 className="text-heading-3">Aspect Ratio</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Constrains child content to a specified aspect ratio. Built on Radix Aspect Ratio.
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { AspectRatio } from "@/components/ui/aspect-ratio"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -8902,20 +9030,21 @@ function AspectRatioDocs() {
 
 function ContextMenuDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Context Menu</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
+        <h1 className="text-heading-3">Context Menu</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Right-click context menu. Built on Radix Context Menu.
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  ContextMenu,\n  ContextMenuTrigger,\n  ContextMenuContent,\n  ContextMenuItem,\n  ContextMenuSeparator,\n  ContextMenuShortcut,\n  ContextMenuSub,\n  ContextMenuSubTrigger,\n  ContextMenuSubContent,\n} from "@/components/ui/context-menu"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -8956,21 +9085,22 @@ function ContextMenuDocs() {
 
 function SidebarDocs() {
   return (
-    <div className="space-y-10 max-w-3xl">
-      <div>
-        <h1 className="text-heading-3 mb-1">Sidebar</h1>
-        <p className="text-muted-foreground text-sm">
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
+        <h1 className="text-heading-3">Sidebar</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
           Application sidebar navigation. Supports collapsible, icon-only, and mobile-responsive modes.
           The most complex layout component in the design system.
         </p>
-      </div>
+      </header>
 
-      <section className="space-y-3">
+      <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  SidebarProvider,\n  Sidebar,\n  SidebarContent,\n  SidebarGroup,\n  SidebarGroupLabel,\n  SidebarGroupContent,\n  SidebarMenu,\n  SidebarMenuItem,\n  SidebarMenuButton,\n  SidebarHeader,\n  SidebarFooter,\n  SidebarTrigger,\n  SidebarInset,\n} from "@/components/ui/sidebar"`} />
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Examples</h2>
 
         <Example
@@ -9020,7 +9150,7 @@ function SidebarDocs() {
         </Example>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pt-xl border-t border-border">
         <h2 className="text-heading-5">Features</h2>
         <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
           <li>Collapsible modes: offcanvas, icon-only, none</li>
@@ -9117,28 +9247,35 @@ function HeroDocs({ onNavigate }: { onNavigate: (id: ComponentId) => void }) {
 
   return (
     <div className="space-y-3xl py-2xl">
-      {/* Hero headline */}
-      <div className="space-y-xl max-w-3xl">
-        <div className="inline-flex items-center gap-xs px-sm py-2xs rounded-full bg-primary/10 text-primary text-xs font-mono font-semibold">
-          <span className="size-1.5 rounded-full bg-primary inline-block" />
-          v1.0.0 — Tailwind CSS v4 + Radix UI
+      {/* Hero headline with illustration */}
+      <div className="flex items-start justify-between gap-3xl">
+        <div className="space-y-xl max-w-3xl flex-1">
+          <div className="inline-flex items-center gap-xs px-sm py-2xs rounded-full bg-primary/10 text-primary text-xs font-mono font-semibold">
+            <span className="size-1.5 rounded-full bg-primary inline-block" />
+            v1.0.0 — Tailwind CSS v4 + Radix UI
+          </div>
+          <h1 className="text-heading-1 text-foreground">
+            SprouX<br />Design System
+          </h1>
+          <p className="text-paragraph-lg text-muted-foreground max-w-2xl">
+            A comprehensive component library built with React 19, Tailwind CSS v4,
+            and Radix UI primitives. Designed from Figma, with a warm-toned palette
+            and two-typeface system for clarity and hierarchy.
+          </p>
+          <div className="flex items-center gap-sm flex-wrap">
+            <Button onClick={() => onNavigate("button")} size="lg">
+              Browse Components <ArrowRight className="size-md" />
+            </Button>
+            <Button onClick={() => onNavigate("colors")} variant="outline" size="lg">
+              View Foundations
+            </Button>
+          </div>
         </div>
-        <h1 className="text-heading-1 text-foreground">
-          SprouX<br />Design System
-        </h1>
-        <p className="text-paragraph-lg text-muted-foreground max-w-2xl">
-          A comprehensive component library built with React 19, Tailwind CSS v4,
-          and Radix UI primitives. Designed from Figma, with a warm-toned palette
-          and two-typeface system for clarity and hierarchy.
-        </p>
-        <div className="flex items-center gap-sm flex-wrap">
-          <Button onClick={() => onNavigate("button")} size="lg">
-            Browse Components <ArrowRight className="size-md" />
-          </Button>
-          <Button onClick={() => onNavigate("colors")} variant="outline" size="lg">
-            View Foundations
-          </Button>
-        </div>
+        <img
+          src={illustLaunched}
+          alt="Design System launched"
+          className="hidden lg:block w-56 flex-shrink-0 opacity-90"
+        />
       </div>
 
       {/* Stats row */}
