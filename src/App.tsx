@@ -10160,16 +10160,18 @@ function ComponentsGrid({ onNavigate }: { onNavigate: (id: ComponentId) => void 
 
 function App() {
   const [active, setActive] = useState<ComponentId | null>(null)
-  const [dark, setDark] = useState<boolean>(() =>
-    typeof window !== "undefined" &&
-    (document.documentElement.classList.contains("dark") ||
-     window.matchMedia("(prefers-color-scheme: dark)").matches)
-  )
+  const [dark, setDark] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false
+    const stored = localStorage.getItem("sproux-dark-mode")
+    if (stored !== null) return stored === "true"
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+  })
   const [searchOpen, setSearchOpen] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark)
+    localStorage.setItem("sproux-dark-mode", String(dark))
   }, [dark])
 
   useEffect(() => {
