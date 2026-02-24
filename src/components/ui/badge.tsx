@@ -1,0 +1,49 @@
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+/**
+ * SprouX Badge
+ *
+ * Figma: [SprouX - DS] Foundation & Component
+ *
+ * Status tags, notification counts, labels.
+ * Variants: default | secondary | outline | destructive
+ */
+const badgeVariants = cva(
+  "inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium tracking-xs transition-colors focus:outline-none focus:ring-[3px] focus:ring-ring",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-transparent bg-primary text-primary-foreground",
+        secondary:
+          "border-transparent bg-secondary text-secondary-foreground",
+        destructive:
+          "border-transparent bg-destructive text-destructive-foreground",
+        outline:
+          "border-border text-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+function Badge({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
+  return (
+    <span
+      data-slot="badge"
+      className={cn(badgeVariants({ variant }), className)}
+      {...props}
+    />
+  )
+}
+
+export { Badge, badgeVariants }

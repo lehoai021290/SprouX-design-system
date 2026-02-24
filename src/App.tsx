@@ -15,6 +15,10 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -6062,6 +6066,141 @@ function LabelDocs() {
 }
 
 /* ================================================================
+   Slider Docs
+   ================================================================ */
+
+function SliderDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+        <h1 className="text-heading-3">Slider</h1>
+        <p className="text-paragraph-md text-muted-foreground">
+          A range input that allows users to select a value or range by dragging a thumb along a track. Supports single and dual thumb.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import { Slider } from "@/components/ui/slider"`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Slider defaultValue={[50]} max={100} step={1} />`}>
+          <Slider defaultValue={[50]} max={100} step={1} className="w-60" />
+        </Example>
+
+        <Example title="With min/max/step" code={`<Slider defaultValue={[25]} min={0} max={100} step={5} />`}>
+          <Slider defaultValue={[25]} min={0} max={100} step={5} className="w-60" />
+        </Example>
+
+        <Example title="Range (dual thumb)" code={`<Slider defaultValue={[25, 75]} max={100} step={1} />`}>
+          <Slider defaultValue={[25, 75]} max={100} step={1} className="w-60" />
+        </Example>
+
+        <Example title="Disabled" code={`<Slider defaultValue={[50]} disabled />`}>
+          <Slider defaultValue={[50]} max={100} disabled className="w-60" />
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">defaultValue</td>
+                <td className="p-3 font-mono text-xs">number[]</td>
+                <td className="p-3 font-mono text-xs">[0]</td>
+                <td className="p-3">Initial value(s). Use 2 values for range mode.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">value</td>
+                <td className="p-3 font-mono text-xs">number[]</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Controlled value(s).</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">onValueChange</td>
+                <td className="p-3 font-mono text-xs">(value: number[]) =&gt; void</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Callback when value changes.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">min</td>
+                <td className="p-3 font-mono text-xs">number</td>
+                <td className="p-3 font-mono text-xs">0</td>
+                <td className="p-3">Minimum value.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">max</td>
+                <td className="p-3 font-mono text-xs">number</td>
+                <td className="p-3 font-mono text-xs">100</td>
+                <td className="p-3">Maximum value.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">step</td>
+                <td className="p-3 font-mono text-xs">number</td>
+                <td className="p-3 font-mono text-xs">1</td>
+                <td className="p-3">Step increment.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">disabled</td>
+                <td className="p-3 font-mono text-xs">boolean</td>
+                <td className="p-3 font-mono text-xs">false</td>
+                <td className="p-3">Disables the slider.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Slider for numeric ranges like volume, price, or brightness." />
+          <DontItem text="Don't use Slider when precise numeric input is needed — use Input type='number' instead." />
+          <DoItem text="Show the current value label alongside the slider for clarity." />
+          <DontItem text="Don't use too many steps — keep the slider experience smooth." />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-lg border border-border divide-y divide-border">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Input</p>
+              <p className="text-muted-foreground mt-0.5">Use for precise numeric values where typing is preferred.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Progress</p>
+              <p className="text-muted-foreground mt-0.5">Read-only progress indicator — use when the value is not user-controlled.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Planned</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Toggle Docs
    ================================================================ */
 
@@ -6266,6 +6405,145 @@ function ToggleGroupDocs() {
           <DontItem text="Don't mix Toggle and ToggleGroup in the same toolbar — pick one pattern." />
           <DoItem text="Use type='multiple' for independent formatting options like bold + italic + underline." />
           <DontItem text="Don't use ToggleGroup for navigation — use Tabs instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Badge Docs
+   ================================================================ */
+
+function BadgeDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+        <h1 className="text-heading-3">Badge</h1>
+        <p className="text-paragraph-md text-muted-foreground">Status tags, labels, and notification counts.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <Example title="Variants" code={`<Badge>Default</Badge>\n<Badge variant="secondary">Secondary</Badge>\n<Badge variant="outline">Outline</Badge>\n<Badge variant="destructive">Destructive</Badge>`}>
+          <div className="flex gap-2 flex-wrap">
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="outline">Outline</Badge>
+            <Badge variant="destructive">Destructive</Badge>
+          </div>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Type</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="p-3 font-mono text-xs">variant</td><td className="p-3 font-mono text-xs">"default" | "secondary" | "outline" | "destructive"</td><td className="p-3 font-mono text-xs">"default"</td><td className="p-3">Visual style.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Badge for status indicators, counts, or category labels." />
+          <DontItem text="Don't use Badge for interactive actions — use Button instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Separator Docs
+   ================================================================ */
+
+function SeparatorDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+        <h1 className="text-heading-3">Separator</h1>
+        <p className="text-paragraph-md text-muted-foreground">Visually separates content with a horizontal or vertical line.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <Example title="Horizontal" code={`<Separator />`}>
+          <div className="space-y-4 w-60">
+            <p className="text-sm">Content above</p>
+            <Separator />
+            <p className="text-sm">Content below</p>
+          </div>
+        </Example>
+        <Example title="Vertical" code={`<Separator orientation="vertical" />`}>
+          <div className="flex items-center gap-4 h-8">
+            <span className="text-sm">Left</span>
+            <Separator orientation="vertical" />
+            <span className="text-sm">Right</span>
+          </div>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Type</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="p-3 font-mono text-xs">orientation</td><td className="p-3 font-mono text-xs">"horizontal" | "vertical"</td><td className="p-3 font-mono text-xs">"horizontal"</td><td className="p-3">Direction of the divider.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">decorative</td><td className="p-3 font-mono text-xs">boolean</td><td className="p-3 font-mono text-xs">true</td><td className="p-3">If true, hides from screen readers.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Skeleton Docs
+   ================================================================ */
+
+function SkeletonDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+        <h1 className="text-heading-3">Skeleton</h1>
+        <p className="text-paragraph-md text-muted-foreground">Loading placeholder with a pulse animation. Use to indicate content is being loaded.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <Example title="Card skeleton" code={`<div className="flex items-center gap-4">\n  <Skeleton className="size-12 rounded-full" />\n  <div className="space-y-2">\n    <Skeleton className="h-4 w-[200px]" />\n    <Skeleton className="h-4 w-[160px]" />\n  </div>\n</div>`}>
+          <div className="flex items-center gap-4">
+            <Skeleton className="size-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-[200px]" />
+              <Skeleton className="h-4 w-[160px]" />
+            </div>
+          </div>
+        </Example>
+        <Example title="Text block" code={`<div className="space-y-2">\n  <Skeleton className="h-4 w-full" />\n  <Skeleton className="h-4 w-4/5" />\n  <Skeleton className="h-4 w-3/5" />\n</div>`}>
+          <div className="space-y-2 w-60">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+            <Skeleton className="h-4 w-3/5" />
+          </div>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Match the skeleton shape and size to the actual content it replaces." />
+          <DontItem text="Don't use Skeleton for instant content — it should only appear during loading." />
         </div>
       </section>
     </div>
@@ -6503,6 +6781,10 @@ const components = [
   { id: "radio-group", label: "Radio Group", category: "Forms" },
   { id: "toggle", label: "Toggle", category: "Forms" },
   { id: "toggle-group", label: "Toggle Group", category: "Forms" },
+  { id: "slider", label: "Slider", category: "Forms" },
+  { id: "badge", label: "Badge", category: "Data Display" },
+  { id: "separator", label: "Separator", category: "Data Display" },
+  { id: "skeleton", label: "Skeleton", category: "Data Display" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -6566,6 +6848,10 @@ function App() {
           {active === "radio-group" && <RadioGroupDocs />}
           {active === "toggle" && <ToggleDocs />}
           {active === "toggle-group" && <ToggleGroupDocs />}
+          {active === "slider" && <SliderDocs />}
+          {active === "badge" && <BadgeDocs />}
+          {active === "separator" && <SeparatorDocs />}
+          {active === "skeleton" && <SkeletonDocs />}
         </div>
       </main>
     </div>
