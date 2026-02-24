@@ -32,6 +32,57 @@ import {
   TableCell,
   TableCaption,
 } from "@/components/ui/table"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog"
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet"
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import { Switch } from "@/components/ui/switch"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -6861,6 +6912,427 @@ function TableDocs() {
 }
 
 /* ================================================================
+   Dialog Docs
+   ================================================================ */
+
+function DialogDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Dialog</h1>
+        <p className="text-paragraph-md text-muted-foreground">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import {\n  Dialog, DialogTrigger, DialogContent,\n  DialogHeader, DialogFooter,\n  DialogTitle, DialogDescription,\n} from "@/components/ui/dialog"`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Dialog>\n  <DialogTrigger asChild>\n    <Button variant="outline">Edit Profile</Button>\n  </DialogTrigger>\n  <DialogContent className="sm:max-w-[425px]">\n    <DialogHeader>\n      <DialogTitle>Edit profile</DialogTitle>\n      <DialogDescription>Make changes to your profile here.</DialogDescription>\n    </DialogHeader>\n    <div className="grid gap-4 py-4">\n      <div className="grid grid-cols-4 items-center gap-4">\n        <Label htmlFor="name" className="text-right">Name</Label>\n        <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />\n      </div>\n    </div>\n    <DialogFooter>\n      <Button type="submit">Save changes</Button>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>`}>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">Edit Profile</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit profile</DialogTitle>
+                <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">Name</Label>
+                  <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="username" className="text-right">Username</Label>
+                  <Input id="username" defaultValue="@peduarte" className="col-span-3" />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Dialog for forms and complex interactions that need user focus." />
+          <DontItem text="Don't use Dialog for simple confirmations — use Alert Dialog instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Alert Dialog Docs
+   ================================================================ */
+
+function AlertDialogDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Alert Dialog</h1>
+        <p className="text-paragraph-md text-muted-foreground">Modal for confirmations and destructive actions. Cannot be dismissed by clicking outside.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Destructive Confirmation" code={`<AlertDialog>\n  <AlertDialogTrigger asChild>\n    <Button variant="destructive">Delete Account</Button>\n  </AlertDialogTrigger>\n  <AlertDialogContent>\n    <AlertDialogHeader>\n      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>\n      <AlertDialogDescription>\n        This action cannot be undone.\n      </AlertDialogDescription>\n    </AlertDialogHeader>\n    <AlertDialogFooter>\n      <AlertDialogCancel>Cancel</AlertDialogCancel>\n      <AlertDialogAction>Continue</AlertDialogAction>\n    </AlertDialogFooter>\n  </AlertDialogContent>\n</AlertDialog>`}>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Delete Account</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Alert Dialog for destructive or irreversible actions." />
+          <DontItem text="Don't use for simple info display — use Dialog or Toast instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Sheet Docs
+   ================================================================ */
+
+function SheetDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Sheet</h1>
+        <p className="text-paragraph-md text-muted-foreground">Slide-out panel from any edge of the screen. Great for navigation, filters, or detail views.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Right (Default)" code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Open Sheet</Button>\n  </SheetTrigger>\n  <SheetContent>\n    <SheetHeader>\n      <SheetTitle>Edit profile</SheetTitle>\n      <SheetDescription>Make changes to your profile.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
+          <div className="flex gap-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Right</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Edit profile</SheetTitle>
+                  <SheetDescription>Make changes to your profile here. Click save when you're done.</SheetDescription>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="sheet-name" className="text-right">Name</Label>
+                    <Input id="sheet-name" defaultValue="Pedro Duarte" className="col-span-3" />
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Left</Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetHeader>
+                  <SheetTitle>Navigation</SheetTitle>
+                  <SheetDescription>Browse sections of the app.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Top</Button>
+              </SheetTrigger>
+              <SheetContent side="top">
+                <SheetHeader>
+                  <SheetTitle>Notifications</SheetTitle>
+                  <SheetDescription>Recent notifications panel.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Bottom</Button>
+              </SheetTrigger>
+              <SheetContent side="bottom">
+                <SheetHeader>
+                  <SheetTitle>Quick Actions</SheetTitle>
+                  <SheetDescription>Common actions.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Sheet for supplementary content that doesn't need a full page." />
+          <DontItem text="Don't put complex multi-step flows in a Sheet — use a page instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Drawer Docs
+   ================================================================ */
+
+function DrawerDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Drawer</h1>
+        <p className="text-paragraph-md text-muted-foreground">Mobile-first bottom drawer with swipe-to-close. Built on vaul.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Drawer>\n  <DrawerTrigger asChild>\n    <Button variant="outline">Open Drawer</Button>\n  </DrawerTrigger>\n  <DrawerContent>\n    <DrawerHeader className="text-left">\n      <DrawerTitle>Move Goal</DrawerTitle>\n      <DrawerDescription>Set your daily activity goal.</DrawerDescription>\n    </DrawerHeader>\n    <div className="p-4">\n      <p>Drawer body content goes here.</p>\n    </div>\n    <DrawerFooter>\n      <Button>Submit</Button>\n      <DrawerClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DrawerClose>\n    </DrawerFooter>\n  </DrawerContent>\n</Drawer>`}>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button variant="outline">Open Drawer</Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <div className="mx-auto w-full max-w-sm">
+                <DrawerHeader>
+                  <DrawerTitle>Move Goal</DrawerTitle>
+                  <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+                </DrawerHeader>
+                <div className="p-4 pb-0">
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="flex-1 text-center">
+                      <div className="text-7xl font-bold tracking-tighter">350</div>
+                      <div className="text-[0.70rem] uppercase text-muted-foreground">Calories/day</div>
+                    </div>
+                  </div>
+                </div>
+                <DrawerFooter>
+                  <Button>Submit</Button>
+                  <DrawerClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DrawerClose>
+                </DrawerFooter>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Drawer on mobile for actions and confirmations." />
+          <DontItem text="Don't use Drawer on desktop where Dialog or Sheet is more appropriate." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Popover Docs
+   ================================================================ */
+
+function PopoverDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Popover</h1>
+        <p className="text-paragraph-md text-muted-foreground">Floating content panel anchored to a trigger. For rich interactive content.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Popover>\n  <PopoverTrigger asChild>\n    <Button variant="outline">Open Popover</Button>\n  </PopoverTrigger>\n  <PopoverContent className="w-80">\n    <div className="grid gap-4">\n      <div className="space-y-2">\n        <h4 className="font-medium leading-none">Dimensions</h4>\n        <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>\n      </div>\n      <div className="grid gap-2">\n        <div className="grid grid-cols-3 items-center gap-4">\n          <Label htmlFor="width">Width</Label>\n          <Input id="width" defaultValue="100%" className="col-span-2 h-8" />\n        </div>\n      </div>\n    </div>\n  </PopoverContent>\n</Popover>`}>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Open Popover</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-medium leading-none">Dimensions</h4>
+                  <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="pop-width">Width</Label>
+                    <Input id="pop-width" defaultValue="100%" className="col-span-2 h-8" />
+                  </div>
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="pop-height">Height</Label>
+                    <Input id="pop-height" defaultValue="25px" className="col-span-2 h-8" />
+                  </div>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Popover for interactive floating content like forms or settings." />
+          <DontItem text="Don't use Popover for simple text hints — use Tooltip instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Tooltip Docs
+   ================================================================ */
+
+function TooltipDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Tooltip</h1>
+        <p className="text-paragraph-md text-muted-foreground">Informational popup shown on hover or focus. For brief, non-interactive hints.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<TooltipProvider>\n  <Tooltip>\n    <TooltipTrigger asChild>\n      <Button variant="outline">Hover me</Button>\n    </TooltipTrigger>\n    <TooltipContent>\n      <p>Add to library</p>\n    </TooltipContent>\n  </Tooltip>\n</TooltipProvider>`}>
+          <TooltipProvider>
+            <div className="flex gap-4">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline">Hover me</Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to library</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="icon"><Plus className="size-4" /></Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Add new item</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="icon"><Settings className="size-4" /></Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Settings</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Tooltip for icon-only buttons to provide accessible labels." />
+          <DontItem text="Don't put interactive content inside Tooltip — use Popover instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Toast (Sonner) Docs
+   ================================================================ */
+
+function ToastDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Overlay & Feedback</p>
+        <h1 className="text-heading-3">Toast (Sonner)</h1>
+        <p className="text-paragraph-md text-muted-foreground">Non-intrusive notification toasts. Uses the sonner library.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import { toast } from "sonner"\nimport { Toaster } from "@/components/ui/sonner"\n\n// Place <Toaster /> at app root`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Variants" code={`toast("Default notification")\ntoast.success("Success!")\ntoast.error("Something went wrong")\ntoast.warning("Careful!")\ntoast.info("FYI...")`}>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => toast("Event has been created")}>Default</Button>
+            <Button variant="outline" onClick={() => toast.success("Profile updated successfully")}>Success</Button>
+            <Button variant="outline" onClick={() => toast.error("Something went wrong")}>Error</Button>
+            <Button variant="outline" onClick={() => toast.warning("Please review your changes")}>Warning</Button>
+            <Button variant="outline" onClick={() => toast.info("New version available")}>Info</Button>
+          </div>
+        </Example>
+
+        <Example title="With Description" code={`toast("Event Created", {\n  description: "Friday, February 10, 2024 at 5:57 PM",\n})`}>
+          <Button variant="outline" onClick={() => toast("Event Created", { description: "Friday, February 10, 2024 at 5:57 PM" })}>
+            With Description
+          </Button>
+        </Example>
+
+        <Example title="With Action" code={`toast("File deleted", {\n  action: { label: "Undo", onClick: () => console.log("Undo") },\n})`}>
+          <Button variant="outline" onClick={() => toast("File deleted", { action: { label: "Undo", onClick: () => console.log("Undo") } })}>
+            With Action
+          </Button>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use toast for non-blocking feedback (saved, deleted, sent, etc.)." />
+          <DontItem text="Don't use toast for critical actions — use Alert Dialog for confirmations." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Radio Group Docs
    ================================================================ */
 
@@ -7100,6 +7572,13 @@ const components = [
   { id: "separator", label: "Separator", category: "Data Display" },
   { id: "skeleton", label: "Skeleton", category: "Data Display" },
   { id: "table", label: "Table", category: "Data Display" },
+  { id: "dialog", label: "Dialog", category: "Overlay & Feedback" },
+  { id: "alert-dialog", label: "Alert Dialog", category: "Overlay & Feedback" },
+  { id: "sheet", label: "Sheet", category: "Overlay & Feedback" },
+  { id: "drawer", label: "Drawer", category: "Overlay & Feedback" },
+  { id: "popover", label: "Popover", category: "Overlay & Feedback" },
+  { id: "tooltip", label: "Tooltip", category: "Overlay & Feedback" },
+  { id: "toast", label: "Toast (Sonner)", category: "Overlay & Feedback" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -7172,8 +7651,16 @@ function App() {
           {active === "separator" && <SeparatorDocs />}
           {active === "skeleton" && <SkeletonDocs />}
           {active === "table" && <TableDocs />}
+          {active === "dialog" && <DialogDocs />}
+          {active === "alert-dialog" && <AlertDialogDocs />}
+          {active === "sheet" && <SheetDocs />}
+          {active === "drawer" && <DrawerDocs />}
+          {active === "popover" && <PopoverDocs />}
+          {active === "tooltip" && <TooltipDocs />}
+          {active === "toast" && <ToastDocs />}
         </div>
       </main>
+      <Toaster />
     </div>
   )
 }
