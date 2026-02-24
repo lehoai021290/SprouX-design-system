@@ -140,6 +140,36 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Calendar } from "@/components/ui/calendar"
 import { DatePicker } from "@/components/ui/date-picker"
 import { Combobox } from "@/components/ui/combobox"
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"
+import { Spinner } from "@/components/ui/spinner"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+} from "@/components/ui/context-menu"
+import {
+  SidebarProvider,
+  Sidebar as SidebarComponent,
+  SidebarContent as SidebarComponentContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarHeader as SidebarComponentHeader,
+  SidebarFooter as SidebarComponentFooter,
+  SidebarTrigger,
+  SidebarInset,
+} from "@/components/ui/sidebar"
 import { Switch } from "@/components/ui/switch"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -8250,6 +8280,377 @@ function RadioGroupDocs() {
 }
 
 /* ================================================================
+   Input OTP
+   ================================================================ */
+
+function InputOTPDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Input OTP</h1>
+        <p className="text-muted-foreground text-sm">
+          Multi-cell one-time-password input. Built on <code className="text-xs bg-muted px-1 py-0.5 rounded">input-otp</code>.
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="Basic 6-digit OTP"
+          description="Standard 6-cell OTP input with separator."
+          code={`<InputOTP maxLength={6}>\n  <InputOTPGroup>\n    <InputOTPSlot index={0} />\n    <InputOTPSlot index={1} />\n    <InputOTPSlot index={2} />\n  </InputOTPGroup>\n  <InputOTPSeparator />\n  <InputOTPGroup>\n    <InputOTPSlot index={3} />\n    <InputOTPSlot index={4} />\n    <InputOTPSlot index={5} />\n  </InputOTPGroup>\n</InputOTP>`}
+        >
+          <InputOTP maxLength={6}>
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+            </InputOTPGroup>
+            <InputOTPSeparator />
+            <InputOTPGroup>
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTP>
+        </Example>
+
+        <Example
+          title="4-digit OTP"
+          description="Compact 4-cell variant."
+          code={`<InputOTP maxLength={4}>\n  <InputOTPGroup>\n    <InputOTPSlot index={0} />\n    <InputOTPSlot index={1} />\n    <InputOTPSlot index={2} />\n    <InputOTPSlot index={3} />\n  </InputOTPGroup>\n</InputOTP>`}
+        >
+          <InputOTP maxLength={4}>
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+              <InputOTPSlot index={3} />
+            </InputOTPGroup>
+          </InputOTP>
+        </Example>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Spinner
+   ================================================================ */
+
+function SpinnerDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Spinner</h1>
+        <p className="text-muted-foreground text-sm">
+          Animated loading indicator. Three sizes: sm (16px), default (24px), lg (32px).
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import { Spinner } from "@/components/ui/spinner"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="Sizes"
+          description="All three spinner sizes."
+          code={`<Spinner size="sm" />\n<Spinner />\n<Spinner size="lg" />`}
+        >
+          <Spinner size="sm" />
+          <Spinner />
+          <Spinner size="lg" />
+        </Example>
+
+        <Example
+          title="Custom color"
+          description="Override the color with className."
+          code={`<Spinner className="text-primary" />`}
+        >
+          <Spinner className="text-primary" />
+          <Spinner className="text-destructive" />
+        </Example>
+
+        <Example
+          title="With text"
+          description="Combine with a loading label."
+          code={`<div className="flex items-center gap-2">\n  <Spinner size="sm" />\n  <span className="text-sm text-muted-foreground">Loading...</span>\n</div>`}
+        >
+          <div className="flex items-center gap-2">
+            <Spinner size="sm" />
+            <span className="text-sm text-muted-foreground">Loading...</span>
+          </div>
+        </Example>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Hover Card
+   ================================================================ */
+
+function HoverCardDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Hover Card</h1>
+        <p className="text-muted-foreground text-sm">
+          Rich preview card that appears on hover. Built on Radix HoverCard.
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import {\n  HoverCard,\n  HoverCardTrigger,\n  HoverCardContent,\n} from "@/components/ui/hover-card"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="Basic hover card"
+          description="Hover over the link to see a preview card."
+          code={`<HoverCard>\n  <HoverCardTrigger asChild>\n    <a href="#" className="text-sm font-medium underline">@sproux</a>\n  </HoverCardTrigger>\n  <HoverCardContent>\n    <div className="space-y-2">\n      <h4 className="text-sm font-semibold">SprouX Design System</h4>\n      <p className="text-xs text-muted-foreground">\n        A comprehensive design system built with React, Tailwind CSS v4, and Radix UI.\n      </p>\n    </div>\n  </HoverCardContent>\n</HoverCard>`}
+        >
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <a href="#" className="text-sm font-medium underline">@sproux</a>
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold">SprouX Design System</h4>
+                <p className="text-xs text-muted-foreground">
+                  A comprehensive design system built with React, Tailwind CSS v4, and Radix UI.
+                </p>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+        </Example>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Aspect Ratio
+   ================================================================ */
+
+function AspectRatioDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Aspect Ratio</h1>
+        <p className="text-muted-foreground text-sm">
+          Constrains child content to a specified aspect ratio. Built on Radix Aspect Ratio.
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import { AspectRatio } from "@/components/ui/aspect-ratio"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="16:9 ratio"
+          description="Standard widescreen aspect ratio."
+          code={`<div className="w-[300px]">\n  <AspectRatio ratio={16 / 9}>\n    <div className="flex size-full items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">\n      16:9\n    </div>\n  </AspectRatio>\n</div>`}
+        >
+          <div className="w-[300px]">
+            <AspectRatio ratio={16 / 9}>
+              <div className="flex size-full items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">
+                16:9
+              </div>
+            </AspectRatio>
+          </div>
+        </Example>
+
+        <Example
+          title="1:1 square"
+          description="Perfect square ratio for avatars or icons."
+          code={`<div className="w-[150px]">\n  <AspectRatio ratio={1}>\n    <div className="flex size-full items-center justify-center rounded-md bg-primary text-primary-foreground text-sm">\n      1:1\n    </div>\n  </AspectRatio>\n</div>`}
+        >
+          <div className="w-[150px]">
+            <AspectRatio ratio={1}>
+              <div className="flex size-full items-center justify-center rounded-md bg-primary text-primary-foreground text-sm">
+                1:1
+              </div>
+            </AspectRatio>
+          </div>
+        </Example>
+
+        <Example
+          title="4:3 ratio"
+          description="Classic photo/video ratio."
+          code={`<div className="w-[250px]">\n  <AspectRatio ratio={4 / 3}>\n    <div className="flex size-full items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">\n      4:3\n    </div>\n  </AspectRatio>\n</div>`}
+        >
+          <div className="w-[250px]">
+            <AspectRatio ratio={4 / 3}>
+              <div className="flex size-full items-center justify-center rounded-md bg-muted text-sm text-muted-foreground">
+                4:3
+              </div>
+            </AspectRatio>
+          </div>
+        </Example>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Context Menu
+   ================================================================ */
+
+function ContextMenuDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Context Menu</h1>
+        <p className="text-muted-foreground text-sm">
+          Right-click context menu. Built on Radix Context Menu.
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import {\n  ContextMenu,\n  ContextMenuTrigger,\n  ContextMenuContent,\n  ContextMenuItem,\n  ContextMenuSeparator,\n  ContextMenuShortcut,\n  ContextMenuSub,\n  ContextMenuSubTrigger,\n  ContextMenuSubContent,\n} from "@/components/ui/context-menu"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="Basic context menu"
+          description="Right-click the area below to open the menu."
+          code={`<ContextMenu>\n  <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">\n    Right click here\n  </ContextMenuTrigger>\n  <ContextMenuContent className="w-64">\n    <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuSeparator />\n    <ContextMenuSub>\n      <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>\n      <ContextMenuSubContent className="w-48">\n        <ContextMenuItem>Save Page As… <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut></ContextMenuItem>\n        <ContextMenuItem>Create Shortcut…</ContextMenuItem>\n        <ContextMenuItem>Name Window…</ContextMenuItem>\n      </ContextMenuSubContent>\n    </ContextMenuSub>\n    <ContextMenuSeparator />\n    <ContextMenuItem>Inspect</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`}
+        >
+          <ContextMenu>
+            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+              Right click here
+            </ContextMenuTrigger>
+            <ContextMenuContent className="w-64">
+              <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>
+              <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>
+              <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuSub>
+                <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+                <ContextMenuSubContent className="w-48">
+                  <ContextMenuItem>Save Page As… <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut></ContextMenuItem>
+                  <ContextMenuItem>Create Shortcut…</ContextMenuItem>
+                  <ContextMenuItem>Name Window…</ContextMenuItem>
+                </ContextMenuSubContent>
+              </ContextMenuSub>
+              <ContextMenuSeparator />
+              <ContextMenuItem>Inspect</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+        </Example>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Sidebar
+   ================================================================ */
+
+function SidebarDocs() {
+  return (
+    <div className="space-y-10 max-w-3xl">
+      <div>
+        <h1 className="text-heading-3 mb-1">Sidebar</h1>
+        <p className="text-muted-foreground text-sm">
+          Application sidebar navigation. Supports collapsible, icon-only, and mobile-responsive modes.
+          The most complex layout component in the design system.
+        </p>
+      </div>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import {\n  SidebarProvider,\n  Sidebar,\n  SidebarContent,\n  SidebarGroup,\n  SidebarGroupLabel,\n  SidebarGroupContent,\n  SidebarMenu,\n  SidebarMenuItem,\n  SidebarMenuButton,\n  SidebarHeader,\n  SidebarFooter,\n  SidebarTrigger,\n  SidebarInset,\n} from "@/components/ui/sidebar"`} />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Examples</h2>
+
+        <Example
+          title="Basic sidebar"
+          description="A simple sidebar with grouped menu items. Toggle with the button or ⌘B."
+          code={`<SidebarProvider>\n  <Sidebar>\n    <SidebarHeader>\n      <h3 className="text-sm font-semibold px-2">My App</h3>\n    </SidebarHeader>\n    <SidebarContent>\n      <SidebarGroup>\n        <SidebarGroupLabel>Navigation</SidebarGroupLabel>\n        <SidebarGroupContent>\n          <SidebarMenu>\n            <SidebarMenuItem>\n              <SidebarMenuButton>Dashboard</SidebarMenuButton>\n            </SidebarMenuItem>\n            <SidebarMenuItem>\n              <SidebarMenuButton>Settings</SidebarMenuButton>\n            </SidebarMenuItem>\n          </SidebarMenu>\n        </SidebarGroupContent>\n      </SidebarGroup>\n    </SidebarContent>\n  </Sidebar>\n  <SidebarInset>\n    <header className="flex items-center gap-2 p-4 border-b">\n      <SidebarTrigger />\n      <span className="text-sm">Page Content</span>\n    </header>\n  </SidebarInset>\n</SidebarProvider>`}
+        >
+          <div className="w-full border rounded-lg overflow-hidden h-[300px]">
+            <SidebarProvider>
+              <SidebarComponent>
+                <SidebarComponentHeader>
+                  <h3 className="text-sm font-semibold px-2">My App</h3>
+                </SidebarComponentHeader>
+                <SidebarComponentContent>
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton>Dashboard</SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton>Settings</SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                          <SidebarMenuButton>Profile</SidebarMenuButton>
+                        </SidebarMenuItem>
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                </SidebarComponentContent>
+                <SidebarComponentFooter>
+                  <p className="text-xs text-muted-foreground px-2">v1.0.0</p>
+                </SidebarComponentFooter>
+              </SidebarComponent>
+              <SidebarInset>
+                <header className="flex items-center gap-2 p-4 border-b border-border">
+                  <SidebarTrigger />
+                  <span className="text-sm">Page Content</span>
+                </header>
+                <div className="p-4 text-sm text-muted-foreground">
+                  Main content area. Toggle sidebar with the button or ⌘B.
+                </div>
+              </SidebarInset>
+            </SidebarProvider>
+          </div>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-heading-5">Features</h2>
+        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+          <li>Collapsible modes: offcanvas, icon-only, none</li>
+          <li>Variants: sidebar, floating, inset</li>
+          <li>Left or right side positioning</li>
+          <li>Mobile responsive (uses Sheet on small screens)</li>
+          <li>Keyboard shortcut (⌘B) to toggle</li>
+          <li>Tooltip support when collapsed to icon mode</li>
+          <li>Composable sub-components for menus, groups, headers, footers</li>
+        </ul>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Navigation & Layout
    ================================================================ */
 
@@ -8295,6 +8696,12 @@ const components = [
   { id: "calendar", label: "Calendar", category: "Forms" },
   { id: "date-picker", label: "Date Picker", category: "Forms" },
   { id: "combobox", label: "Combobox", category: "Forms" },
+  { id: "input-otp", label: "Input OTP", category: "Forms" },
+  { id: "spinner", label: "Spinner", category: "Data Display" },
+  { id: "hover-card", label: "Hover Card", category: "Overlay & Feedback" },
+  { id: "aspect-ratio", label: "Aspect Ratio", category: "Layout" },
+  { id: "context-menu", label: "Context Menu", category: "Navigation" },
+  { id: "sidebar", label: "Sidebar", category: "Layout" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -8385,6 +8792,12 @@ function App() {
           {active === "calendar" && <CalendarDocs />}
           {active === "date-picker" && <DatePickerDocs />}
           {active === "combobox" && <ComboboxDocs />}
+          {active === "input-otp" && <InputOTPDocs />}
+          {active === "spinner" && <SpinnerDocs />}
+          {active === "hover-card" && <HoverCardDocs />}
+          {active === "aspect-ratio" && <AspectRatioDocs />}
+          {active === "context-menu" && <ContextMenuDocs />}
+          {active === "sidebar" && <SidebarDocs />}
         </div>
       </main>
       <Toaster />
