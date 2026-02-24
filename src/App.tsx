@@ -388,6 +388,79 @@ function FigmaMapping({
   )
 }
 
+type PlaygroundControl =
+  | { type: "select"; label: string; prop: string; options: { label: string; value: string }[]; defaultValue: string }
+  | { type: "switch"; label: string; prop: string; defaultValue: boolean }
+  | { type: "text"; label: string; prop: string; defaultValue: string; placeholder?: string }
+
+function Playground({
+  controls,
+  render,
+}: {
+  controls: PlaygroundControl[]
+  render: (props: Record<string, any>) => React.ReactNode
+}) {
+  const [values, setValues] = useState<Record<string, any>>(() => {
+    const initial: Record<string, any> = {}
+    for (const c of controls) initial[c.prop] = c.defaultValue
+    return initial
+  })
+  const setValue = (prop: string, value: any) =>
+    setValues((prev) => ({ ...prev, [prop]: value }))
+
+  return (
+    <div className="rounded-2xl border border-border/50 overflow-hidden">
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+        {render(values)}
+      </div>
+      {controls.length > 0 && (
+        <div className="border-t border-border/50 bg-muted/30 p-lg">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+            {controls.map((control) => (
+              <div key={control.prop} className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">
+                  {control.label}
+                </Label>
+                {control.type === "select" && (
+                  <Select
+                    value={String(values[control.prop])}
+                    onValueChange={(v) => setValue(control.prop, v)}
+                  >
+                    <SelectTrigger size="sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {control.options.map((o) => (
+                        <SelectItem key={o.value} value={o.value}>
+                          {o.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+                {control.type === "switch" && (
+                  <Switch
+                    checked={!!values[control.prop]}
+                    onCheckedChange={(v) => setValue(control.prop, v)}
+                  />
+                )}
+                {control.type === "text" && (
+                  <Input
+                    size="sm"
+                    value={String(values[control.prop])}
+                    onChange={(e) => setValue(control.prop, e.target.value)}
+                    placeholder={control.placeholder}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ColorSwatch({ hex, label }: { hex: string; label: string }) {
   const [copied, setCopied] = useState(false)
   const handleCopy = () => {
@@ -1626,14 +1699,33 @@ function ButtonDocs() {
         </p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center gap-lg flex-wrap">
-        <Button>Default</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="destructive">Destructive</Button>
-        <Button variant="outline">Outline</Button>
-        <Button variant="ghost">Ghost</Button>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Secondary", value: "secondary" },
+            { label: "Outline", value: "outline" },
+            { label: "Ghost", value: "ghost" },
+            { label: "Ghost Muted", value: "ghost-muted" },
+            { label: "Destructive", value: "destructive" },
+            { label: "Destructive Secondary", value: "destructive-secondary" },
+          ]},
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large (40px)", value: "lg" },
+            { label: "Default (36px)", value: "default" },
+            { label: "Small (32px)", value: "sm" },
+            { label: "Mini (24px)", value: "xs" },
+          ]},
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+          { type: "text", label: "Label", prop: "label", defaultValue: "Button", placeholder: "Button text" },
+        ]}
+        render={(p) => (
+          <Button variant={p.variant} size={p.size} disabled={p.disabled}>
+            {p.label}
+          </Button>
+        )}
+      />
 
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
@@ -2535,11 +2627,29 @@ function InputDocs() {
         </p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center gap-lg flex-wrap">
-        <Input placeholder="Default input" className="max-w-xs" />
-        <Input placeholder="Disabled" disabled className="max-w-xs" />
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large (40px)", value: "lg" },
+            { label: "Default (36px)", value: "default" },
+            { label: "Small (32px)", value: "sm" },
+            { label: "Mini (24px)", value: "xs" },
+          ]},
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+          { type: "switch", label: "Error", prop: "error", defaultValue: false },
+          { type: "text", label: "Placeholder", prop: "placeholder", defaultValue: "Type something…", placeholder: "Placeholder text" },
+        ]}
+        render={(p) => (
+          <Input
+            size={p.size}
+            disabled={p.disabled}
+            aria-invalid={p.error || undefined}
+            placeholder={p.placeholder}
+            className="max-w-xs"
+          />
+        )}
+      />
 
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
@@ -3466,6 +3576,23 @@ function TextareaDocs() {
         </p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+          { type: "switch", label: "Error", prop: "error", defaultValue: false },
+          { type: "text", label: "Placeholder", prop: "placeholder", defaultValue: "Type your message here.", placeholder: "Placeholder text" },
+        ]}
+        render={(p) => (
+          <Textarea
+            disabled={p.disabled}
+            aria-invalid={p.error || undefined}
+            placeholder={p.placeholder}
+            className="max-w-sm"
+          />
+        )}
+      />
+
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
@@ -4299,19 +4426,31 @@ function SelectDocs() {
         </p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center">
-        <Select>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Select option" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="option1">Option 1</SelectItem>
-            <SelectItem value="option2">Option 2</SelectItem>
-            <SelectItem value="option3">Option 3</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large (40px)", value: "lg" },
+            { label: "Default (36px)", value: "default" },
+            { label: "Small (32px)", value: "sm" },
+            { label: "Mini (24px)", value: "xs" },
+          ]},
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+          { type: "switch", label: "Error", prop: "error", defaultValue: false },
+        ]}
+        render={(p) => (
+          <Select disabled={p.disabled}>
+            <SelectTrigger size={p.size} aria-invalid={p.error || undefined} className="w-[200px]">
+              <SelectValue placeholder="Select option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="option1">Option 1</SelectItem>
+              <SelectItem value="option2">Option 2</SelectItem>
+              <SelectItem value="option3">Option 3</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
+      />
 
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
@@ -5116,21 +5255,32 @@ function CheckboxDocs() {
         </p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center gap-xl">
-        <div className="flex items-center gap-xs">
-          <Checkbox id="preview-checked" defaultChecked />
-          <Label htmlFor="preview-checked">Checked</Label>
-        </div>
-        <div className="flex items-center gap-xs">
-          <Checkbox id="preview-unchecked" />
-          <Label htmlFor="preview-unchecked">Unchecked</Label>
-        </div>
-        <div className="flex items-center gap-xs">
-          <Checkbox id="preview-disabled" disabled />
-          <Label htmlFor="preview-disabled">Disabled</Label>
-        </div>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Checked", prop: "checked", defaultValue: "false", options: [
+            { label: "Unchecked", value: "false" },
+            { label: "Checked", value: "true" },
+            { label: "Indeterminate", value: "indeterminate" },
+          ]},
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+          { type: "switch", label: "Error", prop: "error", defaultValue: false },
+        ]}
+        render={(p) => {
+          const checkedVal = p.checked === "true" ? true : p.checked === "indeterminate" ? "indeterminate" as const : false
+          return (
+            <div className="flex items-center gap-xs">
+              <Checkbox
+                id="playground-checkbox"
+                checked={checkedVal}
+                disabled={p.disabled}
+                aria-invalid={p.error || undefined}
+              />
+              <Label htmlFor="playground-checkbox">Label</Label>
+            </div>
+          )
+        }}
+      />
 
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
@@ -5711,17 +5861,19 @@ function SwitchDocs() {
         </p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center gap-xl">
-        <div className="flex items-center gap-xs">
-          <Switch id="preview-on" defaultChecked />
-          <Label htmlFor="preview-on">On</Label>
-        </div>
-        <div className="flex items-center gap-xs">
-          <Switch id="preview-off" />
-          <Label htmlFor="preview-off">Off</Label>
-        </div>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "switch", label: "Checked", prop: "checked", defaultValue: false },
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+        ]}
+        render={(p) => (
+          <div className="flex items-center gap-xs">
+            <Switch id="playground-switch" checked={p.checked} disabled={p.disabled} />
+            <Label htmlFor="playground-switch">{p.checked ? "On" : "Off"}</Label>
+          </div>
+        )}
+      />
 
       {/* ---- Installation ---- */}
       <section className="space-y-4 pt-3xl">
@@ -6266,6 +6418,9 @@ function LabelDocs() {
         </p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => <Label>Email address</Label>} />
+
       {/* ---- Import ---- */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
@@ -6428,6 +6583,14 @@ function SliderDocs() {
         </p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+        ]}
+        render={(p) => <Slider defaultValue={[50]} max={100} step={1} disabled={p.disabled} className="w-60" />}
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { Slider } from "@/components/ui/slider"`}>
@@ -6574,6 +6737,34 @@ function ToggleDocs() {
         </p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Outline", value: "outline" },
+          ]},
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large (40px)", value: "lg" },
+            { label: "Default (36px)", value: "default" },
+            { label: "Small (32px)", value: "sm" },
+          ]},
+          { type: "switch", label: "Pressed", prop: "pressed", defaultValue: false },
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+        ]}
+        render={(p) => (
+          <Toggle
+            variant={p.variant}
+            size={p.size}
+            pressed={p.pressed}
+            disabled={p.disabled}
+            aria-label="Toggle bold"
+          >
+            <Bold className="size-4" />
+          </Toggle>
+        )}
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { Toggle } from "@/components/ui/toggle"`}>
@@ -6690,6 +6881,39 @@ function ToggleGroupDocs() {
           A group of toggle buttons supporting single or multiple selection. Ideal for toolbar actions, text formatting, view modes.
         </p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Type", prop: "type", defaultValue: "single", options: [
+            { label: "Single", value: "single" },
+            { label: "Multiple", value: "multiple" },
+          ]},
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Outline", value: "outline" },
+          ]},
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large", value: "lg" },
+            { label: "Default", value: "default" },
+            { label: "Small", value: "sm" },
+          ]},
+        ]}
+        render={(p) => {
+          const items = (
+            <>
+              <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>
+              <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>
+              <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>
+            </>
+          )
+          return p.type === "multiple" ? (
+            <ToggleGroup type="multiple" variant={p.variant} size={p.size}>{items}</ToggleGroup>
+          ) : (
+            <ToggleGroup type="single" variant={p.variant} size={p.size} defaultValue="center">{items}</ToggleGroup>
+          )
+        }}
+      />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
@@ -6811,6 +7035,17 @@ function CardDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Card className="w-[300px]">
+          <CardHeader>
+            <CardTitle>Card Title</CardTitle>
+            <CardDescription>Card description text.</CardDescription>
+          </CardHeader>
+          <CardContent><p className="text-sm">Card content goes here.</p></CardContent>
+        </Card>
+      )} />
+
       {/* Component preview */}
       <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center">
         <Card className="w-[280px]">
@@ -6891,6 +7126,24 @@ function AvatarDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">User avatar with image and fallback support (initials or icon).</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "switch", label: "Show Image", prop: "showImage", defaultValue: true },
+          { type: "select", label: "Size", prop: "size", defaultValue: "size-10", options: [
+            { label: "Small (32px)", value: "size-8" },
+            { label: "Default (40px)", value: "size-10" },
+            { label: "Large (56px)", value: "size-14" },
+          ]},
+        ]}
+        render={(p) => (
+          <Avatar className={p.size}>
+            {p.showImage && <AvatarImage src="https://github.com/shadcn.png" alt="User" />}
+            <AvatarFallback>TN</AvatarFallback>
+          </Avatar>
+        )}
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="With image" code={`<Avatar>\n  <AvatarImage src="https://github.com/shadcn.png" alt="User" />\n  <AvatarFallback>CN</AvatarFallback>\n</Avatar>`}>
@@ -6949,6 +7202,19 @@ function ProgressDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Progress bar indicating completion status. Supports determinate values (0-100).</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Value", prop: "value", defaultValue: "50", options: [
+            { label: "0%", value: "0" },
+            { label: "25%", value: "25" },
+            { label: "50%", value: "50" },
+            { label: "75%", value: "75" },
+          ]},
+        ]}
+        render={(p) => <Progress value={Number(p.value)} className="w-60" />}
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="25%" code={`<Progress value={25} />`}>
@@ -7002,19 +7268,23 @@ function AlertDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Inline alert messages for info, warning, error, and success feedback.</p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex flex-col items-center gap-md max-w-lg mx-auto">
-        <Alert>
-          <Terminal className="size-4" />
-          <AlertTitle>Default alert</AlertTitle>
-          <AlertDescription>Informational message.</AlertDescription>
-        </Alert>
-        <Alert variant="destructive">
-          <AlertCircle className="size-4" />
-          <AlertTitle>Destructive alert</AlertTitle>
-          <AlertDescription>Error message.</AlertDescription>
-        </Alert>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Destructive", value: "destructive" },
+          ]},
+          { type: "switch", label: "Show Icon", prop: "showIcon", defaultValue: true },
+        ]}
+        render={(p) => (
+          <Alert variant={p.variant} className="max-w-lg">
+            {p.showIcon && (p.variant === "destructive" ? <AlertCircle className="size-4" /> : <Terminal className="size-4" />)}
+            <AlertTitle>{p.variant === "destructive" ? "Error" : "Heads up!"}</AlertTitle>
+            <AlertDescription>{p.variant === "destructive" ? "Your session has expired." : "You can add components using the CLI."}</AlertDescription>
+          </Alert>
+        )}
+      />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
@@ -7089,13 +7359,19 @@ function BadgeDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Status tags, labels, and notification counts.</p>
       </header>
 
-      {/* Component preview */}
-      <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center gap-sm">
-        <Badge>Default</Badge>
-        <Badge variant="secondary">Secondary</Badge>
-        <Badge variant="outline">Outline</Badge>
-        <Badge variant="destructive">Destructive</Badge>
-      </div>
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Secondary", value: "secondary" },
+            { label: "Outline", value: "outline" },
+            { label: "Destructive", value: "destructive" },
+          ]},
+          { type: "text", label: "Label", prop: "label", defaultValue: "Badge", placeholder: "Badge text" },
+        ]}
+        render={(p) => <Badge variant={p.variant}>{p.label}</Badge>}
+      />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
@@ -7155,6 +7431,31 @@ function SeparatorDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Orientation", prop: "orientation", defaultValue: "horizontal", options: [
+            { label: "Horizontal", value: "horizontal" },
+            { label: "Vertical", value: "vertical" },
+          ]},
+        ]}
+        render={(p) => (
+          p.orientation === "horizontal" ? (
+            <div className="space-y-4 w-60">
+              <p className="text-sm">Content above</p>
+              <Separator />
+              <p className="text-sm">Content below</p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4 h-8">
+              <span className="text-sm">Left</span>
+              <Separator orientation="vertical" />
+              <span className="text-sm">Right</span>
+            </div>
+          )
+        )}
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Horizontal" code={`<Separator />`}>
@@ -7210,6 +7511,36 @@ function SkeletonDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Loading placeholder with a pulse animation. Use to indicate content is being loaded.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Shape", prop: "shape", defaultValue: "card", options: [
+            { label: "Card", value: "card" },
+            { label: "Text Block", value: "text" },
+            { label: "Circle", value: "circle" },
+          ]},
+        ]}
+        render={(p) =>
+          p.shape === "card" ? (
+            <div className="flex items-center gap-4">
+              <Skeleton className="size-12 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[200px]" />
+                <Skeleton className="h-4 w-[160px]" />
+              </div>
+            </div>
+          ) : p.shape === "text" ? (
+            <div className="space-y-2 w-60">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-4 w-3/5" />
+            </div>
+          ) : (
+            <Skeleton className="size-16 rounded-full" />
+          )
+        }
+      />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <Example title="Card skeleton" code={`<div className="flex items-center gap-4">\n  <Skeleton className="size-12 rounded-full" />\n  <div className="space-y-2">\n    <Skeleton className="h-4 w-[200px]" />\n    <Skeleton className="h-4 w-[160px]" />\n  </div>\n</div>`}>
@@ -7261,6 +7592,22 @@ function TableDocs() {
         <h1 className="text-heading-2">Table</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Table className="w-[400px]">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow><TableCell>Item 1</TableCell><TableCell>Active</TableCell></TableRow>
+            <TableRow><TableCell>Item 2</TableCell><TableCell>Pending</TableCell></TableRow>
+          </TableBody>
+        </Table>
+      )} />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
@@ -7355,6 +7702,19 @@ function DialogDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Dialog>
+          <DialogTrigger asChild><Button variant="outline">Open Dialog</Button></DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Dialog Title</DialogTitle>
+              <DialogDescription>This is a dialog description.</DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      )} />
+
       {/* Component preview */}
       <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center">
         <Dialog>
@@ -7448,6 +7808,23 @@ function AlertDialogDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Modal for confirmations and destructive actions. Cannot be dismissed by clicking outside.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <AlertDialog>
+          <AlertDialogTrigger asChild><Button variant="outline">Open Alert Dialog</Button></AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  AlertDialog,\n  AlertDialogTrigger,\n  AlertDialogContent,\n  AlertDialogHeader,\n  AlertDialogFooter,\n  AlertDialogTitle,\n  AlertDialogDescription,\n  AlertDialogAction,\n  AlertDialogCancel,\n} from "@/components/ui/alert-dialog"`} />
@@ -7510,6 +7887,31 @@ function SheetDocs() {
         <h1 className="text-heading-2">Sheet</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Slide-out panel from any edge of the screen. Great for navigation, filters, or detail views.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Side", prop: "side", defaultValue: "right", options: [
+            { label: "Right", value: "right" },
+            { label: "Left", value: "left" },
+            { label: "Top", value: "top" },
+            { label: "Bottom", value: "bottom" },
+          ]},
+        ]}
+        render={(p) => (
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">Open {p.side} sheet</Button>
+            </SheetTrigger>
+            <SheetContent side={p.side as "right" | "left" | "top" | "bottom"}>
+              <SheetHeader>
+                <SheetTitle>Sheet ({p.side})</SheetTitle>
+                <SheetDescription>This sheet slides in from the {p.side}.</SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        )}
+      />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
@@ -7606,6 +8008,22 @@ function DrawerDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Mobile-first bottom drawer with swipe-to-close. Built on vaul.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Drawer>
+          <DrawerTrigger asChild><Button variant="outline">Open Drawer</Button></DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Drawer Title</DrawerTitle>
+              <DrawerDescription>This is a drawer panel.</DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <DrawerClose asChild><Button variant="outline">Close</Button></DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      )} />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
@@ -7673,6 +8091,14 @@ function PopoverDocs() {
         <h1 className="text-heading-2">Popover</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Floating content panel anchored to a trigger. For rich interactive content.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Popover>
+          <PopoverTrigger asChild><Button variant="outline">Open Popover</Button></PopoverTrigger>
+          <PopoverContent className="w-60"><p className="text-sm">Popover content goes here.</p></PopoverContent>
+        </Popover>
+      )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
@@ -7743,6 +8169,16 @@ function TooltipDocs() {
         <h1 className="text-heading-2">Tooltip</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Informational popup shown on hover or focus. For brief, non-interactive hints.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild><Button variant="outline">Hover me</Button></TooltipTrigger>
+            <TooltipContent><p>Tooltip content</p></TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
@@ -7818,6 +8254,13 @@ function ToastDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Non-intrusive notification toasts. Uses the sonner library.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Button variant="outline" onClick={() => { import('sonner').then(m => m.toast("This is a toast notification")) }}>
+          Show Toast
+        </Button>
+      )} />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { toast } from "sonner"\nimport { Toaster } from "@/components/ui/sonner"\n\n// Place <Toaster /> at app root`}>
@@ -7887,6 +8330,19 @@ function TabsDocs() {
         <h1 className="text-heading-2">Tabs</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Tabbed interface for switching between different views or content panels.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Tabs defaultValue="tab1" className="w-[300px]">
+          <TabsList>
+            <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+            <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+            <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>
+          </TabsList>
+          <TabsContent value="tab1"><p className="text-sm p-sm">Content for tab 1.</p></TabsContent>
+          <TabsContent value="tab2"><p className="text-sm p-sm">Content for tab 2.</p></TabsContent>
+        </Tabs>
+      )} />
 
       {/* Component preview */}
       <div className="rounded-2xl bg-primary/5 p-4xl flex items-center justify-center">
@@ -7991,6 +8447,19 @@ function BreadcrumbDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem><BreadcrumbLink href="#">Home</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem><BreadcrumbLink href="#">Components</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Breadcrumb,\n  BreadcrumbList,\n  BreadcrumbItem,\n  BreadcrumbLink,\n  BreadcrumbPage,\n  BreadcrumbSeparator,\n} from "@/components/ui/breadcrumb"`} />
@@ -8051,6 +8520,19 @@ function PaginationDocs() {
         <h1 className="text-heading-2">Pagination</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Page navigation with previous/next and numbered links.</p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground controls={[]} render={() => (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+            <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationEllipsis /></PaginationItem>
+            <PaginationItem><PaginationNext href="#" /></PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
@@ -8118,6 +8600,20 @@ function DropdownMenuDocs() {
         <h1 className="text-heading-2">Dropdown Menu</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Contextual menu triggered by a button. Supports labels, separators, checkbox items, sub-menus, and keyboard shortcuts.</p>
       </header>
+
+      <Playground controls={[]} render={() => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild><Button variant="outline">Open Menu</Button></DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem><User className="mr-2 size-4" /> Profile</DropdownMenuItem>
+            <DropdownMenuItem><Settings className="mr-2 size-4" /> Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem><LogOut className="mr-2 size-4" /> Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
@@ -8225,6 +8721,20 @@ function CommandDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <Command className="rounded-lg border shadow-md w-[300px]">
+          <CommandInput placeholder="Type a command..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Suggestions">
+              <CommandItem><CalendarIcon className="mr-2 size-4" /> Calendar</CommandItem>
+              <CommandItem><Smile className="mr-2 size-4" /> Search Emoji</CommandItem>
+              <CommandItem><Calculator className="mr-2 size-4" /> Calculator</CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Command,\n  CommandInput,\n  CommandList,\n  CommandEmpty,\n  CommandGroup,\n  CommandItem,\n  CommandShortcut,\n  CommandSeparator,\n  CommandDialog,\n} from "@/components/ui/command"`} />
@@ -8317,6 +8827,33 @@ function AccordionDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Vertically collapsible content sections. Single or multiple items can be open.</p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Type", prop: "type", defaultValue: "single", options: [
+            { label: "Single", value: "single" },
+            { label: "Multiple", value: "multiple" },
+          ]},
+          { type: "switch", label: "Collapsible", prop: "collapsible", defaultValue: true },
+        ]}
+        render={(p) => (
+          <Accordion type={p.type as "single" | "multiple"} collapsible={p.collapsible} className="w-full max-w-md">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>Yes. Smooth open/close transitions.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+      />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Accordion,\n  AccordionItem,\n  AccordionTrigger,\n  AccordionContent,\n} from "@/components/ui/accordion"`} />
@@ -8393,6 +8930,18 @@ function CollapsibleDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Toggle visibility of a content section. Simpler than Accordion for single-item toggling.</p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <Collapsible className="w-[300px]">
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" size="sm">Toggle items</Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-2 mt-2">
+            <div className="rounded-md border px-4 py-2 text-sm">Item 1</div>
+            <div className="rounded-md border px-4 py-2 text-sm">Item 2</div>
+          </CollapsibleContent>
+        </Collapsible>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  Collapsible,\n  CollapsibleTrigger,\n  CollapsibleContent,\n} from "@/components/ui/collapsible"`} />
@@ -8457,6 +9006,16 @@ function ScrollAreaDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Custom scrollbar overlay for constrained regions. Cross-browser consistent.</p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <ScrollArea className="h-[200px] w-[300px] rounded-md border p-4">
+          <div className="space-y-4">
+            {Array.from({ length: 20 }, (_, i) => (
+              <p key={i} className="text-sm">Item {i + 1} — Scroll to see more content below.</p>
+            ))}
+          </div>
+        </ScrollArea>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"`} />
@@ -8514,6 +9073,8 @@ function CalendarDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Date picker calendar component built on react-day-picker v9.</p>
       </header>
 
+      <Playground controls={[]} render={() => <Calendar className="rounded-md border" />} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { Calendar } from "@/components/ui/calendar"`} />
@@ -8569,6 +9130,8 @@ function DatePickerDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Date selection using a Calendar in a Popover. Compact input pattern.</p>
       </header>
 
+      <Playground controls={[]} render={() => <DatePicker />} />
+
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
         <Example title="Import" code={`import { DatePicker } from "@/components/ui/date-picker"`}>
@@ -8623,6 +9186,20 @@ function ComboboxDocs() {
         <h1 className="text-heading-2">Combobox</h1>
         <p className="text-paragraph text-muted-foreground max-w-3xl">Searchable select dropdown. Composition of Command + Popover.</p>
       </header>
+
+      <Playground controls={[]} render={() => (
+        <Combobox
+          options={[
+            { value: "next", label: "Next.js" },
+            { value: "sveltekit", label: "SvelteKit" },
+            { value: "nuxt", label: "Nuxt.js" },
+            { value: "remix", label: "Remix" },
+            { value: "astro", label: "Astro" },
+          ]}
+          placeholder="Select framework..."
+          searchPlaceholder="Search framework..."
+        />
+      )} />
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Import</h2>
@@ -8706,6 +9283,29 @@ function RadioGroupDocs() {
           A set of checkable buttons — known as radio buttons — where only one can be checked at a time.
         </p>
       </header>
+
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
+        ]}
+        render={(p) => (
+          <RadioGroup defaultValue="option-1" disabled={p.disabled}>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-1" id="pg-r1" />
+              <Label htmlFor="pg-r1">Option One</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-2" id="pg-r2" />
+              <Label htmlFor="pg-r2">Option Two</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-3" id="pg-r3" />
+              <Label htmlFor="pg-r3">Option Three</Label>
+            </div>
+          </RadioGroup>
+        )}
+      />
 
       {/* ---- Import ---- */}
       <section className="space-y-4 pt-3xl">
@@ -8928,6 +9528,22 @@ function InputOTPDocs() {
         </p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <InputOTP maxLength={6}>
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
@@ -9001,6 +9617,23 @@ function SpinnerDocs() {
         </p>
       </header>
 
+      {/* Interactive playground */}
+      <Playground
+        controls={[
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Small (16px)", value: "sm" },
+            { label: "Default (24px)", value: "default" },
+            { label: "Large (32px)", value: "lg" },
+          ]},
+          { type: "select", label: "Color", prop: "color", defaultValue: "", options: [
+            { label: "Default", value: "" },
+            { label: "Primary", value: "text-primary" },
+            { label: "Destructive", value: "text-destructive" },
+          ]},
+        ]}
+        render={(p) => <Spinner size={p.size} className={p.color || undefined} />}
+      />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import { Spinner } from "@/components/ui/spinner"`} />
@@ -9067,6 +9700,15 @@ function HoverCardDocs() {
         </p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <HoverCard>
+          <HoverCardTrigger asChild><Button variant="ghost">Hover me</Button></HoverCardTrigger>
+          <HoverCardContent className="w-60">
+            <p className="text-sm">This content appears when you hover over the trigger.</p>
+          </HoverCardContent>
+        </HoverCard>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  HoverCard,\n  HoverCardTrigger,\n  HoverCardContent,\n} from "@/components/ui/hover-card"`} />
@@ -9124,6 +9766,14 @@ function AspectRatioDocs() {
           Constrains child content to a specified aspect ratio. Built on Radix Aspect Ratio.
         </p>
       </header>
+
+      <Playground controls={[]} render={() => (
+        <div className="w-[300px]">
+          <AspectRatio ratio={16 / 9} className="bg-muted rounded-md flex items-center justify-center">
+            <p className="text-sm text-muted-foreground">16:9</p>
+          </AspectRatio>
+        </div>
+      )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
@@ -9202,6 +9852,20 @@ function ContextMenuDocs() {
         </p>
       </header>
 
+      <Playground controls={[]} render={() => (
+        <ContextMenu>
+          <ContextMenuTrigger className="flex h-[120px] w-[250px] items-center justify-center rounded-md border border-dashed text-sm">
+            Right click here
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-48">
+            <ContextMenuItem>Back</ContextMenuItem>
+            <ContextMenuItem>Forward</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>Reload</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      )} />
+
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
         <CodeBlock code={`import {\n  ContextMenu,\n  ContextMenuTrigger,\n  ContextMenuContent,\n  ContextMenuItem,\n  ContextMenuSeparator,\n  ContextMenuShortcut,\n  ContextMenuSub,\n  ContextMenuSubTrigger,\n  ContextMenuSubContent,\n} from "@/components/ui/context-menu"`} />
@@ -9271,6 +9935,26 @@ function SidebarDocs() {
           The most complex layout component in the design system.
         </p>
       </header>
+
+      <Playground
+        controls={[
+          { type: "select", label: "Side", prop: "side", defaultValue: "left", options: [
+            { label: "Left", value: "left" },
+            { label: "Right", value: "right" },
+          ]},
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "sidebar", options: [
+            { label: "Sidebar", value: "sidebar" },
+            { label: "Floating", value: "floating" },
+            { label: "Inset", value: "inset" },
+          ]},
+        ]}
+        render={(p) => (
+          <div className="text-sm text-muted-foreground italic">
+            Sidebar preview requires full page context. See examples below.
+            <br />Current: side={p.side}, variant={p.variant}
+          </div>
+        )}
+      />
 
       <section className="space-y-3 pt-xl border-t border-border">
         <h2 className="text-heading-5">Import</h2>
