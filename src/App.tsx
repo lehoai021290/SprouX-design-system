@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -207,31 +207,8 @@ import {
   Smile,
   ChevronsUpDown,
   Home,
-  FileText,
-  Image,
-  Bell,
-  Heart,
-  Star,
-  Bookmark,
-  Share2,
-  MessageCircle,
-  Phone,
-  MapPin,
-  Globe,
-  Zap,
-  Shield,
-  Package,
-  Layers,
-  Grid3X3 as Grid3x3Icon,
-  Filter,
-  SlidersHorizontal,
-  BarChart3,
-  PieChart,
-  TrendingUp,
-  Clock,
-  Pencil,
-  Upload,
 } from "lucide-react"
+import { icons as lucideIcons } from "lucide-react"
 
 // Illustration SVGs
 import illustNewDevice from "@/assets/illustrations/new-device.svg"
@@ -1280,62 +1257,11 @@ function ButtonTokensTable() {
    Icons (Foundation)
    ================================================================ */
 
-const lucideIconCatalog = [
-  { name: "Home", icon: Home, category: "Navigation" },
-  { name: "Search", icon: Search, category: "Navigation" },
-  { name: "Settings", icon: Settings, category: "Navigation" },
-  { name: "User", icon: User, category: "Navigation" },
-  { name: "Mail", icon: Mail, category: "Communication" },
-  { name: "Phone", icon: Phone, category: "Communication" },
-  { name: "MessageCircle", icon: MessageCircle, category: "Communication" },
-  { name: "Bell", icon: Bell, category: "Communication" },
-  { name: "Plus", icon: Plus, category: "Actions" },
-  { name: "Trash2", icon: Trash2, category: "Actions" },
-  { name: "Pencil", icon: Pencil, category: "Actions" },
-  { name: "Copy", icon: Copy, category: "Actions" },
-  { name: "Download", icon: Download, category: "Actions" },
-  { name: "Upload", icon: Upload, category: "Actions" },
-  { name: "Share2", icon: Share2, category: "Actions" },
-  { name: "ExternalLink", icon: ExternalLink, category: "Actions" },
-  { name: "Check", icon: Check, category: "Status" },
-  { name: "AlertCircle", icon: AlertCircle, category: "Status" },
-  { name: "Info", icon: Info, category: "Status" },
-  { name: "Eye", icon: Eye, category: "Status" },
-  { name: "EyeOff", icon: EyeOff, category: "Status" },
-  { name: "Loader2", icon: Loader2, category: "Status" },
-  { name: "ChevronRight", icon: ChevronRight, category: "Arrows" },
-  { name: "ArrowRight", icon: ArrowRight, category: "Arrows" },
-  { name: "ChevronsUpDown", icon: ChevronsUpDown, category: "Arrows" },
-  { name: "Heart", icon: Heart, category: "Media" },
-  { name: "Star", icon: Star, category: "Media" },
-  { name: "Bookmark", icon: Bookmark, category: "Media" },
-  { name: "Image", icon: Image, category: "Media" },
-  { name: "FileText", icon: FileText, category: "Media" },
-  { name: "Calendar", icon: CalendarIcon, category: "Date & Time" },
-  { name: "Clock", icon: Clock, category: "Date & Time" },
-  { name: "MapPin", icon: MapPin, category: "Location" },
-  { name: "Globe", icon: Globe, category: "Location" },
-  { name: "Lock", icon: Lock, category: "Security" },
-  { name: "Shield", icon: Shield, category: "Security" },
-  { name: "Zap", icon: Zap, category: "Misc" },
-  { name: "Package", icon: Package, category: "Misc" },
-  { name: "Layers", icon: Layers, category: "Misc" },
-  { name: "Terminal", icon: Terminal, category: "Misc" },
-  { name: "CreditCard", icon: CreditCard, category: "Finance" },
-  { name: "BarChart3", icon: BarChart3, category: "Charts" },
-  { name: "PieChart", icon: PieChart, category: "Charts" },
-  { name: "TrendingUp", icon: TrendingUp, category: "Charts" },
-  { name: "Filter", icon: Filter, category: "Data" },
-  { name: "SlidersHorizontal", icon: SlidersHorizontal, category: "Data" },
-  { name: "Grid3x3", icon: Grid3x3Icon, category: "Layout" },
-  { name: "Bold", icon: Bold, category: "Text" },
-  { name: "Italic", icon: Italic, category: "Text" },
-  { name: "Underline", icon: Underline, category: "Text" },
-  { name: "AlignLeft", icon: AlignLeft, category: "Text" },
-  { name: "AlignCenter", icon: AlignCenter, category: "Text" },
-  { name: "AlignRight", icon: AlignRight, category: "Text" },
-  { name: "LogOut", icon: LogOut, category: "Auth" },
-]
+const allLucideIcons = Object.entries(lucideIcons)
+  .filter(([name]) => !["createLucideIcon", "defaultAttributes", "icons"].includes(name))
+  .map(([name, component]) => ({ name, icon: component as React.ComponentType<{ className?: string }> }))
+
+const ICONS_PER_PAGE = 120
 
 const socialIcons = [
   { name: "TikTok", src: iconTiktok },
@@ -1348,12 +1274,26 @@ const socialIcons = [
 
 function IconsDocs() {
   const [iconSearch, setIconSearch] = useState("")
+  const [page, setPage] = useState(0)
 
-  const filteredIcons = lucideIconCatalog.filter(
-    (i) =>
-      i.name.toLowerCase().includes(iconSearch.toLowerCase()) ||
-      i.category.toLowerCase().includes(iconSearch.toLowerCase())
+  const filteredIcons = useMemo(
+    () =>
+      iconSearch.trim()
+        ? allLucideIcons.filter((i) =>
+            i.name.toLowerCase().includes(iconSearch.toLowerCase())
+          )
+        : allLucideIcons,
+    [iconSearch]
   )
+
+  const totalPages = Math.ceil(filteredIcons.length / ICONS_PER_PAGE)
+  const pagedIcons = filteredIcons.slice(
+    page * ICONS_PER_PAGE,
+    (page + 1) * ICONS_PER_PAGE
+  )
+
+  // Reset page when search changes
+  useEffect(() => { setPage(0) }, [iconSearch])
 
   return (
     <div className="space-y-12">
@@ -1363,7 +1303,7 @@ function IconsDocs() {
         </p>
         <h1 className="text-heading-3">Icons</h1>
         <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
-          SprouX uses <strong>Lucide React</strong> as the primary icon library (1,600+ icons),
+          SprouX uses <strong>Lucide React</strong> as the primary icon library ({allLucideIcons.length} icons),
           plus a set of custom social/brand icons exported from Figma.
         </p>
       </header>
@@ -1396,22 +1336,27 @@ function IconsDocs() {
       <section className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Lucide Icon Catalog</h2>
         <p className="text-sm text-muted-foreground">
-          Showing commonly-used icons from the SprouX design system. Full library: <a href="https://lucide.dev/icons" target="_blank" rel="noreferrer" className="underline">lucide.dev/icons</a>
+          All {allLucideIcons.length} icons from the Lucide library. Search or browse by page.
         </p>
-        <Input
-          placeholder="Search icons..."
-          value={iconSearch}
-          onChange={(e) => setIconSearch(e.target.value)}
-          className="max-w-xs"
-        />
-        <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1">
-          {filteredIcons.map((item) => {
+        <div className="flex items-center gap-3">
+          <Input
+            placeholder="Search icons..."
+            value={iconSearch}
+            onChange={(e) => setIconSearch(e.target.value)}
+            className="max-w-xs"
+          />
+          <span className="text-xs text-muted-foreground">
+            {filteredIcons.length} icon{filteredIcons.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+        <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1">
+          {pagedIcons.map((item) => {
             const Icon = item.icon
             return (
               <div
                 key={item.name}
-                className="flex flex-col items-center gap-1.5 rounded-lg p-2 hover:bg-muted transition-colors"
-                title={`${item.name} (${item.category})`}
+                className="flex flex-col items-center gap-1.5 rounded-lg p-2 hover:bg-muted transition-colors cursor-default"
+                title={item.name}
               >
                 <Icon className="size-lg" />
                 <span className="text-[9px] text-muted-foreground truncate w-full text-center">
@@ -1422,10 +1367,33 @@ function IconsDocs() {
           })}
           {filteredIcons.length === 0 && (
             <p className="col-span-full text-sm text-muted-foreground py-8 text-center">
-              No icons match "{iconSearch}"
+              No icons match &ldquo;{iconSearch}&rdquo;
             </p>
           )}
         </div>
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={page === 0}
+            >
+              Previous
+            </Button>
+            <span className="text-xs text-muted-foreground">
+              Page {page + 1} of {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={page === totalPages - 1}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </section>
 
       <section className="space-y-4">
