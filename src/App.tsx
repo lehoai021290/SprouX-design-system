@@ -23,6 +23,15 @@ import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Slider } from "@/components/ui/slider"
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from "@/components/ui/table"
 import { Switch } from "@/components/ui/switch"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -6772,6 +6781,86 @@ function SkeletonDocs() {
 }
 
 /* ================================================================
+   Table Docs
+   ================================================================ */
+
+function TableDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Data Display</p>
+        <h1 className="text-heading-3">Table</h1>
+        <p className="text-paragraph-md text-muted-foreground">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <Example title="Default" code={`<Table>\n  <TableCaption>A list of recent invoices.</TableCaption>\n  <TableHeader>\n    <TableRow>\n      <TableHead className="w-[100px]">Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead>Method</TableHead>\n      <TableHead className="text-right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    <TableRow>\n      <TableCell className="font-medium">INV001</TableCell>\n      <TableCell>Paid</TableCell>\n      <TableCell>Credit Card</TableCell>\n      <TableCell className="text-right">$250.00</TableCell>\n    </TableRow>\n  </TableBody>\n</Table>`}>
+          <Table>
+            <TableCaption>A list of recent invoices.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Invoice</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Method</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium">INV001</TableCell>
+                <TableCell><Badge variant="secondary">Paid</Badge></TableCell>
+                <TableCell>Credit Card</TableCell>
+                <TableCell className="text-right">$250.00</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">INV002</TableCell>
+                <TableCell><Badge variant="outline">Pending</Badge></TableCell>
+                <TableCell>PayPal</TableCell>
+                <TableCell className="text-right">$150.00</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">INV003</TableCell>
+                <TableCell><Badge variant="destructive">Overdue</Badge></TableCell>
+                <TableCell>Bank Transfer</TableCell>
+                <TableCell className="text-right">$350.00</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Sub-components</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Component</th><th className="text-left p-3 font-semibold">HTML</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="p-3 font-mono text-xs">Table</td><td className="p-3 font-mono text-xs">table</td><td className="p-3">Root container with overflow scroll wrapper.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableHeader</td><td className="p-3 font-mono text-xs">thead</td><td className="p-3">Header section.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableBody</td><td className="p-3 font-mono text-xs">tbody</td><td className="p-3">Body section.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableFooter</td><td className="p-3 font-mono text-xs">tfoot</td><td className="p-3">Footer section.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableRow</td><td className="p-3 font-mono text-xs">tr</td><td className="p-3">Row with hover and selected states.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableHead</td><td className="p-3 font-mono text-xs">th</td><td className="p-3">Header cell.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableCell</td><td className="p-3 font-mono text-xs">td</td><td className="p-3">Data cell.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">TableCaption</td><td className="p-3 font-mono text-xs">caption</td><td className="p-3">Table description text.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use TableCaption to describe the table content for accessibility." />
+          <DontItem text="Don't nest tables — flatten data or use expandable rows instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Radio Group Docs
    ================================================================ */
 
@@ -7010,6 +7099,7 @@ const components = [
   { id: "alert", label: "Alert", category: "Data Display" },
   { id: "separator", label: "Separator", category: "Data Display" },
   { id: "skeleton", label: "Skeleton", category: "Data Display" },
+  { id: "table", label: "Table", category: "Data Display" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -7081,6 +7171,7 @@ function App() {
           {active === "alert" && <AlertDocs />}
           {active === "separator" && <SeparatorDocs />}
           {active === "skeleton" && <SkeletonDocs />}
+          {active === "table" && <TableDocs />}
         </div>
       </main>
     </div>
