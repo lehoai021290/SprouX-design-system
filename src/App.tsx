@@ -207,6 +207,17 @@ import {
   Smile,
   ChevronsUpDown,
   Home,
+  Moon,
+  Sun,
+  ChevronDown,
+  Palette,
+  MousePointer2,
+  Layers,
+  LayoutGrid,
+  Compass,
+  Bell,
+  SquareStack,
+  ArrowUp,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -249,18 +260,19 @@ function CodeBlock({ code }: { code: string }) {
   }
   return (
     <div className="relative group">
-      <pre className="bg-slate-950 text-slate-100 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto font-mono">
+      <pre className="bg-slate-950 text-slate-100 rounded-b-xl p-md text-xs leading-relaxed overflow-x-auto font-mono">
         <code>{code}</code>
       </pre>
       <button
         onClick={handleCopy}
-        className="absolute top-2 right-2 p-1.5 rounded-md bg-slate-800 text-slate-400 hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity"
+        className={`absolute top-xs right-xs p-1.5 rounded-md text-xs font-mono flex items-center gap-1 transition-all ${
+          copied
+            ? "bg-green-700 text-white"
+            : "bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white"
+        }`}
       >
-        {copied ? (
-          <Check className="size-3.5" />
-        ) : (
-          <Copy className="size-3.5" />
-        )}
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+        {copied ? "Copied" : "Copy"}
       </button>
     </div>
   )
@@ -279,8 +291,8 @@ function Example({
 }) {
   const [showCode, setShowCode] = useState(false)
   return (
-    <div className="rounded-xl border border-border overflow-hidden">
-      <div className="px-6 pt-5 pb-2 space-y-1">
+    <div className="rounded-xl border border-border overflow-hidden bg-background shadow-sm">
+      <div className="px-xl pt-md pb-2xs border-b border-border bg-muted/40 space-y-2xs">
         <h3 className="font-body font-semibold text-sm">{title}</h3>
         {description && (
           <p className="text-muted-foreground text-xs leading-relaxed">
@@ -288,17 +300,17 @@ function Example({
           </p>
         )}
       </div>
-      <div className="px-6 pb-5 pt-3 flex flex-wrap items-center gap-3 bg-background">
+      <div className="px-xl py-lg flex flex-wrap items-center gap-sm bg-background">
         {children}
       </div>
       <div className="border-t border-border">
         <button
           onClick={() => setShowCode(!showCode)}
-          className="w-full flex items-center justify-between px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors font-mono"
+          className="w-full flex items-center justify-between px-md py-xs text-xs text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors font-mono"
         >
-          <span>{showCode ? "Hide code" : "Show code"}</span>
+          <span>{showCode ? "Hide code" : "View code"}</span>
           <ChevronRight
-            className={`size-3.5 transition-transform ${showCode ? "rotate-90" : ""}`}
+            className={`size-3.5 transition-transform duration-150 ${showCode ? "rotate-90" : ""}`}
           />
         </button>
         {showCode && <CodeBlock code={code} />}
@@ -309,22 +321,24 @@ function Example({
 
 function DoItem({ children, text }: { children?: React.ReactNode; text?: string }) {
   return (
-    <div className="flex-1 rounded-xl border-2 border-green-500 overflow-hidden">
-      <div className="bg-green-50 px-4 py-2 text-xs font-semibold text-green-700">
+    <div className="flex-1 rounded-xl border-2 border-green-600 overflow-hidden">
+      <div className="bg-green-600/10 px-md py-2xs text-xs font-semibold text-green-700 dark:text-green-400 flex items-center gap-2xs">
+        <Check className="size-3" />
         Do
       </div>
-      <div className="p-4 space-y-2 text-xs text-foreground">{text ?? children}</div>
+      <div className="p-md space-y-2 text-xs text-foreground">{text ?? children}</div>
     </div>
   )
 }
 
 function DontItem({ children, text }: { children?: React.ReactNode; text?: string }) {
   return (
-    <div className="flex-1 rounded-xl border-2 border-red-500 overflow-hidden">
-      <div className="bg-red-50 px-4 py-2 text-xs font-semibold text-red-700">
+    <div className="flex-1 rounded-xl border-2 border-destructive overflow-hidden">
+      <div className="bg-destructive/10 px-md py-2xs text-xs font-semibold text-destructive flex items-center gap-2xs">
+        <span className="font-mono">&#x2715;</span>
         Don't
       </div>
-      <div className="p-4 space-y-2 text-xs text-foreground">{text ?? children}</div>
+      <div className="p-md space-y-2 text-xs text-foreground">{text ?? children}</div>
     </div>
   )
 }
@@ -9080,51 +9094,250 @@ const components = [
 
 type ComponentId = (typeof components)[number]["id"]
 
+/* ================================================================
+   Hero / Welcome page
+   ================================================================ */
+
+function HeroDocs({ onNavigate }: { onNavigate: (id: ComponentId) => void }) {
+  const statsData = [
+    { label: "Components", value: "49" },
+    { label: "Design Tokens", value: "50+" },
+    { label: "Dark Mode", value: "Full" },
+    { label: "Accessibility", value: "WCAG AA" },
+  ]
+
+  const quickLinks: { id: ComponentId; label: string; cat: string; desc: string }[] = [
+    { id: "button", label: "Button", cat: "Actions", desc: "Primary interaction element with 5 variants and 4 sizes." },
+    { id: "input", label: "Input", cat: "Forms", desc: "Text field with sizes, states, and icon slots." },
+    { id: "colors", label: "Colors", cat: "Foundation", desc: "20 palettes, semantic tokens, and dark mode." },
+    { id: "typography", label: "Typography", cat: "Foundation", desc: "Fraunces + Geist two-typeface system." },
+    { id: "dialog", label: "Dialog", cat: "Overlay & Feedback", desc: "Accessible modal with overlay and focus trap." },
+    { id: "card", label: "Card", cat: "Data Display", desc: "Composable container with header and footer." },
+  ]
+
+  return (
+    <div className="space-y-3xl py-2xl">
+      {/* Hero headline */}
+      <div className="space-y-xl max-w-3xl">
+        <div className="inline-flex items-center gap-xs px-sm py-2xs rounded-full bg-primary/10 text-primary text-xs font-mono font-semibold">
+          <span className="size-1.5 rounded-full bg-primary inline-block" />
+          v1.0.0 — Tailwind CSS v4 + Radix UI
+        </div>
+        <h1 className="text-heading-1 text-foreground">
+          SprouX<br />Design System
+        </h1>
+        <p className="text-paragraph-lg text-muted-foreground max-w-2xl">
+          A comprehensive component library built with React 19, Tailwind CSS v4,
+          and Radix UI primitives. Designed from Figma, with a warm-toned palette
+          and two-typeface system for clarity and hierarchy.
+        </p>
+        <div className="flex items-center gap-sm flex-wrap">
+          <Button onClick={() => onNavigate("button")} size="lg">
+            Browse Components <ArrowRight className="size-md" />
+          </Button>
+          <Button onClick={() => onNavigate("colors")} variant="outline" size="lg">
+            View Foundations
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-md">
+        {statsData.map(s => (
+          <div key={s.label} className="rounded-xl border border-border bg-background p-xl space-y-2xs">
+            <p className="text-heading-2 text-foreground">{s.value}</p>
+            <p className="text-paragraph-mini text-muted-foreground">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick-access grid */}
+      <div className="space-y-lg">
+        <h2 className="text-heading-4">Quick Access</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+          {quickLinks.map(link => (
+            <button
+              key={link.id}
+              onClick={() => onNavigate(link.id)}
+              className="group text-left rounded-xl border border-border bg-background p-xl hover:border-primary/50 hover:shadow-sm transition-all duration-150 space-y-xs"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-paragraph-sm-bold text-foreground group-hover:text-primary transition-colors">
+                  {link.label}
+                </span>
+                <ArrowRight className="size-md text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+              </div>
+              <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{link.cat}</p>
+              <p className="text-paragraph-mini text-muted-foreground">{link.desc}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Built with strip */}
+      <div className="rounded-xl border border-border bg-background p-xl flex flex-wrap items-center gap-2xl">
+        <span className="text-paragraph-mini text-muted-foreground font-mono uppercase tracking-wider flex-shrink-0">Built with</span>
+        {["React 19", "Tailwind CSS v4", "Radix UI", "Lucide Icons", "Fraunces + Geist"].map(tech => (
+          <span key={tech} className="text-paragraph-mini-bold text-foreground">{tech}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ================================================================
+   App Shell
+   ================================================================ */
+
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  "Foundation": Palette,
+  "Actions": MousePointer2,
+  "Forms": Layers,
+  "Data Display": LayoutGrid,
+  "Overlay & Feedback": Bell,
+  "Navigation": Compass,
+  "Layout": SquareStack,
+}
+
 function App() {
-  const [active, setActive] = useState<ComponentId>("colors")
+  const [active, setActive] = useState<ComponentId | null>(null)
+  const [dark, setDark] = useState<boolean>(() =>
+    typeof window !== "undefined" &&
+    (document.documentElement.classList.contains("dark") ||
+     window.matchMedia("(prefers-color-scheme: dark)").matches)
+  )
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set())
+  const [showScrollTop, setShowScrollTop] = useState(false)
 
   const categories = [...new Set(components.map((c) => c.category))]
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark)
+  }, [dark])
+
+  useEffect(() => {
+    const main = document.getElementById("main-content")
+    if (!main) return
+    const onScroll = () => setShowScrollTop(main.scrollTop > 400)
+    main.addEventListener("scroll", onScroll)
+    return () => main.removeEventListener("scroll", onScroll)
+  }, [])
+
+  useEffect(() => {
+    document.getElementById("main-content")?.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior })
+  }, [active])
+
+  const toggleCategory = (cat: string) => {
+    setCollapsedCategories(prev => {
+      const next = new Set(prev)
+      if (next.has(cat)) next.delete(cat)
+      else next.add(cat)
+      return next
+    })
+  }
 
   return (
     <div className="min-h-screen bg-muted text-foreground">
       {/* ---- Sidebar (fixed) ---- */}
-      <aside className="fixed left-0 top-0 w-56 h-screen border-r border-border bg-background p-4 space-y-6 overflow-y-auto z-10">
-        <div className="space-y-1">
-          <h2 className="font-heading font-bold text-sm tracking-tight">
-            SprouX DS
-          </h2>
-          <p className="text-[10px] text-muted-foreground font-mono">
-            Design System
-          </p>
+      <aside className="fixed left-0 top-0 w-60 h-screen border-r border-border bg-background flex flex-col z-10 overflow-hidden">
+        {/* Brand Header */}
+        <div className="flex-shrink-0 px-xl py-md border-b border-border">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setActive(null)}
+              className="flex items-center gap-xs hover:opacity-80 transition-opacity"
+            >
+              <div className="size-7 rounded-md bg-primary flex items-center justify-center flex-shrink-0">
+                <span className="text-primary-foreground font-heading font-bold text-xs">S</span>
+              </div>
+              <div className="space-y-0.5">
+                <h2 className="font-heading font-bold text-sm tracking-tight leading-none">SprouX DS</h2>
+                <p className="text-[10px] text-muted-foreground font-mono leading-none">Design System</p>
+              </div>
+            </button>
+            <button
+              onClick={() => setDark(d => !d)}
+              className="p-1.5 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+              title={dark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {dark ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+            </button>
+          </div>
         </div>
 
-        {categories.map((cat) => (
-          <div key={cat} className="space-y-1">
-            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider px-2">
-              {cat}
-            </p>
-            {components
-              .filter((c) => c.category === cat)
-              .map((c) => (
+        {/* Nav scroll area */}
+        <nav className="flex-1 overflow-y-auto py-sm px-sm">
+          {categories.map((cat) => {
+            const isCollapsed = collapsedCategories.has(cat)
+            const CatIcon = categoryIcons[cat] ?? Layers
+            const catItems = components.filter((c) => c.category === cat)
+            const isActiveCategory = catItems.some(c => c.id === active)
+            return (
+              <div key={cat} className="mb-1">
                 <button
-                  key={c.id}
-                  onClick={() => setActive(c.id)}
-                  className={`w-full text-left px-2 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                    active === c.id
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground hover:bg-muted"
+                  onClick={() => toggleCategory(cat)}
+                  className={`w-full flex items-center justify-between px-xs py-1.5 rounded-md text-[10px] font-mono uppercase tracking-wider transition-colors ${
+                    isActiveCategory
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {c.label}
+                  <span className="flex items-center gap-xs">
+                    <CatIcon className="size-3" />
+                    {cat}
+                  </span>
+                  <ChevronDown
+                    className={`size-3 transition-transform duration-200 ${isCollapsed ? "-rotate-90" : ""}`}
+                  />
                 </button>
-              ))}
-          </div>
-        ))}
+                {!isCollapsed && (
+                  <div className="pl-xs mt-0.5 space-y-0.5">
+                    {catItems.map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => setActive(c.id)}
+                        className={`w-full text-left px-xs py-1.5 rounded-md text-xs font-medium transition-colors ${
+                          active === c.id
+                            ? "bg-primary text-primary-foreground"
+                            : "text-foreground hover:bg-muted"
+                        }`}
+                      >
+                        {c.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className="flex-shrink-0 px-xl py-sm border-t border-border">
+          <p className="text-[10px] font-mono text-muted-foreground">v1.0.0 — MIT License</p>
+        </div>
       </aside>
 
       {/* ---- Content ---- */}
-      <main className="ml-56 px-8 py-12">
-        <div className="w-full">
+      <main id="main-content" className="ml-60 h-screen overflow-y-auto">
+        {/* Sticky breadcrumb header */}
+        {active !== null && (
+          <div className="sticky top-0 z-10 bg-muted/80 backdrop-blur-sm border-b border-border px-xl py-2xs flex items-center gap-xs">
+            <span className="text-xs font-mono text-muted-foreground">SprouX DS</span>
+            <ChevronRight className="size-3 text-muted-foreground" />
+            <span className="text-xs font-mono text-muted-foreground">
+              {components.find(c => c.id === active)?.category}
+            </span>
+            <ChevronRight className="size-3 text-muted-foreground" />
+            <span className="text-xs font-mono font-semibold text-foreground">
+              {components.find(c => c.id === active)?.label}
+            </span>
+          </div>
+        )}
+
+        {/* Content area with max-width constraint */}
+        <div className="max-w-5xl mx-auto px-2xl py-3xl">
+          {active === null && <HeroDocs onNavigate={setActive} />}
           {active === "colors" && <ColorsDocs />}
           {active === "typography" && <TypographyDocs />}
           {active === "spacing" && <SpacingDocs />}
@@ -9177,6 +9390,17 @@ function App() {
         </div>
       </main>
       <Toaster />
+
+      {/* Scroll to top */}
+      {showScrollTop && (
+        <button
+          onClick={() => document.getElementById("main-content")?.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-xl right-xl z-50 p-sm rounded-full bg-foreground text-background shadow-lg hover:opacity-80 transition-opacity"
+          title="Scroll to top"
+        >
+          <ArrowUp className="size-md" />
+        </button>
+      )}
     </div>
   )
 }
