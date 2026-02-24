@@ -9164,55 +9164,55 @@ function SidebarDocs() {
    ================================================================ */
 
 const components = [
-  { id: "colors", label: "Colors", category: "Foundation" },
-  { id: "typography", label: "Typography", category: "Foundation" },
-  { id: "spacing", label: "Spacing", category: "Foundation" },
-  { id: "border-radius", label: "Border Radius", category: "Foundation" },
-  { id: "icons", label: "Icons", category: "Foundation" },
-  { id: "illustrations", label: "Illustrations", category: "Foundation" },
-  { id: "button", label: "Button", category: "Actions" },
-  { id: "input", label: "Input", category: "Forms" },
-  { id: "textarea", label: "Textarea", category: "Forms" },
-  { id: "select", label: "Select", category: "Forms" },
-  { id: "checkbox", label: "Checkbox", category: "Forms" },
-  { id: "switch", label: "Switch", category: "Forms" },
-  { id: "label", label: "Label", category: "Forms" },
-  { id: "radio-group", label: "Radio Group", category: "Forms" },
-  { id: "toggle", label: "Toggle", category: "Forms" },
-  { id: "toggle-group", label: "Toggle Group", category: "Forms" },
-  { id: "slider", label: "Slider", category: "Forms" },
-  { id: "card", label: "Card", category: "Data Display" },
-  { id: "badge", label: "Badge", category: "Data Display" },
-  { id: "avatar", label: "Avatar", category: "Data Display" },
-  { id: "progress", label: "Progress", category: "Data Display" },
-  { id: "alert", label: "Alert", category: "Data Display" },
-  { id: "separator", label: "Separator", category: "Data Display" },
-  { id: "skeleton", label: "Skeleton", category: "Data Display" },
-  { id: "table", label: "Table", category: "Data Display" },
-  { id: "dialog", label: "Dialog", category: "Overlay & Feedback" },
-  { id: "alert-dialog", label: "Alert Dialog", category: "Overlay & Feedback" },
-  { id: "sheet", label: "Sheet", category: "Overlay & Feedback" },
-  { id: "drawer", label: "Drawer", category: "Overlay & Feedback" },
-  { id: "popover", label: "Popover", category: "Overlay & Feedback" },
-  { id: "tooltip", label: "Tooltip", category: "Overlay & Feedback" },
-  { id: "toast", label: "Toast (Sonner)", category: "Overlay & Feedback" },
-  { id: "tabs", label: "Tabs", category: "Navigation" },
-  { id: "breadcrumb", label: "Breadcrumb", category: "Navigation" },
-  { id: "pagination", label: "Pagination", category: "Navigation" },
-  { id: "dropdown-menu", label: "Dropdown Menu", category: "Navigation" },
-  { id: "command", label: "Command", category: "Navigation" },
-  { id: "accordion", label: "Accordion", category: "Layout" },
-  { id: "collapsible", label: "Collapsible", category: "Layout" },
-  { id: "scroll-area", label: "Scroll Area", category: "Layout" },
-  { id: "calendar", label: "Calendar", category: "Forms" },
-  { id: "date-picker", label: "Date Picker", category: "Forms" },
-  { id: "combobox", label: "Combobox", category: "Forms" },
-  { id: "input-otp", label: "Input OTP", category: "Forms" },
-  { id: "spinner", label: "Spinner", category: "Data Display" },
-  { id: "hover-card", label: "Hover Card", category: "Overlay & Feedback" },
-  { id: "aspect-ratio", label: "Aspect Ratio", category: "Layout" },
-  { id: "context-menu", label: "Context Menu", category: "Navigation" },
-  { id: "sidebar", label: "Sidebar", category: "Layout" },
+  { id: "accordion", label: "Accordion" },
+  { id: "alert", label: "Alert" },
+  { id: "alert-dialog", label: "Alert Dialog" },
+  { id: "aspect-ratio", label: "Aspect Ratio" },
+  { id: "avatar", label: "Avatar" },
+  { id: "badge", label: "Badge" },
+  { id: "border-radius", label: "Border Radius" },
+  { id: "breadcrumb", label: "Breadcrumb" },
+  { id: "button", label: "Button" },
+  { id: "calendar", label: "Calendar" },
+  { id: "card", label: "Card" },
+  { id: "checkbox", label: "Checkbox" },
+  { id: "collapsible", label: "Collapsible" },
+  { id: "colors", label: "Colors" },
+  { id: "combobox", label: "Combobox" },
+  { id: "command", label: "Command" },
+  { id: "context-menu", label: "Context Menu" },
+  { id: "date-picker", label: "Date Picker" },
+  { id: "dialog", label: "Dialog" },
+  { id: "drawer", label: "Drawer" },
+  { id: "dropdown-menu", label: "Dropdown Menu" },
+  { id: "hover-card", label: "Hover Card" },
+  { id: "icons", label: "Icons" },
+  { id: "illustrations", label: "Illustrations" },
+  { id: "input", label: "Input" },
+  { id: "input-otp", label: "Input OTP" },
+  { id: "label", label: "Label" },
+  { id: "pagination", label: "Pagination" },
+  { id: "popover", label: "Popover" },
+  { id: "progress", label: "Progress" },
+  { id: "radio-group", label: "Radio Group" },
+  { id: "scroll-area", label: "Scroll Area" },
+  { id: "select", label: "Select" },
+  { id: "separator", label: "Separator" },
+  { id: "sheet", label: "Sheet" },
+  { id: "sidebar", label: "Sidebar" },
+  { id: "skeleton", label: "Skeleton" },
+  { id: "slider", label: "Slider" },
+  { id: "spacing", label: "Spacing" },
+  { id: "spinner", label: "Spinner" },
+  { id: "switch", label: "Switch" },
+  { id: "table", label: "Table" },
+  { id: "tabs", label: "Tabs" },
+  { id: "textarea", label: "Textarea" },
+  { id: "toast", label: "Toast (Sonner)" },
+  { id: "toggle", label: "Toggle" },
+  { id: "toggle-group", label: "Toggle Group" },
+  { id: "tooltip", label: "Tooltip" },
+  { id: "typography", label: "Typography" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -9245,7 +9245,6 @@ function ComponentsGrid({ onNavigate }: { onNavigate: (id: ComponentId) => void 
             </div>
             <div className="p-md border-t border-border">
               <p className="font-medium text-sm">{c.label}</p>
-              <p className="text-xs text-muted-foreground">{c.category}</p>
             </div>
           </button>
         ))}
@@ -9332,27 +9331,23 @@ function App() {
         </div>
       </header>
 
-      {/* ---- Sidebar (category-grouped, conditional) ---- */}
+      {/* ---- Sidebar (flat A→Z, conditional) ---- */}
       {active !== null && (
         <aside className="fixed left-0 top-16 w-[260px] h-[calc(100vh-4rem)] bg-background border-r border-border/50 overflow-y-auto z-10">
-          <nav className="p-md space-y-lg">
-            {[...new Set(components.map(c => c.category))].map(cat => (
-              <div key={cat}>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-xs px-sm">{cat}</p>
-                <div className="flex flex-col gap-0.5">
-                  {components.filter(c => c.category === cat).map(c => (
-                    <button key={c.id} onClick={() => setActive(c.id)}
-                      className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
-                        active === c.id
-                          ? "bg-muted font-medium text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}>
-                      {c.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <nav className="p-md">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-sm px-sm">Components</p>
+            <div className="flex flex-col gap-0.5">
+              {components.map(c => (
+                <button key={c.id} onClick={() => setActive(c.id)}
+                  className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
+                    active === c.id
+                      ? "bg-muted font-medium text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}>
+                  {c.label}
+                </button>
+              ))}
+            </div>
           </nav>
         </aside>
       )}
@@ -9422,7 +9417,6 @@ function App() {
             {components.map(c => (
               <CommandItem key={c.id} onSelect={() => { setActive(c.id); setSearchOpen(false) }}>
                 {c.label}
-                <span className="ml-auto text-xs text-muted-foreground">{c.category}</span>
               </CommandItem>
             ))}
           </CommandGroup>
