@@ -13,7 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
+import { Toggle } from "@/components/ui/toggle"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
   Plus,
   Trash2,
@@ -31,6 +35,12 @@ import {
   EyeOff,
   User,
   Lock,
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
 } from "lucide-react"
 
 /* ================================================================
@@ -5895,6 +5905,586 @@ pnpm add @radix-ui/react-switch
 }
 
 /* ================================================================
+   Label Docs
+   ================================================================ */
+
+function LabelDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      {/* ---- Header ---- */}
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+          Forms
+        </p>
+        <h1 className="text-heading-3">Label</h1>
+        <p className="text-paragraph-md text-muted-foreground">
+          Renders an accessible label associated with form controls. Supports required indicator and disabled state via peer utilities.
+        </p>
+      </section>
+
+      {/* ---- Import ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example
+          title="Import"
+          code={`import { Label } from "@/components/ui/label"`}
+        >
+          <p className="text-xs text-muted-foreground italic">
+            Import statement only — see examples below.
+          </p>
+        </Example>
+      </section>
+
+      {/* ---- Examples ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Label htmlFor="email">Email address</Label>\n<Input id="email" type="email" placeholder="you@example.com" />`}>
+          <div className="space-y-2">
+            <Label htmlFor="email-demo">Email address</Label>
+            <Input id="email-demo" type="email" placeholder="you@example.com" />
+          </div>
+        </Example>
+
+        <Example title="With Checkbox" code={`<div className="flex items-center gap-2">\n  <Checkbox id="terms" />\n  <Label htmlFor="terms">Accept terms and conditions</Label>\n</div>`}>
+          <div className="flex items-center gap-2">
+            <Checkbox id="terms-demo" />
+            <Label htmlFor="terms-demo">Accept terms and conditions</Label>
+          </div>
+        </Example>
+
+        <Example title="With Switch" code={`<div className="flex items-center gap-2">\n  <Switch id="notifications" />\n  <Label htmlFor="notifications">Enable notifications</Label>\n</div>`}>
+          <div className="flex items-center gap-2">
+            <Switch id="notifications-demo" />
+            <Label htmlFor="notifications-demo">Enable notifications</Label>
+          </div>
+        </Example>
+
+        <Example title="Disabled (via peer)" code={`<div className="space-y-2">\n  <Input id="disabled" disabled placeholder="Disabled input" />\n  <Label htmlFor="disabled">Disabled field</Label>\n</div>`}>
+          <div className="flex items-center gap-2">
+            <Checkbox id="disabled-demo" disabled />
+            <Label htmlFor="disabled-demo">Disabled option</Label>
+          </div>
+        </Example>
+      </section>
+
+      {/* ---- API Reference ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">htmlFor</td>
+                <td className="p-3 font-mono text-xs">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Associates the label with a form control by ID.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">className</td>
+                <td className="p-3 font-mono text-xs">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Additional CSS classes.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">children</td>
+                <td className="p-3 font-mono text-xs">ReactNode</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Label text content.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Always pair every form control with a visible Label linked via htmlFor/id." />
+          <DontItem text="Don't use placeholder text as a replacement for a Label." />
+          <DoItem text="Keep label text short and descriptive — users should know what to enter at a glance." />
+          <DontItem text="Don't use Label for non-form elements — use a heading or paragraph instead." />
+        </div>
+      </section>
+
+      {/* ---- Related Components ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">
+          Related Components
+        </h2>
+        <div className="rounded-lg border border-border divide-y divide-border">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Input</p>
+              <p className="text-muted-foreground mt-0.5">
+                Text input field — pair with Label for accessibility.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
+            </span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Checkbox</p>
+              <p className="text-muted-foreground mt-0.5">
+                Checkbox control — pair with Label for click-to-toggle.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
+            </span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Form</p>
+              <p className="text-muted-foreground mt-0.5">
+                Full form wrapper with validation — includes built-in label support.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
+              Planned
+            </span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Toggle Docs
+   ================================================================ */
+
+function ToggleDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+        <h1 className="text-heading-3">Toggle</h1>
+        <p className="text-paragraph-md text-muted-foreground">
+          A two-state button that can be toggled on or off. Commonly used for formatting options like bold, italic, underline.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import { Toggle } from "@/components/ui/toggle"`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<Toggle aria-label="Toggle bold">\n  <Bold className="size-4" />\n</Toggle>`}>
+          <Toggle aria-label="Toggle bold"><Bold className="size-4" /></Toggle>
+        </Example>
+
+        <Example title="Outline variant" code={`<Toggle variant="outline" aria-label="Toggle italic">\n  <Italic className="size-4" />\n</Toggle>`}>
+          <Toggle variant="outline" aria-label="Toggle italic"><Italic className="size-4" /></Toggle>
+        </Example>
+
+        <Example title="With text" code={`<Toggle aria-label="Toggle italic">\n  <Italic className="size-4" />\n  Italic\n</Toggle>`}>
+          <Toggle aria-label="Toggle italic"><Italic className="size-4" />Italic</Toggle>
+        </Example>
+
+        <Example title="Sizes" code={`<Toggle size="sm" aria-label="Bold"><Bold className="size-4" /></Toggle>\n<Toggle size="default" aria-label="Bold"><Bold className="size-4" /></Toggle>\n<Toggle size="lg" aria-label="Bold"><Bold className="size-4" /></Toggle>`}>
+          <div className="flex items-center gap-2">
+            <Toggle size="sm" aria-label="Bold"><Bold className="size-4" /></Toggle>
+            <Toggle size="default" aria-label="Bold"><Bold className="size-4" /></Toggle>
+            <Toggle size="lg" aria-label="Bold"><Bold className="size-4" /></Toggle>
+          </div>
+        </Example>
+
+        <Example title="Disabled" code={`<Toggle disabled aria-label="Bold"><Bold className="size-4" /></Toggle>`}>
+          <Toggle disabled aria-label="Bold"><Bold className="size-4" /></Toggle>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">variant</td>
+                <td className="p-3 font-mono text-xs">"default" | "outline"</td>
+                <td className="p-3 font-mono text-xs">"default"</td>
+                <td className="p-3">Visual style of the toggle.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">size</td>
+                <td className="p-3 font-mono text-xs">"sm" | "default" | "lg"</td>
+                <td className="p-3 font-mono text-xs">"default"</td>
+                <td className="p-3">Size of the toggle button.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">pressed</td>
+                <td className="p-3 font-mono text-xs">boolean</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Controlled pressed state.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">onPressedChange</td>
+                <td className="p-3 font-mono text-xs">(pressed: boolean) =&gt; void</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Callback when pressed state changes.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Always provide an aria-label when using icon-only toggles." />
+          <DontItem text="Don't use Toggle for navigation — use Tabs or Buttons instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Toggle Group Docs
+   ================================================================ */
+
+function ToggleGroupDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Forms</p>
+        <h1 className="text-heading-3">Toggle Group</h1>
+        <p className="text-paragraph-md text-muted-foreground">
+          A group of toggle buttons supporting single or multiple selection. Ideal for toolbar actions, text formatting, view modes.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Single selection" code={`<ToggleGroup type="single" defaultValue="center">\n  <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
+          <ToggleGroup type="single" defaultValue="center">
+            <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>
+          </ToggleGroup>
+        </Example>
+
+        <Example title="Multiple selection" code={`<ToggleGroup type="multiple" defaultValue={["bold"]}>\n  <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
+          <ToggleGroup type="multiple" defaultValue={["bold"]}>
+            <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>
+          </ToggleGroup>
+        </Example>
+
+        <Example title="Outline variant" code={`<ToggleGroup type="single" variant="outline" defaultValue="left">\n  <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
+          <ToggleGroup type="single" variant="outline" defaultValue="left">
+            <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-4" /></ToggleGroupItem>
+          </ToggleGroup>
+        </Example>
+
+        <Example title="Small size" code={`<ToggleGroup type="multiple" size="sm">\n  <ToggleGroupItem value="bold"><Bold className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="italic"><Italic className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="underline"><Underline className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
+          <ToggleGroup type="multiple" size="sm">
+            <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>
+          </ToggleGroup>
+        </Example>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <h3 className="font-heading font-semibold text-lg">ToggleGroup</h3>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">type</td>
+                <td className="p-3 font-mono text-xs">"single" | "multiple"</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Selection mode (required).</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">variant</td>
+                <td className="p-3 font-mono text-xs">"default" | "outline"</td>
+                <td className="p-3 font-mono text-xs">"default"</td>
+                <td className="p-3">Applied to all items.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">size</td>
+                <td className="p-3 font-mono text-xs">"sm" | "default" | "lg"</td>
+                <td className="p-3 font-mono text-xs">"default"</td>
+                <td className="p-3">Applied to all items.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use type='single' for mutually exclusive options like text alignment." />
+          <DontItem text="Don't mix Toggle and ToggleGroup in the same toolbar — pick one pattern." />
+          <DoItem text="Use type='multiple' for independent formatting options like bold + italic + underline." />
+          <DontItem text="Don't use ToggleGroup for navigation — use Tabs instead." />
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Radio Group Docs
+   ================================================================ */
+
+function RadioGroupDocs() {
+  return (
+    <div className="space-y-12 max-w-4xl">
+      {/* ---- Header ---- */}
+      <section className="space-y-4">
+        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+          Forms
+        </p>
+        <h1 className="text-heading-3">Radio Group</h1>
+        <p className="text-paragraph-md text-muted-foreground">
+          A set of checkable buttons — known as radio buttons — where only one can be checked at a time.
+        </p>
+      </section>
+
+      {/* ---- Import ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example
+          title="Import"
+          code={`import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"\nimport { Label } from "@/components/ui/label"`}
+        >
+          <p className="text-xs text-muted-foreground italic">
+            Import statement only — see examples below.
+          </p>
+        </Example>
+      </section>
+
+      {/* ---- Examples ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <Example title="Default" code={`<RadioGroup defaultValue="option-1">\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-1" id="r1" />\n    <Label htmlFor="r1">Option One</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-2" id="r2" />\n    <Label htmlFor="r2">Option Two</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-3" id="r3" />\n    <Label htmlFor="r3">Option Three</Label>\n  </div>\n</RadioGroup>`}>
+          <RadioGroup defaultValue="option-1">
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-1" id="r1" />
+              <Label htmlFor="r1">Option One</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-2" id="r2" />
+              <Label htmlFor="r2">Option Two</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="option-3" id="r3" />
+              <Label htmlFor="r3">Option Three</Label>
+            </div>
+          </RadioGroup>
+        </Example>
+
+        <Example title="Horizontal" code={`<RadioGroup defaultValue="sm" className="flex gap-4">\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="sm" id="size-sm" />\n    <Label htmlFor="size-sm">Small</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="md" id="size-md" />\n    <Label htmlFor="size-md">Medium</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="lg" id="size-lg" />\n    <Label htmlFor="size-lg">Large</Label>\n  </div>\n</RadioGroup>`}>
+          <RadioGroup defaultValue="sm" className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="sm" id="size-sm" />
+              <Label htmlFor="size-sm">Small</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="md" id="size-md" />
+              <Label htmlFor="size-md">Medium</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="lg" id="size-lg" />
+              <Label htmlFor="size-lg">Large</Label>
+            </div>
+          </RadioGroup>
+        </Example>
+
+        <Example title="Disabled" code={`<RadioGroup defaultValue="active" disabled>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="active" id="d1" />\n    <Label htmlFor="d1">Active</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="inactive" id="d2" />\n    <Label htmlFor="d2">Inactive</Label>\n  </div>\n</RadioGroup>`}>
+          <RadioGroup defaultValue="active" disabled>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="active" id="d1" />
+              <Label htmlFor="d1">Active</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="inactive" id="d2" />
+              <Label htmlFor="d2">Inactive</Label>
+            </div>
+          </RadioGroup>
+        </Example>
+      </section>
+
+      {/* ---- API Reference ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+
+        <h3 className="font-heading font-semibold text-lg">RadioGroup</h3>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">defaultValue</td>
+                <td className="p-3 font-mono text-xs">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Initially selected value (uncontrolled).</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">value</td>
+                <td className="p-3 font-mono text-xs">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Selected value (controlled).</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">onValueChange</td>
+                <td className="p-3 font-mono text-xs">(value: string) =&gt; void</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Callback when selection changes.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">disabled</td>
+                <td className="p-3 font-mono text-xs">boolean</td>
+                <td className="p-3 font-mono text-xs">false</td>
+                <td className="p-3">Disables all radio items.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="font-heading font-semibold text-lg mt-6">RadioGroupItem</h3>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">value</td>
+                <td className="p-3 font-mono text-xs">string</td>
+                <td className="p-3 font-mono text-xs">—</td>
+                <td className="p-3">Unique value for this radio item (required).</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">disabled</td>
+                <td className="p-3 font-mono text-xs">boolean</td>
+                <td className="p-3 font-mono text-xs">false</td>
+                <td className="p-3">Disables this specific item.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Radio Group for mutually exclusive choices (e.g. size, plan, payment method)." />
+          <DontItem text="Don't use Radio Group for on/off toggles — use Switch or Checkbox instead." />
+          <DoItem text="Always pair each RadioGroupItem with a visible Label." />
+          <DontItem text="Don't use Radio Group when multiple selections are allowed — use Checkbox group." />
+        </div>
+      </section>
+
+      {/* ---- Related Components ---- */}
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">
+          Related Components
+        </h2>
+        <div className="rounded-lg border border-border divide-y divide-border">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Checkbox</p>
+              <p className="text-muted-foreground mt-0.5">
+                For multiple selections — use when more than one option can be selected.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
+            </span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Select</p>
+              <p className="text-muted-foreground mt-0.5">
+                Dropdown selection — use when there are many options or limited space.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
+            </span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Toggle Group</p>
+              <p className="text-muted-foreground mt-0.5">
+                Button-style single/multiple selection with visual emphasis.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
+              Planned
+            </span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Navigation & Layout
    ================================================================ */
 
@@ -5909,6 +6499,10 @@ const components = [
   { id: "select", label: "Select", category: "Forms" },
   { id: "checkbox", label: "Checkbox", category: "Forms" },
   { id: "switch", label: "Switch", category: "Forms" },
+  { id: "label", label: "Label", category: "Forms" },
+  { id: "radio-group", label: "Radio Group", category: "Forms" },
+  { id: "toggle", label: "Toggle", category: "Forms" },
+  { id: "toggle-group", label: "Toggle Group", category: "Forms" },
 ] as const
 
 type ComponentId = (typeof components)[number]["id"]
@@ -5968,6 +6562,10 @@ function App() {
           {active === "select" && <SelectDocs />}
           {active === "checkbox" && <CheckboxDocs />}
           {active === "switch" && <SwitchDocs />}
+          {active === "label" && <LabelDocs />}
+          {active === "radio-group" && <RadioGroupDocs />}
+          {active === "toggle" && <ToggleDocs />}
+          {active === "toggle-group" && <ToggleGroupDocs />}
         </div>
       </main>
     </div>
