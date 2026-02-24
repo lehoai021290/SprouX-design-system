@@ -206,7 +206,58 @@ import {
   Calendar as CalendarIcon,
   Smile,
   ChevronsUpDown,
+  Home,
+  FileText,
+  Image,
+  Bell,
+  Heart,
+  Star,
+  Bookmark,
+  Share2,
+  MessageCircle,
+  Phone,
+  MapPin,
+  Globe,
+  Zap,
+  Shield,
+  Package,
+  Layers,
+  Grid3X3 as Grid3x3Icon,
+  Filter,
+  SlidersHorizontal,
+  BarChart3,
+  PieChart,
+  TrendingUp,
+  Clock,
+  Pencil,
+  Upload,
 } from "lucide-react"
+
+// Illustration SVGs
+import illustNewDevice from "@/assets/illustrations/new-device.svg"
+import illustPaymentSuccessful from "@/assets/illustrations/payment-successful.svg"
+import illustSubmitted from "@/assets/illustrations/submitted.svg"
+import illustMailSent from "@/assets/illustrations/mail-sent.svg"
+import illustError from "@/assets/illustrations/error.svg"
+import illustAuthen from "@/assets/illustrations/authen.svg"
+import illustSuccess from "@/assets/illustrations/success.svg"
+import illustEmpty from "@/assets/illustrations/empty.svg"
+import illustLaunched from "@/assets/illustrations/launched.svg"
+import illustSecurityOn from "@/assets/illustrations/security-on.svg"
+import illustPayment from "@/assets/illustrations/payment.svg"
+import illustWithdrawals from "@/assets/illustrations/withdrawals.svg"
+import illustBackers from "@/assets/illustrations/backers.svg"
+import illustIdea from "@/assets/illustrations/idea.svg"
+import illustNotFound from "@/assets/illustrations/not-found.svg"
+import illustEmail from "@/assets/illustrations/email.svg"
+
+// Custom/social icon SVGs
+import iconTiktok from "@/assets/icons/tiktok.svg"
+import iconInstagram from "@/assets/icons/instagram.svg"
+import iconYoutube from "@/assets/icons/youtube.svg"
+import iconFacebook from "@/assets/icons/facebook.svg"
+import iconEmailSocial from "@/assets/icons/email.svg"
+import iconX from "@/assets/icons/x.svg"
 
 /* ================================================================
    Shared UI helpers (local to preview — not part of the DS)
@@ -1221,6 +1272,299 @@ function ButtonTokensTable() {
           ))}
         </tbody>
       </table>
+    </div>
+  )
+}
+
+/* ================================================================
+   Icons (Foundation)
+   ================================================================ */
+
+const lucideIconCatalog = [
+  { name: "Home", icon: Home, category: "Navigation" },
+  { name: "Search", icon: Search, category: "Navigation" },
+  { name: "Settings", icon: Settings, category: "Navigation" },
+  { name: "User", icon: User, category: "Navigation" },
+  { name: "Mail", icon: Mail, category: "Communication" },
+  { name: "Phone", icon: Phone, category: "Communication" },
+  { name: "MessageCircle", icon: MessageCircle, category: "Communication" },
+  { name: "Bell", icon: Bell, category: "Communication" },
+  { name: "Plus", icon: Plus, category: "Actions" },
+  { name: "Trash2", icon: Trash2, category: "Actions" },
+  { name: "Pencil", icon: Pencil, category: "Actions" },
+  { name: "Copy", icon: Copy, category: "Actions" },
+  { name: "Download", icon: Download, category: "Actions" },
+  { name: "Upload", icon: Upload, category: "Actions" },
+  { name: "Share2", icon: Share2, category: "Actions" },
+  { name: "ExternalLink", icon: ExternalLink, category: "Actions" },
+  { name: "Check", icon: Check, category: "Status" },
+  { name: "AlertCircle", icon: AlertCircle, category: "Status" },
+  { name: "Info", icon: Info, category: "Status" },
+  { name: "Eye", icon: Eye, category: "Status" },
+  { name: "EyeOff", icon: EyeOff, category: "Status" },
+  { name: "Loader2", icon: Loader2, category: "Status" },
+  { name: "ChevronRight", icon: ChevronRight, category: "Arrows" },
+  { name: "ArrowRight", icon: ArrowRight, category: "Arrows" },
+  { name: "ChevronsUpDown", icon: ChevronsUpDown, category: "Arrows" },
+  { name: "Heart", icon: Heart, category: "Media" },
+  { name: "Star", icon: Star, category: "Media" },
+  { name: "Bookmark", icon: Bookmark, category: "Media" },
+  { name: "Image", icon: Image, category: "Media" },
+  { name: "FileText", icon: FileText, category: "Media" },
+  { name: "Calendar", icon: CalendarIcon, category: "Date & Time" },
+  { name: "Clock", icon: Clock, category: "Date & Time" },
+  { name: "MapPin", icon: MapPin, category: "Location" },
+  { name: "Globe", icon: Globe, category: "Location" },
+  { name: "Lock", icon: Lock, category: "Security" },
+  { name: "Shield", icon: Shield, category: "Security" },
+  { name: "Zap", icon: Zap, category: "Misc" },
+  { name: "Package", icon: Package, category: "Misc" },
+  { name: "Layers", icon: Layers, category: "Misc" },
+  { name: "Terminal", icon: Terminal, category: "Misc" },
+  { name: "CreditCard", icon: CreditCard, category: "Finance" },
+  { name: "BarChart3", icon: BarChart3, category: "Charts" },
+  { name: "PieChart", icon: PieChart, category: "Charts" },
+  { name: "TrendingUp", icon: TrendingUp, category: "Charts" },
+  { name: "Filter", icon: Filter, category: "Data" },
+  { name: "SlidersHorizontal", icon: SlidersHorizontal, category: "Data" },
+  { name: "Grid3x3", icon: Grid3x3Icon, category: "Layout" },
+  { name: "Bold", icon: Bold, category: "Text" },
+  { name: "Italic", icon: Italic, category: "Text" },
+  { name: "Underline", icon: Underline, category: "Text" },
+  { name: "AlignLeft", icon: AlignLeft, category: "Text" },
+  { name: "AlignCenter", icon: AlignCenter, category: "Text" },
+  { name: "AlignRight", icon: AlignRight, category: "Text" },
+  { name: "LogOut", icon: LogOut, category: "Auth" },
+]
+
+const socialIcons = [
+  { name: "TikTok", src: iconTiktok },
+  { name: "Instagram", src: iconInstagram },
+  { name: "YouTube", src: iconYoutube },
+  { name: "Facebook", src: iconFacebook },
+  { name: "Email", src: iconEmailSocial },
+  { name: "X (Twitter)", src: iconX },
+]
+
+function IconsDocs() {
+  const [iconSearch, setIconSearch] = useState("")
+
+  const filteredIcons = lucideIconCatalog.filter(
+    (i) =>
+      i.name.toLowerCase().includes(iconSearch.toLowerCase()) ||
+      i.category.toLowerCase().includes(iconSearch.toLowerCase())
+  )
+
+  return (
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+          Foundation / Icons
+        </p>
+        <h1 className="text-heading-3">Icons</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
+          SprouX uses <strong>Lucide React</strong> as the primary icon library (1,600+ icons),
+          plus a set of custom social/brand icons exported from Figma.
+        </p>
+      </header>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`// Lucide icons (primary library)\nimport { Home, Search, Plus, Check } from "lucide-react"\n\n// Custom social icons (SVG imports)\nimport tiktokIcon from "@/assets/icons/tiktok.svg"\nimport instagramIcon from "@/assets/icons/instagram.svg"`} />
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="font-heading font-semibold text-xl">Icon Sizes</h2>
+        <p className="text-sm text-muted-foreground">
+          Three standard sizes are used across the design system, matching the Figma token scale.
+        </p>
+        <div className="flex items-end gap-8">
+          {[
+            { label: "size-md (16px)", cls: "size-md", desc: "Buttons (xs), inline text" },
+            { label: "size-lg (20px)", cls: "size-lg", desc: "Default buttons, nav items" },
+            { label: "size-xl (24px)", cls: "size-xl", desc: "Headers, standalone icons" },
+          ].map((s) => (
+            <div key={s.label} className="flex flex-col items-center gap-2">
+              <Home className={s.cls} />
+              <span className="text-xs font-mono text-muted-foreground">{s.label}</span>
+              <span className="text-[10px] text-muted-foreground">{s.desc}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Lucide Icon Catalog</h2>
+        <p className="text-sm text-muted-foreground">
+          Showing commonly-used icons from the SprouX design system. Full library: <a href="https://lucide.dev/icons" target="_blank" rel="noreferrer" className="underline">lucide.dev/icons</a>
+        </p>
+        <Input
+          placeholder="Search icons..."
+          value={iconSearch}
+          onChange={(e) => setIconSearch(e.target.value)}
+          className="max-w-xs"
+        />
+        <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1">
+          {filteredIcons.map((item) => {
+            const Icon = item.icon
+            return (
+              <div
+                key={item.name}
+                className="flex flex-col items-center gap-1.5 rounded-lg p-2 hover:bg-muted transition-colors"
+                title={`${item.name} (${item.category})`}
+              >
+                <Icon className="size-lg" />
+                <span className="text-[9px] text-muted-foreground truncate w-full text-center">
+                  {item.name}
+                </span>
+              </div>
+            )
+          })}
+          {filteredIcons.length === 0 && (
+            <p className="col-span-full text-sm text-muted-foreground py-8 text-center">
+              No icons match "{iconSearch}"
+            </p>
+          )}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Custom / Social Icons</h2>
+        <p className="text-sm text-muted-foreground">
+          Brand and social icons exported from the Figma design system as SVGs.
+        </p>
+        <div className="grid grid-cols-6 gap-4">
+          {socialIcons.map((item) => (
+            <div
+              key={item.name}
+              className="flex flex-col items-center gap-2 rounded-lg border border-border p-4 hover:bg-muted transition-colors"
+            >
+              <img src={item.src} alt={item.name} className="size-lg" />
+              <span className="text-xs text-muted-foreground">{item.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Usage Guidelines</h2>
+        <div className="flex gap-4">
+          <DoItem>
+            Use semantic icon names that describe the action (e.g., Trash2 for delete).
+            Keep icon sizes consistent within a context.
+            Use currentColor for icon fill to inherit text color.
+            Add aria-hidden="true" for decorative icons.
+          </DoItem>
+          <DontItem>
+            Don't mix icon libraries — stick to Lucide for UI icons.
+            Don't use icons smaller than 16px (size-md).
+            Don't use colored icons in text-heavy interfaces.
+            Don't rely solely on icons without text labels for critical actions.
+          </DontItem>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Illustrations (Foundation)
+   ================================================================ */
+
+const illustrations = [
+  { name: "New Device", src: illustNewDevice, usage: "Onboarding, device setup" },
+  { name: "Payment Successful", src: illustPaymentSuccessful, usage: "Transaction confirmation" },
+  { name: "Submitted", src: illustSubmitted, usage: "Form submission success" },
+  { name: "Mail Sent", src: illustMailSent, usage: "Email confirmation" },
+  { name: "Error", src: illustError, usage: "Error states, failed operations" },
+  { name: "Authentication", src: illustAuthen, usage: "Login, 2FA, identity verification" },
+  { name: "Success", src: illustSuccess, usage: "General success state" },
+  { name: "Empty", src: illustEmpty, usage: "Empty states, no data" },
+  { name: "Launched", src: illustLaunched, usage: "Product launch, go-live" },
+  { name: "Security On", src: illustSecurityOn, usage: "Security enabled, protected" },
+  { name: "Payment", src: illustPayment, usage: "Payment processing, checkout" },
+  { name: "Withdrawals", src: illustWithdrawals, usage: "Fund withdrawal, payout" },
+  { name: "Backers", src: illustBackers, usage: "Supporters, community" },
+  { name: "Idea", src: illustIdea, usage: "Suggestions, brainstorming" },
+  { name: "Not Found", src: illustNotFound, usage: "404, missing page" },
+  { name: "Email", src: illustEmail, usage: "Email-related features" },
+]
+
+function IllustrationsDocs() {
+  return (
+    <div className="space-y-12">
+      <header className="space-y-3 border-b border-border pb-8">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+          Foundation / Illustrations
+        </p>
+        <h1 className="text-heading-3">Illustrations</h1>
+        <p className="text-paragraph-sm text-muted-foreground max-w-2xl">
+          {illustrations.length} illustration assets from the SprouX Figma design system.
+          Used for empty states, success/error screens, onboarding, and feature highlights.
+          Each illustration follows a circular safezone rule for consistent visual alignment.
+        </p>
+      </header>
+
+      <section className="space-y-3">
+        <h2 className="text-heading-5">Import</h2>
+        <CodeBlock code={`import illustSuccess from "@/assets/illustrations/success.svg"\nimport illustError from "@/assets/illustrations/error.svg"\nimport illustEmpty from "@/assets/illustrations/empty.svg"\n\n// Usage\n<img src={illustSuccess} alt="Success" className="w-48" />`} />
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="font-heading font-semibold text-xl">Safezone Rule</h2>
+        <div className="rounded-xl border border-border p-6 bg-muted/30 max-w-lg">
+          <div className="flex items-center gap-4">
+            <div className="size-24 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+              <span className="text-[10px] text-muted-foreground text-center leading-tight">
+                Safezone<br />circle
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground flex-1">
+              The primary visual should be scaled as large as possible while remaining
+              fully contained within the safezone circle. This ensures consistent sizing
+              across all illustration placements.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="font-heading font-semibold text-xl">Gallery</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {illustrations.map((item) => (
+            <div
+              key={item.name}
+              className="flex flex-col items-center gap-3 rounded-xl border border-border p-4 hover:bg-muted/50 transition-colors"
+            >
+              <div className="size-32 flex items-center justify-center">
+                <img src={item.src} alt={item.name} className="max-w-full max-h-full object-contain" />
+              </div>
+              <div className="text-center space-y-0.5">
+                <p className="text-xs font-medium">{item.name}</p>
+                <p className="text-[10px] text-muted-foreground">{item.usage}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Usage Guidelines</h2>
+        <div className="flex gap-4">
+          <DoItem>
+            Use illustrations for empty states, onboarding, and confirmation screens.
+            Keep illustrations centered with adequate whitespace.
+            Use the correct illustration for the context (e.g., "empty" for no-data, "error" for failures).
+            Maintain consistent sizing (w-32 to w-48) across placements.
+          </DoItem>
+          <DontItem>
+            Don't use illustrations as decorative filler — each has a specific purpose.
+            Don't resize illustrations below 80px where details become unclear.
+            Don't combine multiple illustrations in the same view.
+            Don't modify the illustration colors outside the design system palette.
+          </DontItem>
+        </div>
+      </section>
     </div>
   )
 }
@@ -8719,6 +9063,8 @@ const components = [
   { id: "typography", label: "Typography", category: "Foundation" },
   { id: "spacing", label: "Spacing", category: "Foundation" },
   { id: "border-radius", label: "Border Radius", category: "Foundation" },
+  { id: "icons", label: "Icons", category: "Foundation" },
+  { id: "illustrations", label: "Illustrations", category: "Foundation" },
   { id: "button", label: "Button", category: "Actions" },
   { id: "input", label: "Input", category: "Forms" },
   { id: "textarea", label: "Textarea", category: "Forms" },
@@ -8815,6 +9161,8 @@ function App() {
           {active === "typography" && <TypographyDocs />}
           {active === "spacing" && <SpacingDocs />}
           {active === "border-radius" && <BorderRadiusDocs />}
+          {active === "icons" && <IconsDocs />}
+          {active === "illustrations" && <IllustrationsDocs />}
           {active === "button" && <ButtonDocs />}
           {active === "input" && <InputDocs />}
           {active === "textarea" && <TextareaDocs />}
