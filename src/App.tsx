@@ -9012,12 +9012,13 @@ function AccordionExploreBehavior() {
   return (
     <div className="rounded-2xl border border-border/50 overflow-hidden">
       <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
-        {/* pointer-events-none: prevent interactive states; visual overrides for Figma states */}
+        {/* pointer-events-none: prevent interactive states; visual overrides for Figma states
+            ring-focus is a custom CSS class (not Tailwind utility), so use shadow arbitrary for focus ring */}
         <div className={[
           "w-full max-w-md pointer-events-none",
           "[&_[data-slot=accordion-trigger]]:hover:no-underline",
           isHover ? "[&_[data-slot=accordion-trigger]]:underline [&_[data-slot=accordion-trigger]]:rounded-lg" : "",
-          isFocus ? "[&_[data-slot=accordion-trigger]]:rounded-lg [&_[data-slot=accordion-trigger]]:ring-focus" : "",
+          isFocus ? "[&_[data-slot=accordion-trigger]]:rounded-lg [&_[data-slot=accordion-trigger]]:shadow-[0_0_0_3px_var(--ring)]" : "",
           endItem ? "" : "[&_[data-slot=accordion-item]]:!border-b",
         ].filter(Boolean).join(" ")}>
           <Accordion
@@ -9136,11 +9137,11 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger>Is it styled?</AccordionTrigger>
-              <AccordionContent>Yes. It comes with SprouX default styles that match the design system.</AccordionContent>
+              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>Yes. It's animated by default with smooth open/close transitions.</AccordionContent>
+              <AccordionContent>Yes. It's animated by default with smooth transitions.</AccordionContent>
             </AccordionItem>
           </Accordion>
         </Example>
@@ -9149,7 +9150,7 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
           <Accordion type="multiple" className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger>Can I open multiple?</AccordionTrigger>
-              <AccordionContent>Yes. Set type="multiple" to allow multiple items open at once.</AccordionContent>
+              <AccordionContent>Yes. Set type="multiple" to allow it.</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger>How does it work?</AccordionTrigger>
@@ -9166,7 +9167,7 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger>How long does shipping take?</AccordionTrigger>
-              <AccordionContent>Standard shipping takes 5-7 business days. Express options are available at checkout.</AccordionContent>
+              <AccordionContent>Standard shipping takes 5-7 business days.</AccordionContent>
             </AccordionItem>
           </Accordion>
         </Example>
