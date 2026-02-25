@@ -505,15 +505,15 @@
     --destructive-border: #ef4444;    /* red500 */
     --ring-error: #7f1d1d;            /* red900 */
 
-    --success-subtle: #1a2e1a;
+    --success-subtle: #052e16;        /* green950 */
     --success-subtle-foreground: #22c55e; /* green500 */
     --success-border: #22c55e;        /* green500 */
 
-    --warning-subtle: #2e2a1a;
+    --warning-subtle: #451a03;        /* amber950 */
     --warning-subtle-foreground: #f59e0b; /* amber500 */
     --warning-border: #f59e0b;        /* amber500 */
 
-    --emphasis-subtle: #1a2040;
+    --emphasis-subtle: #172554;       /* blue950 */
     --emphasis-subtle-foreground: #60a5fa; /* blue400 */
     --emphasis-border: #3b82f6;       /* blue500 */
 
