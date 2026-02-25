@@ -213,6 +213,10 @@ import {
   Github,
   ArrowUp,
   X,
+  Bell,
+  ShieldCheck,
+  Megaphone,
+  Zap,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -7443,19 +7447,37 @@ function AlertTokensTable() {
 
 function AlertExploreBehavior() {
   const [type, setType] = useState("default")
+  const [icon, setIcon] = useState("auto")
   const [showIcon, setShowIcon] = useState(true)
   const [showTitle, setShowTitle] = useState(true)
   const [showSubtitle, setShowSubtitle] = useState(true)
   const [dismissable, setDismissable] = useState(false)
   const [inCard, setInCard] = useState(false)
+  const [showAction, setShowAction] = useState(false)
+  const [showSecondaryAction, setShowSecondaryAction] = useState(false)
 
-  const icons: Record<string, React.ReactNode> = {
+  /* Figma default icons per type */
+  const defaultIcons: Record<string, React.ReactNode> = {
     default: <Info className="size-md" />,
     destructive: <AlertCircle className="size-md" />,
     success: <CircleCheck className="size-md" />,
     warning: <TriangleAlert className="size-md" />,
     emphasis: <Info className="size-md" />,
   }
+  /* Figma Icon property = instance swap — allow overriding icon */
+  const iconOptions: Record<string, React.ReactNode> = {
+    auto: defaultIcons[type],
+    info: <Info className="size-md" />,
+    "alert-circle": <AlertCircle className="size-md" />,
+    "circle-check": <CircleCheck className="size-md" />,
+    "triangle-alert": <TriangleAlert className="size-md" />,
+    bell: <Bell className="size-md" />,
+    "shield-check": <ShieldCheck className="size-md" />,
+    megaphone: <Megaphone className="size-md" />,
+    zap: <Zap className="size-md" />,
+  }
+  const activeIcon = icon === "auto" ? defaultIcons[type] : iconOptions[icon]
+
   const titles: Record<string, string> = {
     default: "Heads up!",
     destructive: "Error",
@@ -7483,6 +7505,25 @@ function AlertExploreBehavior() {
       ].filter(Boolean).join(" ")
     : ""
 
+  const alertContent = (
+    <>
+      {showIcon && activeIcon}
+      {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
+      {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
+      {(showAction || showSecondaryAction) && (
+        <div className="flex gap-xs mt-xs [&]:pl-7">
+          {showAction && <Button size="sm" variant="secondary">Action</Button>}
+          {showSecondaryAction && <Button size="sm" variant="outline">Cancel</Button>}
+        </div>
+      )}
+      {dismissable && (
+        <button className={["absolute text-current opacity-70 hover:opacity-100 transition-opacity", inCard ? "right-sm top-xs" : "right-md top-sm"].join(" ")} aria-label="Dismiss">
+          <X className="size-md" />
+        </button>
+      )}
+    </>
+  )
+
   return (
     <div className="rounded-2xl border border-border/50 overflow-hidden">
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-primary/5">
@@ -7491,33 +7532,19 @@ function AlertExploreBehavior() {
             <p className="typo-paragraph-sm-bold mb-sm">Card title</p>
             <p className="typo-paragraph-sm text-ghost-foreground mb-md">Some card content that provides context for the alert below.</p>
             <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} className={inCardAlertClass}>
-              {showIcon && icons[type]}
-              {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
-              {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
-              {dismissable && (
-                <button className="absolute right-sm top-xs text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-                  <X className="size-md" />
-                </button>
-              )}
+              {alertContent}
             </Alert>
           </div>
         ) : (
           <div className="w-full max-w-lg">
             <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"}>
-              {showIcon && icons[type]}
-              {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
-              {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
-              {dismissable && (
-                <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-                  <X className="size-md" />
-                </button>
-              )}
+              {alertContent}
             </Alert>
           </div>
         )}
       </div>
       <div className="border-t border-border/50 bg-muted/30 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-md">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Type</Label>
             <Select value={type} onValueChange={setType}>
@@ -7528,6 +7555,23 @@ function AlertExploreBehavior() {
                 <SelectItem value="success">Success</SelectItem>
                 <SelectItem value="warning">Warning</SelectItem>
                 <SelectItem value="emphasis">Emphasis</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Icon</Label>
+            <Select value={icon} onValueChange={setIcon}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Auto (per type)</SelectItem>
+                <SelectItem value="info">Info</SelectItem>
+                <SelectItem value="alert-circle">Alert Circle</SelectItem>
+                <SelectItem value="circle-check">Circle Check</SelectItem>
+                <SelectItem value="triangle-alert">Triangle Alert</SelectItem>
+                <SelectItem value="bell">Bell</SelectItem>
+                <SelectItem value="shield-check">Shield Check</SelectItem>
+                <SelectItem value="megaphone">Megaphone</SelectItem>
+                <SelectItem value="zap">Zap</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -7559,6 +7603,18 @@ function AlertExploreBehavior() {
             <Label className="text-xs text-muted-foreground">Show Icon</Label>
             <div className="pt-1">
               <Switch checked={showIcon} onCheckedChange={setShowIcon} />
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Show Action</Label>
+            <div className="pt-1">
+              <Switch checked={showAction} onCheckedChange={setShowAction} />
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground text-nowrap">2nd Action</Label>
+            <div className="pt-1">
+              <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} />
             </div>
           </div>
         </div>
