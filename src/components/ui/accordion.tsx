@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
  * Vertically collapsible content sections.
  *
  * Variants (Accordion Trigger — Figma):
- *   State:    Default | Hover | Focus
+ *   State:    Default | Hover | Focus | Disable
  *   Type:     Open | Closed
  *   End Item: False | True
  *

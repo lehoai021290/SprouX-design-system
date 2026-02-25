@@ -206,6 +206,7 @@ import {
   Calendar as CalendarIcon,
   Smile,
   ChevronsUpDown,
+  ChevronDown,
   Home,
   Moon,
   Sun,
@@ -8988,84 +8989,96 @@ function AccordionTokensTable() {
   )
 }
 
+/**
+ * Explore Behavior — single variant preview matching Figma properties:
+ *   State:    Default | Hover | Focus | Disable
+ *   Type:     Open | Closed
+ *   End Item: False | True
+ */
 function AccordionExploreBehavior() {
-  const [accordionType, setAccordionType] = useState<"single" | "multiple">("single")
-  const [collapsible, setCollapsible] = useState(true)
-  const [disabled, setDisabled] = useState(false)
+  const [state, setState] = useState("Default")
+  const [type, setType] = useState("Closed")
+  const [endItem, setEndItem] = useState(false)
+
+  const isOpen = type === "Open"
+  const isHover = state === "Hover"
+  const isFocus = state === "Focus"
+  const isDisable = state === "Disable"
+
+  // Disable forces Closed per Figma (no Open variant for Disable)
+  const effectiveOpen = isDisable ? false : isOpen
 
   return (
     <div className="rounded-2xl border border-border/50 overflow-hidden">
       <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
-        {accordionType === "single" ? (
-          <Accordion
-            key={`single-${collapsible}-${disabled}`}
-            type="single"
-            collapsible={collapsible}
-            disabled={disabled}
-            className="w-full max-w-md"
+        <div
+          className={[
+            "w-full max-w-md font-body transition-opacity duration-200",
+            endItem ? "" : "border-b border-border",
+            isDisable ? "opacity-50 pointer-events-none" : "",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "flex flex-1 items-center justify-between gap-xs py-sm text-sm font-semibold tracking-sm text-foreground text-left transition-all",
+              isHover ? "underline" : "",
+              isFocus ? "rounded-lg ring-focus" : "",
+            ].join(" ")}
           >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
-              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>Yes. Smooth open/close transitions by default.</AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ) : (
-          <Accordion
-            key={`multiple-${disabled}`}
-            type="multiple"
-            disabled={disabled}
-            className="w-full max-w-md"
+            <span className="flex-1 text-left">Accordion trigger label</span>
+            <ChevronDown
+              aria-hidden="true"
+              className={[
+                "size-md shrink-0 text-ghost-foreground transition-transform duration-200",
+                effectiveOpen ? "rotate-180" : "",
+              ].join(" ")}
+            />
+          </div>
+          <div
+            className={[
+              "overflow-hidden transition-all duration-200 ease-in-out",
+              effectiveOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0",
+            ].join(" ")}
           >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>Is it styled?</AccordionTrigger>
-              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>Is it animated?</AccordionTrigger>
-              <AccordionContent>Yes. Smooth open/close transitions by default.</AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
+            <div className="pt-0 pb-sm text-sm tracking-sm text-foreground">
+              This is the accordion content area. It expands when the trigger is activated.
+            </div>
+          </div>
+        </div>
       </div>
       <div className="border-t border-border/50 bg-muted/30 p-lg">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={accordionType} onValueChange={(v) => setAccordionType(v as "single" | "multiple")}>
+            <Label className="text-xs text-muted-foreground">State</Label>
+            <Select value={state} onValueChange={setState}>
               <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="single">Single</SelectItem>
-                <SelectItem value="multiple">Multiple</SelectItem>
+                <SelectItem value="Default">Default</SelectItem>
+                <SelectItem value="Hover">Hover</SelectItem>
+                <SelectItem value="Focus">Focus</SelectItem>
+                <SelectItem value="Disable">Disable</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Collapsible</Label>
-            <div className="pt-1">
-              <Switch
-                checked={collapsible}
-                onCheckedChange={setCollapsible}
-                disabled={accordionType === "multiple"}
-              />
-            </div>
+            <Label className="text-xs text-muted-foreground">Type</Label>
+            <Select value={isDisable ? "Closed" : type} onValueChange={setType} disabled={isDisable}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Open">Open</SelectItem>
+                <SelectItem value="Closed">Closed</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Disabled</Label>
-            <div className="pt-1">
-              <Switch checked={disabled} onCheckedChange={setDisabled} />
-            </div>
+            <Label className="text-xs text-muted-foreground">End Item</Label>
+            <Select value={endItem ? "True" : "False"} onValueChange={(v) => setEndItem(v === "True")}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="False">False</SelectItem>
+                <SelectItem value="True">True</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
@@ -9098,7 +9111,8 @@ function AccordionDocs() {
       </header>
 
       {/* ---- Explore Behavior ---- */}
-      <section id="explore-behavior">
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <AccordionExploreBehavior />
       </section>
 
@@ -9228,7 +9242,7 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
 
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" nodeId="66:5034" rows={[
-        ["State", "Default / Hover / Focus", "—", "Hover: underline label. Focus: rounded-lg + ring-focus (3px --ring)"],
+        ["State", "Default / Hover / Focus / Disable", "—", "Hover: underline. Focus: rounded-lg + ring-focus. Disable: opacity-50"],
         ["Type", "Open / Closed", "data-state", "Chevron rotates 180° on open, content slides down"],
         ["End Item", "True / False", "—", "last:border-b-0 removes bottom border on last item"],
         ["Trigger", "flex, gap-xs, py-sm", "AccordionTrigger", "Horizontal flex, 8px gap, 12px py, no radius (0 default)"],
