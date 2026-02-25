@@ -206,7 +206,6 @@ import {
   Calendar as CalendarIcon,
   Smile,
   ChevronsUpDown,
-  ChevronDown,
   Home,
   Moon,
   Sun,
@@ -8989,8 +8988,93 @@ function AccordionTokensTable() {
   )
 }
 
+function AccordionExploreBehavior() {
+  const [accordionType, setAccordionType] = useState<"single" | "multiple">("single")
+  const [collapsible, setCollapsible] = useState(true)
+  const [disabled, setDisabled] = useState(false)
+
+  return (
+    <div className="rounded-2xl border border-border/50 overflow-hidden">
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+        {accordionType === "single" ? (
+          <Accordion
+            key={`single-${collapsible}-${disabled}`}
+            type="single"
+            collapsible={collapsible}
+            disabled={disabled}
+            className="w-full max-w-md"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>Yes. Smooth open/close transitions by default.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ) : (
+          <Accordion
+            key={`multiple-${disabled}`}
+            type="multiple"
+            disabled={disabled}
+            className="w-full max-w-md"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>Yes. Smooth open/close transitions by default.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+      </div>
+      <div className="border-t border-border/50 bg-muted/30 p-lg">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Type</Label>
+            <Select value={accordionType} onValueChange={(v) => setAccordionType(v as "single" | "multiple")}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="single">Single</SelectItem>
+                <SelectItem value="multiple">Multiple</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Collapsible</Label>
+            <div className="pt-1">
+              <Switch
+                checked={collapsible}
+                onCheckedChange={setCollapsible}
+                disabled={accordionType === "multiple"}
+              />
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Disabled</Label>
+            <div className="pt-1">
+              <Switch checked={disabled} onCheckedChange={setDisabled} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const accordionSections: TocSection[] = [
-  { id: "playground", label: "Playground" },
+  { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
   { id: "props", label: "Props" },
@@ -9013,50 +9097,9 @@ function AccordionDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Vertically collapsible content sections. Single or multiple items can be open.</p>
       </header>
 
-      {/* ---- Playground ---- */}
-      <section id="playground">
-        <Playground
-          controls={[
-            { type: "select", label: "State", prop: "state", defaultValue: "default", options: [
-              { label: "Default", value: "default" },
-              { label: "Hover", value: "hover" },
-              { label: "Focus", value: "focus" },
-            ]},
-            { type: "select", label: "Type", prop: "openState", defaultValue: "closed", options: [
-              { label: "Open", value: "open" },
-              { label: "Closed", value: "closed" },
-            ]},
-            { type: "switch", label: "End Item", prop: "endItem", defaultValue: false },
-          ]}
-          render={(p) => {
-            const isOpen = p.openState === "open"
-            const isFocus = p.state === "focus"
-            const isHover = p.state === "hover"
-            return (
-              <div className={[
-                "w-full max-w-md font-body",
-                p.endItem ? "" : "border-b border-border",
-              ].join(" ")}>
-                <div className={[
-                  "flex flex-1 items-center justify-between gap-xs py-sm text-sm font-semibold tracking-sm text-foreground text-left transition-all",
-                  isHover ? "underline" : "",
-                  isFocus ? "rounded-lg ring-focus" : "",
-                ].join(" ")}>
-                  <span className="flex-1 text-left">Accordion trigger label</span>
-                  <ChevronDown aria-hidden="true" className={[
-                    "size-md shrink-0 text-ghost-foreground transition-transform duration-200",
-                    isOpen ? "rotate-180" : "",
-                  ].join(" ")} />
-                </div>
-                {isOpen && (
-                  <div className="pt-0 pb-sm text-sm tracking-sm text-foreground">
-                    This is the accordion content panel. It slides down when the trigger is clicked.
-                  </div>
-                )}
-              </div>
-            )
-          }}
-        />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior">
+        <AccordionExploreBehavior />
       </section>
 
       {/* ---- Installation ---- */}
