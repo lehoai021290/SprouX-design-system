@@ -529,60 +529,64 @@
 /* ============================================================
    Typography — Figma Text Styles (synced 1:1)
 
-   IMPORTANT: These MUST be in @layer components (not utilities).
-   Tailwind v4 reserves @layer utilities for single-property classes.
-   Multi-property text styles in @layer utilities get overridden by
-   Tailwind's internal font-weight/font-size/line-height mechanisms.
-   @layer components is the correct layer for composite style classes.
+   Uses Tailwind v4 @utility directive so each class is inserted
+   into the utilities layer alongside built-in utilities.
+   This ensures typography classes OVERRIDE element resets like
+   `button { font: inherit; font-weight: medium }` which Tailwind
+   v4 places in @layer base/utilities.
+
+   @layer components would LOSE to @layer utilities (lower priority).
+   @utility = same layer as built-in utilities + class specificity (0,1,0)
+   beats element selector (0,0,1), so .text-paragraph-sm-bold wins
+   over button { font-weight: medium }.
    ============================================================ */
-@layer components {
-  /* ---- Headings (Figma "heading 1..4") ---- */
 
-  .text-heading-1 { font-family: var(--font-heading); font-weight: 600; font-size: 48px; line-height: 48px; letter-spacing: -1.5px; }
-  .text-heading-2 { font-family: var(--font-heading); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
-  .text-heading-3 { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 28.8px; letter-spacing: -1px; }
-  .text-heading-4 { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0; }
+/* ---- Headings (Figma "heading 1..4") ---- */
 
-  /* ---- Paragraph Extra Large (Figma "paragraph extra large/*") — Geist 30/32 ls:-1.0 ---- */
+@utility text-heading-1 { font-family: var(--font-heading); font-weight: 600; font-size: 48px; line-height: 48px; letter-spacing: -1.5px; }
+@utility text-heading-2 { font-family: var(--font-heading); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility text-heading-3 { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 28.8px; letter-spacing: -1px; }
+@utility text-heading-4 { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0; }
 
-  .text-paragraph-xl        { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
-  .text-paragraph-xl-medium { font-family: var(--font-body); font-weight: 500; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
-  .text-paragraph-xl-bold   { font-family: var(--font-body); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+/* ---- Paragraph Extra Large (Figma "paragraph extra large/*") — Geist 30/32 ls:-1.0 ---- */
 
-  /* ---- Paragraph Large (Figma "pharagrap large/*") — Geist 20/24 ls:-1.0 ---- */
+@utility text-paragraph-xl        { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility text-paragraph-xl-medium { font-family: var(--font-body); font-weight: 500; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility text-paragraph-xl-bold   { font-family: var(--font-body); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
 
-  .text-paragraph-lg        { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
-  .text-paragraph-lg-medium { font-family: var(--font-body); font-weight: 500; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
-  .text-paragraph-lg-bold   { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+/* ---- Paragraph Large (Figma "pharagrap large/*") — Geist 20/24 ls:-1.0 ---- */
 
-  /* ---- Paragraph Regular (Figma "paragraph regular/*") — Geist 16/24 ls:0 ---- */
+@utility text-paragraph-lg        { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility text-paragraph-lg-medium { font-family: var(--font-body); font-weight: 500; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility text-paragraph-lg-bold   { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
 
-  .text-paragraph        { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
-  .text-paragraph-medium { font-family: var(--font-body); font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0; }
-  .text-paragraph-bold   { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+/* ---- Paragraph Regular (Figma "paragraph regular/*") — Geist 16/24 ls:0 ---- */
 
-  /* ---- Paragraph Small (Figma "paragraph small/*") — Geist 14/20 ls:0.07px ---- */
+@utility text-paragraph        { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility text-paragraph-medium { font-family: var(--font-body); font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility text-paragraph-bold   { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: 0; }
 
-  .text-paragraph-sm        { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
-  .text-paragraph-sm-medium { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
-  .text-paragraph-sm-bold   { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+/* ---- Paragraph Small (Figma "paragraph small/*") — Geist 14/20 ls:0.07px ---- */
 
-  /* ---- Paragraph Mini (Figma "paragraph mini/*") — Geist 12/16 ls:0.18px ---- */
+@utility text-paragraph-sm        { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility text-paragraph-sm-medium { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility text-paragraph-sm-bold   { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
 
-  .text-paragraph-mini        { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
-  .text-paragraph-mini-medium { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
-  .text-paragraph-mini-bold   { font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+/* ---- Paragraph Mini (Figma "paragraph mini/*") — Geist 12/16 ls:0.18px ---- */
 
-  /* ---- Paragraph Tiny (Figma "paragraph tiny/*") — Geist 10/12 ls:0.15px ---- */
+@utility text-paragraph-mini        { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility text-paragraph-mini-medium { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility text-paragraph-mini-bold   { font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
 
-  .text-paragraph-tiny        { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
-  .text-paragraph-tiny-medium { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
-  .text-paragraph-tiny-bold   { font-family: var(--font-body); font-weight: 600; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+/* ---- Paragraph Tiny (Figma "paragraph tiny/*") — Geist 10/12 ls:0.15px ---- */
 
-  /* ---- Monospaced (Figma "monospaced") — Geist Mono 400 16/24 ls:0 ---- */
+@utility text-paragraph-tiny        { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility text-paragraph-tiny-medium { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility text-paragraph-tiny-bold   { font-family: var(--font-body); font-weight: 600; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
 
-  .text-monospaced { font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
-}
+/* ---- Monospaced (Figma "monospaced") — Geist Mono 400 16/24 ls:0 ---- */
+
+@utility text-monospaced { font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
 
 /* ============================================================
    Utility Classes (single-property — correct layer for Tailwind v4)
