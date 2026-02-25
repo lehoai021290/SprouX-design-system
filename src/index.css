@@ -527,225 +527,67 @@
 }
 
 /* ============================================================
-   Typography Utility Classes (from Figma specs)
+   Typography — Figma Text Styles (synced 1:1)
+
+   IMPORTANT: These MUST be in @layer components (not utilities).
+   Tailwind v4 reserves @layer utilities for single-property classes.
+   Multi-property text styles in @layer utilities get overridden by
+   Tailwind's internal font-weight/font-size/line-height mechanisms.
+   @layer components is the correct layer for composite style classes.
+   ============================================================ */
+@layer components {
+  /* ---- Headings (Figma "heading 1..4") ---- */
+
+  .text-heading-1 { font-family: var(--font-heading); font-weight: 600; font-size: 48px; line-height: 48px; letter-spacing: -1.5px; }
+  .text-heading-2 { font-family: var(--font-heading); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+  .text-heading-3 { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 28.8px; letter-spacing: -1px; }
+  .text-heading-4 { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: 0; }
+
+  /* ---- Paragraph Extra Large (Figma "paragraph extra large/*") — Geist 30/32 ls:-1.0 ---- */
+
+  .text-paragraph-xl        { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+  .text-paragraph-xl-medium { font-family: var(--font-body); font-weight: 500; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+  .text-paragraph-xl-bold   { font-family: var(--font-body); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+
+  /* ---- Paragraph Large (Figma "pharagrap large/*") — Geist 20/24 ls:-1.0 ---- */
+
+  .text-paragraph-lg        { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+  .text-paragraph-lg-medium { font-family: var(--font-body); font-weight: 500; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+  .text-paragraph-lg-bold   { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+
+  /* ---- Paragraph Regular (Figma "paragraph regular/*") — Geist 16/24 ls:0 ---- */
+
+  .text-paragraph        { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+  .text-paragraph-medium { font-family: var(--font-body); font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+  .text-paragraph-bold   { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+
+  /* ---- Paragraph Small (Figma "paragraph small/*") — Geist 14/20 ls:0.07px ---- */
+
+  .text-paragraph-sm        { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+  .text-paragraph-sm-medium { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+  .text-paragraph-sm-bold   { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+
+  /* ---- Paragraph Mini (Figma "paragraph mini/*") — Geist 12/16 ls:0.18px ---- */
+
+  .text-paragraph-mini        { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+  .text-paragraph-mini-medium { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+  .text-paragraph-mini-bold   { font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+
+  /* ---- Paragraph Tiny (Figma "paragraph tiny/*") — Geist 10/12 ls:0.15px ---- */
+
+  .text-paragraph-tiny        { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+  .text-paragraph-tiny-medium { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+  .text-paragraph-tiny-bold   { font-family: var(--font-body); font-weight: 600; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+
+  /* ---- Monospaced (Figma "monospaced") — Geist Mono 400 16/24 ls:0 ---- */
+
+  .text-monospaced { font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+}
+
+/* ============================================================
+   Utility Classes (single-property — correct layer for Tailwind v4)
    ============================================================ */
 @layer utilities {
-  /* ============================================================
-     Headings — from Figma "heading 1..4" text styles
-     Font: Fraunces (h1-h3), Geist (h4)
-     ============================================================ */
-
-  /* heading 1: Fraunces SemiBold 48/48 ls:-1.5 */
-  .text-heading-1 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 48px;
-    line-height: 48px;
-    letter-spacing: -1.5px;
-  }
-
-  /* heading 2: Fraunces SemiBold 30/32 ls:-1.0 */
-  .text-heading-2 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 32px;
-    letter-spacing: -1px;
-  }
-
-  /* heading 3: Fraunces SemiBold 24/28.8 ls:-1.0 */
-  .text-heading-3 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 28.8px;
-    letter-spacing: -1px;
-  }
-
-  /* heading 4: Geist SemiBold 20/24 ls:0 */
-  .text-heading-4 {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 0;
-  }
-
-  /* ============================================================
-     Paragraph Extra Large — Figma "paragraph extra large/*"
-     Geist 30/32 ls:-1.0
-     ============================================================ */
-
-  .text-paragraph-xl {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 32px;
-    letter-spacing: -1px;
-  }
-  .text-paragraph-xl-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 32px;
-    letter-spacing: -1px;
-  }
-  .text-paragraph-xl-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 32px;
-    letter-spacing: -1px;
-  }
-
-  /* ============================================================
-     Paragraph Large — Figma "pharagrap large/*"
-     Geist 20/24 ls:-1.0
-     ============================================================ */
-
-  .text-paragraph-lg {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: -1px;
-  }
-  .text-paragraph-lg-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: -1px;
-  }
-  .text-paragraph-lg-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: -1px;
-  }
-
-  /* ============================================================
-     Paragraph Regular — Figma "paragraph regular/*"
-     Geist 16/24 ls:0
-     ============================================================ */
-
-  .text-paragraph {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0;
-  }
-  .text-paragraph-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0;
-  }
-  .text-paragraph-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0;
-  }
-
-  /* ============================================================
-     Paragraph Small — Figma "paragraph small/*"
-     Geist 14/20 ls:0.07px
-     ============================================================ */
-
-  .text-paragraph-sm {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.07px;
-  }
-  .text-paragraph-sm-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.07px;
-  }
-  .text-paragraph-sm-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.07px;
-  }
-
-  /* ============================================================
-     Paragraph Mini — Figma "paragraph mini/*"
-     Geist 12/16 ls:0.18px
-     ============================================================ */
-
-  .text-paragraph-mini {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.18px;
-  }
-  .text-paragraph-mini-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.18px;
-  }
-  .text-paragraph-mini-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.18px;
-  }
-
-  /* ============================================================
-     Paragraph Tiny — Figma "paragraph tiny/*"
-     Geist 10/12 ls:0.15px
-     ============================================================ */
-
-  .text-paragraph-tiny {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 12px;
-    letter-spacing: 0.15px;
-  }
-  .text-paragraph-tiny-medium {
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 10px;
-    line-height: 12px;
-    letter-spacing: 0.15px;
-  }
-  .text-paragraph-tiny-bold {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 10px;
-    line-height: 12px;
-    letter-spacing: 0.15px;
-  }
-
-  /* ============================================================
-     Monospaced — Figma "monospaced"
-     Geist Mono 400 16/24 ls:0
-     ============================================================ */
-
-  .text-monospaced {
-    font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0;
-  }
-
   /* ---- Focus Ring Utilities ---- */
 
   /* Focus ring: 3px spread, uses --ring color */
