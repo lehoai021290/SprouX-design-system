@@ -206,6 +206,7 @@ import {
   Calendar as CalendarIcon,
   Smile,
   ChevronsUpDown,
+  ChevronDown,
   Home,
   Moon,
   Sun,
@@ -8827,43 +8828,42 @@ function AccordionDocs() {
         <p className="text-paragraph text-muted-foreground max-w-3xl">Vertically collapsible content sections. Single or multiple items can be open.</p>
       </header>
 
-      {/* Interactive playground */}
+      {/* Interactive playground — matches Figma variant properties */}
       <Playground
         controls={[
-          { type: "select", label: "Type", prop: "type", defaultValue: "single", options: [
-            { label: "Single", value: "single" },
-            { label: "Multiple", value: "multiple" },
+          { type: "select", label: "State", prop: "state", defaultValue: "default", options: [
+            { label: "Default", value: "default" },
+            { label: "Hover", value: "hover" },
+            { label: "Focus", value: "focus" },
           ]},
-          { type: "switch", label: "Collapsible", prop: "collapsible", defaultValue: true },
-          { type: "select", label: "Default Open", prop: "defaultOpen", defaultValue: "none", options: [
-            { label: "None", value: "none" },
-            { label: "Item 1", value: "item-1" },
-            { label: "Item 2", value: "item-2" },
-            { label: "Item 3", value: "item-3" },
+          { type: "select", label: "Type", prop: "openState", defaultValue: "closed", options: [
+            { label: "Open", value: "open" },
+            { label: "Closed", value: "closed" },
           ]},
+          { type: "switch", label: "End Item", prop: "endItem", defaultValue: false },
         ]}
         render={(p) => {
-          const items = (
-            <>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>Is it styled?</AccordionTrigger>
-                <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Is it animated?</AccordionTrigger>
-                <AccordionContent>Yes. Smooth open/close transitions.</AccordionContent>
-              </AccordionItem>
-            </>
-          )
-          const dv = p.defaultOpen !== "none" ? (p.defaultOpen as string) : undefined
-          return p.type === "multiple" ? (
-            <Accordion type="multiple" defaultValue={dv ? [dv] : undefined} className="w-full max-w-md">{items}</Accordion>
-          ) : (
-            <Accordion type="single" collapsible={p.collapsible} defaultValue={dv} className="w-full max-w-md">{items}</Accordion>
+          const isOpen = p.openState === "open"
+          const isFocus = p.state === "focus"
+          return (
+            <div className="w-full max-w-md">
+              <div className={[
+                "relative flex items-center justify-between gap-xs py-md text-sm font-semibold tracking-sm rounded-lg transition-all",
+                isFocus ? "ring-focus" : "",
+                p.endItem ? "" : "border-b border-border",
+              ].join(" ")}>
+                <span className="flex-1 text-left text-foreground">Accordion trigger label</span>
+                <ChevronDown aria-hidden="true" className={[
+                  "size-md shrink-0 text-ghost-foreground transition-transform duration-200",
+                  isOpen ? "rotate-180" : "",
+                ].join(" ")} />
+              </div>
+              {isOpen && (
+                <div className="pb-md text-sm text-muted-foreground">
+                  This is the accordion content panel. It slides down when the trigger is clicked.
+                </div>
+              )}
+            </div>
           )
         }}
       />
@@ -8917,16 +8917,15 @@ function AccordionDocs() {
 
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping rows={[
-        ["Type (Open/Closed)", "Open / Closed", "defaultValue", "Controls which item starts open"],
-        ["Type", "Single / Multiple", "type", '"single" — one item open at a time; "multiple" — any number open'],
-        ["Collapsible", "true", "collapsible", "true (allows all items to be closed)"],
-        ["State", "Default / Hover / Focus", "—", "Hover & focus-visible handled by CSS"],
-        ["End Item", "True / False", "—", "last:border-b-0 removes border on last item"],
-        ["Item Border", "Bottom", "—", "border-b border-border on AccordionItem"],
-        ["Trigger Font", "SemiBold", "—", "font-semibold, tracking-sm"],
-        ["Icon", "ChevronDown", "AccordionTrigger", "size-md, text-ghost-foreground, rotates 180° on open"],
-        ["Focus Ring", "3px ring", "—", "focus-visible:ring-focus, rounded-lg"],
-        ["Animation", "Open/Close", "—", "animate-accordion-down/up"],
+        ["State", "Default / Hover / Focus", "—", "CSS :hover (no change), :focus-visible → ring-focus"],
+        ["Type", "Open / Closed", "data-state", "Chevron rotates 180° on open, content slides down"],
+        ["End Item", "True / False", "—", "last:border-b-0 removes bottom border on last item"],
+        ["Container", "flex, gap-xs, py-md, rounded-lg", "AccordionTrigger", "Horizontal flex, 8px gap, 16px padding-y, 8px radius"],
+        ["Label", "SemiBold 14/20, tracking-sm", "children", "font-semibold text-sm tracking-sm text-foreground"],
+        ["Icon", "chevron-down 16×16", "ChevronDown", "size-md text-ghost-foreground, rotates 180° on open"],
+        ["Border", "1px border-border", "AccordionItem", "border-b border-border (hidden on last item)"],
+        ["Focus Ring", "0 0 0 3px var(--ring)", "—", "focus-visible:ring-focus outline-none rounded-lg"],
+        ["Animation", "Open / Close", "—", "animate-accordion-down / animate-accordion-up"],
       ]} />
     </div>
   )
