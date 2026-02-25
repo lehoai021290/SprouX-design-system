@@ -197,7 +197,6 @@ import {
   AlignCenter,
   AlignRight,
   AlertCircle,
-  Terminal,
   Info,
   CircleCheck,
   TriangleAlert,
@@ -7451,7 +7450,7 @@ function AlertExploreBehavior() {
   const [inCard, setInCard] = useState(false)
 
   const icons: Record<string, React.ReactNode> = {
-    default: <Terminal className="size-md" />,
+    default: <Info className="size-md" />,
     destructive: <AlertCircle className="size-md" />,
     success: <CircleCheck className="size-md" />,
     warning: <TriangleAlert className="size-md" />,
@@ -7472,21 +7471,50 @@ function AlertExploreBehavior() {
     emphasis: "A new version is available. Update to get the latest features.",
   }
 
+  /* Figma In Card spec:
+     - No border stroke (border-transparent)
+     - Neutral BG: #f7f7f6 → bg-muted (closest), other types keep variant BG
+     - Padding: px-sm py-xs (12×8) instead of px-md py-sm (16×12)
+     - Sits inside a card container (white bg, border, shadow) */
+  const inCardAlertClass = inCard
+    ? [
+        "border-transparent px-sm py-xs",
+        type === "default" ? "bg-muted" : "",
+      ].filter(Boolean).join(" ")
+    : ""
+
   return (
     <div className="rounded-2xl border border-border/50 overflow-hidden">
-      <div className={["p-4xl flex items-center justify-center min-h-[160px]", inCard ? "bg-muted/50" : "bg-primary/5"].join(" ")}>
-        <div className={["w-full max-w-lg", inCard ? "rounded-xl border border-border bg-background p-lg shadow-sm" : ""].filter(Boolean).join(" ")}>
-          <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"}>
-            {showIcon && icons[type]}
-            {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
-            {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
-            {dismissable && (
-              <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-                <X className="size-md" />
-              </button>
-            )}
-          </Alert>
-        </div>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-primary/5">
+        {inCard ? (
+          <div className="w-full max-w-lg rounded-xl border border-border bg-card p-lg shadow-sm">
+            <p className="typo-paragraph-sm-bold mb-sm">Card title</p>
+            <p className="typo-paragraph-sm text-ghost-foreground mb-md">Some card content that provides context for the alert below.</p>
+            <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} className={inCardAlertClass}>
+              {showIcon && icons[type]}
+              {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
+              {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
+              {dismissable && (
+                <button className="absolute right-sm top-xs text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+                  <X className="size-md" />
+                </button>
+              )}
+            </Alert>
+          </div>
+        ) : (
+          <div className="w-full max-w-lg">
+            <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"}>
+              {showIcon && icons[type]}
+              {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
+              {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
+              {dismissable && (
+                <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+                  <X className="size-md" />
+                </button>
+              )}
+            </Alert>
+          </div>
+        )}
       </div>
       <div className="border-t border-border/50 bg-muted/30 p-lg">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-md">
@@ -7588,15 +7616,16 @@ pnpm add class-variance-authority clsx tailwind-merge lucide-react
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <Example title="Default (Neutral)" description="General-purpose notification with a neutral appearance." code={`<Alert>\n  <Terminal className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can add components to your app using the CLI.</AlertDescription>\n</Alert>`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Example title="Neutral" description="General-purpose notification with a neutral appearance." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can add components to your app using the CLI.</AlertDescription>\n</Alert>`}>
           <Alert>
-            <Terminal className="size-md" />
+            <Info className="size-md" />
             <AlertTitle>Heads up!</AlertTitle>
             <AlertDescription>You can add components to your app using the CLI.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Destructive (Error)" description="Use for error messages that require attention." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Error</AlertTitle>\n  <AlertDescription>Your session has expired. Please log in again.</AlertDescription>\n</Alert>`}>
+        <Example title="Error" description="Use for error messages that require user attention." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Error</AlertTitle>\n  <AlertDescription>Your session has expired. Please log in again.</AlertDescription>\n</Alert>`}>
           <Alert variant="destructive">
             <AlertCircle className="size-md" />
             <AlertTitle>Error</AlertTitle>
@@ -7628,12 +7657,72 @@ pnpm add class-variance-authority clsx tailwind-merge lucide-react
           </Alert>
         </Example>
 
+        <Example title="Title Only" description="Alert with only a title, no description." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>New update available</AlertTitle>\n</Alert>`}>
+          <Alert>
+            <Info className="size-md" />
+            <AlertTitle>New update available</AlertTitle>
+          </Alert>
+        </Example>
+
+        <Example title="Description Only" description="Alert with only a description, no title." code={`<Alert variant="success">\n  <CircleCheck className="size-md" />\n  <AlertDescription>Your profile has been updated.</AlertDescription>\n</Alert>`}>
+          <Alert variant="success">
+            <CircleCheck className="size-md" />
+            <AlertDescription>Your profile has been updated.</AlertDescription>
+          </Alert>
+        </Example>
+
         <Example title="Without Icon" description="Alert without a leading icon." code={`<Alert>\n  <AlertTitle>Note</AlertTitle>\n  <AlertDescription>This is a simple alert without an icon.</AlertDescription>\n</Alert>`}>
           <Alert>
             <AlertTitle>Note</AlertTitle>
             <AlertDescription>This is a simple alert without an icon.</AlertDescription>
           </Alert>
         </Example>
+
+        <Example title="Dismissable" description="Alert with a dismiss button for user-closable messages." code={`<Alert className="pr-10">\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can dismiss this notification.</AlertDescription>\n  <button className="absolute right-md top-sm opacity-70 hover:opacity-100">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
+          <Alert className="pr-10">
+            <Info className="size-md" />
+            <AlertTitle>Heads up!</AlertTitle>
+            <AlertDescription>You can dismiss this notification.</AlertDescription>
+            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+              <X className="size-md" />
+            </button>
+          </Alert>
+        </Example>
+
+        <Example title="In Card" description="Alert embedded inside a card — no border, muted background, compact padding." code={`{/* In Card: border-transparent, bg-muted, px-sm py-xs */}\n<div className="rounded-xl border bg-card p-lg shadow-sm">\n  <p className="typo-paragraph-sm-bold mb-sm">Payment details</p>\n  <Alert className="border-transparent bg-muted px-sm py-xs">\n    <Info className="size-md" />\n    <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>\n  </Alert>\n</div>`}>
+          <div className="rounded-xl border border-border bg-card p-lg shadow-sm">
+            <p className="typo-paragraph-sm-bold mb-sm">Payment details</p>
+            <Alert className="border-transparent bg-muted px-sm py-xs">
+              <Info className="size-md" />
+              <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>
+            </Alert>
+          </div>
+        </Example>
+
+        <Example title="Form Validation" description="Error alert summarizing multiple form validation issues." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>There were 2 errors with your submission</AlertTitle>\n  <AlertDescription>\n    <ul className="list-disc pl-4 mt-xs space-y-1">\n      <li>Email address is required</li>\n      <li>Password must be at least 8 characters</li>\n    </ul>\n  </AlertDescription>\n</Alert>`}>
+          <Alert variant="destructive">
+            <AlertCircle className="size-md" />
+            <AlertTitle>There were 2 errors with your submission</AlertTitle>
+            <AlertDescription>
+              <ul className="list-disc pl-4 mt-xs space-y-1">
+                <li>Email address is required</li>
+                <li>Password must be at least 8 characters</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </Example>
+
+        <Example title="With Link" description="Alert description containing an inline link for user action." code={`<Alert variant="emphasis">\n  <Info className="size-md" />\n  <AlertTitle>New version available</AlertTitle>\n  <AlertDescription>\n    Version 2.0 is now available.{" "}\n    <a href="#" className="underline font-medium">View release notes</a>\n  </AlertDescription>\n</Alert>`}>
+          <Alert variant="emphasis">
+            <Info className="size-md" />
+            <AlertTitle>New version available</AlertTitle>
+            <AlertDescription>
+              Version 2.0 is now available.{" "}
+              <a href="#" className="underline font-medium">View release notes</a>
+            </AlertDescription>
+          </Alert>
+        </Example>
+        </div>
       </section>
 
       {/* ---- Props ---- */}
@@ -9511,6 +9600,7 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Example title="Single (default)" description="Only one item can be open at a time. Set collapsible to allow closing the open item." code={`<Accordion type="single" collapsible className="w-full">\n  <AccordionItem value="item-1">\n    <AccordionTrigger>Is it accessible?</AccordionTrigger>\n    <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-2">\n    <AccordionTrigger>Is it styled?</AccordionTrigger>\n    <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-3">\n    <AccordionTrigger>Is it animated?</AccordionTrigger>\n    <AccordionContent>Yes. It's animated by default with smooth transitions.</AccordionContent>\n  </AccordionItem>\n</Accordion>`}>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
@@ -9570,6 +9660,7 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
             </AccordionItem>
           </Accordion>
         </Example>
+        </div>
       </section>
 
       {/* ---- Props ---- */}
