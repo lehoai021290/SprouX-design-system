@@ -8845,11 +8845,13 @@ function AccordionDocs() {
         render={(p) => {
           const isOpen = p.openState === "open"
           const isFocus = p.state === "focus"
+          const isHover = p.state === "hover"
           return (
             <div className="w-full max-w-md">
               <div className={[
-                "relative flex items-center justify-between gap-xs py-sm text-sm font-semibold tracking-sm text-foreground rounded-lg transition-all",
-                isFocus ? "ring-focus" : "",
+                "relative flex items-center justify-between gap-xs py-sm text-sm font-semibold tracking-sm text-foreground transition-all",
+                isHover ? "underline" : "",
+                isFocus ? "rounded-lg ring-focus" : "",
                 p.endItem ? "" : "border-b border-border",
               ].join(" ")}>
                 <span className="flex-1 text-left">Accordion trigger label</span>
@@ -8917,15 +8919,16 @@ function AccordionDocs() {
 
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping rows={[
-        ["State", "Default / Hover / Focus", "—", "Hover: no visual change. Focus: ring-focus (3px --ring)"],
+        ["State", "Default / Hover / Focus", "—", "Hover: underline label. Focus: rounded-lg + ring-focus (3px --ring)"],
         ["Type", "Open / Closed", "data-state", "Chevron rotates 180° on open, content slides down"],
         ["End Item", "True / False", "—", "last:border-b-0 removes bottom border on last item"],
-        ["Trigger", "flex, gap-xs, py-sm, rounded-lg", "AccordionTrigger", "Horizontal flex, 8px gap, 12px padding-y, 8px radius"],
+        ["Trigger", "flex, gap-xs, py-sm", "AccordionTrigger", "Horizontal flex, 8px gap, 12px py, no radius (0 default)"],
         ["Label", "SemiBold 14/20, tracking-sm", "children", "font-semibold text-sm tracking-sm text-foreground"],
         ["Icon", "chevron-down 16×16", "ChevronDown", "size-md text-ghost-foreground, rotates 180° on open"],
-        ["Content", "pb-sm, text-sm, tracking-sm", "AccordionContent", "12px padding-bottom, 14px/20px, text-foreground"],
+        ["Content", "pb-sm, text-sm, tracking-sm", "AccordionContent", "12px pb, 14px/20px, text-foreground"],
         ["Border", "1px --border", "AccordionItem", "border-b border-border (hidden on last item)"],
-        ["Focus Ring", "0 0 0 3px --ring", "—", "focus-visible:ring-focus outline-none rounded-lg"],
+        ["Focus Ring", "0 0 0 3px --ring", "—", "focus-visible:rounded-lg focus-visible:ring-focus outline-none"],
+        ["Disabled", "opacity-50", "disabled", "disabled:pointer-events-none disabled:opacity-50 (Shadcn)"],
         ["Animation", "Open / Close", "—", "animate-accordion-down / animate-accordion-up"],
       ]} />
     </div>
