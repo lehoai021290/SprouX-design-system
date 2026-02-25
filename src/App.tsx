@@ -9183,6 +9183,23 @@ pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
             </AccordionItem>
           </Accordion>
         </Example>
+
+        <Example title="Disabled" description="Use the disabled prop on AccordionItem to prevent interaction. The disabled item appears faded and cannot be expanded." code={`<Accordion type="single" collapsible className="w-full">\n  <AccordionItem value="item-1">\n    <AccordionTrigger>Is it accessible?</AccordionTrigger>\n    <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-2" disabled>\n    <AccordionTrigger>Is it styled?</AccordionTrigger>\n    <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-3">\n    <AccordionTrigger>Is it animated?</AccordionTrigger>\n    <AccordionContent>Yes. It's animated by default with smooth transitions.</AccordionContent>\n  </AccordionItem>\n</Accordion>`}>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is it accessible?</AccordionTrigger>
+              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2" disabled>
+              <AccordionTrigger>Is it styled?</AccordionTrigger>
+              <AccordionContent>Yes. It comes with SprouX default styles.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>Yes. It's animated by default with smooth transitions.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Example>
       </section>
 
       {/* ---- Props ---- */}
