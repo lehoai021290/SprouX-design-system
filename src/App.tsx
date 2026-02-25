@@ -8907,13 +8907,28 @@ function AccordionDocs() {
             </AccordionItem>
           </Accordion>
         </Example>
+
+        <Example title="Default Open" code={`<Accordion type="single" collapsible defaultValue="item-1" className="w-full">\n  <AccordionItem value="item-1">\n    <AccordionTrigger>What is your return policy?</AccordionTrigger>\n    <AccordionContent>You can return items within 30 days of purchase for a full refund.</AccordionContent>\n  </AccordionItem>\n  <AccordionItem value="item-2">\n    <AccordionTrigger>How long does shipping take?</AccordionTrigger>\n    <AccordionContent>Standard shipping takes 5-7 business days. Express options are available at checkout.</AccordionContent>\n  </AccordionItem>\n</Accordion>`}>
+          <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>What is your return policy?</AccordionTrigger>
+              <AccordionContent>You can return items within 30 days of purchase for a full refund.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>How long does shipping take?</AccordionTrigger>
+              <AccordionContent>Standard shipping takes 5-7 business days. Express options are available at checkout.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Example>
       </section>
 
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="grid grid-cols-2 gap-6">
           <DoItem text="Use Accordion for FAQ sections and collapsible settings." />
+          <DoItem text="Keep trigger labels concise and descriptive — users scan quickly." />
           <DontItem text="Don't nest Accordions inside Accordions — keep the hierarchy flat." />
+          <DontItem text="Don't hide critical information inside collapsed sections that users must see." />
         </div>
       </section>
 
