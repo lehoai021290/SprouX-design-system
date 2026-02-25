@@ -27,7 +27,8 @@ import { cn } from "@/lib/utils"
  *   Description:typo-paragraph-sm (Geist 400 14/20 ls:0.07px)
  *   Gap:        icon-to-text gap-sm (12px), title-to-desc gap-xs (8px)
  *
- *   Neutral:  bg-background, border-border, text-foreground, desc: text-ghost-foreground
+ *   Neutral:        bg-card, border-border, text-foreground, desc: text-ghost-foreground
+ *   Neutral inCard: bg-card-subtle (same border/text)
  *   Error:    bg-destructive-subtle, border-destructive-border, text-destructive-subtle-foreground
  *   Success:  bg-success-subtle, border-success-border, text-success-subtle-foreground
  *   Warning:  bg-warning-subtle, border-warning-border, text-warning-subtle-foreground
@@ -39,7 +40,7 @@ const alertVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-background border-border text-foreground [&>svg]:text-foreground *:data-[slot=alert-description]:text-ghost-foreground",
+          "bg-card border-border text-foreground [&>svg]:text-foreground *:data-[slot=alert-description]:text-ghost-foreground",
         destructive:
           "bg-destructive-subtle border-destructive-border text-destructive-subtle-foreground [&>svg]:text-destructive-subtle-foreground",
         success:
@@ -59,13 +60,22 @@ const alertVariants = cva(
 function Alert({
   className,
   variant,
+  inCard,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof alertVariants> & {
+    /** Use when Alert is placed inside a Card — switches neutral bg to card-subtle */
+    inCard?: boolean
+  }) {
   return (
     <div
       data-slot="alert"
       role="alert"
-      className={cn(alertVariants({ variant }), className)}
+      className={cn(
+        alertVariants({ variant }),
+        inCard && (!variant || variant === "default") && "bg-card-subtle",
+        className
+      )}
       {...props}
     />
   )
