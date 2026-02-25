@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
@@ -94,6 +95,7 @@
   /* --- Typography (from Figma) --- */
   --font-heading: "Fraunces", Georgia, serif;
   --font-body: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 
   /* --- SprouX Color Palette (from Figma Variables) --- */
 
@@ -528,9 +530,12 @@
    Typography Utility Classes (from Figma specs)
    ============================================================ */
 @layer utilities {
-  /* ---- Headings (Fraunces) ---- */
+  /* ============================================================
+     Headings — from Figma "heading 1..4" text styles
+     Font: Fraunces (h1-h3), Geist (h4)
+     ============================================================ */
 
-  /* Heading 1: Fraunces Semibold 48/48 ls:-1.5 */
+  /* heading 1: Fraunces SemiBold 48/48 ls:-1.5 */
   .text-heading-1 {
     font-family: var(--font-heading);
     font-weight: 600;
@@ -539,16 +544,16 @@
     letter-spacing: -1.5px;
   }
 
-  /* Heading 2: Fraunces Semibold 32/38.4 ls:-1.2 */
+  /* heading 2: Fraunces SemiBold 30/32 ls:-1.0 */
   .text-heading-2 {
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 32px;
-    line-height: 38.4px;
-    letter-spacing: -1.2px;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -1px;
   }
 
-  /* Heading 3: Fraunces Semibold 24/28.8 ls:-1 */
+  /* heading 3: Fraunces SemiBold 24/28.8 ls:-1.0 */
   .text-heading-3 {
     font-family: var(--font-heading);
     font-weight: 600;
@@ -557,36 +562,74 @@
     letter-spacing: -1px;
   }
 
-  /* Heading 4: Fraunces Semibold 20/24 ls:-0.5 */
+  /* heading 4: Geist SemiBold 20/24 ls:0 */
   .text-heading-4 {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-weight: 600;
     font-size: 20px;
     line-height: 24px;
-    letter-spacing: -0.5px;
-  }
-
-  /* Heading 5: Fraunces Semibold 16/20 ls:-0.3 */
-  .text-heading-5 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: -0.3px;
-  }
-
-  /* ---- Body / Paragraph (Geist) ---- */
-
-  /* Paragraph Large: Geist Regular 18/28 */
-  .text-paragraph-lg {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 28px;
     letter-spacing: 0;
   }
 
-  /* Paragraph Regular: Geist Regular 16/24 */
+  /* ============================================================
+     Paragraph Extra Large — Figma "paragraph extra large/*"
+     Geist 30/32 ls:-1.0
+     ============================================================ */
+
+  .text-paragraph-xl {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -1px;
+  }
+  .text-paragraph-xl-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -1px;
+  }
+  .text-paragraph-xl-bold {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 32px;
+    letter-spacing: -1px;
+  }
+
+  /* ============================================================
+     Paragraph Large — Figma "pharagrap large/*"
+     Geist 20/24 ls:-1.0
+     ============================================================ */
+
+  .text-paragraph-lg {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -1px;
+  }
+  .text-paragraph-lg-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -1px;
+  }
+  .text-paragraph-lg-bold {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -1px;
+  }
+
+  /* ============================================================
+     Paragraph Regular — Figma "paragraph regular/*"
+     Geist 16/24 ls:0
+     ============================================================ */
+
   .text-paragraph {
     font-family: var(--font-body);
     font-weight: 400;
@@ -594,8 +637,26 @@
     line-height: 24px;
     letter-spacing: 0;
   }
+  .text-paragraph-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
+  .text-paragraph-bold {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
+  }
 
-  /* Paragraph Small Regular: Geist Regular 14/20 ls:0.5% */
+  /* ============================================================
+     Paragraph Small — Figma "paragraph small/*"
+     Geist 14/20 ls:0.07px
+     ============================================================ */
+
   .text-paragraph-sm {
     font-family: var(--font-body);
     font-weight: 400;
@@ -603,8 +664,13 @@
     line-height: 20px;
     letter-spacing: 0.07px;
   }
-
-  /* Paragraph Small Semibold: Geist Semibold 14/20 ls:0.5% */
+  .text-paragraph-sm-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.07px;
+  }
   .text-paragraph-sm-bold {
     font-family: var(--font-body);
     font-weight: 600;
@@ -613,7 +679,11 @@
     letter-spacing: 0.07px;
   }
 
-  /* Paragraph Mini: Geist Regular 12/16 ls:1.5% */
+  /* ============================================================
+     Paragraph Mini — Figma "paragraph mini/*"
+     Geist 12/16 ls:0.18px
+     ============================================================ */
+
   .text-paragraph-mini {
     font-family: var(--font-body);
     font-weight: 400;
@@ -621,14 +691,59 @@
     line-height: 16px;
     letter-spacing: 0.18px;
   }
-
-  /* Paragraph Mini Semibold: Geist Semibold 12/16 ls:1.5% */
+  .text-paragraph-mini-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.18px;
+  }
   .text-paragraph-mini-bold {
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.18px;
+  }
+
+  /* ============================================================
+     Paragraph Tiny — Figma "paragraph tiny/*"
+     Geist 10/12 ls:0.15px
+     ============================================================ */
+
+  .text-paragraph-tiny {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.15px;
+  }
+  .text-paragraph-tiny-medium {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.15px;
+  }
+  .text-paragraph-tiny-bold {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.15px;
+  }
+
+  /* ============================================================
+     Monospaced — Figma "monospaced"
+     Geist Mono 400 16/24 ls:0
+     ============================================================ */
+
+  .text-monospaced {
+    font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0;
   }
 
   /* ---- Focus Ring Utilities ---- */

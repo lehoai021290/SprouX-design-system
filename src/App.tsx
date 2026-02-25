@@ -745,19 +745,31 @@ function ColorsDocs() {
 function TypographyDocs() {
   const headings = [
     { class: "text-heading-1", label: "Heading 1", font: "Fraunces", weight: "600", size: "48px", lineHeight: "48px", letterSpacing: "-1.5px" },
-    { class: "text-heading-2", label: "Heading 2", font: "Fraunces", weight: "600", size: "32px", lineHeight: "38.4px", letterSpacing: "-1.2px" },
+    { class: "text-heading-2", label: "Heading 2", font: "Fraunces", weight: "600", size: "30px", lineHeight: "32px", letterSpacing: "-1px" },
     { class: "text-heading-3", label: "Heading 3", font: "Fraunces", weight: "600", size: "24px", lineHeight: "28.8px", letterSpacing: "-1px" },
-    { class: "text-heading-4", label: "Heading 4", font: "Fraunces", weight: "600", size: "20px", lineHeight: "24px", letterSpacing: "-0.5px" },
-    { class: "text-heading-5", label: "Heading 5", font: "Fraunces", weight: "600", size: "16px", lineHeight: "20px", letterSpacing: "-0.3px" },
+    { class: "text-heading-4", label: "Heading 4", font: "Geist", weight: "600", size: "20px", lineHeight: "24px", letterSpacing: "0" },
   ]
 
   const bodyStyles = [
-    { class: "text-paragraph-lg", label: "Paragraph Large", font: "Geist", weight: "400", size: "18px", lineHeight: "28px", letterSpacing: "0" },
-    { class: "text-paragraph", label: "Paragraph", font: "Geist", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
-    { class: "text-paragraph-sm", label: "Paragraph Small", font: "Geist", weight: "400", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
-    { class: "text-paragraph-sm-bold", label: "Paragraph Small Bold", font: "Geist", weight: "600", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
-    { class: "text-paragraph-mini", label: "Paragraph Mini", font: "Geist", weight: "400", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
-    { class: "text-paragraph-mini-bold", label: "Paragraph Mini Bold", font: "Geist", weight: "600", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "text-paragraph-xl", label: "Extra Large", font: "Geist", weight: "400", size: "30px", lineHeight: "32px", letterSpacing: "-1px" },
+    { class: "text-paragraph-xl-medium", label: "Extra Large Medium", font: "Geist", weight: "500", size: "30px", lineHeight: "32px", letterSpacing: "-1px" },
+    { class: "text-paragraph-xl-bold", label: "Extra Large SemiBold", font: "Geist", weight: "600", size: "30px", lineHeight: "32px", letterSpacing: "-1px" },
+    { class: "text-paragraph-lg", label: "Large", font: "Geist", weight: "400", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
+    { class: "text-paragraph-lg-medium", label: "Large Medium", font: "Geist", weight: "500", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
+    { class: "text-paragraph-lg-bold", label: "Large SemiBold", font: "Geist", weight: "600", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
+    { class: "text-paragraph", label: "Regular", font: "Geist", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "text-paragraph-medium", label: "Regular Medium", font: "Geist", weight: "500", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "text-paragraph-bold", label: "Regular SemiBold", font: "Geist", weight: "600", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "text-paragraph-sm", label: "Small", font: "Geist", weight: "400", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "text-paragraph-sm-medium", label: "Small Medium", font: "Geist", weight: "500", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "text-paragraph-sm-bold", label: "Small SemiBold", font: "Geist", weight: "600", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "text-paragraph-mini", label: "Mini", font: "Geist", weight: "400", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "text-paragraph-mini-medium", label: "Mini Medium", font: "Geist", weight: "500", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "text-paragraph-mini-bold", label: "Mini SemiBold", font: "Geist", weight: "600", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "text-paragraph-tiny", label: "Tiny", font: "Geist", weight: "400", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "text-paragraph-tiny-medium", label: "Tiny Medium", font: "Geist", weight: "500", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "text-paragraph-tiny-bold", label: "Tiny SemiBold", font: "Geist", weight: "600", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "text-monospaced", label: "Monospaced", font: "Geist Mono", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
   ]
 
   const allStyles = [...headings, ...bodyStyles]
@@ -1512,7 +1524,7 @@ function IconsDocs() {
       </header>
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`// Lucide icons (primary library)\nimport { Home, Search, Plus, Check } from "lucide-react"\n\n// Custom social icons (SVG imports)\nimport tiktokIcon from "@/assets/icons/tiktok.svg"\nimport instagramIcon from "@/assets/icons/instagram.svg"`} />
       </section>
 
@@ -1677,7 +1689,7 @@ function IllustrationsDocs() {
       </header>
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import illustSuccess from "@/assets/illustrations/success.svg"\nimport illustError from "@/assets/illustrations/error.svg"\nimport illustEmpty from "@/assets/illustrations/empty.svg"\n\n// Usage\n<img src={illustSuccess} alt="Success" className="w-48" />`} />
       </section>
 
@@ -7897,7 +7909,7 @@ function AlertDialogDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  AlertDialog,\n  AlertDialogTrigger,\n  AlertDialogContent,\n  AlertDialogHeader,\n  AlertDialogFooter,\n  AlertDialogTitle,\n  AlertDialogDescription,\n  AlertDialogAction,\n  AlertDialogCancel,\n} from "@/components/ui/alert-dialog"`} />
       </section>
 
@@ -8172,7 +8184,7 @@ function PopoverDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Popover,\n  PopoverTrigger,\n  PopoverContent,\n} from "@/components/ui/popover"`} />
       </section>
 
@@ -8252,7 +8264,7 @@ function TooltipDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Tooltip,\n  TooltipTrigger,\n  TooltipContent,\n  TooltipProvider,\n} from "@/components/ui/tooltip"`} />
       </section>
 
@@ -8430,7 +8442,7 @@ function TabsDocs() {
       </div>
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"`} />
       </section>
 
@@ -8532,7 +8544,7 @@ function BreadcrumbDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Breadcrumb,\n  BreadcrumbList,\n  BreadcrumbItem,\n  BreadcrumbLink,\n  BreadcrumbPage,\n  BreadcrumbSeparator,\n} from "@/components/ui/breadcrumb"`} />
       </section>
 
@@ -8606,7 +8618,7 @@ function PaginationDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Pagination,\n  PaginationContent,\n  PaginationItem,\n  PaginationLink,\n  PaginationPrevious,\n  PaginationNext,\n  PaginationEllipsis,\n} from "@/components/ui/pagination"`} />
       </section>
 
@@ -8687,7 +8699,7 @@ function DropdownMenuDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  DropdownMenu,\n  DropdownMenuTrigger,\n  DropdownMenuContent,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenuSeparator,\n  DropdownMenuShortcut,\n  DropdownMenuGroup,\n  DropdownMenuSub,\n  DropdownMenuSubTrigger,\n  DropdownMenuSubContent,\n} from "@/components/ui/dropdown-menu"`} />
       </section>
 
@@ -8807,7 +8819,7 @@ function CommandDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Command,\n  CommandInput,\n  CommandList,\n  CommandEmpty,\n  CommandGroup,\n  CommandItem,\n  CommandShortcut,\n  CommandSeparator,\n  CommandDialog,\n} from "@/components/ui/command"`} />
       </section>
 
@@ -9401,7 +9413,7 @@ function CollapsibleDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  Collapsible,\n  CollapsibleTrigger,\n  CollapsibleContent,\n} from "@/components/ui/collapsible"`} />
       </section>
 
@@ -9475,7 +9487,7 @@ function ScrollAreaDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"`} />
       </section>
 
@@ -9534,7 +9546,7 @@ function CalendarDocs() {
       <Playground controls={[]} render={() => <Calendar className="rounded-md border" />} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import { Calendar } from "@/components/ui/calendar"`} />
       </section>
 
@@ -10003,12 +10015,12 @@ function InputOTPDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="Basic 6-digit OTP"
@@ -10093,12 +10105,12 @@ function SpinnerDocs() {
       />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import { Spinner } from "@/components/ui/spinner"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="Sizes"
@@ -10168,12 +10180,12 @@ function HoverCardDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  HoverCard,\n  HoverCardTrigger,\n  HoverCardContent,\n} from "@/components/ui/hover-card"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="Basic hover card"
@@ -10234,12 +10246,12 @@ function AspectRatioDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import { AspectRatio } from "@/components/ui/aspect-ratio"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="16:9 ratio"
@@ -10325,12 +10337,12 @@ function ContextMenuDocs() {
       )} />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  ContextMenu,\n  ContextMenuTrigger,\n  ContextMenuContent,\n  ContextMenuItem,\n  ContextMenuSeparator,\n  ContextMenuShortcut,\n  ContextMenuSub,\n  ContextMenuSubTrigger,\n  ContextMenuSubContent,\n} from "@/components/ui/context-menu"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="Basic context menu"
@@ -10415,12 +10427,12 @@ function SidebarDocs() {
       />
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="text-heading-5">Import</h2>
+        <h2 className="text-paragraph-bold">Import</h2>
         <CodeBlock code={`import {\n  SidebarProvider,\n  Sidebar,\n  SidebarContent,\n  SidebarGroup,\n  SidebarGroupLabel,\n  SidebarGroupContent,\n  SidebarMenu,\n  SidebarMenuItem,\n  SidebarMenuButton,\n  SidebarHeader,\n  SidebarFooter,\n  SidebarTrigger,\n  SidebarInset,\n} from "@/components/ui/sidebar"`} />
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Examples</h2>
+        <h2 className="text-paragraph-bold">Examples</h2>
 
         <Example
           title="Basic sidebar"
@@ -10470,7 +10482,7 @@ function SidebarDocs() {
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="text-heading-5">Features</h2>
+        <h2 className="text-paragraph-bold">Features</h2>
         <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
           <li>Collapsible modes: offcanvas, icon-only, none</li>
           <li>Variants: sidebar, floating, inset</li>
