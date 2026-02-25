@@ -1758,6 +1758,160 @@ function IllustrationsDocs() {
   )
 }
 
+function ButtonExploreBehavior() {
+  const [variant, setVariant] = useState("default")
+  const [size, setSize] = useState("default")
+  const [state, setState] = useState("Default")
+  const [showLeftIcon, setShowLeftIcon] = useState(false)
+  const [showRightIcon, setShowRightIcon] = useState(false)
+  const [leftIcon, setLeftIcon] = useState("Plus")
+  const [rightIcon, setRightIcon] = useState("ArrowRight")
+
+  const isDisabled = state === "Disabled"
+  const isHover = state === "Hover & Active"
+  const isFocus = state === "Focus"
+
+  const iconOptions = [
+    { value: "Plus", Icon: Plus },
+    { value: "Download", Icon: Download },
+    { value: "Mail", Icon: Mail },
+    { value: "Settings", Icon: Settings },
+    { value: "Trash2", Icon: Trash2 },
+    { value: "Check", Icon: Check },
+    { value: "Search", Icon: Search },
+    { value: "ArrowRight", Icon: ArrowRight },
+    { value: "ExternalLink", Icon: ExternalLink },
+  ]
+
+  const LeftIconComp = iconOptions.find((i) => i.value === leftIcon)?.Icon ?? Plus
+  const RightIconComp = iconOptions.find((i) => i.value === rightIcon)?.Icon ?? ArrowRight
+
+  return (
+    <div className="rounded-2xl border border-border/50 overflow-hidden">
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+        <div className={[
+          "pointer-events-none",
+          isHover ? "[&_[data-slot=button]]:ring-0" : "",
+          isFocus ? "[&_[data-slot=button]]:ring-[3px] [&_[data-slot=button]]:ring-ring" : "",
+        ].filter(Boolean).join(" ")}>
+          <Button
+            variant={variant as "default"}
+            size={size as "default"}
+            disabled={isDisabled}
+            className={[
+              isHover && (variant === "default" ? "bg-primary-hover" : ""),
+              isHover && (variant === "secondary" ? "bg-secondary-hover" : ""),
+              isHover && (variant === "outline" ? "bg-outline-hover" : ""),
+              isHover && (variant === "ghost" || variant === "ghost-muted" ? "bg-ghost-hover text-foreground" : ""),
+              isHover && (variant === "destructive" ? "bg-destructive" : ""),
+              isHover && (variant === "destructive-secondary" ? "bg-destructive-subtle" : ""),
+              isFocus && (variant === "destructive" || variant === "destructive-secondary")
+                ? "!ring-ring-error" : "",
+            ].filter(Boolean).join(" ")}
+          >
+            {showLeftIcon && <LeftIconComp />}
+            Button
+            {showRightIcon && <RightIconComp />}
+          </Button>
+        </div>
+      </div>
+      <div className="border-t border-border/50 bg-muted/30 p-lg">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-md">
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Variant</Label>
+            <Select value={variant} onValueChange={setVariant}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Primary</SelectItem>
+                <SelectItem value="secondary">Secondary</SelectItem>
+                <SelectItem value="outline">Outline</SelectItem>
+                <SelectItem value="ghost">Ghost</SelectItem>
+                <SelectItem value="ghost-muted">Ghost Muted</SelectItem>
+                <SelectItem value="destructive">Destructive</SelectItem>
+                <SelectItem value="destructive-secondary">Destructive Secondary</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Size</Label>
+            <Select value={size} onValueChange={setSize}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lg">Large (40px)</SelectItem>
+                <SelectItem value="default">Regular (36px)</SelectItem>
+                <SelectItem value="sm">Small (32px)</SelectItem>
+                <SelectItem value="xs">Mini (24px)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">State</Label>
+            <Select value={state} onValueChange={setState}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Default">Default</SelectItem>
+                <SelectItem value="Hover & Active">Hover & Active</SelectItem>
+                <SelectItem value="Focus">Focus</SelectItem>
+                <SelectItem value="Disabled">Disabled</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
+            <div className="pt-1">
+              <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
+            <div className="pt-1">
+              <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+            </div>
+          </div>
+          {showLeftIcon && (
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Left Icon</Label>
+              <Select value={leftIcon} onValueChange={setLeftIcon}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {iconOptions.map((i) => (
+                    <SelectItem key={i.value} value={i.value}>{i.value}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {showRightIcon && (
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Right Icon</Label>
+              <Select value={rightIcon} onValueChange={setRightIcon}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {iconOptions.map((i) => (
+                    <SelectItem key={i.value} value={i.value}>{i.value}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const buttonSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
 function ButtonDocs() {
   const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -1775,6 +1929,8 @@ function ButtonDocs() {
 
   return (
     <div className="space-y-12">
+      <TableOfContents sections={buttonSections} />
+
       {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
@@ -1788,36 +1944,14 @@ function ButtonDocs() {
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
-            { label: "Default", value: "default" },
-            { label: "Secondary", value: "secondary" },
-            { label: "Outline", value: "outline" },
-            { label: "Ghost", value: "ghost" },
-            { label: "Ghost Muted", value: "ghost-muted" },
-            { label: "Destructive", value: "destructive" },
-            { label: "Destructive Secondary", value: "destructive-secondary" },
-          ]},
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large (40px)", value: "lg" },
-            { label: "Default (36px)", value: "default" },
-            { label: "Small (32px)", value: "sm" },
-            { label: "Mini (24px)", value: "xs" },
-          ]},
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-          { type: "text", label: "Label", prop: "label", defaultValue: "Button", placeholder: "Button text" },
-        ]}
-        render={(p) => (
-          <Button variant={p.variant} size={p.size} disabled={p.disabled}>
-            {p.label}
-          </Button>
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <ButtonExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="installation" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Installation</h2>
         <CodeBlock
           code={`# Install dependencies
@@ -1832,14 +1966,14 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
       </section>
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Default */}
         <Example
           title="Default button"
-          description="Use for primary actions in any context. For example, the main action in a dialog or the submit button in a form."
+          description="Use for primary actions in any context. The main action in a dialog or submit button in a form."
           code={`<Button>Save</Button>`}
         >
           <Button>Save</Button>
@@ -1847,8 +1981,8 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* All variants */}
         <Example
-          title="Variant"
-          description="Buttons come in 7 variants to communicate the importance and nature of the action."
+          title="All variants"
+          description="7 variants to communicate the importance and nature of the action."
           code={`<Button variant="default">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="outline">Outline</Button>
@@ -1868,10 +2002,10 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
           </Button>
         </Example>
 
-        {/* Secondary */}
+        {/* Secondary + Primary pair */}
         <Example
-          title="Secondary button"
-          description="Use for less prominent actions, or when placed alongside a primary button. For example, a 'Cancel' action paired with 'Save'."
+          title="Primary + Secondary pair"
+          description="Pair primary with secondary for action hierarchy. Common in dialogs and form footers."
           code={`<Button>Save</Button>
 <Button variant="secondary">Cancel</Button>`}
         >
@@ -1879,30 +2013,23 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
           <Button variant="secondary">Cancel</Button>
         </Example>
 
-        {/* Outline */}
+        {/* Outline + Ghost */}
         <Example
-          title="Outline button"
-          description="Use for actions that need a visible boundary but aren't the main call to action. Works well on colored or patterned backgrounds."
-          code={`<Button variant="outline">Configure</Button>`}
-        >
-          <Button variant="outline">Configure</Button>
-        </Example>
-
-        {/* Ghost */}
-        <Example
-          title="Ghost button"
-          description="Use for tertiary actions that should be available but visually unobtrusive, such as toolbar actions or inline actions."
-          code={`<Button variant="ghost">Edit</Button>
+          title="Outline & Ghost"
+          description="Lower emphasis options for secondary or toolbar-level actions."
+          code={`<Button variant="outline">Configure</Button>
+<Button variant="ghost">Edit</Button>
 <Button variant="ghost-muted">More options</Button>`}
         >
+          <Button variant="outline">Configure</Button>
           <Button variant="ghost">Edit</Button>
           <Button variant="ghost-muted">More options</Button>
         </Example>
 
         {/* Destructive */}
         <Example
-          title="Destructive button"
-          description="Use for actions that are irreversible or have significant consequences, like deleting a resource."
+          title="Destructive actions"
+          description="Use for irreversible or high-consequence actions like deleting a resource."
           code={`<Button variant="destructive">Delete account</Button>
 <Button variant="destructive-secondary">Remove</Button>`}
         >
@@ -1912,23 +2039,23 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* Sizes */}
         <Example
-          title="Size"
-          description="Buttons support 4 content sizes (lg, default, sm, xs) and 3 icon-only sizes (icon-lg, icon, icon-sm)."
-          code={`<Button size="lg">Large (40px)</Button>
-<Button size="default">Regular (36px)</Button>
-<Button size="sm">Small (32px)</Button>
-<Button size="xs">Mini (24px)</Button>`}
+          title="Sizes"
+          description="4 content sizes: Large (40px), Regular (36px), Small (32px), Mini (24px)."
+          code={`<Button size="lg">Large</Button>
+<Button size="default">Regular</Button>
+<Button size="sm">Small</Button>
+<Button size="xs">Mini</Button>`}
         >
-          <Button size="lg">Large (40px)</Button>
-          <Button size="default">Regular (36px)</Button>
-          <Button size="sm">Small (32px)</Button>
-          <Button size="xs">Mini (24px)</Button>
+          <Button size="lg">Large</Button>
+          <Button size="default">Regular</Button>
+          <Button size="sm">Small</Button>
+          <Button size="xs">Mini</Button>
         </Example>
 
         {/* With icon */}
         <Example
-          title="Button with icon"
-          description="Place icons before the label to clarify meaning, or after to indicate direction. Icons are automatically sized to 20px (regular) or 16px (mini)."
+          title="With icon"
+          description="Place icons before the label to clarify meaning, or after to indicate direction. Icons auto-size to 16px."
           code={`<Button><Plus /> Add item</Button>
 <Button variant="secondary"><Download /> Export</Button>
 <Button variant="outline"><Mail /> Send email</Button>
@@ -1950,8 +2077,8 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* Icon only */}
         <Example
-          title="Icon-only button"
-          description="Use for compact UIs like toolbars. Always provide an aria-label for accessibility."
+          title="Icon-only"
+          description="3 icon-only sizes for compact UIs. Always provide aria-label for accessibility."
           code={`<Button size="icon-lg" aria-label="Add"><Plus /></Button>
 <Button size="icon" aria-label="Add"><Plus /></Button>
 <Button size="icon-sm" aria-label="Add"><Plus /></Button>
@@ -1984,7 +2111,7 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
         {/* Disabled */}
         <Example
           title="Disabled state"
-          description="Disabled buttons have 50% opacity and prevent pointer events. Use sparingly — prefer hiding actions that aren't available."
+          description="50% opacity, no pointer events. Use sparingly — prefer hiding unavailable actions."
           code={`<Button disabled>Primary</Button>
 <Button variant="secondary" disabled>Secondary</Button>
 <Button variant="outline" disabled>Outline</Button>
@@ -2004,8 +2131,8 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* Loading (pattern) */}
         <Example
-          title="Loading state (pattern)"
-          description="Combine disabled prop with a spinner icon to indicate an in-progress action."
+          title="Loading state"
+          description="Combine disabled prop with a spinner icon to indicate in-progress action."
           code={`<Button disabled>
   <Loader2 className="animate-spin" />
   Saving...
@@ -2020,7 +2147,7 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
         {/* As link */}
         <Example
           title="As link (asChild)"
-          description="Use asChild to render as an <a> or router Link while keeping button styles. Useful for navigation that should look like an action."
+          description="Render as <a> or router Link while keeping button styles. Useful for navigation actions."
           code={`<Button asChild>
   <a href="/dashboard">Go to dashboard</a>
 </Button>
@@ -2042,8 +2169,8 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* Full width */}
         <Example
-          title="Full width button"
-          description="Use className to stretch to container width. Common in mobile layouts, modals, or form footers."
+          title="Full width"
+          description="Stretch to container width. Common in mobile layouts, modals, or form footers."
           code={`<Button className="w-full">Submit form</Button>
 <Button variant="secondary" className="w-full">Cancel</Button>`}
         >
@@ -2057,8 +2184,8 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* onClick handler */}
         <Example
-          title="Click handler (onClick)"
-          description="Pass an onClick handler to respond to user interaction. The component forwards all native button events."
+          title="Click handler"
+          description="Forwards all native button events including onClick."
           code={`const [count, setCount] = useState(0)
 
 <Button onClick={() => setCount((c) => c + 1)}>
@@ -2078,28 +2205,18 @@ pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucid
 
         {/* Async loading */}
         <Example
-          title="Async action (loading pattern)"
-          description="A real-world pattern: disable the button and show a spinner during an async operation, then show success feedback."
-          code={`const [loading, setLoading] = useState(false)
-const [saved, setSaved] = useState(false)
-
-const handleAsyncSave = async () => {
+          title="Async action"
+          description="Disable + spinner during async operation, then show success feedback."
+          code={`const handleAsyncSave = async () => {
   setLoading(true)
-  setSaved(false)
   await new Promise((r) => setTimeout(r, 1500))
-  setLoading(false)
-  setSaved(true)
-  setTimeout(() => setSaved(false), 2000)
+  setLoading(false); setSaved(true)
 }
 
 <Button onClick={handleAsyncSave} disabled={loading}>
-  {loading ? (
-    <><Loader2 className="animate-spin" /> Saving...</>
-  ) : saved ? (
-    <><Check /> Saved!</>
-  ) : (
-    "Save changes"
-  )}
+  {loading ? <><Loader2 className="animate-spin" /> Saving...</>
+   : saved ? <><Check /> Saved!</>
+   : "Save changes"}
 </Button>`}
         >
           <Button onClick={handleAsyncSave} disabled={loading}>
@@ -2115,32 +2232,19 @@ const handleAsyncSave = async () => {
 
         {/* Confirm destructive */}
         <Example
-          title="Confirm destructive action"
-          description="A two-step confirmation pattern for dangerous actions. First click reveals the confirm button, second click executes."
+          title="Confirm destructive"
+          description="Two-step confirmation pattern for dangerous actions."
           code={`const [confirmed, setConfirmed] = useState(false)
 
 {!confirmed ? (
-  <Button
-    variant="destructive-secondary"
-    onClick={() => setConfirmed(true)}
-  >
+  <Button variant="destructive-secondary" onClick={() => setConfirmed(true)}>
     <Trash2 /> Delete project
   </Button>
 ) : (
   <div className="flex gap-2 items-center">
     <span className="text-xs text-red-500 font-medium">Are you sure?</span>
-    <Button
-      variant="destructive"
-      onClick={() => {
-        alert("Deleted!")
-        setConfirmed(false)
-      }}
-    >
-      Yes, delete
-    </Button>
-    <Button variant="secondary" onClick={() => setConfirmed(false)}>
-      Cancel
-    </Button>
+    <Button variant="destructive" onClick={() => { alert("Deleted!"); setConfirmed(false) }}>Yes, delete</Button>
+    <Button variant="secondary" onClick={() => setConfirmed(false)}>Cancel</Button>
   </div>
 )}`}
         >
@@ -2173,7 +2277,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           Button extends all native{" "}
@@ -2186,7 +2290,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -2200,45 +2304,15 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Variant selection</h3>
+          <h3 className="font-body font-semibold text-sm">Content</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>
-                Use <strong>primary</strong> for the single most important
-                action on the page.
-              </p>
-              <p>
-                Use <strong>secondary</strong> or <strong>outline</strong> for
-                supporting actions alongside a primary button.
-              </p>
-              <p>
-                Use <strong>destructive</strong> only for irreversible or
-                high-consequence actions (delete, remove, revoke).
-              </p>
-            </DoItem>
-            <DontItem>
-              <p>
-                Don't use multiple primary buttons in the same section — it
-                dilutes the visual hierarchy.
-              </p>
-              <p>
-                Don't use destructive styling for reversible actions like
-                "Cancel" or "Close".
-              </p>
-            </DontItem>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Content guidelines</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>
-                Use clear, concise verbs:{" "}
+                Use clear, concise action verbs:{" "}
                 <strong>"Save"</strong>, <strong>"Delete"</strong>,{" "}
                 <strong>"Add item"</strong>.
               </p>
@@ -2256,8 +2330,47 @@ const handleAsyncSave = async () => {
               <p>
                 Don't include articles: "Save" not "Save the document".
               </p>
+              <p>Don't end button labels with punctuation.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Structure</h3>
+          <div className="flex gap-4">
+            <DoItem>
               <p>
-                Don't end button labels with punctuation.
+                Use <strong>Primary</strong> for the single most important
+                action per section — one primary CTA only.
+              </p>
+              <p>
+                Use <strong>Secondary</strong> or <strong>Outline</strong> for
+                supporting actions alongside a primary button.
+              </p>
+              <p>
+                Use <strong>Destructive</strong> only for irreversible or
+                high-consequence actions (delete, remove, revoke).
+              </p>
+              <p>
+                Match button <strong>size</strong> to surrounding UI density:
+                Regular for forms, Small/Mini for compact areas.
+              </p>
+            </DoItem>
+            <DontItem>
+              <p>
+                Don't use multiple primary buttons in the same section — it
+                dilutes visual hierarchy.
+              </p>
+              <p>
+                Don't use destructive styling for reversible actions like
+                "Cancel" or "Close".
+              </p>
+              <p>
+                Don't use Ghost buttons without clear affordance — users may
+                not recognize them as interactive.
+              </p>
+              <p>
+                Don't use Button for inline text navigation — use Link instead.
               </p>
             </DontItem>
           </div>
@@ -2297,7 +2410,7 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <FigmaMapping nodeId="9:1071" rows={[
+      <FigmaMapping id="figma-mapping" nodeId="9:1071" rows={[
         ["Variant", "Primary", "variant", '"default"'],
         ["Variant", "Secondary", "variant", '"secondary"'],
         ["Variant", "Outline", "variant", '"outline"'],
@@ -2309,6 +2422,9 @@ const handleAsyncSave = async () => {
         ["Size", "Regular (36px)", "size", '"default"'],
         ["Size", "Small (32px)", "size", '"sm"'],
         ["Size", "Mini (24px)", "size", '"xs"'],
+        ["Size", "Icon-only (40px)", "size", '"icon-lg"'],
+        ["Size", "Icon-only (36px)", "size", '"icon"'],
+        ["Size", "Icon-only (32px)", "size", '"icon-sm"'],
         ["State", "Default", "—", "default"],
         ["State", "Hover & Active", "—", "CSS :hover / :active"],
         ["State", "Focus", "—", "CSS :focus-visible"],
@@ -2318,7 +2434,7 @@ const handleAsyncSave = async () => {
       ]} />
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -2413,11 +2529,11 @@ const handleAsyncSave = async () => {
               </code>
               . The ring uses{" "}
               <code className="bg-muted px-1 rounded font-mono">
-                --border (#e9e9e7)
+                --ring (#e9e9e7)
               </code>{" "}
               for standard variants and{" "}
               <code className="bg-muted px-1 rounded font-mono">
-                red-200 (#fecaca)
+                --ring-error (#fecaca)
               </code>{" "}
               for destructive variants. This meets WCAG 2.1 focus visibility
               requirements.
@@ -2427,16 +2543,27 @@ const handleAsyncSave = async () => {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4 pb-12">
+      <section id="related" className="space-y-4 pb-12">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
         <div className="rounded-xl border border-border divide-y divide-border text-xs">
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
+              <p className="font-semibold text-foreground">Toggle</p>
+              <p className="text-muted-foreground mt-0.5">
+                For toggling between states (on/off). Use instead of Button when the action is a state toggle.
+              </p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
+              Available
+            </span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
               <p className="font-semibold text-foreground">ButtonGroup</p>
               <p className="text-muted-foreground mt-0.5">
-                Groups related buttons together with consistent spacing.
+                Groups related buttons together with consistent spacing for segmented controls.
               </p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
@@ -2460,8 +2587,7 @@ const handleAsyncSave = async () => {
             <div>
               <p className="font-semibold text-foreground">Link</p>
               <p className="text-muted-foreground mt-0.5">
-                For navigation that should look like a text link, not a
-                button.
+                For inline text navigation. Use instead of Ghost Button for navigation that should look like a link.
               </p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
