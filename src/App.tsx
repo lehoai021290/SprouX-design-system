@@ -273,6 +273,29 @@ function CodeBlock({ code }: { code: string }) {
   )
 }
 
+/** Installation section with labeled code blocks */
+function InstallationSection({ deps, importCode }: { deps: string; importCode: string }) {
+  return (
+    <section id="installation" className="space-y-md pt-3xl">
+      <h2 className="font-heading font-semibold text-xl">Installation</h2>
+      <div className="rounded-2xl border border-border/50 overflow-hidden bg-background">
+        <div className="px-md py-xs border-b border-border/50 bg-muted/40">
+          <span className="text-xs font-medium text-muted-foreground">Dependencies</span>
+        </div>
+        <pre className="bg-slate-950 text-slate-100 p-md text-xs leading-relaxed overflow-x-auto font-mono">
+          <code>{deps}</code>
+        </pre>
+        <div className="px-md py-xs border-t border-border/50 bg-muted/40">
+          <span className="text-xs font-medium text-muted-foreground">Import</span>
+        </div>
+        <pre className="bg-slate-950 text-slate-100 p-md text-xs leading-relaxed overflow-x-auto font-mono">
+          <code>{importCode}</code>
+        </pre>
+      </div>
+    </section>
+  )
+}
+
 function Example({
   title,
   description,
@@ -286,7 +309,7 @@ function Example({
 }) {
   const [showCode, setShowCode] = useState(false)
   return (
-    <div className="rounded-2xl border border-border/50 overflow-hidden bg-background">
+    <div className="rounded-2xl border border-border/50 overflow-hidden bg-background flex flex-col">
       <div className="px-xl pt-md pb-2xs border-b border-border bg-muted/40 space-y-2xs">
         <h3 className="font-body font-semibold text-sm">{title}</h3>
         {description && (
@@ -295,10 +318,10 @@ function Example({
           </p>
         )}
       </div>
-      <div className="px-xl py-lg flex flex-wrap items-center gap-sm bg-background">
+      <div className="px-xl py-lg flex flex-wrap items-center gap-sm bg-background flex-1">
         {children}
       </div>
-      <div className="border-t border-border">
+      <div className="border-t border-border mt-auto">
         <button
           onClick={() => setShowCode(!showCode)}
           className="w-full flex items-center justify-between px-md py-xs text-xs text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors font-mono"
@@ -1966,19 +1989,10 @@ function ButtonDocs() {
       </section>
 
       {/* ---- Installation ---- */}
-      <section id="installation" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucide-react
-
-# The component lives at:
-# src/components/ui/button.tsx`}
-        />
-        <CodeBlock
-          code={`import { Button } from "@/components/ui/button"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucide-react`}
+        importCode={`import { Button } from "@/components/ui/button"`}
+      />
 
       {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
@@ -2883,19 +2897,10 @@ function InputDocs() {
       />
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies (if not already installed)
-pnpm add class-variance-authority clsx tailwind-merge
-
-# The component lives at:
-# src/components/ui/input.tsx`}
-        />
-        <CodeBlock
-          code={`import { Input } from "@/components/ui/input"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add class-variance-authority clsx tailwind-merge`}
+        importCode={`import { Input } from "@/components/ui/input"`}
+      />
 
       {/* ---- Examples ---- */}
       <section className="space-y-6 pt-xl border-t border-border">
@@ -3825,19 +3830,10 @@ function TextareaDocs() {
       />
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies (if not already installed)
-pnpm add clsx tailwind-merge
-
-# The component lives at:
-# src/components/ui/textarea.tsx`}
-        />
-        <CodeBlock
-          code={`import { Textarea } from "@/components/ui/textarea"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add clsx tailwind-merge`}
+        importCode={`import { Textarea } from "@/components/ui/textarea"`}
+      />
 
       {/* ---- Examples ---- */}
       <section className="space-y-6 pt-xl border-t border-border">
@@ -4684,28 +4680,10 @@ function SelectDocs() {
       />
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add @radix-ui/react-select class-variance-authority clsx tailwind-merge lucide-react
-
-# The component lives at:
-# src/components/ui/select.tsx`}
-        />
-        <CodeBlock
-          code={`import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add @radix-ui/react-select class-variance-authority clsx tailwind-merge lucide-react`}
+        importCode={`import {\n  Select,\n  SelectContent,\n  SelectGroup,\n  SelectItem,\n  SelectLabel,\n  SelectSeparator,\n  SelectTrigger,\n  SelectValue,\n} from "@/components/ui/select"`}
+      />
 
       {/* ---- Examples ---- */}
       <section className="space-y-6 pt-xl border-t border-border">
@@ -5514,19 +5492,10 @@ function CheckboxDocs() {
       />
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add @radix-ui/react-checkbox lucide-react
-
-# The component lives at:
-# src/components/ui/checkbox.tsx`}
-        />
-        <CodeBlock
-          code={`import { Checkbox } from "@/components/ui/checkbox"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add @radix-ui/react-checkbox lucide-react`}
+        importCode={`import { Checkbox } from "@/components/ui/checkbox"`}
+      />
 
       {/* ---- Examples ---- */}
       <section className="space-y-6 pt-xl border-t border-border">
@@ -6107,19 +6076,10 @@ function SwitchDocs() {
       />
 
       {/* ---- Installation ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add @radix-ui/react-switch
-
-# The component lives at:
-# src/components/ui/switch.tsx`}
-        />
-        <CodeBlock
-          code={`import { Switch } from "@/components/ui/switch"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add @radix-ui/react-switch`}
+        importCode={`import { Switch } from "@/components/ui/switch"`}
+      />
 
       {/* ---- Examples ---- */}
       <section className="space-y-6 pt-xl border-t border-border">
@@ -7766,19 +7726,10 @@ function AlertDocs() {
       </section>
 
       {/* ---- Installation ---- */}
-      <section id="installation" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add class-variance-authority clsx tailwind-merge lucide-react
-
-# The component lives at:
-# src/components/ui/alert.tsx`}
-        />
-        <CodeBlock
-          code={`import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add class-variance-authority clsx tailwind-merge lucide-react`}
+        importCode={`import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"`}
+      />
 
       {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
@@ -9811,24 +9762,10 @@ function AccordionDocs() {
       </section>
 
       {/* ---- Installation ---- */}
-      <section id="installation" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Installation</h2>
-        <CodeBlock
-          code={`# Install dependencies
-pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge
-
-# The component lives at:
-# src/components/ui/accordion.tsx`}
-        />
-        <CodeBlock
-          code={`import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion"`}
-        />
-      </section>
+      <InstallationSection
+        deps={`pnpm add @radix-ui/react-accordion lucide-react clsx tailwind-merge`}
+        importCode={`import {\n  Accordion,\n  AccordionItem,\n  AccordionTrigger,\n  AccordionContent,\n} from "@/components/ui/accordion"`}
+      />
 
       {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
