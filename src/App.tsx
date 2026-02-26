@@ -213,10 +213,6 @@ import {
   Github,
   ArrowUp,
   X,
-  Bell,
-  ShieldCheck,
-  Megaphone,
-  Zap,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -1482,6 +1478,51 @@ const allLucideIcons = Object.entries(lucideIcons)
   .filter(([name]) => !["createLucideIcon", "defaultAttributes", "icons"].includes(name))
   .map(([name, component]) => ({ name, icon: component as React.ComponentType<{ className?: string }> }))
 
+/** Shared searchable icon picker — shows all Lucide icons via Command + Popover */
+function IconPicker({ value, onChange, disabled, size = "sm" }: {
+  value: string
+  onChange: (name: string) => void
+  disabled?: boolean
+  size?: "sm" | "default"
+}) {
+  const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState("")
+  const filtered = useMemo(() => {
+    if (!search) return allLucideIcons.slice(0, 60)
+    const q = search.toLowerCase()
+    return allLucideIcons.filter((i) => i.name.toLowerCase().includes(q)).slice(0, 60)
+  }, [search])
+  const SelectedIcon = allLucideIcons.find((i) => i.name === value)?.icon
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size={size} disabled={disabled} className="w-full justify-start gap-xs font-normal" role="combobox" aria-expanded={open}>
+          {SelectedIcon ? <SelectedIcon className="size-md shrink-0" /> : null}
+          <span className="truncate">{value || "Select icon"}</span>
+          <ChevronsUpDown className="ml-auto size-3 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[240px] p-0" align="start">
+        <Command shouldFilter={false}>
+          <CommandInput placeholder="Search icons..." value={search} onValueChange={setSearch} />
+          <CommandList className="max-h-[240px]">
+            <CommandEmpty>No icon found.</CommandEmpty>
+            <CommandGroup>
+              {filtered.map((item) => (
+                <CommandItem key={item.name} value={item.name} onSelect={() => { onChange(item.name); setOpen(false); setSearch("") }}>
+                  <item.icon className="size-md shrink-0" />
+                  <span className="truncate">{item.name}</span>
+                  {item.name === value && <Check className="ml-auto size-3" />}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 const ICONS_PER_PAGE = 120
 
 const socialIcons = [
@@ -1771,20 +1812,8 @@ function ButtonExploreBehavior() {
   const isHover = state === "Hover & Active"
   const isFocus = state === "Focus"
 
-  const iconOptions = [
-    { value: "Plus", Icon: Plus },
-    { value: "Download", Icon: Download },
-    { value: "Mail", Icon: Mail },
-    { value: "Settings", Icon: Settings },
-    { value: "Trash2", Icon: Trash2 },
-    { value: "Check", Icon: Check },
-    { value: "Search", Icon: Search },
-    { value: "ArrowRight", Icon: ArrowRight },
-    { value: "ExternalLink", Icon: ExternalLink },
-  ]
-
-  const LeftIconComp = iconOptions.find((i) => i.value === leftIcon)?.Icon ?? Plus
-  const RightIconComp = iconOptions.find((i) => i.value === rightIcon)?.Icon ?? ArrowRight
+  const LeftIconComp = allLucideIcons.find((i) => i.name === leftIcon)?.icon ?? Plus
+  const RightIconComp = allLucideIcons.find((i) => i.name === rightIcon)?.icon ?? ArrowRight
 
   return (
     <div className="rounded-2xl border border-border/50 overflow-hidden">
@@ -1871,27 +1900,13 @@ function ButtonExploreBehavior() {
           {showLeftIcon && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Left Icon</Label>
-              <Select value={leftIcon} onValueChange={setLeftIcon}>
-                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {iconOptions.map((i) => (
-                    <SelectItem key={i.value} value={i.value}>{i.value}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
             </div>
           )}
           {showRightIcon && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Right Icon</Label>
-              <Select value={rightIcon} onValueChange={setRightIcon}>
-                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {iconOptions.map((i) => (
-                    <SelectItem key={i.value} value={i.value}>{i.value}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
             </div>
           )}
         </div>
@@ -7574,9 +7589,9 @@ function AlertTokensTable() {
 
 function AlertExploreBehavior() {
   const [type, setType] = useState("default")
-  const [icon, setIcon] = useState("auto")
+  const [icon, setIcon] = useState("")
   /* Figma: only Neutral type allows icon swap; others use fixed icon */
-  const handleTypeChange = (v: string) => { setType(v); if (v !== "default") setIcon("auto") }
+  const handleTypeChange = (v: string) => { setType(v); if (v !== "default") setIcon("") }
   const [showIcon, setShowIcon] = useState(true)
   const [showTitle, setShowTitle] = useState(true)
   const [showSubtitle, setShowSubtitle] = useState(true)
@@ -7585,27 +7600,17 @@ function AlertExploreBehavior() {
   const [showAction, setShowAction] = useState(false)
   const [showSecondaryAction, setShowSecondaryAction] = useState(false)
 
-  /* Figma default icons per type */
-  const defaultIcons: Record<string, React.ReactNode> = {
-    default: <Info className="size-md" />,
-    destructive: <AlertCircle className="size-md" />,
-    success: <CircleCheck className="size-md" />,
-    warning: <TriangleAlert className="size-md" />,
-    emphasis: <Info className="size-md" />,
+  /* Figma default icon per type */
+  const defaultIconName: Record<string, string> = {
+    default: "Info",
+    destructive: "CircleAlert",
+    success: "CircleCheck",
+    warning: "TriangleAlert",
+    emphasis: "Info",
   }
-  /* Figma Icon property = instance swap — allow overriding icon */
-  const iconOptions: Record<string, React.ReactNode> = {
-    auto: defaultIcons[type],
-    info: <Info className="size-md" />,
-    "alert-circle": <AlertCircle className="size-md" />,
-    "circle-check": <CircleCheck className="size-md" />,
-    "triangle-alert": <TriangleAlert className="size-md" />,
-    bell: <Bell className="size-md" />,
-    "shield-check": <ShieldCheck className="size-md" />,
-    megaphone: <Megaphone className="size-md" />,
-    zap: <Zap className="size-md" />,
-  }
-  const activeIcon = icon === "auto" ? defaultIcons[type] : iconOptions[icon]
+  const activeIconName = icon || defaultIconName[type] || "Info"
+  const ActiveIconComp = allLucideIcons.find((i) => i.name === activeIconName)?.icon
+  const activeIcon = ActiveIconComp ? <ActiveIconComp className="size-md" /> : <Info className="size-md" />
 
   const titles: Record<string, string> = {
     default: "Heads up!",
@@ -7680,20 +7685,7 @@ function AlertExploreBehavior() {
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Icon</Label>
-            <Select value={icon} onValueChange={setIcon} disabled={type !== "default"}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="auto">Auto (per type)</SelectItem>
-                <SelectItem value="info">Info</SelectItem>
-                <SelectItem value="alert-circle">Alert Circle</SelectItem>
-                <SelectItem value="circle-check">Circle Check</SelectItem>
-                <SelectItem value="triangle-alert">Triangle Alert</SelectItem>
-                <SelectItem value="bell">Bell</SelectItem>
-                <SelectItem value="shield-check">Shield Check</SelectItem>
-                <SelectItem value="megaphone">Megaphone</SelectItem>
-                <SelectItem value="zap">Zap</SelectItem>
-              </SelectContent>
-            </Select>
+            <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Dismissable</Label>
