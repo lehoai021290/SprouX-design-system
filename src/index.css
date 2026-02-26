@@ -532,8 +532,8 @@
     --ghost-foreground: #8f8f8a;      /* slate600 */
     --ghost-hover: rgba(255,255,255,0.08);
 
-    --outline-bg: rgba(255,255,255,0.1);
-    --outline-hover: rgba(163,175,191,0.05);
+    --outline-bg: rgba(255,255,255,0.047);   /* Figma VariableID:644:37106 dark */
+    --outline-hover: rgba(255,255,255,0.098); /* Figma VariableID:644:37107 dark */
 
     --chart-1: #2662d9;
     --chart-2: #2eb88a;
