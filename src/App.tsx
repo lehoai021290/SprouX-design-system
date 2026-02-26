@@ -1533,7 +1533,7 @@ function IconPicker({ value, onChange, disabled, size = "sm" }: {
             <CommandGroup>
               {filtered.map((item) => (
                 <CommandItem key={item.name} value={item.name} onSelect={() => { onChange(item.name); setOpen(false); setSearch("") }}>
-                  <item.icon className="size-md shrink-0" />
+                  <item.icon className="size-md shrink-0 text-muted-foreground" />
                   <span className="truncate">{item.name}</span>
                   {item.name === value && <Check className="ml-auto size-3" />}
                 </CommandItem>
@@ -8681,7 +8681,12 @@ function AlertDialogExploreBehavior() {
   const [showTitle, setShowTitle] = useState(true)
   const [showAction, setShowAction] = useState(true)
   const [showActionSecondary, setShowActionSecondary] = useState(true)
-  const [slotText, setSlotText] = useState("This action cannot be undone. This will permanently delete your account and remove your data from our servers.")
+  const [slotVariant, setSlotVariant] = useState<"delete-account" | "discard-changes" | "reset-settings">("delete-account")
+  const slotContent: Record<string, string> = {
+    "delete-account": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+    "discard-changes": "You have unsaved changes that will be lost. Are you sure you want to discard them?",
+    "reset-settings": "This will reset all your preferences to default values. You can reconfigure them later.",
+  }
   /* Figma constraint: Secondary Action only available when Show Action is on */
   const handleShowActionChange = (v: boolean) => { setShowAction(v); if (!v) setShowActionSecondary(false) }
   const SelectedIcon = allLucideIcons.find((i) => i.name === iconName)?.icon ?? allLucideIcons.find((i) => i.name === "CircleAlert")!.icon
@@ -8706,7 +8711,7 @@ function AlertDialogExploreBehavior() {
               </div>
             )}
             {/* Slot / Description */}
-            <p className="typo-paragraph-sm text-foreground">{slotText}</p>
+            <p className="typo-paragraph-sm text-foreground">{slotContent[slotVariant]}</p>
             {/* Button group */}
             {showAction && (
               <div className={["flex gap-xs", isMobile ? "flex-col" : "justify-end"].join(" ")}>
@@ -8771,8 +8776,15 @@ function AlertDialogExploreBehavior() {
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Slot (Content)</Label>
-            <Input size="sm" value={slotText} onChange={(e) => setSlotText(e.target.value)} placeholder="Description text..." />
+            <Label className="text-xs text-muted-foreground">Slot</Label>
+            <Select value={slotVariant} onValueChange={(v) => setSlotVariant(v as typeof slotVariant)}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="delete-account">Delete Account</SelectItem>
+                <SelectItem value="discard-changes">Discard Changes</SelectItem>
+                <SelectItem value="reset-settings">Reset Settings</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
