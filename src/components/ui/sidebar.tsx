@@ -418,7 +418,7 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "duration-200 flex h-2xl shrink-0 items-center rounded-md px-xs text-xs font-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2 [&>svg]:size-md [&>svg]:shrink-0",
+        "duration-200 flex h-2xl shrink-0 items-center rounded-md px-xs typo-paragraph-mini-medium text-sidebar-foreground/70 outline-none ring-sidebar-ring transition-[margin,opa] ease-linear focus-visible:ring-2 [&>svg]:size-md [&>svg]:shrink-0",
         "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
         className
       )}
@@ -457,7 +457,7 @@ function SidebarGroupContent({
     <div
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
-      className={cn("w-full text-sm", className)}
+      className={cn("w-full typo-paragraph-sm", className)}
       {...props}
     />
   )
@@ -492,7 +492,7 @@ function SidebarMenuItem({
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-xs overflow-hidden rounded-md p-xs text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-2xl aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-2xl group-data-[collapsible=icon]:!p-xs [&>span:last-child]:truncate [&>svg]:size-md [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-xs overflow-hidden rounded-md p-xs text-left typo-paragraph-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-2xl aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-2xl group-data-[collapsible=icon]:!p-xs [&>span:last-child]:truncate [&>svg]:size-md [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -501,9 +501,9 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
       size: {
-        default: "h-2xl text-sm",
-        sm: "h-7 text-xs",
-        lg: "h-3xl text-sm group-data-[collapsible=icon]:!p-0",
+        default: "h-2xl typo-paragraph-sm",
+        sm: "h-7 typo-paragraph-mini",
+        lg: "h-3xl typo-paragraph-sm group-data-[collapsible=icon]:!p-0",
       },
     },
     defaultVariants: {
@@ -598,7 +598,7 @@ function SidebarMenuBadge({
       data-slot="sidebar-menu-badge"
       data-sidebar="menu-badge"
       className={cn(
-        "absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums text-sidebar-foreground select-none pointer-events-none",
+        "absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 typo-paragraph-mini-medium tabular-nums text-sidebar-foreground select-none pointer-events-none",
         "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground",
         "group-data-[collapsible=icon]:hidden",
         className
@@ -684,8 +684,8 @@ function SidebarMenuSubButton({
       className={cn(
         "flex h-7 min-w-0 -translate-x-px items-center gap-xs overflow-hidden rounded-md px-xs text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-md [&>svg]:shrink-0",
         "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
-        size === "sm" && "text-xs",
-        size === "default" && "text-sm",
+        size === "sm" && "typo-paragraph-mini",
+        size === "default" && "typo-paragraph-sm",
         className
       )}
       {...props}
