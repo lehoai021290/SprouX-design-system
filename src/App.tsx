@@ -274,6 +274,33 @@ function CodeBlock({ code }: { code: string }) {
 }
 
 /** Installation section with labeled code blocks */
+function InstallationCopyBlock({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <div className="relative group">
+      <pre className="bg-slate-950 text-slate-100 p-md text-xs leading-relaxed overflow-x-auto font-mono">
+        <code>{code}</code>
+      </pre>
+      <button
+        onClick={handleCopy}
+        className={`absolute top-xs right-xs p-1.5 rounded-md text-xs font-mono flex items-center gap-1 transition-all opacity-0 group-hover:opacity-100 ${
+          copied
+            ? "bg-green-700 text-white opacity-100"
+            : "bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white"
+        }`}
+      >
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+        {copied ? "Copied" : "Copy"}
+      </button>
+    </div>
+  )
+}
+
 function InstallationSection({ deps, importCode }: { deps: string; importCode: string }) {
   return (
     <section id="installation" className="space-y-md pt-3xl">
@@ -282,15 +309,11 @@ function InstallationSection({ deps, importCode }: { deps: string; importCode: s
         <div className="px-md py-xs border-b border-border bg-muted/50">
           <span className="text-xs font-medium text-muted-foreground">Dependencies</span>
         </div>
-        <pre className="bg-slate-950 text-slate-100 p-md text-xs leading-relaxed overflow-x-auto font-mono">
-          <code>{deps}</code>
-        </pre>
+        <InstallationCopyBlock code={deps} />
         <div className="px-md py-xs border-t border-border bg-muted/50">
           <span className="text-xs font-medium text-muted-foreground">Import</span>
         </div>
-        <pre className="bg-slate-950 text-slate-100 p-md text-xs leading-relaxed overflow-x-auto font-mono">
-          <code>{importCode}</code>
-        </pre>
+        <InstallationCopyBlock code={importCode} />
       </div>
     </section>
   )
