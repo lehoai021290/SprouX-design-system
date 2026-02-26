@@ -8968,6 +8968,33 @@ function AlertDialogDocs() {
               </div>
             </div>
           </Example>
+
+          <Example title="Congratulation Slot (No Title, No Action)" description="Illustration slot with hidden title and action — informational dialog with only a dismiss button." code={`<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="outline">Show Congratulations</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <div className="flex flex-col items-center gap-lg text-center">
+      <img src={illustSuccess} alt="Congratulations" className="w-48" />
+      <AlertDialogDescription>
+        Congratulations! Your account has been successfully created. Welcome aboard!
+      </AlertDialogDescription>
+    </div>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Close</AlertDialogCancel>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}>
+            <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
+              <div className="flex flex-col items-center gap-lg text-center">
+                <img src={illustSuccess} alt="Congratulations" className="w-48" />
+                <p className="typo-paragraph-sm text-muted-foreground">Congratulations! Your account has been successfully created. Welcome aboard!</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
+                <Button variant="outline">Close</Button>
+              </div>
+            </div>
+          </Example>
         </div>
 
         {/* Interactive demos — click to open real dialogs */}
@@ -9032,6 +9059,20 @@ function AlertDialogDocs() {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Stay Signed In</AlertDialogCancel>
                   <AlertDialogAction>Log Out</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" size="sm">Congratulation Slot</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <div className="flex flex-col items-center gap-lg text-center">
+                  <img src={illustSuccess} alt="Congratulations" className="w-48" />
+                  <AlertDialogDescription>Congratulations! Your account has been successfully created. Welcome aboard!</AlertDialogDescription>
+                </div>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Close</AlertDialogCancel>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
