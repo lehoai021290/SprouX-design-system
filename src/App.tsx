@@ -7559,6 +7559,8 @@ function AlertExploreBehavior() {
   const [inCard, setInCard] = useState(false)
   const [showAction, setShowAction] = useState(false)
   const [showSecondaryAction, setShowSecondaryAction] = useState(false)
+  /* Figma constraint: Secondary Action only available when Show Action is on */
+  const handleShowActionChange = (v: boolean) => { setShowAction(v); if (!v) setShowSecondaryAction(false) }
 
   /* Figma default icon per type */
   const defaultIconName: Record<string, string> = {
@@ -7680,13 +7682,13 @@ function AlertExploreBehavior() {
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Show Action</Label>
             <div className="pt-1">
-              <Switch checked={showAction} onCheckedChange={setShowAction} />
+              <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground text-nowrap">2nd Action</Label>
+            <Label className={["text-xs text-muted-foreground text-nowrap", !showAction ? "opacity-50" : ""].join(" ")}>2nd Action</Label>
             <div className="pt-1">
-              <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} />
+              <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} disabled={!showAction} />
             </div>
           </div>
         </div>
@@ -8676,6 +8678,8 @@ function AlertDialogExploreBehavior() {
   const [showTitle, setShowTitle] = useState(true)
   const [showAction, setShowAction] = useState(true)
   const [showActionSecondary, setShowActionSecondary] = useState(true)
+  /* Figma constraint: Secondary Action only available when Show Action is on */
+  const handleShowActionChange = (v: boolean) => { setShowAction(v); if (!v) setShowActionSecondary(false) }
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
@@ -8698,14 +8702,12 @@ function AlertDialogExploreBehavior() {
             {/* Slot / Description */}
             <p className="typo-paragraph-sm text-foreground">This action cannot be undone. This will permanently delete your account and remove your data from our servers.</p>
             {/* Button group */}
-            {(showAction || showActionSecondary) && (
+            {showAction && (
               <div className="flex justify-end gap-xs">
                 {showActionSecondary && (
                   <Button variant="outline" size="default">Cancel</Button>
                 )}
-                {showAction && (
-                  <Button variant="default" size="default">Continue</Button>
-                )}
+                <Button variant="default" size="default">Continue</Button>
               </div>
             )}
           </div>
@@ -8728,13 +8730,13 @@ function AlertDialogExploreBehavior() {
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Show Action</Label>
             <div className="pt-1">
-              <Switch checked={showAction} onCheckedChange={setShowAction} />
+              <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Action Secondary</Label>
+            <Label className={["text-xs text-muted-foreground", !showAction ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
             <div className="pt-1">
-              <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} />
+              <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction} />
             </div>
           </div>
         </div>
