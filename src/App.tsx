@@ -8852,14 +8852,14 @@ function AlertDialogDocs() {
   </AlertDialogContent>
 </AlertDialog>`}>
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
+              <div className="flex flex-col gap-xs sm:text-left">
+                <h3 className="typo-heading-4 text-foreground">Are you sure?</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">This action cannot be undone.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Cancel</Button>
                 <Button>Continue</Button>
-              </AlertDialogFooter>
+              </div>
             </div>
           </Example>
 
@@ -8881,14 +8881,14 @@ function AlertDialogDocs() {
   </AlertDialogContent>
 </AlertDialog>`}>
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>This will permanently delete your account and remove your data from our servers.</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
+              <div className="flex flex-col gap-xs sm:text-left">
+                <h3 className="typo-heading-4 text-foreground">Are you absolutely sure?</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">This will permanently delete your account and remove your data from our servers.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Cancel</Button>
                 <Button variant="destructive">Delete Account</Button>
-              </AlertDialogFooter>
+              </div>
             </div>
           </Example>
 
@@ -8907,13 +8907,13 @@ function AlertDialogDocs() {
   </AlertDialogContent>
 </AlertDialog>`}>
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
+              <div className="flex flex-col gap-xs sm:text-left">
+                <h3 className="typo-heading-4 text-foreground">Discard unsaved changes?</h3>
+              </div>
+              <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Keep Editing</Button>
                 <Button>Discard</Button>
-              </AlertDialogFooter>
+              </div>
             </div>
           </Example>
 
@@ -8935,14 +8935,14 @@ function AlertDialogDocs() {
   </AlertDialogContent>
 </AlertDialog>`}>
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Log out of your account?</AlertDialogTitle>
-                <AlertDialogDescription>You will need to sign in again to access your dashboard and settings.</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
+              <div className="flex flex-col gap-xs sm:text-left">
+                <h3 className="typo-heading-4 text-foreground">Log out of your account?</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">You will need to sign in again to access your dashboard and settings.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Stay Signed In</Button>
                 <Button>Log Out</Button>
-              </AlertDialogFooter>
+              </div>
             </div>
           </Example>
         </div>
