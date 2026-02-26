@@ -7896,6 +7896,72 @@ pnpm add class-variance-authority clsx tailwind-merge lucide-react
             </AlertDescription>
           </Alert>
         </Example>
+
+        <Example title="With Actions" description="Alert with action buttons for user response. Matches Figma Action frame (sm buttons, gap-xs)." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Confirm your email</AlertTitle>\n  <AlertDescription>We sent a verification link to your inbox.</AlertDescription>\n  <div className="flex gap-xs mt-xs [&]:pl-7">\n    <Button size="sm">Resend email</Button>\n    <Button size="sm" variant="outline">Change email</Button>\n  </div>\n</Alert>`}>
+          <Alert>
+            <Info className="size-md" />
+            <AlertTitle>Confirm your email</AlertTitle>
+            <AlertDescription>We sent a verification link to your inbox.</AlertDescription>
+            <div className="flex gap-xs mt-xs [&]:pl-7">
+              <Button size="sm">Resend email</Button>
+              <Button size="sm" variant="outline">Change email</Button>
+            </div>
+          </Alert>
+        </Example>
+
+        <Example title="Error with Actions" description="Destructive alert with retry and dismiss actions." code={`<Alert variant="destructive" className="pr-10">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Payment failed</AlertTitle>\n  <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>\n  <div className="flex gap-xs mt-xs [&]:pl-7">\n    <Button size="sm" variant="destructive">Retry payment</Button>\n    <Button size="sm" variant="outline">Cancel order</Button>\n  </div>\n  <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
+          <Alert variant="destructive" className="pr-10">
+            <AlertCircle className="size-md" />
+            <AlertTitle>Payment failed</AlertTitle>
+            <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>
+            <div className="flex gap-xs mt-xs [&]:pl-7">
+              <Button size="sm" variant="destructive">Retry payment</Button>
+              <Button size="sm" variant="outline">Cancel order</Button>
+            </div>
+            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+              <X className="size-md" />
+            </button>
+          </Alert>
+        </Example>
+
+        <Example title="Success Dismissable" description="Dismissable success alert for confirmation messages." code={`<Alert variant="success" className="pr-10">\n  <CircleCheck className="size-md" />\n  <AlertTitle>Order confirmed!</AlertTitle>\n  <AlertDescription>\n    Your order #12345 has been placed.{" "}\n    <a href="#" className="underline font-medium">Track shipment</a>\n  </AlertDescription>\n  <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
+          <Alert variant="success" className="pr-10">
+            <CircleCheck className="size-md" />
+            <AlertTitle>Order confirmed!</AlertTitle>
+            <AlertDescription>
+              Your order #12345 has been placed.{" "}
+              <a href="#" className="underline font-medium">Track shipment</a>
+            </AlertDescription>
+            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
+              <X className="size-md" />
+            </button>
+          </Alert>
+        </Example>
+
+        <Example title="Warning with Link" description="Warning alert with inline link for immediate user action." code={`<Alert variant="warning">\n  <TriangleAlert className="size-md" />\n  <AlertTitle>Storage almost full</AlertTitle>\n  <AlertDescription>\n    You've used 90% of your storage.{" "}\n    <a href="#" className="underline font-medium">Upgrade plan</a>\n  </AlertDescription>\n</Alert>`}>
+          <Alert variant="warning">
+            <TriangleAlert className="size-md" />
+            <AlertTitle>Storage almost full</AlertTitle>
+            <AlertDescription>
+              You've used 90% of your storage.{" "}
+              <a href="#" className="underline font-medium">Upgrade plan</a>
+            </AlertDescription>
+          </Alert>
+        </Example>
+
+        <Example title="In Card Variants" description="Multiple alert types inside a card context using the inCard prop." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">\n  <p className="typo-paragraph-sm-bold">Account settings</p>\n  <Alert variant="warning" inCard>\n    <TriangleAlert className="size-md" />\n    <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>\n  </Alert>\n  <Alert variant="success" inCard>\n    <CircleCheck className="size-md" />\n    <AlertDescription>Email verified successfully.</AlertDescription>\n  </Alert>\n</div>`}>
+          <div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">
+            <p className="typo-paragraph-sm-bold">Account settings</p>
+            <Alert variant="warning" inCard>
+              <TriangleAlert className="size-md" />
+              <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>
+            </Alert>
+            <Alert variant="success" inCard>
+              <CircleCheck className="size-md" />
+              <AlertDescription>Email verified successfully.</AlertDescription>
+            </Alert>
+          </div>
+        </Example>
         </div>
       </section>
 

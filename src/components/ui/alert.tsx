@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils"
  * Merged specs (Shadcn structure + Figma tokens):
  *   Container:  py-sm (12px) px-md (16px), gap-md (16px) outer
  *               rounded-lg (8px), border 1px
- *   Icon:       size-md (16px), absolute left-md top-sm
+ *   Icon:       size-md (16px), absolute left-md top-[14px] (center-aligned to 20px text line)
  *   Title:      typo-paragraph-sm-bold (Geist 600 14/20 ls:0.07px)
  *   Description:typo-paragraph-sm (Geist 400 14/20 ls:0.07px)
  *   Gap:        icon-to-text gap-sm (12px), title-to-desc gap-xs (8px)
@@ -36,7 +36,7 @@ import { cn } from "@/lib/utils"
  *   Emphasis: bg-emphasis-subtle, border-emphasis-border, text-emphasis-subtle-foreground
  */
 const alertVariants = cva(
-  "relative w-full rounded-lg border py-sm px-md [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-md [&>svg]:top-sm [&>svg]:size-md",
+  "relative w-full rounded-lg border py-sm px-md [&>svg~*]:pl-7 [&>svg]:absolute [&>svg]:left-md [&>svg]:top-[14px] [&>svg]:size-md",
   {
     variants: {
       variant: {
@@ -75,7 +75,7 @@ function Alert({
       className={cn(
         alertVariants({ variant }),
         inCard && [
-          "border-transparent py-xs px-sm [&>svg]:left-sm [&>svg]:top-xs",
+          "border-transparent py-xs px-sm [&>svg]:left-sm [&>svg]:top-[10px]",
           (!variant || variant === "default") && "bg-card-subtle",
         ],
         className
