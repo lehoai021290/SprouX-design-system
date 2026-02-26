@@ -8562,18 +8562,55 @@ function AlertDialogPropsTable() {
         { name: "onOpenChange", type: "(open: boolean) => void", default: "—", description: "Callback when open state changes." },
         { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state (uncontrolled)." },
       ])}
+      {renderTable("AlertDialogTrigger", [
+        { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element instead of rendering a default button." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Trigger element. When asChild is true, must be a single React element." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes." },
+      ])}
+      {renderTable("AlertDialogPortal", [
+        { name: "container", type: "HTMLElement", default: "document.body", description: "The container element to portal the overlay and content into." },
+        { name: "forceMount", type: "boolean", default: "—", description: "Force mounting when controlled via animation libraries." },
+      ])}
+      {renderTable("AlertDialogOverlay", [
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes for the overlay backdrop." },
+        { name: "forceMount", type: "boolean", default: "—", description: "Force mounting when controlled via animation libraries." },
+      ])}
       {renderTable("AlertDialogContent", [
         { name: "className", type: "string", default: "—", description: "Additional CSS classes for the content panel." },
-        { name: "onOpenAutoFocus", type: "(e: Event) => void", default: "—", description: "Called when auto-focus happens on open." },
-        { name: "onCloseAutoFocus", type: "(e: Event) => void", default: "—", description: "Called when auto-focus happens on close." },
+        { name: "forceMount", type: "boolean", default: "—", description: "Force mounting when controlled via animation libraries." },
+        { name: "onOpenAutoFocus", type: "(e: Event) => void", default: "—", description: "Called when auto-focus happens on open. Call e.preventDefault() to prevent." },
+        { name: "onCloseAutoFocus", type: "(e: Event) => void", default: "—", description: "Called when auto-focus returns on close. Call e.preventDefault() to prevent." },
+        { name: "onEscapeKeyDown", type: "(e: KeyboardEvent) => void", default: "—", description: "Called when the Escape key is pressed. Call e.preventDefault() to prevent closing." },
+      ])}
+      {renderTable("AlertDialogHeader", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Title and description elements." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Renders as a div (not a Radix primitive)." },
+      ])}
+      {renderTable("AlertDialogFooter", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Action and cancel buttons." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Renders as a div. Stacks vertically on mobile, row on sm+." },
+      ])}
+      {renderTable("AlertDialogTitle", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Title text content." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-heading-4 text-foreground." },
+      ])}
+      {renderTable("AlertDialogDescription", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Description text content." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-sm text-muted-foreground." },
       ])}
       {renderTable("AlertDialogAction", [
-        { name: "variant", type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"', default: '"default"', description: "Button visual variant." },
-        { name: "size", type: '"default" | "sm" | "lg" | "icon"', default: '"default"', description: "Button size." },
+        { name: "variant", type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"', default: '"default"', description: "Button visual variant. Forwarded to the wrapping Button component." },
+        { name: "size", type: '"default" | "sm" | "lg" | "icon"', default: '"default"', description: "Button size. Forwarded to the wrapping Button component." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Button label text." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes." },
+        { name: "onClick", type: "(e: MouseEvent) => void", default: "—", description: "Click handler. Dialog closes automatically after the handler runs." },
       ])}
       {renderTable("AlertDialogCancel", [
-        { name: "variant", type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"', default: '"outline"', description: "Button visual variant." },
-        { name: "size", type: '"default" | "sm" | "lg" | "icon"', default: '"default"', description: "Button size." },
+        { name: "variant", type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"', default: '"outline"', description: "Button visual variant. Forwarded to the wrapping Button component." },
+        { name: "size", type: '"default" | "sm" | "lg" | "icon"', default: '"default"', description: "Button size. Forwarded to the wrapping Button component." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Button label text." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes." },
+        { name: "onClick", type: "(e: MouseEvent) => void", default: "—", description: "Click handler. Dialog closes automatically after the handler runs." },
       ])}
     </div>
   )
