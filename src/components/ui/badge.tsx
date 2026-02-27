@@ -41,8 +41,8 @@ const badgeVariants = cva(
         secondary: "",
       },
       size: {
-        sm: "h-lg px-2xs gap-3xs typo-paragraph-mini-bold [&>svg]:size-sm",
-        default: "h-xl px-xs gap-3xs typo-paragraph-mini-bold [&>svg]:size-sm",
+        sm: "h-lg px-2xs gap-1 typo-paragraph-mini-bold [&>svg]:size-sm",
+        default: "h-xl px-xs gap-1 typo-paragraph-mini-bold [&>svg]:size-sm",
         lg: "h-[28px] px-sm gap-2xs py-3xs typo-paragraph-sm-medium [&>svg]:size-md",
       },
     },

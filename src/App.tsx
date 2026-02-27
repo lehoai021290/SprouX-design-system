@@ -8471,6 +8471,7 @@ function BadgeExploreBehavior() {
   const [variant, setVariant] = useState("default")
   const [level, setLevel] = useState("primary")
   const [size, setSize] = useState("default")
+  const [state, setState] = useState("Default")
   const [showIconLeft, setShowIconLeft] = useState(false)
   const [showIconRight, setShowIconRight] = useState(false)
   const [iconLeftName, setIconLeftName] = useState("Circle")
@@ -8483,7 +8484,7 @@ function BadgeExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-background">
       <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
-        <Badge variant={variant as any} level={level as any} size={size as any}>
+        <Badge variant={variant as any} level={level as any} size={size as any} className={state === "Focus" ? "ring-[3px] ring-ring" : ""}>
           {showIconLeft && <IconLeft />}
           {label}
           {showIconRight && <IconRight />}
@@ -8525,6 +8526,16 @@ function BadgeExploreBehavior() {
                 <SelectItem value="sm">Small (20px)</SelectItem>
                 <SelectItem value="default">Regular (24px)</SelectItem>
                 <SelectItem value="lg">Large (28px)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">State</Label>
+            <Select value={state} onValueChange={setState}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Default">Default</SelectItem>
+                <SelectItem value="Focus">Focus</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -8786,7 +8797,8 @@ function BadgeDocs() {
         ["Text Primary Lg", "Geist 500 14/20", "—", "typo-paragraph-sm-medium"],
         ["Text Secondary Reg/Sm", "Geist 400 12/16", "—", "typo-paragraph-mini"],
         ["Text Secondary Lg", "Geist 400 14/20", "—", "typo-paragraph-sm"],
-        ["Gap Reg/Sm", "4px", "—", "gap-3xs"],
+        ["State", "Default / Focus", "—", "focus:ring-[3px] focus:ring-ring"],
+        ["Gap Reg/Sm", "4px", "—", "gap-1"],
         ["Gap Lg", "6px", "—", "gap-2xs"],
       ]} />
 
