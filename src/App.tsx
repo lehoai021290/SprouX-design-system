@@ -7377,13 +7377,18 @@ function AvatarPropsTable() {
 function AvatarTokensTable() {
   const tokens = [
     { token: "--muted", value: "#f3f3f2", hex: "#f3f3f2", usage: "Fallback background" },
+    { token: "--border", value: "#e9e9e7", hex: "#e9e9e7", usage: "Avatar border (1px inside)" },
     { token: "--foreground", value: "#252522", hex: "#252522", usage: "Fallback text color" },
-    { token: "typo-paragraph-sm-bold", value: "Geist 600 14/20", hex: "—", usage: "Fallback initials text style" },
+    { token: "--background", value: "#f7f7f6", hex: "#f7f7f6", usage: "Avatar Stack ring (separation)" },
+    { token: "typo-paragraph-sm-bold", value: "Geist 600 14/20", hex: "—", usage: "Fallback text (Regular, Small)" },
+    { token: "typo-paragraph-mini-bold", value: "Geist 600 12/16", hex: "—", usage: "Fallback text (Tiny)" },
     { token: "--size-10 (40px)", value: "40px", hex: "—", usage: "Regular size" },
     { token: "--size-8 (32px)", value: "32px", hex: "—", usage: "Small size" },
     { token: "--size-xl (24px)", value: "24px", hex: "—", usage: "Tiny size" },
     { token: "--size-lg (20px)", value: "20px", hex: "—", usage: "Extra Tiny size" },
-    { token: "--radius-lg (8px)", value: "8px", hex: "—", usage: "Roundrect corner radius" },
+    { token: "--radius-lg (8px)", value: "8px", hex: "—", usage: "Roundrect corner (Regular, Small)" },
+    { token: "--radius-md (6px)", value: "6px", hex: "—", usage: "Roundrect corner (Tiny)" },
+    { token: "--radius-sm (4px)", value: "4px", hex: "—", usage: "Roundrect corner (Extra Tiny)" },
     { token: "rounded-full", value: "9999px", hex: "—", usage: "Round (circle) shape" },
   ]
   return (
@@ -7574,6 +7579,35 @@ function AvatarDocs() {
             </Avatar>
           </div>
         </Example>
+
+        <Example title="Avatar Stack" description="Overlapping avatars with -8px spacing. Each avatar has a background-colored ring to create visual separation." code={`<div className="flex flex-col gap-4">\n  {/* Regular (40px) */}\n  <div className="flex -space-x-2">\n    <Avatar className="ring-1 ring-background">\n      <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />\n      <AvatarFallback>U1</AvatarFallback>\n    </Avatar>\n    <Avatar className="ring-1 ring-background">\n      <AvatarFallback>AB</AvatarFallback>\n    </Avatar>\n    <Avatar className="ring-1 ring-background">\n      <AvatarFallback>CD</AvatarFallback>\n    </Avatar>\n  </div>\n  {/* Small (32px) */}\n  <div className="flex -space-x-2">\n    <Avatar className="size-8 ring-1 ring-background">\n      <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />\n      <AvatarFallback>U1</AvatarFallback>\n    </Avatar>\n    <Avatar className="size-8 ring-1 ring-background">\n      <AvatarFallback>AB</AvatarFallback>\n    </Avatar>\n    <Avatar className="size-8 ring-1 ring-background">\n      <AvatarFallback>CD</AvatarFallback>\n    </Avatar>\n  </div>\n</div>`}>
+          <div className="flex flex-col gap-4">
+            <div className="flex -space-x-2">
+              <Avatar className="ring-1 ring-background">
+                <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />
+                <AvatarFallback>U1</AvatarFallback>
+              </Avatar>
+              <Avatar className="ring-1 ring-background">
+                <AvatarFallback>AB</AvatarFallback>
+              </Avatar>
+              <Avatar className="ring-1 ring-background">
+                <AvatarFallback>CD</AvatarFallback>
+              </Avatar>
+            </div>
+            <div className="flex -space-x-2">
+              <Avatar className="size-8 ring-1 ring-background">
+                <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />
+                <AvatarFallback>U1</AvatarFallback>
+              </Avatar>
+              <Avatar className="size-8 ring-1 ring-background">
+                <AvatarFallback>AB</AvatarFallback>
+              </Avatar>
+              <Avatar className="size-8 ring-1 ring-background">
+                <AvatarFallback>CD</AvatarFallback>
+              </Avatar>
+            </div>
+          </div>
+        </Example>
         </div>
       </section>
 
@@ -7643,10 +7677,22 @@ function AvatarDocs() {
         ["Size", "Tiny (24px)", "className", "size-xl"],
         ["Size", "Extra Tiny (20px)", "className", "size-lg"],
         ["Roundness", "Round (circle)", "—", "rounded-full (default)"],
-        ["Roundness", "Roundrect (8px)", "className", "rounded-lg on Avatar + AvatarFallback"],
+        ["Roundness", "Roundrect (Reg/Sm)", "className", "rounded-lg (8px)"],
+        ["Roundness", "Roundrect (Tiny)", "className", "rounded-md (6px)"],
+        ["Roundness", "Roundrect (XTiny)", "className", "rounded-sm (4px)"],
+        ["Border", "#e9e9e7 1px inside", "—", "border border-border"],
         ["Fallback BG", "#f3f3f2", "—", "bg-muted"],
         ["Fallback Text", "#252522", "—", "text-foreground (inherited)"],
-        ["Icon Size (Regular)", "24px", "—", "size-xl inside AvatarFallback"],
+        ["Text (Reg/Sm)", "Geist 600 14/20", "—", "typo-paragraph-sm-bold"],
+        ["Text (Tiny)", "Geist 600 12/16", "—", "typo-paragraph-mini-bold"],
+        ["Text (XTiny)", "Geist 600 8/12", "—", "text-[8px] leading-3 (custom)"],
+        ["Icon (Regular)", "24px", "—", "size-xl"],
+        ["Icon (Small)", "20px", "—", "size-lg"],
+        ["Icon (Tiny)", "16px", "—", "size-md"],
+        ["Icon (XTiny)", "12px", "—", "size-sm"],
+        ["Avatar Stack", "22:9509", "—", "flex -space-x-2 + ring-1 ring-background"],
+        ["Stack Spacing", "-8px overlap", "—", "-space-x-2 (negative margin)"],
+        ["Stack Ring", "#f7f7f6 1px", "—", "ring-1 ring-background"],
       ]} />
 
       {/* ---- Accessibility ---- */}
