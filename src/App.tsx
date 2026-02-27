@@ -9033,10 +9033,15 @@ function AlertDialogExploreBehavior() {
   const isSlotIllustration = slotVariant === "congratulation"
   /* Figma constraint: Secondary Action only available when Show Action is on */
   const handleShowActionChange = (v: boolean) => { setShowAction(v); if (!v) setShowActionSecondary(false) }
-  /* Figma constraint: Congratulation slot auto-disables Show Action (slot has its own button) */
+  /* Figma constraint: Congratulation slot auto-disables Icon, Title, Action (slot has its own button) */
   const handleSlotChange = (v: string) => {
     setSlotVariant(v as typeof slotVariant)
-    if (v === "congratulation") { setShowAction(false); setShowActionSecondary(false) }
+    if (v === "congratulation") {
+      setShowIcon(false)
+      setShowTitle(false)
+      setShowAction(false)
+      setShowActionSecondary(false)
+    }
   }
   const SelectedIcon = allLucideIcons.find((i) => i.name === iconName)?.icon ?? allLucideIcons.find((i) => i.name === "CircleAlert")!.icon
   const isMobile = type === "Mobile"
@@ -9107,20 +9112,20 @@ function AlertDialogExploreBehavior() {
             </Select>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Icon</Label>
+            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Icon</Label>
             <div className="pt-1">
-              <Switch checked={showIcon} onCheckedChange={setShowIcon} />
+              <Switch checked={showIcon} onCheckedChange={setShowIcon} disabled={isSlotIllustration} />
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", !showIcon ? "opacity-50" : ""].join(" ")}>Icon</Label>
-            <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon} size="sm" />
+            <Label className={["text-xs text-muted-foreground", !showIcon || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Icon</Label>
+            <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
           </div>
           {/* Row 2: Show Title, Show Action, Show Action Secondary, Slot */}
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Title</Label>
+            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Title</Label>
             <div className="pt-1">
-              <Switch checked={showTitle} onCheckedChange={setShowTitle} />
+              <Switch checked={showTitle} onCheckedChange={setShowTitle} disabled={isSlotIllustration} />
             </div>
           </div>
           <div className="space-y-xs">
