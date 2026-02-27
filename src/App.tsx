@@ -7446,7 +7446,7 @@ function AvatarExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-background">
       <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
-        <Avatar className={[sizeClass[size], shapeClass].join(" ")}>
+        <Avatar key={value} className={[sizeClass[size], shapeClass].join(" ")}>
           {value === "Picture" && <AvatarImage src="https://github.com/shadcn.png" alt="User" />}
           <AvatarFallback className={[shapeClass, value === "Icon" ? "" : textSizeClass[size]].join(" ")}>
             {value === "Text" && "TN"}
