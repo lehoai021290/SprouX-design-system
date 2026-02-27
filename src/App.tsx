@@ -9033,6 +9033,11 @@ function AlertDialogExploreBehavior() {
   const isSlotIllustration = slotVariant === "congratulation"
   /* Figma constraint: Secondary Action only available when Show Action is on */
   const handleShowActionChange = (v: boolean) => { setShowAction(v); if (!v) setShowActionSecondary(false) }
+  /* Figma constraint: Congratulation slot auto-disables Show Action (slot has its own button) */
+  const handleSlotChange = (v: string) => {
+    setSlotVariant(v as typeof slotVariant)
+    if (v === "congratulation") { setShowAction(false); setShowActionSecondary(false) }
+  }
   const SelectedIcon = allLucideIcons.find((i) => i.name === iconName)?.icon ?? allLucideIcons.find((i) => i.name === "CircleAlert")!.icon
   const isMobile = type === "Mobile"
 
@@ -9068,6 +9073,12 @@ function AlertDialogExploreBehavior() {
                   <Button variant="outline" size="default" className={isMobile ? "w-full" : ""}>Cancel</Button>
                 )}
                 <Button variant="default" size="default" className={isMobile ? "w-full" : ""}>Continue</Button>
+              </div>
+            )}
+            {/* Congratulation slot has its own built-in button (not controlled by Show Action) */}
+            {isSlotIllustration && !showAction && (
+              <div className={["flex gap-xs", isMobile ? "flex-col" : "justify-end"].join(" ")}>
+                <Button variant="default" size="default" className={isMobile ? "w-full" : ""}>Got it</Button>
               </div>
             )}
           </div>
@@ -9113,20 +9124,20 @@ function AlertDialogExploreBehavior() {
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Action</Label>
+            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action</Label>
             <div className="pt-1">
-              <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
+              <Switch checked={showAction} onCheckedChange={handleShowActionChange} disabled={isSlotIllustration} />
             </div>
           </div>
           <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", !showAction ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
+            <Label className={["text-xs text-muted-foreground", !showAction || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
             <div className="pt-1">
-              <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction} />
+              <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction || isSlotIllustration} />
             </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Slot</Label>
-            <Select value={slotVariant} onValueChange={(v) => setSlotVariant(v as typeof slotVariant)}>
+            <Select value={slotVariant} onValueChange={handleSlotChange}>
               <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="delete-account">Delete Account</SelectItem>
@@ -9296,7 +9307,7 @@ function AlertDialogDocs() {
             </div>
           </Example>
 
-          <Example title="Congratulation Slot (No Title, No Secondary)" description="Illustration slot with hidden title — only primary action, no secondary (Cancel cannot appear without Action)." code={`<AlertDialog>
+          <Example title="Congratulation Slot" description="Illustration slot auto-disables Show Action — slot has its own built-in button. Title hidden, no Cancel." code={`<AlertDialog>
   <AlertDialogTrigger asChild>
     <Button variant="outline">Show Congratulations</Button>
   </AlertDialogTrigger>
