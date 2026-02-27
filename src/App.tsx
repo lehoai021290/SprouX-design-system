@@ -12333,6 +12333,7 @@ const aspectRatioSections: TocSection[] = [
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
   { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
   { id: "best-practices", label: "Best Practices" },
   { id: "figma-mapping", label: "Figma Mapping" },
   { id: "accessibility", label: "Accessibility" },
@@ -12439,6 +12440,23 @@ function AspectRatioDocs() {
           Supports all Radix AspectRatio props.
         </p>
         <AspectRatioPropsTable />
+      </section>
+
+      {/* ---- Design Tokens ---- */}
+      <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+        <p className="typo-paragraph-sm text-muted-foreground">
+          Aspect Ratio is a layout utility wrapper — it has no visual styling tokens of its own. The Radix primitive renders an unstyled container that constrains children to the given ratio. All visual styling (background, border, radius, etc.) should be applied to the child content.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Element</th><th className="px-4 py-3 font-semibold">Token</th><th className="px-4 py-3 font-semibold">Notes</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">Container</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">No visual tokens. Renders as unstyled <code className="bg-muted px-1 rounded font-mono">div</code> with padding-bottom for ratio.</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">Child content</td><td className="px-4 py-3 text-muted-foreground">Apply via className</td><td className="px-4 py-3 text-muted-foreground">Use <code className="bg-muted px-1 rounded font-mono">size-full</code>, <code className="bg-muted px-1 rounded font-mono">object-cover</code>, <code className="bg-muted px-1 rounded font-mono">rounded-md</code> on child elements as needed.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* ---- Best Practices ---- */}
