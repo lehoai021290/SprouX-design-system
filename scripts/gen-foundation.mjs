@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CSS_PATH = join(__dirname, "..", "src", "index.css");
-const OUT_PATH = join(__dirname, "..", "foundation-export.json");
+const OUT_PATH = join(__dirname, "..", "public", "foundation-export.json");
 
 const css = readFileSync(CSS_PATH, "utf-8");
 
