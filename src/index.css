@@ -83,7 +83,7 @@
   --color-emphasis-border: var(--emphasis-border);
 
   /* --- SprouX Spacing (from Figma semantic tokens) --- */
-  --spacing-3xs: 2px;
+  --spacing-3xs: 4px;
   --spacing-2xs: 6px;
   --spacing-xs: 8px;
   --spacing-sm: 12px;

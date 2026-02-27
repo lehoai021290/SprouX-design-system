@@ -1007,8 +1007,8 @@ function TypographyDocs() {
 
 function SpacingDocs() {
   const spacingScale = [
-    { name: "3xs", value: "2px", css: "--spacing-3xs", tailwind: "p-3xs, m-3xs, gap-3xs" },
-    { name: "2xs", value: "4px", css: "--spacing-2xs", tailwind: "p-2xs, m-2xs, gap-2xs" },
+    { name: "3xs", value: "4px", css: "--spacing-3xs", tailwind: "p-3xs, m-3xs, gap-3xs" },
+    { name: "2xs", value: "6px", css: "--spacing-2xs", tailwind: "p-2xs, m-2xs, gap-2xs" },
     { name: "xs", value: "8px", css: "--spacing-xs", tailwind: "p-xs, m-xs, gap-xs" },
     { name: "sm", value: "12px", css: "--spacing-sm", tailwind: "p-sm, m-sm, gap-sm" },
     { name: "md", value: "16px", css: "--spacing-md", tailwind: "p-md, m-md, gap-md" },
@@ -8798,7 +8798,7 @@ function BadgeDocs() {
         ["Text Secondary Reg/Sm", "Geist 400 12/16", "—", "typo-paragraph-mini"],
         ["Text Secondary Lg", "Geist 400 14/20", "—", "typo-paragraph-sm"],
         ["State", "Default / Focus", "—", "focus:ring-[3px] focus:ring-ring"],
-        ["Gap Reg/Sm", "4px", "—", "gap-1"],
+        ["Gap Reg/Sm", "4px", "—", "gap-3xs"],
         ["Gap Lg", "6px", "—", "gap-2xs"],
       ]} />
 
