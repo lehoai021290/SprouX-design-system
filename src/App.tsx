@@ -9023,11 +9023,9 @@ function AlertDialogExploreBehavior() {
   const [showTitle, setShowTitle] = useState(true)
   const [showAction, setShowAction] = useState(true)
   const [showActionSecondary, setShowActionSecondary] = useState(true)
-  const [slotVariant, setSlotVariant] = useState<"delete-account" | "discard-changes" | "reset-settings" | "congratulation">("delete-account")
+  const [slotVariant, setSlotVariant] = useState<"text" | "congratulation">("text")
   const slotContent: Record<string, string> = {
-    "delete-account": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
-    "discard-changes": "You have unsaved changes that will be lost. Are you sure you want to discard them?",
-    "reset-settings": "This will reset all your preferences to default values. You can reconfigure them later.",
+    "text": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
     "congratulation": "Congratulations! Your account has been successfully created. Welcome aboard!",
   }
   const isSlotIllustration = slotVariant === "congratulation"
@@ -9041,6 +9039,11 @@ function AlertDialogExploreBehavior() {
       setShowTitle(false)
       setShowAction(false)
       setShowActionSecondary(false)
+    } else {
+      setShowIcon(true)
+      setShowTitle(true)
+      setShowAction(true)
+      setShowActionSecondary(true)
     }
   }
   const SelectedIcon = allLucideIcons.find((i) => i.name === iconName)?.icon ?? allLucideIcons.find((i) => i.name === "CircleAlert")!.icon
@@ -9145,9 +9148,7 @@ function AlertDialogExploreBehavior() {
             <Select value={slotVariant} onValueChange={handleSlotChange}>
               <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="delete-account">Delete Account</SelectItem>
-                <SelectItem value="discard-changes">Discard Changes</SelectItem>
-                <SelectItem value="reset-settings">Reset Settings</SelectItem>
+                <SelectItem value="text">Text</SelectItem>
                 <SelectItem value="congratulation">Congratulation</SelectItem>
               </SelectContent>
             </Select>
