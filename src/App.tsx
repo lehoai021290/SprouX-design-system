@@ -9723,123 +9723,172 @@ function AlertDocs() {
    ================================================================ */
 
 function BadgeExploreBehavior() {
-  const [component, setComponent] = useState<"label" | "round" | "dot">("label")
-  const [variant, setVariant] = useState("default")
-  const [level, setLevel] = useState("primary")
-  const [size, setSize] = useState("default")
-  const [state, setState] = useState("Default")
+  // Badge/Label state
+  const [labelVariant, setLabelVariant] = useState("default")
+  const [labelLevel, setLabelLevel] = useState("primary")
+  const [labelSize, setLabelSize] = useState("default")
+  const [labelState, setLabelState] = useState("Default")
   const [showIconLeft, setShowIconLeft] = useState(false)
   const [showIconRight, setShowIconRight] = useState(false)
   const [iconLeftName, setIconLeftName] = useState("Circle")
   const [iconRightName, setIconRightName] = useState("X")
+  const [labelText, setLabelText] = useState("Badge")
+
+  // Badge/Round state
+  const [roundVariant, setRoundVariant] = useState("default")
+  const [roundSize, setRoundSize] = useState("default")
+  const [roundState, setRoundState] = useState("Default")
   const [roundType, setRoundType] = useState<"numeric" | "icon">("numeric")
   const [roundIconName, setRoundIconName] = useState("Bell")
   const [roundNumber, setRoundNumber] = useState("3")
-  const [label, setLabel] = useState("Badge")
+
+  // Badge/Dot state
+  const [dotVariant, setDotVariant] = useState("default")
+  const [dotSize, setDotSize] = useState("default")
 
   const IconLeft = allLucideIcons.find((i) => i.name === iconLeftName)?.icon ?? allLucideIcons.find((i) => i.name === "Circle")!.icon
   const IconRight = allLucideIcons.find((i) => i.name === iconRightName)?.icon ?? allLucideIcons.find((i) => i.name === "X")!.icon
   const RoundIcon = allLucideIcons.find((i) => i.name === roundIconName)?.icon ?? allLucideIcons.find((i) => i.name === "Bell")!.icon
 
-  // Badge/Dot only supports 6 variants (no outline/ghost)
-  const dotVariants = ["default", "secondary", "destructive", "emphasis", "success", "warning"]
-  const effectiveVariant = component === "dot" && !dotVariants.includes(variant) ? "default" : variant
-
-  // Dot sizes: sm=4px, default=8px, lg=12px
-  const dotSizeLabels: Record<string, string> = { sm: "Small (4px)", default: "Regular (8px)", lg: "Large (12px)" }
-  const roundSizeLabels: Record<string, string> = { sm: "Small (20px)", default: "Regular (24px)", lg: "Large (28px)" }
-  const labelSizeLabels: Record<string, string> = { sm: "Small (20px)", default: "Regular (24px)", lg: "Large (28px)" }
-  const sizeLabels = component === "dot" ? dotSizeLabels : component === "round" ? roundSizeLabels : labelSizeLabels
-
   return (
-    <div className="rounded-xl border border-border overflow-hidden bg-background">
-      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
-        {component === "label" && (
-          <Badge variant={effectiveVariant as any} level={level as any} size={size as any} className={state === "Focus" ? "ring-[3px] ring-ring" : ""}>
-            {showIconLeft && <IconLeft />}
-            {label}
-            {showIconRight && <IconRight />}
-          </Badge>
-        )}
-        {component === "round" && (
-          <BadgeRound variant={effectiveVariant as any} size={size as any} className={state === "Focus" ? "ring-[3px] ring-ring" : ""}>
-            {roundType === "numeric" ? roundNumber : <RoundIcon />}
-          </BadgeRound>
-        )}
-        {component === "dot" && (
-          <BadgeDot variant={effectiveVariant as any} size={size as any} />
-        )}
-      </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Component</Label>
-            <Select value={component} onValueChange={(v) => {
-              setComponent(v as any)
-              // Reset variant if switching to dot and current variant is invalid
-              if (v === "dot" && !dotVariants.includes(variant)) setVariant("default")
-            }}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="label">Badge/Label</SelectItem>
-                <SelectItem value="round">Badge/Round</SelectItem>
-                <SelectItem value="dot">Badge/Dot</SelectItem>
-              </SelectContent>
-            </Select>
+    <Tabs defaultValue="label">
+      <TabsList>
+        <TabsTrigger value="label">Label</TabsTrigger>
+        <TabsTrigger value="round">Round</TabsTrigger>
+        <TabsTrigger value="dot">Dot</TabsTrigger>
+      </TabsList>
+
+      {/* ── Badge/Label ── */}
+      <TabsContent value="label" className="mt-md">
+        <div className="rounded-xl border border-border overflow-hidden bg-background">
+          <div className="p-4xl flex items-center justify-center min-h-[200px]">
+            <Badge variant={labelVariant as any} level={labelLevel as any} size={labelSize as any} className={labelState === "Focus" ? "ring-[3px] ring-ring" : ""}>
+              {showIconLeft && <IconLeft />}
+              {labelText}
+              {showIconRight && <IconRight />}
+            </Badge>
           </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Variant</Label>
-            <Select value={effectiveVariant} onValueChange={setVariant}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Primary</SelectItem>
-                <SelectItem value="secondary">Secondary</SelectItem>
-                {component !== "dot" && <SelectItem value="outline">Outline</SelectItem>}
-                {component !== "dot" && <SelectItem value="ghost">Ghost</SelectItem>}
-                <SelectItem value="destructive">Destructive</SelectItem>
-                <SelectItem value="emphasis">Emphasis</SelectItem>
-                <SelectItem value="success">Success</SelectItem>
-                <SelectItem value="warning">Warning</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          {component === "label" && (
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Level</Label>
-              <Select value={level} onValueChange={setLevel}>
-                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="primary">Primary</SelectItem>
-                  <SelectItem value="secondary">Secondary</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Variant</Label>
+                <Select value={labelVariant} onValueChange={setLabelVariant}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Primary</SelectItem>
+                    <SelectItem value="secondary">Secondary</SelectItem>
+                    <SelectItem value="outline">Outline</SelectItem>
+                    <SelectItem value="ghost">Ghost</SelectItem>
+                    <SelectItem value="destructive">Destructive</SelectItem>
+                    <SelectItem value="emphasis">Emphasis</SelectItem>
+                    <SelectItem value="success">Success</SelectItem>
+                    <SelectItem value="warning">Warning</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Level</Label>
+                <Select value={labelLevel} onValueChange={setLabelLevel}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="primary">Primary</SelectItem>
+                    <SelectItem value="secondary">Secondary</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <Select value={labelSize} onValueChange={setLabelSize}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sm">Small (20px)</SelectItem>
+                    <SelectItem value="default">Regular (24px)</SelectItem>
+                    <SelectItem value="lg">Large (28px)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <Select value={labelState} onValueChange={setLabelState}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Default">Default</SelectItem>
+                    <SelectItem value="Focus">Focus</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Label</Label>
+                <Input value={labelText} onChange={(e) => setLabelText(e.target.value)} className="h-8 text-xs" />
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Icon Left</Label>
+                <div className="pt-1"><Switch checked={showIconLeft} onCheckedChange={setShowIconLeft} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className={["text-xs text-muted-foreground", !showIconLeft ? "opacity-50" : ""].join(" ")}>Icon Left</Label>
+                <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Icon Right</Label>
+                <div className="pt-1"><Switch checked={showIconRight} onCheckedChange={setShowIconRight} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className={["text-xs text-muted-foreground", !showIconRight ? "opacity-50" : ""].join(" ")}>Icon Right</Label>
+                <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
+              </div>
             </div>
-          )}
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Size</Label>
-            <Select value={size} onValueChange={setSize}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="sm">{sizeLabels.sm}</SelectItem>
-                <SelectItem value="default">{sizeLabels.default}</SelectItem>
-                <SelectItem value="lg">{sizeLabels.lg}</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
-          {component !== "dot" && (
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">State</Label>
-              <Select value={state} onValueChange={setState}>
-                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Default">Default</SelectItem>
-                  <SelectItem value="Focus">Focus</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-          {component === "round" && (
-            <>
+        </div>
+      </TabsContent>
+
+      {/* ── Badge/Round ── */}
+      <TabsContent value="round" className="mt-md">
+        <div className="rounded-xl border border-border overflow-hidden bg-background">
+          <div className="p-4xl flex items-center justify-center min-h-[200px]">
+            <BadgeRound variant={roundVariant as any} size={roundSize as any} className={roundState === "Focus" ? "ring-[3px] ring-ring" : ""}>
+              {roundType === "numeric" ? roundNumber : <RoundIcon />}
+            </BadgeRound>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Variant</Label>
+                <Select value={roundVariant} onValueChange={setRoundVariant}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Primary</SelectItem>
+                    <SelectItem value="secondary">Secondary</SelectItem>
+                    <SelectItem value="outline">Outline</SelectItem>
+                    <SelectItem value="ghost">Ghost</SelectItem>
+                    <SelectItem value="destructive">Destructive</SelectItem>
+                    <SelectItem value="emphasis">Emphasis</SelectItem>
+                    <SelectItem value="success">Success</SelectItem>
+                    <SelectItem value="warning">Warning</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <Select value={roundSize} onValueChange={setRoundSize}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sm">Small (20px)</SelectItem>
+                    <SelectItem value="default">Regular (24px)</SelectItem>
+                    <SelectItem value="lg">Large (28px)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <Select value={roundState} onValueChange={setRoundState}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Default">Default</SelectItem>
+                    <SelectItem value="Focus">Focus</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Type</Label>
                 <Select value={roundType} onValueChange={(v) => setRoundType(v as any)}>
@@ -9861,35 +9910,49 @@ function BadgeExploreBehavior() {
                   <IconPicker value={roundIconName} onChange={setRoundIconName} size="sm" />
                 </div>
               )}
-            </>
-          )}
-          {component === "label" && (
-            <>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Label</Label>
-                <Input value={label} onChange={(e) => setLabel(e.target.value)} className="h-8 text-xs" />
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Icon Left</Label>
-                <div className="pt-1"><Switch checked={showIconLeft} onCheckedChange={setShowIconLeft} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className={["text-xs text-muted-foreground", !showIconLeft ? "opacity-50" : ""].join(" ")}>Icon Left</Label>
-                <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Icon Right</Label>
-                <div className="pt-1"><Switch checked={showIconRight} onCheckedChange={setShowIconRight} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className={["text-xs text-muted-foreground", !showIconRight ? "opacity-50" : ""].join(" ")}>Icon Right</Label>
-                <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
-              </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </TabsContent>
+
+      {/* ── Badge/Dot ── */}
+      <TabsContent value="dot" className="mt-md">
+        <div className="rounded-xl border border-border overflow-hidden bg-background">
+          <div className="p-4xl flex items-center justify-center min-h-[200px]">
+            <BadgeDot variant={dotVariant as any} size={dotSize as any} />
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Variant</Label>
+                <Select value={dotVariant} onValueChange={setDotVariant}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Primary</SelectItem>
+                    <SelectItem value="secondary">Secondary</SelectItem>
+                    <SelectItem value="destructive">Destructive</SelectItem>
+                    <SelectItem value="emphasis">Emphasis</SelectItem>
+                    <SelectItem value="success">Success</SelectItem>
+                    <SelectItem value="warning">Warning</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <Select value={dotSize} onValueChange={setDotSize}>
+                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sm">Small (4px)</SelectItem>
+                    <SelectItem value="default">Regular (8px)</SelectItem>
+                    <SelectItem value="lg">Large (12px)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </TabsContent>
+    </Tabs>
   )
 }
 
