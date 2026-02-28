@@ -43,7 +43,7 @@ function Calendar({
         month_grid: "w-full border-collapse",
         weekdays: "flex",
         weekday:
-          "text-muted-foreground rounded-sm w-[48px] font-normal text-[12px] leading-[16px]",
+          "text-muted-foreground rounded-sm w-[48px] h-[32px] font-normal text-[12px] leading-[16px]",
         week: "flex w-full mt-[1px]",
         day: cn(
           "relative p-0 text-center typo-paragraph-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-muted [&:has([aria-selected].day-range-end)]:rounded-r-sm [&:has([aria-selected].day-outside)]:bg-muted/50",
@@ -64,7 +64,7 @@ function Calendar({
           "day-outside text-muted-foreground aria-selected:text-muted-foreground",
         disabled: "text-muted-foreground opacity-50",
         range_middle:
-          "aria-selected:bg-muted aria-selected:text-foreground",
+          "aria-selected:bg-accent aria-selected:text-foreground",
         hidden: "invisible",
         ...classNames,
       }}

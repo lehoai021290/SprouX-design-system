@@ -141,7 +141,7 @@ import {
 } from "@/components/ui/collapsible"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Calendar } from "@/components/ui/calendar"
-import { DatePicker } from "@/components/ui/date-picker"
+import { DatePicker, DateRangePicker } from "@/components/ui/date-picker"
 import { Combobox } from "@/components/ui/combobox"
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"
 import { Spinner } from "@/components/ui/spinner"
@@ -15259,6 +15259,8 @@ function DatePickerExploreBehavior() {
   const [inputState, setInputState] = useState<"Placeholder" | "Value" | "Focus">("Placeholder")
   const [calendarType, setCalendarType] = useState<"Basic" | "Range">("Basic")
   const [selectedDate] = useState(new Date())
+  const rangeFrom = new Date(2025, 0, 15)
+  const rangeTo = new Date(2025, 1, 14)
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
@@ -15267,7 +15269,8 @@ function DatePickerExploreBehavior() {
         {/* Date Picker Input preview */}
         <div
           className={cn(
-            "flex h-9 w-[280px] items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm transition-colors",
+            "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm transition-colors",
+            calendarType === "Basic" ? "w-[280px]" : "w-auto min-w-[280px]",
             inputState === "Focus"
               ? "border-border ring-[3px] ring-ring"
               : "border-border",
@@ -15275,8 +15278,14 @@ function DatePickerExploreBehavior() {
           )}
         >
           <CalendarIcon className="size-md shrink-0" />
-          <span className="flex-1 text-left">
-            {inputState === "Value" ? format(selectedDate, "PPP") : "Pick a date"}
+          <span className="flex-1 text-left whitespace-nowrap">
+            {inputState === "Value"
+              ? calendarType === "Range"
+                ? `${format(rangeFrom, "LLL dd, y")} – ${format(rangeTo, "LLL dd, y")}`
+                : format(selectedDate, "PPP")
+              : calendarType === "Range"
+                ? "Pick a date range"
+                : "Pick a date"}
           </span>
         </div>
 
@@ -15285,6 +15294,7 @@ function DatePickerExploreBehavior() {
           {calendarType === "Range" ? (
             <Calendar
               mode="range"
+              selected={inputState === "Value" ? { from: rangeFrom, to: rangeTo } : undefined}
               numberOfMonths={2}
               showOutsideDays
               className="rounded-xl border border-border bg-card shadow"
@@ -15305,6 +15315,16 @@ function DatePickerExploreBehavior() {
       <div className="border-t border-border bg-muted/50 p-lg">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-md">
           <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Type</Label>
+            <Select value={calendarType} onValueChange={(v) => setCalendarType(v as "Basic" | "Range")}>
+              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Basic">Basic</SelectItem>
+                <SelectItem value="Range">Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">State</Label>
             <Select value={inputState} onValueChange={(v) => setInputState(v as "Placeholder" | "Value" | "Focus")}>
               <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
@@ -15312,16 +15332,6 @@ function DatePickerExploreBehavior() {
                 <SelectItem value="Placeholder">Placeholder</SelectItem>
                 <SelectItem value="Value">Value</SelectItem>
                 <SelectItem value="Focus">Focus</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={calendarType} onValueChange={(v) => setCalendarType(v as "Basic" | "Range")}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Basic">Basic</SelectItem>
-                <SelectItem value="Range">Range</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -15342,6 +15352,21 @@ function DatePickerPropsTable() {
             <tbody className="divide-y divide-border">
               <tr><td className="px-4 py-3 font-mono text-primary">date</td><td className="px-4 py-3 font-mono text-muted-foreground">Date</td><td className="px-4 py-3 font-mono text-muted-foreground">undefined</td><td className="px-4 py-3 text-muted-foreground">Controlled selected date.</td></tr>
               <tr><td className="px-4 py-3 font-mono text-primary">onDateChange</td><td className="px-4 py-3 font-mono text-muted-foreground">{"(date: Date | undefined) => void"}</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when a date is selected or cleared.</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes for the input trigger.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">DateRangePicker</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">from</td><td className="px-4 py-3 font-mono text-muted-foreground">Date</td><td className="px-4 py-3 font-mono text-muted-foreground">undefined</td><td className="px-4 py-3 text-muted-foreground">Initial start date of the range.</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">to</td><td className="px-4 py-3 font-mono text-muted-foreground">Date</td><td className="px-4 py-3 font-mono text-muted-foreground">undefined</td><td className="px-4 py-3 text-muted-foreground">Initial end date of the range.</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">onRangeChange</td><td className="px-4 py-3 font-mono text-muted-foreground">{"(range: { from: Date | undefined; to: Date | undefined }) => void"}</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when the date range changes.</td></tr>
               <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes for the input trigger.</td></tr>
             </tbody>
           </table>
@@ -15417,7 +15442,7 @@ function DatePickerDocs() {
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add react-day-picker @radix-ui/react-popover date-fns`}
-        importCode={`import { DatePicker } from "@/components/ui/date-picker"`}
+        importCode={`import { DatePicker, DateRangePicker } from "@/components/ui/date-picker"`}
       />
 
       {/* ---- Examples ---- */}
@@ -15436,6 +15461,18 @@ function DatePickerDocs() {
           <Example title="With callback" description="Handle date selection with onDateChange." code={`<DatePicker\n  onDateChange={(date) => console.log(date)}\n/>`}>
             <DatePicker onDateChange={(d) => console.log(d)} />
           </Example>
+
+          <Example title="Date Range" description="Select a start and end date with a 2-month calendar." code={`<DateRangePicker />`}>
+            <DateRangePicker />
+          </Example>
+
+          <Example title="Date Range with pre-selected" description="Pass initial from/to dates." code={`<DateRangePicker\n  from={new Date(2025, 0, 15)}\n  to={new Date(2025, 1, 14)}\n/>`}>
+            <DateRangePicker from={new Date(2025, 0, 15)} to={new Date(2025, 1, 14)} />
+          </Example>
+
+          <Example title="Date Range with callback" description="Handle range selection with onRangeChange." code={`<DateRangePicker\n  onRangeChange={(range) => console.log(range)}\n/>`}>
+            <DateRangePicker onRangeChange={(r) => console.log(r)} />
+          </Example>
         </div>
       </section>
 
@@ -15443,7 +15480,7 @@ function DatePickerDocs() {
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
-          DatePicker composes an Input-style trigger + Popover + Calendar internally.
+          DatePicker and DateRangePicker compose an Input-style trigger + Popover + Calendar internally.
         </p>
         <DatePickerPropsTable />
       </section>
@@ -15470,7 +15507,7 @@ function DatePickerDocs() {
             </DoItem>
             <DontItem>
               <p>Don't use DatePicker for time-only selection — use a time picker instead.</p>
-              <p>Don't use DatePicker for date range selection — use a dedicated range picker pattern.</p>
+              <p>Don't use DatePicker for date range selection — use DateRangePicker instead.</p>
               <p>Don't place multiple DatePickers side-by-side without clear labels.</p>
             </DontItem>
           </div>
@@ -15492,6 +15529,28 @@ function DatePickerDocs() {
         ["Type", "Basic", "Calendar", "numberOfMonths={1}, mode='single' (default)"],
         ["Type", "Range", "Calendar", "numberOfMonths={2}, mode='range', gap-md between months"],
         ["Popover", "Card container", "PopoverContent", "w-auto p-0, rounded border"],
+      ]} />
+
+      <h3 className="font-body font-semibold text-sm mt-6">Date Picker / Day</h3>
+      <FigmaMapping nodeId="781:40922" rows={[
+        ["Size", "Large (48×48)", "day_button", "size-[48px] rounded-sm p-xs"],
+        ["State", "Default", "day_button", "bg-transparent text-foreground"],
+        ["State", "Hover & Active", "day_button", "bg-accent text-foreground"],
+        ["State", "Selected", "day_button", "bg-primary text-primary-foreground"],
+        ["State", "Disabled", "day_button", "text-muted-foreground opacity-50"],
+        ["Position", "Single", "day_button", "rounded-sm (all corners)"],
+        ["Position", "Start", "day", "rounded-l-sm (left corners only)"],
+        ["Position", "Middle", "day", "no border-radius, bg-accent when in range"],
+        ["Position", "End", "day", "rounded-r-sm (right corners only)"],
+      ]} />
+
+      <h3 className="font-body font-semibold text-sm mt-6">Date Picker / Header</h3>
+      <FigmaMapping nodeId="264:29273" rows={[
+        ["Type", "1 Month", "month_caption", "Single month title, prev/next nav buttons"],
+        ["Type", "2 Months", "months", "Two month grids side-by-side, gap-md (16px)"],
+        ["Nav", "Prev/Next buttons", "button_previous/next", "size-2xl (32px), rounded-lg, border, p-[7px]"],
+        ["Title", "Month Year", "caption_label", "typo-paragraph-sm font-semibold (Geist 600 14px)"],
+        ["Weekday", "Su Mo Tu...", "weekday", "text-[12px] w-[48px] h-[32px] text-muted-foreground"],
       ]} />
 
       {/* ---- Accessibility ---- */}

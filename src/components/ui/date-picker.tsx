@@ -64,4 +64,72 @@ function DatePicker({
   )
 }
 
-export { DatePicker }
+/**
+ * SprouX Date Range Picker
+ *
+ * Figma: [SprouX - DS] Foundation & Component (node 288:119954, Type=Range)
+ *
+ * Date range selection using a 2-month Calendar in a Popover.
+ * Trigger shows "Start – End" format or placeholder.
+ */
+function DateRangePicker({
+  from,
+  to,
+  onRangeChange,
+  className,
+}: {
+  from?: Date
+  to?: Date
+  onRangeChange?: (range: { from: Date | undefined; to: Date | undefined }) => void
+  className?: string
+}) {
+  const [range, setRange] = React.useState<{
+    from: Date | undefined
+    to: Date | undefined
+  }>({ from, to })
+
+  const handleSelect = (selected: { from?: Date; to?: Date } | undefined) => {
+    const newRange = { from: selected?.from, to: selected?.to }
+    setRange(newRange)
+    onRangeChange?.(newRange)
+  }
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          data-slot="date-range-picker-trigger"
+          className={cn(
+            "flex h-9 items-center gap-xs rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            !range.from && "text-muted-foreground",
+            className
+          )}
+        >
+          <CalendarIcon className="size-md shrink-0" />
+          <span className="flex-1 text-left">
+            {range.from ? (
+              range.to ? (
+                `${format(range.from, "LLL dd, y")} – ${format(range.to, "LLL dd, y")}`
+              ) : (
+                format(range.from, "LLL dd, y")
+              )
+            ) : (
+              "Pick a date range"
+            )}
+          </span>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="range"
+          selected={range.from ? { from: range.from, to: range.to } : undefined}
+          onSelect={handleSelect}
+          numberOfMonths={2}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+export { DatePicker, DateRangePicker }
