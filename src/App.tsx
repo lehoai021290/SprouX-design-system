@@ -5665,12 +5665,13 @@ function CheckboxExploreBehavior() {
           </>}
         >
           {/* Figma 19:6351: 240w, HORIZONTAL, gap=8, pad=12h/8v
+              border=1px #e9e9e7 (--border), fill=#fff (--card), corner=10px
               Aligner(16×18.5, center checkbox) + AL(vertical, grow=1, Label + Secondary text) */}
           <div className={[
-            "flex gap-xs px-sm py-xs w-[240px]",
+            "flex items-center gap-xs px-sm py-xs w-[240px] rounded-[10px] border border-border bg-card",
             richFlipped ? "flex-row-reverse" : "",
           ].filter(Boolean).join(" ")}>
-            <div className="flex items-center h-[20px] shrink-0">
+            <div className="shrink-0">
               <Checkbox checked={richChecked} />
             </div>
             <div className="flex-1 min-w-0">
@@ -6184,11 +6185,9 @@ const someChecked = items.some(i => i.checked) && !allChecked
           {/* Rich checkbox */}
           <Example
             title="Rich checkbox"
-            description="Checkbox with label and secondary text — matches Figma Checkbox Group/Rich."
-            code={`<div className="flex gap-xs px-sm py-xs">
-  <div className="flex items-center h-[20px] shrink-0">
-    <Checkbox id="rich" defaultChecked />
-  </div>
+            description="Checkbox with label and secondary text in a bordered card — matches Figma Checkbox Group/Rich."
+            code={`<div className="flex items-center gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px]">
+  <Checkbox id="rich" defaultChecked />
   <div className="flex-1">
     <label htmlFor="rich" className="typo-paragraph-sm text-muted-foreground cursor-pointer">
       Marketing emails
@@ -6199,10 +6198,8 @@ const someChecked = items.some(i => i.checked) && !allChecked
   </div>
 </div>`}
           >
-            <div className="flex gap-xs px-sm py-xs">
-              <div className="flex items-center h-[20px] shrink-0">
-                <Checkbox id="rich-demo" defaultChecked />
-              </div>
+            <div className="flex items-center gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px]">
+              <Checkbox id="rich-demo" defaultChecked className="shrink-0" />
               <div className="flex-1">
                 <label htmlFor="rich-demo" className="typo-paragraph-sm text-muted-foreground cursor-pointer select-none">
                   Marketing emails
@@ -6218,10 +6215,8 @@ const someChecked = items.some(i => i.checked) && !allChecked
           <Example
             title="Rich flipped"
             description="Rich checkbox with flipped layout — text on left, checkbox on right."
-            code={`<div className="flex gap-xs px-sm py-xs flex-row-reverse">
-  <div className="flex items-center h-[20px] shrink-0">
-    <Checkbox id="flipped" />
-  </div>
+            code={`<div className="flex items-center gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px] flex-row-reverse">
+  <Checkbox id="flipped" />
   <div className="flex-1">
     <label htmlFor="flipped" className="typo-paragraph-sm text-muted-foreground cursor-pointer">
       Push notifications
@@ -6232,10 +6227,8 @@ const someChecked = items.some(i => i.checked) && !allChecked
   </div>
 </div>`}
           >
-            <div className="flex gap-xs px-sm py-xs flex-row-reverse">
-              <div className="flex items-center h-[20px] shrink-0">
-                <Checkbox id="flipped-demo" />
-              </div>
+            <div className="flex items-center gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px] flex-row-reverse">
+              <Checkbox id="flipped-demo" className="shrink-0" />
               <div className="flex-1">
                 <label htmlFor="flipped-demo" className="typo-paragraph-sm text-muted-foreground cursor-pointer select-none">
                   Push notifications
