@@ -5505,203 +5505,147 @@ const handleSubmit = (e) => {
    Checkbox Docs
    ================================================================ */
 
-function CheckboxExploreBehavior() {
-  const [component, setComponent] = useState<"checkbox" | "group" | "rich" | "richAdvanced">("checkbox")
-  // Checkbox properties
-  const [checked, setChecked] = useState("False")
-  const [state, setState] = useState("Default")
-  // Group Rich properties
-  const [showLine2, setShowLine2] = useState(false)
-  const [flipped, setFlipped] = useState("False")
-  // Rich Advanced properties
-  const [iconSize, setIconSize] = useState("Regular")
-  const [iconName, setIconName] = useState("Mail")
-  const [showRecommended, setShowRecommended] = useState(true)
-  const [showSubTitle, setShowSubTitle] = useState(true)
-  const [showSubTitle2, setShowSubTitle2] = useState(true)
-  const [showSubTitle3, setShowSubTitle3] = useState(true)
-  const [showDescription, setShowDescription] = useState(true)
-
-  const isDisabled = state === "Disabled" || state === "Disable" || state === "Disabale" || state === "Disabale Checked"
-  const isError = state === "Error"
-  const isFocus = state === "Focus" || state === "Error Focus"
-  const isSelected = state === "Selected" || state === "Selected - Hover" || state === "Disabale Checked"
-  const isHover = state === "Hover" || state === "Active" || state === "Selected - Hover"
-
-  const checkedVal = checked === "True" || isSelected ? true : checked === "Indeterminate" ? "indeterminate" as const : false
-
-  const IconComp = allLucideIcons.find((i) => i.name === iconName)?.icon ?? Mail
-
-  // State options per component
-  const stateOptions: Record<string, string[]> = {
-    checkbox: ["Default", "Focus", "Error", "Error Focus", "Disabled"],
-    group: ["Default", "Error", "Disable"],
-    rich: ["Default"],
-    richAdvanced: ["Default", "Active", "Hover", "Disabale", "Disabale Checked", "Selected", "Selected - Hover"],
-  }
-
-  // Checked options per component
-  const checkedOptions: Record<string, string[]> = {
-    checkbox: ["False", "True", "Indeterminate"],
-    group: ["False", "True", "Indeterminate"],
-    rich: ["False", "True"],
-    richAdvanced: [],
-  }
-
+function CheckboxExploreTab({ children, controls }: { children: React.ReactNode; controls: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-background">
       <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
-        {/* Checkbox (basic) */}
-        {component === "checkbox" && (
-          <div className={[
-            "flex items-center gap-xs",
-            isHover ? "pointer-events-none" : "",
-          ].filter(Boolean).join(" ")}>
-            <Checkbox
-              checked={checkedVal}
-              disabled={isDisabled}
-              aria-invalid={isError || state === "Error Focus" || undefined}
-              className={[
-                isFocus ? "ring-[3px] ring-ring" : "",
-                isFocus && (isError || state === "Error Focus") ? "!ring-ring-error" : "",
-              ].filter(Boolean).join(" ")}
-            />
-            <Label className={isDisabled ? "opacity-50" : ""}>Label</Label>
-          </div>
-        )}
-
-        {/* Checkbox Group */}
-        {component === "group" && (
-          <div className={[
-            "flex items-center gap-xs",
-            isDisabled ? "opacity-50" : "",
-          ].filter(Boolean).join(" ")}>
-            <Checkbox
-              checked={checkedVal}
-              disabled={isDisabled}
-              aria-invalid={isError || undefined}
-            />
-            <Label className={isDisabled ? "cursor-default" : ""}>Label</Label>
-          </div>
-        )}
-
-        {/* Checkbox Group/Rich */}
-        {component === "rich" && (
-          <div className={[
-            "flex gap-xs",
-            flipped === "True" ? "flex-row-reverse" : "",
-          ].filter(Boolean).join(" ")}>
-            <div className="pt-0.5">
-              <Checkbox checked={checkedVal} />
-            </div>
-            <div className="space-y-0.5">
-              <Label className="text-sm font-medium">Label</Label>
-              {showLine2 && (
-                <p className="text-xs text-muted-foreground">Secondary text</p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Checkbox Group/Rich Advanced */}
-        {component === "richAdvanced" && (
-          <div className={[
-            "flex gap-md p-lg rounded-xl border w-full max-w-[720px]",
-            isSelected ? "border-primary bg-primary/5" : "border-border",
-            isDisabled ? "opacity-50" : "",
-            isHover && !isSelected ? "bg-muted/50" : "",
-          ].filter(Boolean).join(" ")}>
-            <div className={[
-              "shrink-0 flex items-center justify-center rounded-lg bg-muted",
-              iconSize === "Regular" ? "size-3xl" : "size-2xl",
-            ].join(" ")}>
-              <IconComp className={iconSize === "Regular" ? "size-xl" : "size-md"} />
-            </div>
-            <div className="flex-1 space-y-xs min-w-0">
-              <div className="flex items-center gap-xs">
-                <span className="font-semibold text-sm">Landing Page</span>
-                {showRecommended && (
-                  <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">
-                    Recommended
-                  </span>
-                )}
-              </div>
-              {showSubTitle && (
-                <p className="text-xs text-muted-foreground">Auto-tracked landing page with email capture.</p>
-              )}
-              {showSubTitle2 && (
-                <p className="text-xs text-muted-foreground">Real-time analytics and A/B testing built-in.</p>
-              )}
-              {showSubTitle3 && (
-                <p className="text-xs text-muted-foreground">Optimized for mobile and desktop.</p>
-              )}
-              {showDescription && (
-                <p className="text-[11px] text-muted-foreground/70">Includes SEO optimization, custom domain support, and integration with marketing tools.</p>
-              )}
-            </div>
-            <div className="shrink-0 pt-1">
-              <Checkbox checked={isSelected} disabled={isDisabled} />
-            </div>
-          </div>
-        )}
+        {children}
       </div>
-
-      {/* Controls panel */}
       <div className="border-t border-border bg-muted/50 p-lg">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
-          {/* Component selector */}
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Component</Label>
-            <Select value={component} onValueChange={(v) => {
-              setComponent(v as typeof component)
-              setState("Default")
-              setChecked("False")
-            }}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="checkbox">Checkbox</SelectItem>
-                <SelectItem value="group">Checkbox Group</SelectItem>
-                <SelectItem value="rich">Group / Rich</SelectItem>
-                <SelectItem value="richAdvanced">Group / Rich Advanced</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {controls}
+        </div>
+      </div>
+    </div>
+  )
+}
 
-          {/* Checked — all except richAdvanced */}
-          {checkedOptions[component].length > 0 && (
+function CheckboxExploreBehavior() {
+  // --- Checkbox ---
+  const [cbChecked, setCbChecked] = useState("False")
+  const [cbState, setCbState] = useState("Default")
+  // --- Checkbox Group ---
+  const [grpChecked, setGrpChecked] = useState("False")
+  const [grpState, setGrpState] = useState("Default")
+  // --- Rich ---
+  const [richChecked, setRichChecked] = useState("False")
+  const [richFlipped, setRichFlipped] = useState("False")
+  const [richShowLine2, setRichShowLine2] = useState(false)
+  // --- Rich Advanced ---
+  const [raState, setRaState] = useState("Default")
+  const [raIconSize, setRaIconSize] = useState("Regular")
+  const [raIconName, setRaIconName] = useState("Mail")
+  const [raRecommended, setRaRecommended] = useState(true)
+  const [raSubTitle, setRaSubTitle] = useState(true)
+  const [raSubTitle2, setRaSubTitle2] = useState(true)
+  const [raSubTitle3, setRaSubTitle3] = useState(true)
+  const [raDescription, setRaDescription] = useState(true)
+
+  const RaIconComp = allLucideIcons.find((i) => i.name === raIconName)?.icon ?? Mail
+  const raIsDisabled = raState === "Disabale" || raState === "Disabale Checked"
+  const raIsSelected = raState === "Selected" || raState === "Selected - Hover" || raState === "Disabale Checked"
+  const raIsHover = raState === "Hover" || raState === "Active" || raState === "Selected - Hover"
+
+  return (
+    <Tabs defaultValue="checkbox">
+      <TabsList>
+        <TabsTrigger value="checkbox">Checkbox</TabsTrigger>
+        <TabsTrigger value="group">Group</TabsTrigger>
+        <TabsTrigger value="rich">Rich</TabsTrigger>
+        <TabsTrigger value="richAdvanced">Rich Advanced</TabsTrigger>
+      </TabsList>
+
+      {/* ---- Tab: Checkbox ---- */}
+      <TabsContent value="checkbox" className="mt-md">
+        <CheckboxExploreTab
+          controls={<>
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Checked?</Label>
-              <Select value={checked} onValueChange={setChecked}>
+              <Select value={cbChecked} onValueChange={setCbChecked}>
                 <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {checkedOptions[component].map((opt) => (
-                    <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                  ))}
+                  <SelectItem value="False">False</SelectItem>
+                  <SelectItem value="True">True</SelectItem>
+                  <SelectItem value="Indeterminate">Indeterminate</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          )}
-
-          {/* State — all except rich (only Default) */}
-          {stateOptions[component].length > 1 && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">State</Label>
-              <Select value={state} onValueChange={setState}>
+              <Select value={cbState} onValueChange={setCbState}>
                 <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  {stateOptions[component].map((opt) => (
-                    <SelectItem key={opt} value={opt}>{opt}</SelectItem>
-                  ))}
+                  <SelectItem value="Default">Default</SelectItem>
+                  <SelectItem value="Focus">Focus</SelectItem>
+                  <SelectItem value="Error">Error</SelectItem>
+                  <SelectItem value="Error Focus">Error Focus</SelectItem>
+                  <SelectItem value="Disabled">Disabled</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-          )}
+          </>}
+        >
+          <Checkbox
+            checked={cbChecked === "True" ? true : cbChecked === "Indeterminate" ? "indeterminate" as const : false}
+            disabled={cbState === "Disabled"}
+            aria-invalid={cbState === "Error" || cbState === "Error Focus" || undefined}
+            className={[
+              cbState === "Focus" ? "ring-[3px] ring-ring" : "",
+              cbState === "Error Focus" ? "ring-[3px] ring-ring-error" : "",
+            ].filter(Boolean).join(" ")}
+          />
+        </CheckboxExploreTab>
+      </TabsContent>
 
-          {/* Flipped — Rich only */}
-          {component === "rich" && (
+      {/* ---- Tab: Checkbox Group ---- */}
+      <TabsContent value="group" className="mt-md">
+        <CheckboxExploreTab
+          controls={<>
             <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Flipped</Label>
-              <Select value={flipped} onValueChange={setFlipped}>
+              <Label className="text-xs text-muted-foreground">Checked?</Label>
+              <Select value={grpChecked} onValueChange={setGrpChecked}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="False">False</SelectItem>
+                  <SelectItem value="True">True</SelectItem>
+                  <SelectItem value="Indeterminate">Indeterminate</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">State</Label>
+              <Select value={grpState} onValueChange={setGrpState}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Default">Default</SelectItem>
+                  <SelectItem value="Error">Error</SelectItem>
+                  <SelectItem value="Disable">Disable</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>}
+        >
+          <div className={[
+            "flex items-center gap-xs",
+            grpState === "Disable" ? "opacity-50" : "",
+          ].filter(Boolean).join(" ")}>
+            <Checkbox
+              checked={grpChecked === "True" ? true : grpChecked === "Indeterminate" ? "indeterminate" as const : false}
+              disabled={grpState === "Disable"}
+              aria-invalid={grpState === "Error" || undefined}
+            />
+            <Label>Label</Label>
+          </div>
+        </CheckboxExploreTab>
+      </TabsContent>
+
+      {/* ---- Tab: Rich ---- */}
+      <TabsContent value="rich" className="mt-md">
+        <CheckboxExploreTab
+          controls={<>
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Checked?</Label>
+              <Select value={richChecked} onValueChange={setRichChecked}>
                 <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="False">False</SelectItem>
@@ -5709,23 +5653,63 @@ function CheckboxExploreBehavior() {
                 </SelectContent>
               </Select>
             </div>
-          )}
-
-          {/* Show Line 2 — Rich only */}
-          {component === "rich" && (
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Flipped</Label>
+              <Select value={richFlipped} onValueChange={setRichFlipped}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="False">False</SelectItem>
+                  <SelectItem value="True">True</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Show Line 2</Label>
               <div className="pt-1">
-                <Switch checked={showLine2} onCheckedChange={setShowLine2} />
+                <Switch checked={richShowLine2} onCheckedChange={setRichShowLine2} />
               </div>
             </div>
-          )}
+          </>}
+        >
+          <div className={[
+            "flex gap-xs",
+            richFlipped === "True" ? "flex-row-reverse" : "",
+          ].filter(Boolean).join(" ")}>
+            <div className="pt-0.5">
+              <Checkbox checked={richChecked === "True"} />
+            </div>
+            <div className="space-y-0.5">
+              <Label className="text-sm font-medium">Label</Label>
+              {richShowLine2 && (
+                <p className="text-xs text-muted-foreground">Secondary text</p>
+              )}
+            </div>
+          </div>
+        </CheckboxExploreTab>
+      </TabsContent>
 
-          {/* Icon Size — Rich Advanced only */}
-          {component === "richAdvanced" && (
+      {/* ---- Tab: Rich Advanced ---- */}
+      <TabsContent value="richAdvanced" className="mt-md">
+        <CheckboxExploreTab
+          controls={<>
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">State</Label>
+              <Select value={raState} onValueChange={setRaState}>
+                <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Default">Default</SelectItem>
+                  <SelectItem value="Active">Active</SelectItem>
+                  <SelectItem value="Hover">Hover</SelectItem>
+                  <SelectItem value="Disabale">Disable</SelectItem>
+                  <SelectItem value="Disabale Checked">Disable Checked</SelectItem>
+                  <SelectItem value="Selected">Selected</SelectItem>
+                  <SelectItem value="Selected - Hover">Selected - Hover</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Icon Size</Label>
-              <Select value={iconSize} onValueChange={setIconSize}>
+              <Select value={raIconSize} onValueChange={setRaIconSize}>
                 <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Regular">Regular</SelectItem>
@@ -5733,68 +5717,83 @@ function CheckboxExploreBehavior() {
                 </SelectContent>
               </Select>
             </div>
-          )}
-
-          {/* Icon — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Icon</Label>
-              <IconPicker value={iconName} onChange={setIconName} size="sm" />
+              <IconPicker value={raIconName} onChange={setRaIconName} size="sm" />
             </div>
-          )}
-
-          {/* Recommended — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Recommended</Label>
               <div className="pt-1">
-                <Switch checked={showRecommended} onCheckedChange={setShowRecommended} />
+                <Switch checked={raRecommended} onCheckedChange={setRaRecommended} />
               </div>
             </div>
-          )}
-
-          {/* Sub-Title — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Sub-Title</Label>
               <div className="pt-1">
-                <Switch checked={showSubTitle} onCheckedChange={setShowSubTitle} />
+                <Switch checked={raSubTitle} onCheckedChange={setRaSubTitle} />
               </div>
             </div>
-          )}
-
-          {/* Sub-Title 2 — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Sub-Title 2</Label>
               <div className="pt-1">
-                <Switch checked={showSubTitle2} onCheckedChange={setShowSubTitle2} />
+                <Switch checked={raSubTitle2} onCheckedChange={setRaSubTitle2} />
               </div>
             </div>
-          )}
-
-          {/* Sub-Title 3 — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Sub-Title 3</Label>
               <div className="pt-1">
-                <Switch checked={showSubTitle3} onCheckedChange={setShowSubTitle3} />
+                <Switch checked={raSubTitle3} onCheckedChange={setRaSubTitle3} />
               </div>
             </div>
-          )}
-
-          {/* Description — Rich Advanced only */}
-          {component === "richAdvanced" && (
             <div className="space-y-xs">
               <Label className="text-xs text-muted-foreground">Description</Label>
               <div className="pt-1">
-                <Switch checked={showDescription} onCheckedChange={setShowDescription} />
+                <Switch checked={raDescription} onCheckedChange={setRaDescription} />
               </div>
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+          </>}
+        >
+          <div className={[
+            "flex gap-md p-lg rounded-xl border w-full max-w-[720px]",
+            raIsSelected ? "border-primary bg-primary/5" : "border-border",
+            raIsDisabled ? "opacity-50" : "",
+            raIsHover && !raIsSelected ? "bg-muted/50" : "",
+          ].filter(Boolean).join(" ")}>
+            <div className={[
+              "shrink-0 flex items-center justify-center rounded-lg bg-muted",
+              raIconSize === "Regular" ? "size-3xl" : "size-2xl",
+            ].join(" ")}>
+              <RaIconComp className={raIconSize === "Regular" ? "size-xl" : "size-md"} />
+            </div>
+            <div className="flex-1 space-y-xs min-w-0">
+              <div className="flex items-center gap-xs">
+                <span className="font-semibold text-sm">Landing Page</span>
+                {raRecommended && (
+                  <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                    Recommended
+                  </span>
+                )}
+              </div>
+              {raSubTitle && (
+                <p className="text-xs text-muted-foreground">Auto-tracked landing page with email capture.</p>
+              )}
+              {raSubTitle2 && (
+                <p className="text-xs text-muted-foreground">Real-time analytics and A/B testing built-in.</p>
+              )}
+              {raSubTitle3 && (
+                <p className="text-xs text-muted-foreground">Optimized for mobile and desktop.</p>
+              )}
+              {raDescription && (
+                <p className="text-[11px] text-muted-foreground/70">Includes SEO optimization, custom domain support, and integration with marketing tools.</p>
+              )}
+            </div>
+            <div className="shrink-0 pt-1">
+              <Checkbox checked={raIsSelected} disabled={raIsDisabled} />
+            </div>
+          </div>
+        </CheckboxExploreTab>
+      </TabsContent>
+    </Tabs>
   )
 }
 
