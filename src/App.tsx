@@ -11897,7 +11897,7 @@ function TableDocs() {
 
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
-        <h1 className="typo-heading-2">Table</h1>
+        <h1 className="typo-heading-2">Data Table</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
       </header>
 
@@ -19619,7 +19619,7 @@ const components = [
   { id: "slider", label: "Slider" },
   { id: "spinner", label: "Spinner" },
   { id: "switch", label: "Switch" },
-  { id: "table", label: "Table" },
+  { id: "table", label: "Data Table" },
   { id: "tabs", label: "Tabs" },
   { id: "textarea", label: "Textarea" },
   { id: "toast", label: "Toast (Sonner)" },
