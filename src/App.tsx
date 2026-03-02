@@ -254,6 +254,7 @@ import {
   Share2,
   MoreHorizontal,
   ChevronLeft,
+  ArrowUpDown,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -11875,6 +11876,509 @@ function SkeletonDocs() {
 }
 
 /* ================================================================
+   Data Table Docs
+   ================================================================ */
+
+const dataTableSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+function DataTableExploreBehavior() {
+  const [dtTab, setDtTab] = useState<"header" | "cell">("header")
+
+  // Table Header state
+  const [headerContent, setHeaderContent] = useState<"text" | "sortable" | "checkbox" | "empty">("text")
+  const [headerAlign, setHeaderAlign] = useState<"left" | "right">("left")
+  const [headerState, setHeaderState] = useState<"default" | "hover" | "active">("default")
+
+  // Table Cell state
+  const [cellContent, setCellContent] = useState<"text-1" | "text-2" | "checkbox" | "badge" | "avatar-name" | "actions">("text-1")
+  const [cellAlign, setCellAlign] = useState<"left" | "right">("left")
+  const [cellState, setCellState] = useState<"default" | "hover" | "active" | "selected">("default")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      {/* ── Tabs ── */}
+      <div className="flex border-b border-border bg-muted/30">
+        {(["header", "cell"] as const).map(t => (
+          <button key={t} onClick={() => setDtTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", dtTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            {t === "header" ? "Table Header" : "Table Cell"}
+          </button>
+        ))}
+      </div>
+
+      {/* ── Table Header tab ── */}
+      {dtTab === "header" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <Table className="w-[420px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className={cn(headerAlign === "right" && "text-right", headerState === "hover" && "bg-muted", headerState === "active" && "bg-muted/80")}>
+                    {headerContent === "text" && "Column Title"}
+                    {headerContent === "sortable" && (
+                      <button className="inline-flex items-center gap-xs">
+                        Column Title
+                        <ArrowUpDown className="size-3.5 text-muted-foreground" />
+                      </button>
+                    )}
+                    {headerContent === "checkbox" && <Checkbox />}
+                    {headerContent === "empty" && <span className="sr-only">Empty</span>}
+                  </TableHead>
+                  <TableHead>Header B</TableHead>
+                  <TableHead className="text-right">Header C</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow><TableCell>Cell A1</TableCell><TableCell>Cell B1</TableCell><TableCell className="text-right">Cell C1</TableCell></TableRow>
+                <TableRow><TableCell>Cell A2</TableCell><TableCell>Cell B2</TableCell><TableCell className="text-right">Cell C2</TableCell></TableRow>
+              </TableBody>
+            </Table>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Content</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["text", "Text"], ["sortable", "Sortable"], ["checkbox", "Checkbox"], ["empty", "Empty"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setHeaderContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Alignment</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["left", "Left"], ["right", "Right"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setHeaderAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["default", "Default"], ["hover", "Hover"], ["active", "Active"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setHeaderState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── Table Cell tab ── */}
+      {dtTab === "cell" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <Table className="w-[420px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Column</TableHead>
+                  <TableHead className="text-right">Value</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow className={cn(cellState === "hover" && "bg-muted/50", cellState === "active" && "bg-muted/80", cellState === "selected" && "bg-muted")}>
+                  <TableCell className={cn(cellAlign === "right" && "text-right")}>
+                    {cellContent === "text-1" && "Single line text"}
+                    {cellContent === "text-2" && (
+                      <div>
+                        <p className="font-medium">Primary text</p>
+                        <p className="text-xs text-muted-foreground">Secondary description</p>
+                      </div>
+                    )}
+                    {cellContent === "checkbox" && <Checkbox />}
+                    {cellContent === "badge" && <Badge>Active</Badge>}
+                    {cellContent === "avatar-name" && (
+                      <div className="flex items-center gap-sm">
+                        <Avatar className="size-8">
+                          <AvatarFallback>JD</AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium">Jane Doe</span>
+                      </div>
+                    )}
+                    {cellContent === "actions" && (
+                      <div className="flex items-center gap-xs">
+                        <IconButton variant="ghost" size="sm"><Eye className="size-3.5" /></IconButton>
+                        <IconButton variant="ghost" size="sm"><MoreHorizontal className="size-3.5" /></IconButton>
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right text-muted-foreground">$250.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Row 2</TableCell>
+                  <TableCell className="text-right text-muted-foreground">$150.00</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Content</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["text-1", "Text (1 Line)"], ["text-2", "Text (2 Lines)"], ["checkbox", "Checkbox"], ["badge", "Badge"], ["avatar-name", "Avatar + Name"], ["actions", "Actions"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setCellContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Alignment</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["left", "Left"], ["right", "Right"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setCellAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["default", "Default"], ["hover", "Hover"], ["active", "Active"], ["selected", "Selected"]] as const).map(([v, l]) => (
+                    <button key={v} onClick={() => setCellState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function DataTableDocs() {
+  const [selectAll, setSelectAll] = useState(false)
+  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+
+  const sampleData = [
+    { id: 1, backer: "Sarah Chen", avatar: "SC", preorder: "Pro Plan (Annual)", date: "Jan 15, 2026", verification: "Sent", status: "verified" },
+    { id: 2, backer: "Marcus Johnson", avatar: "MJ", preorder: "Starter (Monthly)", date: "Jan 18, 2026", verification: "Pending", status: "pending" },
+    { id: 3, backer: "Aisha Patel", avatar: "AP", preorder: "Enterprise (Annual)", date: "Jan 20, 2026", verification: "Sent", status: "verified" },
+    { id: 4, backer: "David Kim", avatar: "DK", preorder: "Pro Plan (Monthly)", date: "Jan 22, 2026", verification: "Failed", status: "failed" },
+    { id: 5, backer: "Elena Rodriguez", avatar: "ER", preorder: "Starter (Annual)", date: "Jan 25, 2026", verification: "Sent", status: "verified" },
+  ]
+
+  const toggleRow = (id: number) => {
+    setSelectedRows(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const toggleAll = () => {
+    if (selectAll) {
+      setSelectedRows(new Set())
+    } else {
+      setSelectedRows(new Set(sampleData.map(d => d.id)))
+    }
+    setSelectAll(!selectAll)
+  }
+
+  return (
+    <div className="space-y-12">
+      <TableOfContents sections={dataTableSections} />
+
+      <header className="space-y-md pb-3xl">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
+        <h1 className="typo-heading-2">Data Table</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Enhanced table with sortable headers, row selection, status badges, and action buttons. Composed from the base Table primitives plus Checkbox, Badge, and IconButton.</p>
+      </header>
+
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <DataTableExploreBehavior />
+      </section>
+
+      {/* ---- Installation ---- */}
+      <InstallationSection
+        deps={`pnpm add clsx tailwind-merge`}
+        importCode={`import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table"\nimport { Checkbox } from "@/components/ui/checkbox"\nimport { Badge } from "@/components/ui/badge"\nimport { Button, IconButton } from "@/components/ui/button"\nimport { Avatar, AvatarFallback } from "@/components/ui/avatar"\nimport { ArrowUpDown, Eye, MoreHorizontal } from "lucide-react"`}
+      />
+
+      {/* ---- Examples ---- */}
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <div className="space-y-8">
+          <Example title="Full Data Table" description="Realistic data table with checkbox selection, sortable headers, avatar + name cells, status badges, and row actions." code={`<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead className="w-[40px]"><Checkbox /></TableHead>
+      <TableHead>
+        <button className="inline-flex items-center gap-xs">
+          Backer <ArrowUpDown className="size-3.5" />
+        </button>
+      </TableHead>
+      <TableHead>Pre-order</TableHead>
+      <TableHead>Pre-order date</TableHead>
+      <TableHead>Verification sent</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead className="text-right">Action</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><Checkbox /></TableCell>
+      <TableCell>
+        <div className="flex items-center gap-sm">
+          <Avatar className="size-8">
+            <AvatarFallback>SC</AvatarFallback>
+          </Avatar>
+          <span className="font-medium">Sarah Chen</span>
+        </div>
+      </TableCell>
+      <TableCell>Pro Plan (Annual)</TableCell>
+      <TableCell>Jan 15, 2026</TableCell>
+      <TableCell>Sent</TableCell>
+      <TableCell><Badge variant="secondary">Verified</Badge></TableCell>
+      <TableCell className="text-right">
+        <IconButton variant="ghost" size="sm">
+          <MoreHorizontal className="size-4" />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`}>
+            <div className="w-full overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[40px]">
+                      <Checkbox checked={selectAll} onCheckedChange={toggleAll} />
+                    </TableHead>
+                    <TableHead>
+                      <button className="inline-flex items-center gap-xs font-medium">
+                        Backer
+                        <ArrowUpDown className="size-3.5 text-muted-foreground" />
+                      </button>
+                    </TableHead>
+                    <TableHead>Pre-order</TableHead>
+                    <TableHead>Pre-order date</TableHead>
+                    <TableHead>Verification sent</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sampleData.map(row => (
+                    <TableRow key={row.id} data-state={selectedRows.has(row.id) ? "selected" : undefined}>
+                      <TableCell>
+                        <Checkbox checked={selectedRows.has(row.id)} onCheckedChange={() => toggleRow(row.id)} />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-sm">
+                          <Avatar className="size-8">
+                            <AvatarFallback>{row.avatar}</AvatarFallback>
+                          </Avatar>
+                          <span className="font-medium">{row.backer}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{row.preorder}</TableCell>
+                      <TableCell className="text-muted-foreground">{row.date}</TableCell>
+                      <TableCell className="text-muted-foreground">{row.verification}</TableCell>
+                      <TableCell>
+                        <Badge variant={row.status === "verified" ? "secondary" : row.status === "pending" ? "outline" : "destructive"}>
+                          {row.status === "verified" ? "Verified" : row.status === "pending" ? "Pending" : "Failed"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-xs">
+                          <IconButton variant="ghost" size="sm"><Eye className="size-3.5" /></IconButton>
+                          <IconButton variant="ghost" size="sm"><MoreHorizontal className="size-3.5" /></IconButton>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Example>
+        </div>
+      </section>
+
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-6 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+
+        <div className="space-y-6">
+          <h3 className="font-body font-semibold text-sm">Table Header (Figma: 19:6472)</h3>
+          <p className="typo-paragraph-sm text-muted-foreground">36 variants across Content, Alignment, State, Show Tooltip, and Show border.</p>
+          <div className="overflow-x-auto rounded-xl border border-border">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Values</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+              <tbody className="divide-y divide-border">
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">content</td><td className="px-4 py-3 font-mono text-muted-foreground">Text | Sortable | Checkbox | Empty</td><td className="px-4 py-3 font-mono text-muted-foreground">Text</td><td className="px-4 py-3 text-muted-foreground">Header cell content type.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">alignment</td><td className="px-4 py-3 font-mono text-muted-foreground">Left | Right</td><td className="px-4 py-3 font-mono text-muted-foreground">Left</td><td className="px-4 py-3 text-muted-foreground">Text alignment within the header cell.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">state</td><td className="px-4 py-3 font-mono text-muted-foreground">Default | Hover | Active</td><td className="px-4 py-3 font-mono text-muted-foreground">Default</td><td className="px-4 py-3 text-muted-foreground">Visual state of the header cell.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">showTooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">true | false</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Show info tooltip icon beside header text.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">showBorder</td><td className="px-4 py-3 font-mono text-muted-foreground">true | false</td><td className="px-4 py-3 font-mono text-muted-foreground">true</td><td className="px-4 py-3 text-muted-foreground">Show bottom border on header row.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground">Specs: h=48px, padding 8px all sides, text 14px/600 foreground, border-bottom 1px.</p>
+        </div>
+
+        <div className="space-y-6">
+          <h3 className="font-body font-semibold text-sm">Table Cell (Figma: 19:6314)</h3>
+          <p className="typo-paragraph-sm text-muted-foreground">94 variants across Content, Alignment, and State.</p>
+          <div className="overflow-x-auto rounded-xl border border-border">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Values</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+              <tbody className="divide-y divide-border">
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">content</td><td className="px-4 py-3 font-mono text-muted-foreground">Text (1 Line) | Text (2 Lines) | Actions | Checkbox | Badge | Buttons | Avatar | Avatar + Name | Input | Blank | Text with thumbnail | Text (with Label)</td><td className="px-4 py-3 font-mono text-muted-foreground">Text (1 Line)</td><td className="px-4 py-3 text-muted-foreground">Cell content type.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">alignment</td><td className="px-4 py-3 font-mono text-muted-foreground">Left | Right</td><td className="px-4 py-3 font-mono text-muted-foreground">Left</td><td className="px-4 py-3 text-muted-foreground">Text alignment within the cell.</td></tr>
+                <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">state</td><td className="px-4 py-3 font-mono text-muted-foreground">Default | Hover | Active | Selected</td><td className="px-4 py-3 font-mono text-muted-foreground">Default</td><td className="px-4 py-3 text-muted-foreground">Visual state of the row/cell.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground">Specs: h=48px, padding 8px all sides, text 14px/400 foreground.</p>
+        </div>
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Selection & Actions</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use checkbox column for bulk selection with a "select all" checkbox in the header.</p>
+              <p>Place row actions in the last column, right-aligned, using ghost IconButtons.</p>
+              <p>Use sortable headers only for columns where sorting adds value (names, dates, amounts).</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't mix different cell content types in the same column across rows.</p>
+              <p>Don't make every column sortable — it clutters the header with unnecessary icons.</p>
+              <p>Don't use more than 2-3 action buttons per row — use a dropdown menu for more.</p>
+            </DontItem>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Data Display</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Right-align numeric columns (amounts, percentages) for easy scanning.</p>
+              <p>Use Badge for status columns to provide visual hierarchy and color coding.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't truncate critical data — if content is long, use the 2-line text variant.</p>
+              <p>Don't use Tables for layout — use CSS Grid or Flexbox instead.</p>
+            </DontItem>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" rows={[
+        ["Component Set", "Table Header (19:6472)", "TableHead", "36 variants: Content, Alignment, State, Tooltip, Border"],
+        ["Component Set", "Table Cell (19:6314)", "TableCell", "94 variants: Content, Alignment, State"],
+        ["Header Content", "Text", "TableHead", "Plain text label, 14px/600"],
+        ["Header Content", "Sortable", "TableHead + button", "Text with ArrowUpDown icon"],
+        ["Header Content", "Checkbox", "TableHead + Checkbox", "Select-all checkbox"],
+        ["Header Content", "Empty", "TableHead", "Empty cell (sr-only label)"],
+        ["Cell Content", "Text (1 Line)", "TableCell", "Single line text, 14px/400"],
+        ["Cell Content", "Text (2 Lines)", "TableCell > div", "Primary + secondary text"],
+        ["Cell Content", "Badge", "TableCell + Badge", "Status badge with variant colors"],
+        ["Cell Content", "Avatar + Name", "TableCell + Avatar", "Avatar image + name inline"],
+        ["Cell Content", "Actions", "TableCell + IconButton", "Ghost icon buttons for row actions"],
+        ["Cell Content", "Checkbox", "TableCell + Checkbox", "Row selection checkbox"],
+        ["State", "Default", "—", "No additional styles"],
+        ["State", "Hover", "hover:bg-muted/50", "Row highlight on hover"],
+        ["State", "Selected", "data-[state=selected]:bg-muted", "Selected row background"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
+          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-border text-left">
+                    <th className="pr-6 py-2 font-semibold">Key</th>
+                    <th className="pr-6 py-2 font-semibold">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Move focus between interactive cells (checkboxes, sort buttons, action buttons)</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Space</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Toggle checkbox or activate sort button</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Activate focused action button or sort</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+              <li>Uses native <code className="bg-muted px-1 rounded font-mono">table</code>, <code className="bg-muted px-1 rounded font-mono">thead</code>, <code className="bg-muted px-1 rounded font-mono">th</code>, <code className="bg-muted px-1 rounded font-mono">td</code> elements for built-in semantics.</li>
+              <li>Sortable headers use <code className="bg-muted px-1 rounded font-mono">button</code> elements for keyboard accessibility.</li>
+              <li>Checkbox inputs include <code className="bg-muted px-1 rounded font-mono">aria-label</code> for "select all" and "select row" contexts.</li>
+              <li>Empty header cells include <code className="bg-muted px-1 rounded font-mono">sr-only</code> text for screen readers.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Related Components ---- */}
+      <section id="related" className="space-y-4 pb-12">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Table</p>
+              <p className="text-muted-foreground mt-0.5">Base table primitives used by Data Table.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Checkbox</p>
+              <p className="text-muted-foreground mt-0.5">Row and bulk selection checkboxes.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Badge</p>
+              <p className="text-muted-foreground mt-0.5">Status indicators in table cells.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Pagination</p>
+              <p className="text-muted-foreground mt-0.5">Page navigation for large datasets.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Table Docs
    ================================================================ */
 
@@ -11897,8 +12401,8 @@ function TableDocs() {
 
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
-        <h1 className="typo-heading-2">Data Table</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
+        <h1 className="typo-heading-2">Table</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Basic table with composable sub-components for header, body, footer, rows, and cells.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -19619,7 +20123,8 @@ const components = [
   { id: "slider", label: "Slider" },
   { id: "spinner", label: "Spinner" },
   { id: "switch", label: "Switch" },
-  { id: "table", label: "Data Table" },
+  { id: "table", label: "Table" },
+  { id: "data-table", label: "Data Table" },
   { id: "tabs", label: "Tabs" },
   { id: "textarea", label: "Textarea" },
   { id: "toast", label: "Toast (Sonner)" },
@@ -19845,6 +20350,7 @@ function App() {
           {active === "separator" && <SeparatorDocs />}
           {active === "skeleton" && <SkeletonDocs />}
           {active === "table" && <TableDocs />}
+          {active === "data-table" && <DataTableDocs />}
           {active === "dialog" && <DialogDocs />}
           {active === "alert-dialog" && <AlertDialogDocs />}
           {active === "sheet" && <SheetDocs />}
