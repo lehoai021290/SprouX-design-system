@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, IconButton } from "@/components/ui/button"
 import { ButtonGroup, ButtonGroupItem } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -1881,6 +1881,9 @@ function IllustrationsDocs() {
 }
 
 function ButtonExploreBehavior() {
+  const [tab, setTab] = useState<"button" | "icon-button">("button")
+
+  /* ── Button tab state ── */
   const [variant, setVariant] = useState("default")
   const [size, setSize] = useState("default")
   const [state, setState] = useState("Default")
@@ -1889,109 +1892,186 @@ function ButtonExploreBehavior() {
   const [leftIcon, setLeftIcon] = useState("Plus")
   const [rightIcon, setRightIcon] = useState("ArrowRight")
 
+  /* ── Icon Button tab state ── */
+  const [ibVariant, setIbVariant] = useState("default")
+  const [ibSize, setIbSize] = useState<"lg" | "default" | "sm" | "xs">("default")
+  const [ibState, setIbState] = useState("Default")
+  const [ibRound, setIbRound] = useState(false)
+  const [ibIcon, setIbIcon] = useState("Plus")
+
   const isDisabled = state === "Disabled"
   const isHover = state === "Hover & Active"
   const isFocus = state === "Focus"
 
+  const ibIsDisabled = ibState === "Disabled"
+  const ibIsHover = ibState === "Hover & Active"
+  const ibIsFocus = ibState === "Focus"
+
   const LeftIconComp = allLucideIcons.find((i) => i.name === leftIcon)?.icon ?? Plus
   const RightIconComp = allLucideIcons.find((i) => i.name === rightIcon)?.icon ?? ArrowRight
+  const IbIconComp = allLucideIcons.find((i) => i.name === ibIcon)?.icon ?? Plus
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
-        <div className={[
-          "pointer-events-none",
-          isHover ? "[&_[data-slot=button]]:ring-0" : "",
-          isFocus ? "[&_[data-slot=button]]:ring-[3px] [&_[data-slot=button]]:ring-ring" : "",
-        ].filter(Boolean).join(" ")}>
-          <Button
-            variant={variant as "default"}
-            size={size as "default"}
-            disabled={isDisabled}
-            className={[
-              isHover && (variant === "default" ? "bg-primary-hover" : ""),
-              isHover && (variant === "secondary" ? "bg-secondary-hover" : ""),
-              isHover && (variant === "outline" ? "bg-outline-hover" : ""),
-              isHover && (variant === "ghost" || variant === "ghost-muted" ? "bg-ghost-hover text-foreground" : ""),
-              isHover && (variant === "destructive" ? "bg-destructive" : ""),
-              isHover && (variant === "destructive-secondary" ? "bg-destructive-subtle" : ""),
-              isFocus && (variant === "destructive" || variant === "destructive-secondary")
-                ? "!ring-ring-error" : "",
-            ].filter(Boolean).join(" ")}
-          >
-            {showLeftIcon && <LeftIconComp />}
-            Button
-            {showRightIcon && <RightIconComp />}
-          </Button>
-        </div>
+      {/* ── Tabs ── */}
+      <div className="flex border-b border-border bg-muted/30">
+        {(["button", "icon-button"] as const).map(t => (
+          <button key={t} onClick={() => setTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>{t === "button" ? "Button" : "Icon Button"}</button>
+        ))}
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Variant</Label>
-            <Select value={variant} onValueChange={setVariant}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Primary</SelectItem>
-                <SelectItem value="secondary">Secondary</SelectItem>
-                <SelectItem value="outline">Outline</SelectItem>
-                <SelectItem value="ghost">Ghost</SelectItem>
-                <SelectItem value="ghost-muted">Ghost Muted</SelectItem>
-                <SelectItem value="destructive">Destructive</SelectItem>
-                <SelectItem value="destructive-secondary">Destructive Secondary</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Size</Label>
-            <Select value={size} onValueChange={setSize}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="lg">Large (40px)</SelectItem>
-                <SelectItem value="default">Regular (36px)</SelectItem>
-                <SelectItem value="sm">Small (32px)</SelectItem>
-                <SelectItem value="xs">Mini (24px)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">State</Label>
-            <Select value={state} onValueChange={setState}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Default">Default</SelectItem>
-                <SelectItem value="Hover & Active">Hover & Active</SelectItem>
-                <SelectItem value="Focus">Focus</SelectItem>
-                <SelectItem value="Disabled">Disabled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
-            <div className="pt-1">
-              <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
+
+      {tab === "button" ? (
+        <>
+          {/* ── Button preview ── */}
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+            <div className={[
+              "pointer-events-none",
+              isHover ? "[&_[data-slot=button]]:ring-0" : "",
+              isFocus ? "[&_[data-slot=button]]:ring-[3px] [&_[data-slot=button]]:ring-ring" : "",
+            ].filter(Boolean).join(" ")}>
+              <Button
+                variant={variant as "default"}
+                size={size as "default"}
+                disabled={isDisabled}
+                className={[
+                  isHover && (variant === "default" ? "bg-primary-hover" : ""),
+                  isHover && (variant === "secondary" ? "bg-secondary-hover" : ""),
+                  isHover && (variant === "outline" ? "bg-outline-hover" : ""),
+                  isHover && (variant === "ghost" || variant === "ghost-muted" ? "bg-ghost-hover text-foreground" : ""),
+                  isHover && (variant === "destructive" ? "bg-destructive" : ""),
+                  isHover && (variant === "destructive-secondary" ? "bg-destructive-subtle" : ""),
+                  isFocus && (variant === "destructive" || variant === "destructive-secondary")
+                    ? "!ring-ring-error" : "",
+                ].filter(Boolean).join(" ")}
+              >
+                {showLeftIcon && <LeftIconComp />}
+                Button
+                {showRightIcon && <RightIconComp />}
+              </Button>
             </div>
           </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
-            <div className="pt-1">
-              <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+          {/* ── Button controls ── */}
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Variant</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["ghost-muted","Ghost Muted"],["destructive","Destructive"],["destructive-secondary","Destructive Secondary"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setVariant(v)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", variant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {[["lg","Large (40px)"],["default","Regular (36px)"],["sm","Small (32px)"],["xs","Mini (24px)"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["Default","Hover & Active","Focus","Disabled"].map(v => (
+                    <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex gap-lg">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
+                  <div className="pt-1"><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
+                  <div className="pt-1"><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
+                </div>
+                {showLeftIcon && (
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Left Icon</Label>
+                    <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
+                  </div>
+                )}
+                {showRightIcon && (
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Right Icon</Label>
+                    <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          {showLeftIcon && (
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Left Icon</Label>
-              <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
+        </>
+      ) : (
+        <>
+          {/* ── Icon Button preview ── */}
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+            <div className={[
+              "pointer-events-none",
+              ibIsHover ? "[&_[data-slot=button]]:ring-0" : "",
+              ibIsFocus ? "[&_[data-slot=button]]:ring-[3px] [&_[data-slot=button]]:ring-ring" : "",
+            ].filter(Boolean).join(" ")}>
+              <IconButton
+                variant={ibVariant as "default"}
+                size={ibSize}
+                round={ibRound}
+                disabled={ibIsDisabled}
+                className={[
+                  ibIsHover && (ibVariant === "default" ? "bg-primary-hover" : ""),
+                  ibIsHover && (ibVariant === "secondary" ? "bg-secondary-hover" : ""),
+                  ibIsHover && (ibVariant === "outline" ? "bg-outline-hover" : ""),
+                  ibIsHover && (ibVariant === "ghost" || ibVariant === "ghost-muted" ? "bg-ghost-hover text-foreground" : ""),
+                  ibIsHover && (ibVariant === "destructive" ? "bg-destructive" : ""),
+                  ibIsFocus && (ibVariant === "destructive") ? "!ring-ring-error" : "",
+                ].filter(Boolean).join(" ")}
+              >
+                <IbIconComp />
+              </IconButton>
             </div>
-          )}
-          {showRightIcon && (
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Right Icon</Label>
-              <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
+          </div>
+          {/* ── Icon Button controls ── */}
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Variant</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["ghost-muted","Ghost Muted"],["destructive","Destructive"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setIbVariant(v)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", ibVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {([["lg","Large (40px)"],["default","Regular (36px)"],["sm","Small (32px)"],["xs","Mini (24px)"]] as const).map(([v,l]) => (
+                    <button key={v} onClick={() => setIbSize(v as any)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", ibSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Roundness</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {[["false","Default (r=8)"],["true","Round (full)"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setIbRound(v === "true")} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", String(ibRound) === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["Default","Hover & Active","Focus","Disabled"].map(v => (
+                    <button key={v} onClick={() => setIbState(v)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", ibState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Icon</Label>
+                <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -2049,7 +2129,7 @@ function ButtonDocs() {
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge lucide-react`}
-        importCode={`import { Button } from "@/components/ui/button"`}
+        importCode={`import { Button, IconButton } from "@/components/ui/button"`}
       />
 
       {/* ---- Examples ---- */}
