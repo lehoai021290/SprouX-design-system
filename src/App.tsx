@@ -12048,8 +12048,7 @@ function DataTableExploreBehavior() {
 }
 
 function DataTableDocs() {
-  const [selectAll, setSelectAll] = useState(false)
-  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [selectedRows, setSelectedRows] = useState<number[]>([])
 
   const sampleData = [
     { id: 1, backer: "Sarah Chen", avatar: "SC", preorder: "Pro Plan (Annual)", date: "Jan 15, 2026", verification: "Sent", status: "verified" },
@@ -12059,22 +12058,16 @@ function DataTableDocs() {
     { id: 5, backer: "Elena Rodriguez", avatar: "ER", preorder: "Starter (Annual)", date: "Jan 25, 2026", verification: "Sent", status: "verified" },
   ]
 
+  const selectAll = selectedRows.length === sampleData.length
+
   const toggleRow = (id: number) => {
-    setSelectedRows(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
+    setSelectedRows(prev =>
+      prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]
+    )
   }
 
   const toggleAll = () => {
-    if (selectAll) {
-      setSelectedRows(new Set())
-    } else {
-      setSelectedRows(new Set(sampleData.map(d => d.id)))
-    }
-    setSelectAll(!selectAll)
+    setSelectedRows(selectAll ? [] : sampleData.map(d => d.id))
   }
 
   return (
@@ -12164,9 +12157,9 @@ function DataTableDocs() {
                 </TableHeader>
                 <TableBody>
                   {sampleData.map(row => (
-                    <TableRow key={row.id} data-state={selectedRows.has(row.id) ? "selected" : undefined}>
+                    <TableRow key={row.id} data-state={selectedRows.includes(row.id) ? "selected" : undefined}>
                       <TableCell>
-                        <Checkbox checked={selectedRows.has(row.id)} onCheckedChange={() => toggleRow(row.id)} />
+                        <Checkbox checked={selectedRows.includes(row.id)} onCheckedChange={() => toggleRow(row.id)} />
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-sm">
