@@ -2872,59 +2872,52 @@ function ButtonGroupExploreBehavior() {
               </ButtonGroup>
             </div>
             <div className="border-t border-border bg-muted/50 p-lg">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+              <div className="flex flex-col gap-md">
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">Skin</Label>
-                  <Select value={skin} onValueChange={setSkin}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="outlined">Outlined</SelectItem>
-                      <SelectItem value="ghost">Ghost</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex flex-wrap gap-xs">
+                    {[["outlined","Outlined"],["ghost","Ghost"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setSkin(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", skin === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">Size</Label>
-                  <Select value={size} onValueChange={setSize}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="large">Large</SelectItem>
-                      <SelectItem value="regular">Regular</SelectItem>
-                      <SelectItem value="small">Small</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex flex-wrap gap-xs">
+                    {[["large","Large"],["regular","Regular"],["small","Small"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">State</Label>
-                  <Select value={state} onValueChange={setState}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="default">Default</SelectItem>
-                      <SelectItem value="focus">Focus</SelectItem>
-                      <SelectItem value="hover">Hover</SelectItem>
-                      <SelectItem value="disabled">Disabled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
-                  <div className="pt-1">
-                    <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
+                  <div className="flex flex-wrap gap-xs">
+                    {[["default","Default"],["focus","Focus"],["hover","Hover"],["disabled","Disabled"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
                   </div>
                 </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
-                  <div className="pt-1">
-                    <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+                <div className="flex flex-wrap gap-lg">
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
+                    <div className="pt-1">
+                      <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Left Icon</Label>
-                  <IconPicker value={leftIcon} onChange={setLeftIcon} disabled={!showLeftIcon} />
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Right Icon</Label>
-                  <IconPicker value={rightIcon} onChange={setRightIcon} disabled={!showRightIcon} />
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
+                    <div className="pt-1">
+                      <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+                    </div>
+                  </div>
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Left Icon</Label>
+                    <IconPicker value={leftIcon} onChange={setLeftIcon} disabled={!showLeftIcon} />
+                  </div>
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Right Icon</Label>
+                    <IconPicker value={rightIcon} onChange={setRightIcon} disabled={!showRightIcon} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -2948,39 +2941,30 @@ function ButtonGroupExploreBehavior() {
               </ButtonGroup>
             </div>
             <div className="border-t border-border bg-muted/50 p-lg">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+              <div className="flex flex-col gap-md">
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">Skin</Label>
-                  <Select value={ibSkin} onValueChange={setIbSkin}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="outlined">Outlined</SelectItem>
-                      <SelectItem value="ghost">Ghost</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex flex-wrap gap-xs">
+                    {[["outlined","Outlined"],["ghost","Ghost"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setIbSkin(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibSkin === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">Size</Label>
-                  <Select value={ibSize} onValueChange={setIbSize}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="large">Large</SelectItem>
-                      <SelectItem value="default">Default</SelectItem>
-                      <SelectItem value="small">Small</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex flex-wrap gap-xs">
+                    {[["large","Large"],["default","Default"],["small","Small"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setIbSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">State</Label>
-                  <Select value={ibState} onValueChange={setIbState}>
-                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="default">Default</SelectItem>
-                      <SelectItem value="focus">Focus</SelectItem>
-                      <SelectItem value="hover">Hover</SelectItem>
-                      <SelectItem value="disabled">Disabled</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex flex-wrap gap-xs">
+                    {[["default","Default"],["focus","Focus"],["hover","Hover"],["disabled","Disabled"]].map(([v,l]) => (
+                      <button key={v} onClick={() => setIbState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                    ))}
+                  </div>
                 </div>
                 <div className="space-y-xs">
                   <Label className="text-xs text-muted-foreground">Icon</Label>
@@ -9261,43 +9245,36 @@ function AvatarExploreBehavior() {
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="border-t border-border bg-muted/50 p-md flex flex-wrap items-center gap-md">
-        <div className="flex items-center gap-xs">
-          <label className="text-xs font-medium text-muted-foreground whitespace-nowrap">Value</label>
-          <Select value={value} onValueChange={setValue}>
-            <SelectTrigger className="w-[120px] h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Picture" className="text-xs">Picture</SelectItem>
-              <SelectItem value="Text" className="text-xs">Text</SelectItem>
-              <SelectItem value="Icon" className="text-xs">Icon</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center gap-xs">
-          <label className="text-xs font-medium text-muted-foreground whitespace-nowrap">Size</label>
-          <Select value={size} onValueChange={setSize}>
-            <SelectTrigger className="w-[130px] h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Regular" className="text-xs">Regular (40px)</SelectItem>
-              <SelectItem value="Small" className="text-xs">Small (32px)</SelectItem>
-              <SelectItem value="Tiny" className="text-xs">Tiny (24px)</SelectItem>
-              <SelectItem value="Extra Tiny" className="text-xs">Extra Tiny (20px)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center gap-xs">
-          <label className="text-xs font-medium text-muted-foreground whitespace-nowrap">Roundness</label>
-          <Select value={roundness} onValueChange={setRoundness}>
-            <SelectTrigger className="w-[130px] h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Round" className="text-xs">Round</SelectItem>
-              <SelectItem value="Roundrect" className="text-xs">Roundrect</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center gap-xs">
-          <label className={["text-xs font-medium text-muted-foreground whitespace-nowrap", value !== "Icon" ? "opacity-50" : ""].join(" ")}>Icon</label>
-          <IconPicker value={iconName} onChange={setIconName} disabled={value !== "Icon"} size="sm" />
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <div className="flex flex-col gap-md">
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Value</Label>
+            <div className="flex flex-wrap gap-xs">
+              {["Picture", "Text", "Icon"].map(v => (
+                <button key={v} onClick={() => setValue(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", value === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Size</Label>
+            <div className="flex flex-wrap gap-xs">
+              {[["Regular","Regular (40px)"],["Small","Small (32px)"],["Tiny","Tiny (24px)"],["Extra Tiny","Extra Tiny (20px)"]].map(([v,l]) => (
+                <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Roundness</Label>
+            <div className="flex flex-wrap gap-xs">
+              {["Round", "Roundrect"].map(v => (
+                <button key={v} onClick={() => setRoundness(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundness === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className={["text-xs text-muted-foreground", value !== "Icon" ? "opacity-50" : ""].join(" ")}>Icon</Label>
+            <IconPicker value={iconName} onChange={setIconName} disabled={value !== "Icon"} size="sm" />
+          </div>
         </div>
       </div>
     </div>
@@ -9924,64 +9901,61 @@ function AlertExploreBehavior() {
         )}
       </div>
       <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-md">
+        <div className="flex flex-col gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={type} onValueChange={handleTypeChange}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="default">Neutral</SelectItem>
-                <SelectItem value="destructive">Error</SelectItem>
-                <SelectItem value="success">Success</SelectItem>
-                <SelectItem value="warning">Warning</SelectItem>
-                <SelectItem value="emphasis">Emphasis</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Icon</Label>
-            <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Dismissable</Label>
-            <div className="pt-1">
-              <Switch checked={dismissable} onCheckedChange={setDismissable} />
+            <div className="flex flex-wrap gap-xs">
+              {[["default","Neutral"],["destructive","Error"],["success","Success"],["warning","Warning"],["emphasis","Emphasis"]].map(([v,l]) => (
+                <button key={v} onClick={() => handleTypeChange(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", type === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+              ))}
             </div>
           </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">In Card</Label>
-            <div className="pt-1">
-              <Switch checked={inCard} onCheckedChange={setInCard} />
+          <div className="flex flex-wrap gap-lg">
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Icon</Label>
+              <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
             </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Title</Label>
-            <div className="pt-1">
-              <Switch checked={showTitle} onCheckedChange={(v) => { setShowTitle(v); if (!v && !showSubtitle) setShowSubtitle(true) }} />
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Dismissable</Label>
+              <div className="pt-1">
+                <Switch checked={dismissable} onCheckedChange={setDismissable} />
+              </div>
             </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Subtitle</Label>
-            <div className="pt-1">
-              <Switch checked={showSubtitle} onCheckedChange={(v) => { setShowSubtitle(v); if (!v && !showTitle) setShowTitle(true) }} />
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">In Card</Label>
+              <div className="pt-1">
+                <Switch checked={inCard} onCheckedChange={setInCard} />
+              </div>
             </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Icon</Label>
-            <div className="pt-1">
-              <Switch checked={showIcon} onCheckedChange={setShowIcon} />
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Show Title</Label>
+              <div className="pt-1">
+                <Switch checked={showTitle} onCheckedChange={(v) => { setShowTitle(v); if (!v && !showSubtitle) setShowSubtitle(true) }} />
+              </div>
             </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Action</Label>
-            <div className="pt-1">
-              <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Show Subtitle</Label>
+              <div className="pt-1">
+                <Switch checked={showSubtitle} onCheckedChange={(v) => { setShowSubtitle(v); if (!v && !showTitle) setShowTitle(true) }} />
+              </div>
             </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground text-nowrap", !showAction ? "opacity-50" : ""].join(" ")}>2nd Action</Label>
-            <div className="pt-1">
-              <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} disabled={!showAction} />
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Show Icon</Label>
+              <div className="pt-1">
+                <Switch checked={showIcon} onCheckedChange={setShowIcon} />
+              </div>
+            </div>
+            <div className="space-y-xs">
+              <Label className="text-xs text-muted-foreground">Show Action</Label>
+              <div className="pt-1">
+                <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
+              </div>
+            </div>
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground text-nowrap", !showAction ? "opacity-50" : ""].join(" ")}>2nd Action</Label>
+              <div className="pt-1">
+                <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} disabled={!showAction} />
+              </div>
             </div>
           </div>
         </div>
@@ -10419,73 +10393,60 @@ function BadgeExploreBehavior() {
             </Badge>
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+            <div className="flex flex-col gap-md">
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Variant</Label>
-                <Select value={labelVariant} onValueChange={setLabelVariant}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="default">Primary</SelectItem>
-                    <SelectItem value="secondary">Secondary</SelectItem>
-                    <SelectItem value="outline">Outline</SelectItem>
-                    <SelectItem value="ghost">Ghost</SelectItem>
-                    <SelectItem value="destructive">Destructive</SelectItem>
-                    <SelectItem value="emphasis">Emphasis</SelectItem>
-                    <SelectItem value="success">Success</SelectItem>
-                    <SelectItem value="warning">Warning</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setLabelVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Level</Label>
-                <Select value={labelLevel} onValueChange={setLabelLevel}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="primary">Primary</SelectItem>
-                    <SelectItem value="secondary">Secondary</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["primary","Primary"],["secondary","Secondary"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setLabelLevel(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelLevel === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Size</Label>
-                <Select value={labelSize} onValueChange={setLabelSize}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sm">Small (20px)</SelectItem>
-                    <SelectItem value="default">Regular (24px)</SelectItem>
-                    <SelectItem value="lg">Large (28px)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setLabelSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">State</Label>
-                <Select value={labelState} onValueChange={setLabelState}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Default">Default</SelectItem>
-                    <SelectItem value="Focus">Focus</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {["Default", "Focus"].map(v => (
+                    <button key={v} onClick={() => setLabelState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Label</Label>
-                <Input value={labelText} onChange={(e) => setLabelText(e.target.value)} className="h-8 text-xs" />
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Icon Left</Label>
-                <div className="pt-1"><Switch checked={showIconLeft} onCheckedChange={setShowIconLeft} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className={["text-xs text-muted-foreground", !showIconLeft ? "opacity-50" : ""].join(" ")}>Icon Left</Label>
-                <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Icon Right</Label>
-                <div className="pt-1"><Switch checked={showIconRight} onCheckedChange={setShowIconRight} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className={["text-xs text-muted-foreground", !showIconRight ? "opacity-50" : ""].join(" ")}>Icon Right</Label>
-                <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
+              <div className="flex flex-wrap gap-lg">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Label</Label>
+                  <Input value={labelText} onChange={(e) => setLabelText(e.target.value)} className="h-8 text-xs" />
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Icon Left</Label>
+                  <div className="pt-1"><Switch checked={showIconLeft} onCheckedChange={setShowIconLeft} /></div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className={["text-xs text-muted-foreground", !showIconLeft ? "opacity-50" : ""].join(" ")}>Icon Left</Label>
+                  <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Icon Right</Label>
+                  <div className="pt-1"><Switch checked={showIconRight} onCheckedChange={setShowIconRight} /></div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className={["text-xs text-muted-foreground", !showIconRight ? "opacity-50" : ""].join(" ")}>Icon Right</Label>
+                  <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
+                </div>
               </div>
             </div>
           </div>
@@ -10501,53 +10462,38 @@ function BadgeExploreBehavior() {
             </BadgeRound>
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+            <div className="flex flex-col gap-md">
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Variant</Label>
-                <Select value={roundVariant} onValueChange={setRoundVariant}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="default">Primary</SelectItem>
-                    <SelectItem value="secondary">Secondary</SelectItem>
-                    <SelectItem value="outline">Outline</SelectItem>
-                    <SelectItem value="ghost">Ghost</SelectItem>
-                    <SelectItem value="destructive">Destructive</SelectItem>
-                    <SelectItem value="emphasis">Emphasis</SelectItem>
-                    <SelectItem value="success">Success</SelectItem>
-                    <SelectItem value="warning">Warning</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setRoundVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Size</Label>
-                <Select value={roundSize} onValueChange={setRoundSize}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sm">Small (20px)</SelectItem>
-                    <SelectItem value="default">Regular (24px)</SelectItem>
-                    <SelectItem value="lg">Large (28px)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setRoundSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">State</Label>
-                <Select value={roundState} onValueChange={setRoundState}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Default">Default</SelectItem>
-                    <SelectItem value="Focus">Focus</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {["Default", "Focus"].map(v => (
+                    <button key={v} onClick={() => setRoundState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Type</Label>
-                <Select value={roundType} onValueChange={(v) => setRoundType(v as any)}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="numeric">Numeric</SelectItem>
-                    <SelectItem value="icon">Icon</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["numeric","Numeric"],["icon","Icon"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setRoundType(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundType === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               {roundType === "numeric" ? (
                 <div className="space-y-xs">
@@ -10572,31 +10518,22 @@ function BadgeExploreBehavior() {
             <BadgeDot variant={dotVariant as any} size={dotSize as any} />
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+            <div className="flex flex-col gap-md">
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Variant</Label>
-                <Select value={dotVariant} onValueChange={setDotVariant}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="default">Primary</SelectItem>
-                    <SelectItem value="secondary">Secondary</SelectItem>
-                    <SelectItem value="destructive">Destructive</SelectItem>
-                    <SelectItem value="emphasis">Emphasis</SelectItem>
-                    <SelectItem value="success">Success</SelectItem>
-                    <SelectItem value="warning">Warning</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["default","Primary"],["secondary","Secondary"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setDotVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", dotVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Size</Label>
-                <Select value={dotSize} onValueChange={setDotSize}>
-                  <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="sm">Small (4px)</SelectItem>
-                    <SelectItem value="default">Regular (8px)</SelectItem>
-                    <SelectItem value="lg">Large (12px)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-xs">
+                  {[["sm","Small (4px)"],["default","Regular (8px)"],["lg","Large (12px)"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setDotSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", dotSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -12017,7 +11954,6 @@ function AlertDialogTokensTable() {
  */
 function AlertDialogExploreBehavior() {
   const [type, setType] = useState<"Desktop" | "Mobile">("Desktop")
-  const [responsiveTo] = useState("Popup")
   const [showIcon, setShowIcon] = useState(true)
   const [iconName, setIconName] = useState("CircleAlert")
   const [showTitle, setShowTitle] = useState(true)
@@ -12093,65 +12029,58 @@ function AlertDialogExploreBehavior() {
         </div>
       </div>
       <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-md">
-          {/* Row 1: Type, Responsive to, Show Icon, Icon */}
+        <div className="flex flex-col gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={type} onValueChange={(v) => setType(v as "Desktop" | "Mobile")}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Desktop">Desktop</SelectItem>
-                <SelectItem value="Mobile">Mobile</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {(["Desktop", "Mobile"] as const).map(v => (
+                <button key={v} onClick={() => setType(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", type === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Responsive to</Label>
-            <Select value={responsiveTo} disabled>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Popup">Popup</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Icon</Label>
-            <div className="pt-1">
-              <Switch checked={showIcon} onCheckedChange={setShowIcon} disabled={isSlotIllustration} />
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", !showIcon || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Icon</Label>
-            <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
-          </div>
-          {/* Row 2: Show Title, Show Action, Show Action Secondary, Slot */}
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Title</Label>
-            <div className="pt-1">
-              <Switch checked={showTitle} onCheckedChange={setShowTitle} disabled={isSlotIllustration} />
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action</Label>
-            <div className="pt-1">
-              <Switch checked={showAction} onCheckedChange={handleShowActionChange} disabled={isSlotIllustration} />
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", !showAction || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
-            <div className="pt-1">
-              <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction || isSlotIllustration} />
+            <div className="flex flex-wrap gap-xs">
+              <button className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors bg-primary text-primary-foreground border-primary opacity-50 cursor-not-allowed")}>Popup</button>
             </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Slot</Label>
-            <Select value={slotVariant} onValueChange={handleSlotChange}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="text">Text</SelectItem>
-                <SelectItem value="congratulation">Congratulation</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {[["text","Text"],["congratulation","Congratulation"]].map(([v,l]) => (
+                <button key={v} onClick={() => handleSlotChange(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", slotVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-lg">
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Icon</Label>
+              <div className="pt-1">
+                <Switch checked={showIcon} onCheckedChange={setShowIcon} disabled={isSlotIllustration} />
+              </div>
+            </div>
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground", !showIcon || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Icon</Label>
+              <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
+            </div>
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Title</Label>
+              <div className="pt-1">
+                <Switch checked={showTitle} onCheckedChange={setShowTitle} disabled={isSlotIllustration} />
+              </div>
+            </div>
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action</Label>
+              <div className="pt-1">
+                <Switch checked={showAction} onCheckedChange={handleShowActionChange} disabled={isSlotIllustration} />
+              </div>
+            </div>
+            <div className="space-y-xs">
+              <Label className={["text-xs text-muted-foreground", !showAction || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
+              <div className="pt-1">
+                <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction || isSlotIllustration} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -13870,28 +13799,22 @@ function BreadcrumbExploreBehavior() {
         </Breadcrumb>
       </div>
       <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+        <div className="flex flex-col gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Items</Label>
-            <Select value={items} onValueChange={setItems}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="2">2</SelectItem>
-                <SelectItem value="3">3</SelectItem>
-                <SelectItem value="4">4</SelectItem>
-                <SelectItem value="5">5</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {["2", "3", "4", "5"].map(v => (
+                <button key={v} onClick={() => setItems(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", items === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Separator</Label>
-            <Select value={separator} onValueChange={setSeparator}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="chevron">ChevronRight</SelectItem>
-                <SelectItem value="slash">Slash (/)</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {[["chevron","ChevronRight"],["slash","Slash (/)"]].map(([v,l]) => (
+                <button key={v} onClick={() => setSeparator(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", separator === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Show Ellipsis</Label>
@@ -15012,28 +14935,22 @@ function AccordionExploreBehavior() {
         </div>
       </div>
       <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+        <div className="flex flex-col gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">State</Label>
-            <Select value={state} onValueChange={setState}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Default">Default</SelectItem>
-                <SelectItem value="Hover">Hover</SelectItem>
-                <SelectItem value="Focus">Focus</SelectItem>
-                <SelectItem value="Disable">Disable</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {["Default", "Hover", "Focus", "Disable"].map(v => (
+                <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={isDisable ? "Closed" : type} onValueChange={setType} disabled={isDisable}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Open">Open</SelectItem>
-                <SelectItem value="Closed">Closed</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {["Open", "Closed"].map(v => (
+                <button key={v} onClick={() => { if (!isDisable) setType(v) }} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", (isDisable ? "Closed" : type) === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent", isDisable && "opacity-50 cursor-not-allowed")}>{v}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">End Item</Label>
@@ -17576,17 +17493,16 @@ function AspectRatioExploreBehavior() {
           </AspectRatio>
         </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-md flex flex-wrap items-center gap-md">
-        <div className="flex items-center gap-xs">
-          <label className="text-xs font-medium text-muted-foreground whitespace-nowrap">Ratio</label>
-          <Select value={ratio} onValueChange={setRatio}>
-            <SelectTrigger className="w-[140px] h-8 text-xs"><SelectValue /></SelectTrigger>
-            <SelectContent>
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <div className="flex flex-col gap-md">
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Ratio</Label>
+            <div className="flex flex-wrap gap-xs">
               {Object.keys(ratioMap).map((r) => (
-                <SelectItem key={r} value={r} className="text-xs">{ratioLabel[r]} ({r})</SelectItem>
+                <button key={r} onClick={() => setRatio(r)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ratio === r ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{ratioLabel[r]} ({r})</button>
               ))}
-            </SelectContent>
-          </Select>
+            </div>
+          </div>
         </div>
       </div>
     </div>
