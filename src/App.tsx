@@ -142,7 +142,7 @@ import {
 } from "@/components/ui/collapsible"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Calendar } from "@/components/ui/calendar"
-import { DatePicker, DateRangePicker } from "@/components/ui/date-picker"
+import { DatePicker, DateRangePicker, DateTimePicker, DateRangeTimePicker } from "@/components/ui/date-picker"
 import { Combobox } from "@/components/ui/combobox"
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"
 import { Spinner } from "@/components/ui/spinner"
@@ -15975,7 +15975,7 @@ function DatePickerDocs() {
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add react-day-picker @radix-ui/react-popover date-fns`}
-        importCode={`import { DatePicker, DateRangePicker } from "@/components/ui/date-picker"`}
+        importCode={`import { DatePicker, DateRangePicker, DateTimePicker, DateRangeTimePicker } from "@/components/ui/date-picker"`}
       />
 
       {/* ---- Examples ---- */}
@@ -16005,6 +16005,22 @@ function DatePickerDocs() {
 
           <Example title="Date Range with callback" description="Handle range selection with onRangeChange." code={`<DateRangePicker\n  onRangeChange={(range) => console.log(range)}\n/>`}>
             <DateRangePicker onRangeChange={(r) => console.log(r)} />
+          </Example>
+
+          <Example title="Date & Time" description="Calendar with a time input below. Combines date and time into a single Date object." code={`<DateTimePicker />`}>
+            <DateTimePicker />
+          </Example>
+
+          <Example title="Date & Time with pre-selected" description="Pass an initial date with time." code={`<DateTimePicker\n  date={new Date()}\n/>`}>
+            <DateTimePicker date={new Date()} />
+          </Example>
+
+          <Example title="Date Range & Time" description="2-month range calendar with start/end time inputs." code={`<DateRangeTimePicker />`}>
+            <DateRangeTimePicker />
+          </Example>
+
+          <Example title="Date Range & Time with pre-selected" description="Pass initial from/to dates with times." code={`<DateRangeTimePicker\n  from={new Date(2025, 0, 15)}\n  to={new Date(2025, 1, 14)}\n/>`}>
+            <DateRangeTimePicker from={new Date(2025, 0, 15)} to={new Date(2025, 1, 14)} />
           </Example>
         </div>
       </section>
