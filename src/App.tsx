@@ -6326,9 +6326,7 @@ function CheckboxExploreBehavior() {
                     <div className="flex items-center gap-sm">
                       <span className="font-semibold text-base leading-6 text-foreground flex-1">Landing Page</span>
                       {raRecommended && (
-                        <span className="text-xs bg-[#eff6ff] text-[#2563eb] px-xs py-3xs rounded-full shrink-0">
-                          Recommended
-                        </span>
+                        <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Recommended</Badge>
                       )}
                       <Checkbox checked={raIsSelected} disabled={raIsDisabled} className="shrink-0" />
                     </div>
@@ -6862,7 +6860,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
   <div className="flex-1 min-w-0 space-y-xs">
     <div className="flex items-center gap-sm">
       <span className="font-semibold text-base leading-6 text-foreground flex-1">Landing Page</span>
-      <span className="text-xs bg-[#eff6ff] text-[#2563eb] px-xs py-3xs rounded-full">Recommended</span>
+      <Badge variant="emphasis" level="secondary" size="sm">Recommended</Badge>
       <Checkbox defaultChecked />
     </div>
     <div className="flex items-center gap-xs typo-paragraph-sm text-card-foreground">
@@ -6879,7 +6877,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
               <div className="flex-1 min-w-0 space-y-xs">
                 <div className="flex items-center gap-sm">
                   <span className="font-semibold text-base leading-6 text-foreground flex-1">Landing Page</span>
-                  <span className="text-xs bg-[#eff6ff] text-[#2563eb] px-xs py-3xs rounded-full shrink-0">Recommended</span>
+                  <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Recommended</Badge>
                   <Checkbox defaultChecked className="shrink-0" />
                 </div>
                 <div className="flex items-center gap-xs typo-paragraph-sm text-card-foreground">
