@@ -22,6 +22,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Badge, BadgeRound, BadgeDot } from "@/components/ui/badge"
 import { Card, CardInner, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -8888,6 +8889,299 @@ function ToggleGroupDocs() {
             <div>
               <p className="font-semibold text-foreground">Tabs</p>
               <p className="text-muted-foreground mt-0.5">For navigating between content panels (not toggling state).</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Carousel Docs
+   ================================================================ */
+
+const carouselSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+function CarouselExploreBehavior() {
+  const [carouselTab, setCarouselTab] = useState<"carousel" | "carousel-image">("carousel")
+  const [slides, setSlides] = useState<"1" | "2" | "3">("1")
+
+  const renderSlides = (count: number, withImage: boolean) => (
+    <Carousel className="w-full max-w-[400px]">
+      <div className="flex items-center gap-md">
+        <CarouselPrevious />
+        <CarouselContent>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <CarouselItem key={i} className={cn(count === 2 && "basis-1/2", count === 3 && "basis-1/3")}>
+              {withImage ? (
+                <div className="rounded-lg overflow-hidden bg-muted aspect-[4/3]">
+                  <img src={`https://picsum.photos/seed/${i + 1}/400/300`} alt={`Slide ${i + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <Card className="p-md">
+                  <p className="text-center text-[30px] font-semibold text-foreground">{i + 1}</p>
+                </Card>
+              )}
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+      </div>
+    </Carousel>
+  )
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="flex border-b border-border bg-muted/30">
+        {(["carousel", "carousel-image"] as const).map(t => (
+          <button key={t} onClick={() => setCarouselTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", carouselTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            {t === "carousel" ? "Carousel" : "Carousel with Image"}
+          </button>
+        ))}
+      </div>
+
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[240px]">
+        {renderSlides(Number(slides), carouselTab === "carousel-image")}
+      </div>
+
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <div className="flex flex-col gap-md">
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">{carouselTab === "carousel" ? "Slides" : "Type"}</Label>
+            <div className="flex flex-wrap gap-xs">
+              {(["1", "2", "3"] as const).map(v => (
+                <button key={v} onClick={() => setSlides(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", slides === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v === "1" ? "1 Slide" : v === "2" ? "2 Slides" : "3 Slides"}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CarouselDocs() {
+  return (
+    <div className="space-y-12">
+      <TableOfContents sections={carouselSections} />
+
+      <header className="space-y-md pb-3xl">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
+        <h1 className="typo-heading-2">Carousel</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Horizontal slide container with navigation buttons. Built on Embla Carousel for smooth touch gestures and snapping.</p>
+      </header>
+
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <CarouselExploreBehavior />
+      </section>
+
+      <InstallationSection
+        deps="pnpm add embla-carousel-react"
+        importCode={`import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"`}
+      />
+
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        <div className="grid grid-cols-1 gap-6">
+          <Example title="Basic" description="Single slide carousel with prev/next navigation." code={`<Carousel className="w-full max-w-sm">\n  <div className="flex items-center gap-md">\n    <CarouselPrevious />\n    <CarouselContent>\n      {[1,2,3,4,5].map(n => (\n        <CarouselItem key={n}>\n          <Card className="p-md">\n            <p className="text-center text-[30px] font-semibold">{n}</p>\n          </Card>\n        </CarouselItem>\n      ))}\n    </CarouselContent>\n    <CarouselNext />\n  </div>\n</Carousel>`}>
+            <Carousel className="w-full max-w-sm">
+              <div className="flex items-center gap-md">
+                <CarouselPrevious />
+                <CarouselContent>
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <CarouselItem key={n}>
+                      <Card className="p-md">
+                        <p className="text-center text-[30px] font-semibold text-foreground">{n}</p>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselNext />
+              </div>
+            </Carousel>
+          </Example>
+
+          <Example title="2 Slides per view" description="Show 2 slides at once using basis-1/2." code={`<CarouselItem className="basis-1/2">...</CarouselItem>`}>
+            <Carousel className="w-full max-w-sm">
+              <div className="flex items-center gap-md">
+                <CarouselPrevious />
+                <CarouselContent>
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <CarouselItem key={n} className="basis-1/2">
+                      <Card className="p-md">
+                        <p className="text-center text-[30px] font-semibold text-foreground">{n}</p>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselNext />
+              </div>
+            </Carousel>
+          </Example>
+
+          <Example title="3 Slides per view" description="Show 3 slides at once using basis-1/3." code={`<CarouselItem className="basis-1/3">...</CarouselItem>`}>
+            <Carousel className="w-full max-w-lg">
+              <div className="flex items-center gap-md">
+                <CarouselPrevious />
+                <CarouselContent>
+                  {[1, 2, 3, 4, 5, 6].map(n => (
+                    <CarouselItem key={n} className="basis-1/3">
+                      <Card className="p-md">
+                        <p className="text-center text-[30px] font-semibold text-foreground">{n}</p>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselNext />
+              </div>
+            </Carousel>
+          </Example>
+
+          <Example title="With images" description="Carousel with Image variant from Figma." code={`<CarouselItem>\n  <div className="rounded-lg overflow-hidden bg-muted aspect-[4/3]">\n    <img src="..." className="w-full h-full object-cover" />\n  </div>\n</CarouselItem>`}>
+            <Carousel className="w-full max-w-sm">
+              <div className="flex items-center gap-md">
+                <CarouselPrevious />
+                <CarouselContent>
+                  {[1, 2, 3].map(n => (
+                    <CarouselItem key={n}>
+                      <div className="rounded-lg overflow-hidden bg-muted aspect-[4/3]">
+                        <img src={`https://picsum.photos/seed/${n + 10}/400/300`} alt={`Image ${n}`} className="w-full h-full object-cover" />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselNext />
+              </div>
+            </Carousel>
+          </Example>
+
+          <Example title="Loop" description="Infinite loop carousel using embla opts." code={`<Carousel opts={{ loop: true }}>`}>
+            <Carousel opts={{ loop: true }} className="w-full max-w-sm">
+              <div className="flex items-center gap-md">
+                <CarouselPrevious />
+                <CarouselContent>
+                  {[1, 2, 3].map(n => (
+                    <CarouselItem key={n}>
+                      <Card className="p-md">
+                        <p className="text-center text-[30px] font-semibold text-foreground">{n}</p>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselNext />
+              </div>
+            </Carousel>
+          </Example>
+        </div>
+      </section>
+
+      <section id="props" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Type</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
+            <tbody className="[&_tr]:border-b [&_tr]:border-border [&_td]:p-3">
+              <tr><td className="font-mono text-primary">opts</td><td>EmblaOptionsType</td><td>—</td><td>Embla carousel options (loop, align, dragFree, etc.)</td></tr>
+              <tr><td className="font-mono text-primary">plugins</td><td>EmblaPluginType[]</td><td>—</td><td>Embla plugins (autoplay, autoScroll, etc.)</td></tr>
+              <tr><td className="font-mono text-primary">orientation</td><td>"horizontal" | "vertical"</td><td>"horizontal"</td><td>Scroll direction</td></tr>
+              <tr><td className="font-mono text-primary">setApi</td><td>{"(api) => void"}</td><td>—</td><td>Callback to access the embla API instance</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Usage</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use carousel for browsing a collection of related items (images, cards, testimonials).</p>
+              <p>Provide visible prev/next buttons for keyboard and mouse users.</p>
+              <p>Show at least partial next slide to hint at more content.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't use carousel for critical content that users must see — it may be missed.</p>
+              <p>Don't auto-advance without user control and pause-on-hover.</p>
+              <p>Don't use carousel with only 1–2 items — use a static layout instead.</p>
+            </DontItem>
+          </div>
+        </div>
+      </section>
+
+      <FigmaMapping id="figma-mapping" rows={[
+        ["Variant", "Carousel", "Carousel", "Card slides with number content"],
+        ["Variant", "Carousel with Image", "Carousel", "Image slides with aspect-[4/3]"],
+        ["Slides", "1 Slide", "CarouselItem", "basis-full (default)"],
+        ["Slides", "2 Slides", "CarouselItem", "basis-1/2"],
+        ["Slides", "3 Slides", "CarouselItem", "basis-1/3"],
+        ["Nav", "Icon Button arrow-left", "CarouselPrevious", "IconButton variant=outline, ArrowLeft icon"],
+        ["Nav", "Icon Button arrow-right", "CarouselNext", "IconButton variant=outline, ArrowRight icon"],
+        ["Layout", "HORIZONTAL gap=16", "flex items-center gap-md", "Buttons + content in one row"],
+        ["Card", "r=8 pad=16 bg=background", "Card className=p-md", "Slide content container"],
+      ]} />
+
+      <section id="accessibility" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
+          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead><tr className="border-b border-border text-left"><th className="pr-6 py-2 font-semibold">Key</th><th className="pr-6 py-2 font-semibold">Action</th></tr></thead>
+                <tbody>
+                  <tr className="border-b border-border"><td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">ArrowLeft</kbd></td><td className="pr-6 py-2 text-muted-foreground">Move to previous slide</td></tr>
+                  <tr className="border-b border-border"><td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">ArrowRight</kbd></td><td className="pr-6 py-2 text-muted-foreground">Move to next slide</td></tr>
+                  <tr><td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td><td className="pr-6 py-2 text-muted-foreground">Move focus between navigation buttons</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+            <h3 className="font-body font-semibold text-sm text-foreground">ARIA</h3>
+            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+              <li>Container has <code className="text-xs bg-muted px-1 rounded font-mono">role="region"</code> and <code className="text-xs bg-muted px-1 rounded font-mono">aria-roledescription="carousel"</code>.</li>
+              <li>Each slide has <code className="text-xs bg-muted px-1 rounded font-mono">role="group"</code> and <code className="text-xs bg-muted px-1 rounded font-mono">aria-roledescription="slide"</code>.</li>
+              <li>Nav buttons have descriptive <code className="text-xs bg-muted px-1 rounded font-mono">aria-label</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="related" className="space-y-4 pb-12">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Card</p>
+              <p className="text-muted-foreground mt-0.5">Content container used as slide wrapper.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Icon Button</p>
+              <p className="text-muted-foreground mt-0.5">Navigation buttons for prev/next.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Scroll Area</p>
+              <p className="text-muted-foreground mt-0.5">For vertical scrollable content instead of slides.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -19051,6 +19345,7 @@ const components = [
   { id: "button", label: "Button" },
   { id: "button-group", label: "Button Group" },
   { id: "calendar", label: "Calendar" },
+  { id: "carousel", label: "Carousel" },
   { id: "card", label: "Card" },
   { id: "checkbox", label: "Checkbox" },
   { id: "collapsible", label: "Collapsible" },
@@ -19297,6 +19592,7 @@ function App() {
           {active === "toggle" && <ToggleDocs />}
           {active === "toggle-group" && <ToggleGroupDocs />}
           {active === "slider" && <SliderDocs />}
+          {active === "carousel" && <CarouselDocs />}
           {active === "card" && <CardDocs />}
           {active === "badge" && <BadgeDocs />}
           {active === "avatar" && <AvatarDocs />}
