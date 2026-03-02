@@ -2246,40 +2246,6 @@ function ButtonDocs() {
           </Button>
         </Example>
 
-        {/* Icon only */}
-        <Example
-          title="Icon-only"
-          description="3 icon-only sizes for compact UIs. Always provide aria-label for accessibility."
-          code={`<Button size="icon-lg" aria-label="Add"><Plus /></Button>
-<Button size="icon" aria-label="Add"><Plus /></Button>
-<Button size="icon-sm" aria-label="Add"><Plus /></Button>
-
-<span className="w-px h-6 bg-border" />
-
-<Button variant="outline" size="icon" aria-label="Settings"><Settings /></Button>
-<Button variant="ghost" size="icon" aria-label="Settings"><Settings /></Button>
-<Button variant="destructive" size="icon" aria-label="Delete"><Trash2 /></Button>`}
-        >
-          <Button size="icon-lg" aria-label="Add">
-            <Plus />
-          </Button>
-          <Button size="icon" aria-label="Add">
-            <Plus />
-          </Button>
-          <Button size="icon-sm" aria-label="Add">
-            <Plus />
-          </Button>
-          <span className="w-px h-6 bg-border" />
-          <Button variant="outline" size="icon" aria-label="Settings">
-            <Settings />
-          </Button>
-          <Button variant="ghost" size="icon" aria-label="Settings">
-            <Settings />
-          </Button>
-          <Button variant="destructive" size="icon" aria-label="Delete">
-            <Trash2 />
-          </Button>
-        </Example>
 
         {/* Disabled */}
         <Example
