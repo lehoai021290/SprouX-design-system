@@ -10,18 +10,13 @@ import { buttonVariants } from "@/components/ui/button"
  *
  * Figma: [SprouX - DS] Foundation & Component
  *   - Calendar (4820:5638): card wrapper p=16 r=8
- *   - Date Picker (288:119954): Type (Basic|Range), Style (1 Month|2 Month|Year and Month|Only Month|Only Year), Size (Small|Large|Custom days)
- *   - Date Picker / Header (264:29273): [IconButton] [Caption/Dropdowns] [IconButton] — HORIZONTAL justify-between
+ *   - Date Picker (288:119954): Type, Style, Size
+ *   - Date Picker / Header (264:29273): [IconButton] [Caption] [IconButton] HORIZONTAL justify-between
  *   - Date Picker / Day (781:40922): 32×32 (Small) | 48×48 (Large/Custom)
  *
- * Header layout uses navLayout="around" so prev/next buttons are INLINE
- * with the caption (matching Figma 264:29273 horizontal layout).
- *
- * captionLayout maps to Header Style:
- *   "label"           → 1 Month / 2 Months (text title)
- *   "dropdown"        → Year and Month (month+year selects)
- *   "dropdown-months" → Only Year (month text + year select)
- *   "dropdown-years"  → Only Month (month select + year text)
+ * navLayout="around" places PreviousMonthButton and NextMonthButton
+ * as direct children of Month (siblings of MonthCaption and MonthGrid).
+ * CSS Grid on month positions: row 1 = [prev | caption | next], row 2 = [grid spanning all].
  */
 function Calendar({
   className,
@@ -36,31 +31,35 @@ function Calendar({
       navLayout="around"
       className={cn("p-md", className)}
       classNames={{
-        /* ── Layout (Size=Small: 7×32=224px grid) ── */
+        /* ── Layout ── */
         months: "flex flex-col sm:flex-row gap-md",
-        month: "flex flex-col gap-md",
-        month_grid: "w-full border-collapse",
+
+        /* ── Month: CSS Grid to arrange header row + grid row
+              navLayout="around" children order:
+              [PreviousMonthButton?] [MonthCaption] [NextMonthButton?] [MonthGrid]
+              Grid: row 1 = buttons + caption, row 2 = month grid ── */
+        month: "grid grid-cols-[auto_1fr_auto] gap-y-md",
+
+        month_grid: "col-span-full w-full border-collapse",
         weekdays: "flex",
         week: "flex w-full mt-[1px]",
 
-        /* ── Header (Figma: Date Picker / Header 264:29273)
-              navLayout="around" places prev/next buttons INSIDE each month_caption
-              as siblings of CaptionLabel/Dropdowns.
-              Figma: HORIZONTAL, justify-between, cross=center, h=32 ── */
-        month_caption: "flex items-center justify-between h-2xl",
-        caption_label: "typo-paragraph-sm font-semibold flex-1 text-center",
+        /* ── Header (Figma: 264:29273 — HORIZONTAL, justify-between, h=32)
+              Buttons placed in grid col 1 & 3, caption in col 2 ── */
+        month_caption:
+          "col-start-2 row-start-1 flex items-center justify-center h-2xl",
+        caption_label: "typo-paragraph-sm font-semibold",
         button_previous: cn(
           buttonVariants({ variant: "outline" }),
-          "size-2xl rounded-lg p-[7px]"
+          "size-2xl rounded-lg p-[7px] col-start-1 row-start-1 self-center"
         ),
         button_next: cn(
           buttonVariants({ variant: "outline" }),
-          "size-2xl rounded-lg p-[7px]"
+          "size-2xl rounded-lg p-[7px] col-start-3 row-start-1 self-center"
         ),
 
-        /* ── Header dropdowns (Style=Year and Month / Only Month / Only Year)
-              Figma uses Select & Combobox instances: r=8, h=32, px=8, gap=6 ── */
-        dropdowns: "flex items-center gap-xs flex-1 justify-center",
+        /* ── Header dropdowns (Figma: Select & Combobox r=8 h=32 px=8 gap=6) ── */
+        dropdowns: "flex items-center gap-xs",
         dropdown_root: "relative",
         dropdown:
           "appearance-none bg-input border border-border rounded-lg h-2xl px-xs pr-lg typo-paragraph-sm font-normal cursor-pointer focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring",
