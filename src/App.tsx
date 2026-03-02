@@ -11893,19 +11893,24 @@ const dataTableSections: TocSection[] = [
 function DataTableExploreBehavior() {
   const [dtTab, setDtTab] = useState<"header" | "cell">("header")
 
-  // Table Header state
-  const [headerContent, setHeaderContent] = useState<"text" | "sortable" | "checkbox" | "empty">("text")
-  const [headerAlign, setHeaderAlign] = useState<"left" | "right">("left")
-  const [headerState, setHeaderState] = useState<"default" | "hover" | "active">("default")
+  /* ── Table Header state (Figma 19:6472 — 5 properties) ── */
+  const [hContent, setHContent] = useState("text")
+  const [hAlign, setHAlign] = useState("left")
+  const [hState, setHState] = useState("default")
+  const [hBorder, setHBorder] = useState(true)
+  const [hTooltip, setHTooltip] = useState(false)
 
-  // Table Cell state
-  const [cellContent, setCellContent] = useState<"text-1" | "text-2" | "checkbox" | "badge" | "avatar-name" | "actions">("text-1")
-  const [cellAlign, setCellAlign] = useState<"left" | "right">("left")
-  const [cellState, setCellState] = useState<"default" | "hover" | "active" | "selected">("default")
+  /* ── Table Cell state (Figma 19:6314 — 12 content types, 3 properties) ── */
+  const [cContent, setCContent] = useState("text-1")
+  const [cAlign, setCAlign] = useState("left")
+  const [cState, setCState] = useState("default")
+  const [cBorder, setCBorder] = useState(true)
+
+  const cellBg = cState === "hover" ? "bg-accent" : cState === "active" ? "bg-accent/80" : cState === "selected" ? "bg-muted" : ""
+  const headerBg = hState === "hover" ? "bg-accent" : hState === "active" ? "bg-accent/80" : ""
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      {/* ── Tabs ── */}
       <div className="flex border-b border-border bg-muted/30">
         {(["header", "cell"] as const).map(t => (
           <button key={t} onClick={() => setDtTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", dtTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
@@ -11914,58 +11919,56 @@ function DataTableExploreBehavior() {
         ))}
       </div>
 
-      {/* ── Table Header tab ── */}
+      {/* ── Table Header tab — single cell preview ── */}
       {dtTab === "header" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
-            <Table className="w-[420px]">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className={cn(headerAlign === "right" && "text-right", headerState === "hover" && "bg-muted", headerState === "active" && "bg-muted/80")}>
-                    {headerContent === "text" && "Column Title"}
-                    {headerContent === "sortable" && (
-                      <button className="inline-flex items-center gap-xs">
-                        Column Title
-                        <ArrowUpDown className="size-3.5 text-muted-foreground" />
-                      </button>
-                    )}
-                    {headerContent === "checkbox" && <Checkbox />}
-                    {headerContent === "empty" && <span className="sr-only">Empty</span>}
-                  </TableHead>
-                  <TableHead>Header B</TableHead>
-                  <TableHead className="text-right">Header C</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow><TableCell>Cell A1</TableCell><TableCell>Cell B1</TableCell><TableCell className="text-right">Cell C1</TableCell></TableRow>
-                <TableRow><TableCell>Cell A2</TableCell><TableCell>Cell B2</TableCell><TableCell className="text-right">Cell C2</TableCell></TableRow>
-              </TableBody>
-            </Table>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+            <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", headerBg, hBorder && "border-b border-border", hAlign === "right" && "justify-end")}>
+              {hContent === "text" && <span className="font-semibold typo-paragraph-sm">Table heading</span>}
+              {hContent === "sortable" && (
+                <button className="inline-flex items-center gap-xs font-semibold typo-paragraph-sm">
+                  Table heading <ArrowUpDown className="size-md text-muted-foreground" />
+                </button>
+              )}
+              {hContent === "checkbox" && <Checkbox />}
+              {hContent === "empty" && <span className="text-muted-foreground typo-paragraph-sm">—</span>}
+              {hTooltip && <Info className="size-md text-muted-foreground" />}
+            </div>
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
             <div className="flex flex-col gap-md">
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Content</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["text", "Text"], ["sortable", "Sortable"], ["checkbox", "Checkbox"], ["empty", "Empty"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setHeaderContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["text","Text"],["sortable","Sortable"],["checkbox","Checkbox"],["empty","Empty"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setHContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
                 </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Alignment</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["left", "Left"], ["right", "Right"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setHeaderAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["left","Left"],["right","Right"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setHAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
                 </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">State</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["default", "Default"], ["hover", "Hover"], ["active", "Active"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setHeaderState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", headerState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["default","Default"],["hover","Hover"],["active","Active"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setHState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-lg">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Border</Label>
+                  <div className="pt-1"><Switch checked={hBorder} onCheckedChange={setHBorder} /></div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Tooltip</Label>
+                  <div className="pt-1"><Switch checked={hTooltip} onCheckedChange={setHTooltip} /></div>
                 </div>
               </div>
             </div>
@@ -11973,78 +11976,66 @@ function DataTableExploreBehavior() {
         </>
       )}
 
-      {/* ── Table Cell tab ── */}
+      {/* ── Table Cell tab — single cell preview ── */}
       {dtTab === "cell" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
-            <Table className="w-[420px]">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Column</TableHead>
-                  <TableHead className="text-right">Value</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow className={cn(cellState === "hover" && "bg-muted/50", cellState === "active" && "bg-muted/80", cellState === "selected" && "bg-muted")}>
-                  <TableCell className={cn(cellAlign === "right" && "text-right")}>
-                    {cellContent === "text-1" && "Single line text"}
-                    {cellContent === "text-2" && (
-                      <div>
-                        <p className="font-medium">Primary text</p>
-                        <p className="text-xs text-muted-foreground">Secondary description</p>
-                      </div>
-                    )}
-                    {cellContent === "checkbox" && <Checkbox />}
-                    {cellContent === "badge" && <Badge>Active</Badge>}
-                    {cellContent === "avatar-name" && (
-                      <div className="flex items-center gap-sm">
-                        <Avatar className="size-8">
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <span className="font-medium">Jane Doe</span>
-                      </div>
-                    )}
-                    {cellContent === "actions" && (
-                      <div className="flex items-center gap-xs">
-                        <IconButton variant="ghost" size="sm"><Eye className="size-3.5" /></IconButton>
-                        <IconButton variant="ghost" size="sm"><MoreHorizontal className="size-3.5" /></IconButton>
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right text-muted-foreground">$250.00</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Row 2</TableCell>
-                  <TableCell className="text-right text-muted-foreground">$150.00</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+            <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", cellBg, cBorder && "border-b border-border", cAlign === "right" && "justify-end")}>
+              {cContent === "text-1" && <span className="typo-paragraph-sm">Table cell</span>}
+              {cContent === "text-2" && (
+                <div><p className="typo-paragraph-sm font-medium">Primary text</p><p className="text-xs text-muted-foreground">Secondary line</p></div>
+              )}
+              {cContent === "text-label" && (
+                <div><p className="text-xs text-muted-foreground">Label</p><p className="typo-paragraph-sm">Value text</p></div>
+              )}
+              {cContent === "text-thumb" && (
+                <div className="flex items-center gap-xs"><div className="size-8 rounded bg-muted shrink-0" /><span className="typo-paragraph-sm">With thumbnail</span></div>
+              )}
+              {cContent === "checkbox" && <Checkbox />}
+              {cContent === "badge" && <Badge>Active</Badge>}
+              {cContent === "avatar-name" && (
+                <div className="flex items-center gap-xs"><Avatar className="size-8"><AvatarFallback>JD</AvatarFallback></Avatar><span className="typo-paragraph-sm font-medium">Jane Doe</span></div>
+              )}
+              {cContent === "avatar" && <Avatar className="size-8"><AvatarFallback>JD</AvatarFallback></Avatar>}
+              {cContent === "buttons" && (
+                <div className="flex items-center gap-xs"><Button size="xs">Approve</Button><Button size="xs" variant="outline">Reject</Button></div>
+              )}
+              {cContent === "actions" && (
+                <div className="flex items-center gap-xs"><IconButton variant="ghost" size="sm"><Eye /></IconButton><IconButton variant="ghost" size="sm"><MoreHorizontal /></IconButton></div>
+              )}
+              {cContent === "input" && <input className="h-2xl w-full rounded-lg border border-border bg-input px-xs typo-paragraph-sm" defaultValue="Editable" />}
+              {cContent === "blank" && null}
+            </div>
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
             <div className="flex flex-col gap-md">
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Content</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["text-1", "Text (1 Line)"], ["text-2", "Text (2 Lines)"], ["checkbox", "Checkbox"], ["badge", "Badge"], ["avatar-name", "Avatar + Name"], ["actions", "Actions"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setCellContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["text-1","Text (1 Line)"],["text-2","Text (2 Lines)"],["text-label","Text (with Label)"],["text-thumb","Text with thumbnail"],["checkbox","Checkbox"],["badge","Badge"],["buttons","Buttons"],["avatar","Avatar"],["avatar-name","Avatar + Name"],["actions","Actions"],["input","Input"],["blank","Blank"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setCContent(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
                 </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">Alignment</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["left", "Left"], ["right", "Right"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setCellAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["left","Left"],["right","Right"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setCAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
                 </div>
               </div>
               <div className="space-y-xs">
                 <Label className="text-xs text-muted-foreground">State</Label>
                 <div className="flex flex-wrap gap-xs">
-                  {([["default", "Default"], ["hover", "Hover"], ["active", "Active"], ["selected", "Selected"]] as const).map(([v, l]) => (
-                    <button key={v} onClick={() => setCellState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cellState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  {[["default","Default"],["hover","Hover"],["active","Active"],["selected","Selected"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setCState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
                   ))}
                 </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Border</Label>
+                <div className="pt-1"><Switch checked={cBorder} onCheckedChange={setCBorder} /></div>
               </div>
             </div>
           </div>
