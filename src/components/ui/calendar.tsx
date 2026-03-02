@@ -81,8 +81,9 @@ function Calendar({
               Applied to <td>. Button uses aria-selected to pick up primary bg. ── */
         range_start: "day-range-start rounded-l-sm",
         range_end: "day-range-end rounded-r-sm",
-        selected: "rounded-sm",
-        today: "ring-1 ring-primary/40 rounded-sm",
+        selected:
+          "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground rounded-sm",
+        today: "relative z-10 ring-1 ring-primary/40 rounded-sm",
         outside:
           "day-outside text-muted-foreground/40 [&>button]:text-muted-foreground/40 [&>button]:aria-selected:text-primary-foreground/70",
         disabled: "[&>button]:bg-card [&>button]:text-muted-foreground [&>button]:opacity-50 [&>button]:pointer-events-none",
