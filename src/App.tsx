@@ -2843,17 +2843,15 @@ function ButtonGroupExploreBehavior() {
   const isDisabled = state === "disabled" || ibState === "disabled"
 
   return (
-    <section id="explore-behavior" className="space-y-6">
-      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
-      <div className="rounded-xl border border-border overflow-hidden">
-        {/* ── Tabs ── */}
-        <div className="flex border-b border-border bg-muted/30">
-          {(["button-group", "icon-button"] as const).map(t => (
-            <button key={t} onClick={() => setBgTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", bgTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
-              {t === "button-group" ? "Button Group" : "Icon Button"}
-            </button>
-          ))}
-        </div>
+    <div className="rounded-xl border border-border overflow-hidden">
+      {/* ── Tabs ── */}
+      <div className="flex border-b border-border bg-muted/30">
+        {(["button-group", "icon-button"] as const).map(t => (
+          <button key={t} onClick={() => setBgTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", bgTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            {t === "button-group" ? "Button Group" : "Icon Button"}
+          </button>
+        ))}
+      </div>
 
         {/* Tab 1: Button Group (784:82792) — 8 properties */}
         {bgTab === "button-group" && (
@@ -2906,24 +2904,24 @@ function ButtonGroupExploreBehavior() {
                 <div className="flex flex-wrap gap-lg">
                   <div className="space-y-xs">
                     <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
-                    <div className="pt-1">
-                      <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
-                    </div>
+                    <div className="pt-1"><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
                   </div>
                   <div className="space-y-xs">
                     <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
-                    <div className="pt-1">
-                      <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+                    <div className="pt-1"><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
+                  </div>
+                  {showLeftIcon && (
+                    <div className="space-y-xs max-w-[200px]">
+                      <Label className="text-xs text-muted-foreground">Left Icon</Label>
+                      <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
                     </div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Left Icon</Label>
-                    <IconPicker value={leftIcon} onChange={setLeftIcon} disabled={!showLeftIcon} />
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Right Icon</Label>
-                    <IconPicker value={rightIcon} onChange={setRightIcon} disabled={!showRightIcon} />
-                  </div>
+                  )}
+                  {showRightIcon && (
+                    <div className="space-y-xs max-w-[200px]">
+                      <Label className="text-xs text-muted-foreground">Right Icon</Label>
+                      <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -2972,16 +2970,15 @@ function ButtonGroupExploreBehavior() {
                     ))}
                   </div>
                 </div>
-                <div className="space-y-xs">
+                <div className="space-y-xs max-w-[200px]">
                   <Label className="text-xs text-muted-foreground">Icon</Label>
-                  <IconPicker value={ibIcon} onChange={setIbIcon} />
+                  <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
                 </div>
               </div>
             </div>
           </>
         )}
-      </div>
-    </section>
+    </div>
   )
 }
 
