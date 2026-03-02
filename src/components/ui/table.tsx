@@ -3,19 +3,25 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * SprouX Table
+ * SprouX Table (Data Table)
  *
  * Figma: [SprouX - DS] Foundation & Component
+ *   - Table Header (19:6472): Content (Text|Sortable|Checkbox|Empty), Alignment (Left|Right),
+ *     State (Default|Hover|Active), Show Tooltip, Show border
+ *   - Table Cell (19:6314): Content (Text 1/2 Lines|Actions|Checkbox|Badge|Buttons|Avatar|Input|etc.),
+ *     Alignment (Left|Right), State (Default|Hover|Active|Selected)
  *
- * Data table with composable sub-components:
- * Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption
+ * Specs:
+ *   Header: h=48, pad=[8,8,8,8] (p-xs), text 14px/600 (font-semibold), border-bottom 1px --border
+ *   Cell: h=48, pad=[8,8,8,8] (p-xs), text 14px/400, border-bottom 1px --border
+ *   Row hover: bg=--accent  |  Row selected: bg=--muted
  */
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div data-slot="table-container" className="relative w-full overflow-auto">
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom typo-paragraph-sm", className)}
         {...props}
       />
     </div>
@@ -60,7 +66,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+        "border-b border-border transition-colors hover:bg-accent data-[state=selected]:bg-muted",
         className
       )}
       {...props}
@@ -74,7 +80,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       data-slot="table-head"
       scope="col"
       className={cn(
-        "h-3xl px-md text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "h-[48px] p-xs text-left align-middle font-semibold text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}
       {...props}
@@ -87,7 +93,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-md align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "p-xs align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}
       {...props}

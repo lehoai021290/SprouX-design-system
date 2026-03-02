@@ -11901,23 +11901,29 @@ function TableDocs() {
         <p className="typo-paragraph text-muted-foreground max-w-3xl">Data table with composable sub-components for header, body, footer, rows, and cells.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Table className="w-[400px]">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow><TableCell>Item 1</TableCell><TableCell>Active</TableCell></TableRow>
-            <TableRow><TableCell>Item 2</TableCell><TableCell>Pending</TableCell></TableRow>
-          </TableBody>
-        </Table>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <Table className="w-[500px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow><TableCell>Item 1</TableCell><TableCell>Active</TableCell><TableCell className="text-right">$250.00</TableCell></TableRow>
+                <TableRow><TableCell>Item 2</TableCell><TableCell>Pending</TableCell><TableCell className="text-right">$150.00</TableCell></TableRow>
+                <TableRow><TableCell>Item 3</TableCell><TableCell>Active</TableCell><TableCell className="text-right">$350.00</TableCell></TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </section>
 
-      
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add clsx tailwind-merge`}
