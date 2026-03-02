@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils"
  *
  * Code Size Mapping:
  *   lg → Large, default → Regular, sm → Small, xs → Mini,
- *   icon / icon-sm / icon-lg → icon-only variants
+ *   icon-lg / icon / icon-sm / icon-xs → Icon Button variants (see IconButton below)
  *
  * Merged specs (Shadcn structure + Figma tokens):
  *   Container: rounded-lg (8px), gap-xs (8px) or gap-2xs (6px)
@@ -58,9 +58,13 @@ const buttonVariants = cva(
         default: "h-9 px-md gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
         sm: "h-2xl px-sm gap-2xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
         xs: "h-xl px-xs gap-2xs typo-paragraph-mini-bold [&_svg:not([class*='size-'])]:size-md",
-        icon: "size-9 [&_svg:not([class*='size-'])]:size-md",
-        "icon-sm": "size-2xl [&_svg:not([class*='size-'])]:size-md",
-        "icon-lg": "size-3xl [&_svg:not([class*='size-'])]:size-md",
+        /* ── Icon Button sizes (Figma: 4838:17100)
+              Regular=36×36 pad=8 icon=20, Large=40×40 pad=10 icon=20,
+              Small=32×32 pad=7 icon=18, Mini=24×24 pad=4 r=4 icon=16 ── */
+        icon: "size-9 p-[8px] [&_svg:not([class*='size-'])]:size-[20px]",
+        "icon-lg": "size-3xl p-[10px] [&_svg:not([class*='size-'])]:size-[20px]",
+        "icon-sm": "size-2xl p-[7px] [&_svg:not([class*='size-'])]:size-[18px]",
+        "icon-xs": "size-xl p-[4px] !rounded-sm [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {
@@ -93,9 +97,58 @@ function Button({
   )
 }
 
+/**
+ * SprouX Icon Button
+ *
+ * Figma: [SprouX - DS] Foundation & Component (node 4838:17100)
+ *
+ * Figma Variant Properties:
+ *   Variant:    Primary | Secondary | Outline | Ghost | Ghost Muted | Destructive
+ *   Size:       Large (40×40) | Regular (36×36) | Small (32×32) | Mini (24×24)
+ *   Roundness:  Default (r=8, r=4 for Mini) | Round (r=9999)
+ *   State:      Default | Hover & Active | Focus | Disabled
+ *   Icon:       Instance swap (⮑ Left icon)
+ *
+ * Dimensions & padding per size:
+ *   Large:   40×40, pad=10, icon=20×20, r=8
+ *   Regular: 36×36, pad=8,  icon=20×20, r=8
+ *   Small:   32×32, pad=7,  icon=18×18, r=8
+ *   Mini:    24×24, pad=4,  icon=16×16, r=4
+ *
+ * Usage: <IconButton variant="outline" size="sm"><ChevronLeft /></IconButton>
+ *        <IconButton variant="ghost" round><X /></IconButton>
+ */
+type IconButtonSize = "lg" | "default" | "sm" | "xs"
+
+const iconSizeMap: Record<IconButtonSize, ButtonProps["size"]> = {
+  lg: "icon-lg",
+  default: "icon",
+  sm: "icon-sm",
+  xs: "icon-xs",
+}
+
+function IconButton({
+  size = "default",
+  round = false,
+  className,
+  ...props
+}: Omit<ButtonProps, "size" | "asChild"> & {
+  size?: IconButtonSize
+  round?: boolean
+}) {
+  return (
+    <Button
+      data-slot="icon-button"
+      size={iconSizeMap[size]}
+      className={cn(round && "!rounded-full", className)}
+      {...props}
+    />
+  )
+}
+
 type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }
 
-export { Button, buttonVariants, type ButtonProps }
+export { Button, IconButton, buttonVariants, type ButtonProps }
