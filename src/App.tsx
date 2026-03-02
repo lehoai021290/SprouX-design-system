@@ -15791,19 +15791,32 @@ const datePickerSections: TocSection[] = [
 function DatePickerExploreBehavior() {
   const [inputState, setInputState] = useState<"Placeholder" | "Value" | "Focus">("Placeholder")
   const [calendarType, setCalendarType] = useState<"Basic" | "Range">("Basic")
+  const [calendarStyle, setCalendarStyle] = useState<"1 Month" | "2 Month" | "Year and Month" | "Only Month" | "Only Year">("1 Month")
+  const [calendarSize, setCalendarSize] = useState<"Small" | "Large" | "Custom days">("Small")
   const [selectedDate] = useState(new Date())
   const rangeFrom = new Date(2025, 0, 15)
   const rangeTo = new Date(2025, 1, 14)
 
+  /* Map Style → rdp captionLayout + numberOfMonths */
+  const captionLayout = calendarStyle === "Year and Month" ? "dropdown" as const
+    : calendarStyle === "Only Month" ? "dropdown-years" as const
+    : calendarStyle === "Only Year" ? "dropdown-months" as const
+    : "label" as const
+  const numMonths = calendarStyle === "2 Month" ? 2 : calendarType === "Range" && calendarStyle === "1 Month" ? 2 : 1
+
+  /* Map Size → day button size class */
+  const daySize = calendarSize === "Small" ? "size-[32px]" : "size-[48px]"
+  const weekdayW = calendarSize === "Small" ? "w-[32px]" : "w-[48px]"
+
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      {/* ── Static preview: Input + Calendar rendered inline (modal pattern) ── */}
+      {/* ── Static preview ── */}
       <div className="bg-primary/5 p-4xl flex flex-col items-center justify-center gap-xs min-h-[200px]">
         {/* Date Picker Input preview */}
         <div
           className={cn(
             "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm transition-colors",
-            calendarType === "Basic" ? "w-[280px]" : "w-auto min-w-[280px]",
+            calendarType === "Basic" ? "w-[197px]" : "w-auto min-w-[197px]",
             inputState === "Focus"
               ? "border-border ring-[3px] ring-ring"
               : "border-border",
@@ -15822,23 +15835,37 @@ function DatePickerExploreBehavior() {
           </span>
         </div>
 
-        {/* Calendar preview */}
+        {/* Calendar preview (Figma: Calendar 4820:5638 = card r=8 p=16 wrapping Date Picker) */}
         <div className="mt-xs overflow-x-auto">
           {calendarType === "Range" ? (
             <Calendar
               mode="range"
               selected={inputState === "Value" ? { from: rangeFrom, to: rangeTo } : undefined}
-              numberOfMonths={2}
+              numberOfMonths={numMonths}
+              captionLayout={captionLayout}
+              startMonth={new Date(2020, 0)}
+              endMonth={new Date(2030, 11)}
               showOutsideDays
-              className="rounded-xl border border-border bg-card shadow"
+              className="rounded-lg border border-border bg-card shadow"
+              classNames={{
+                day_button: `inline-flex items-center justify-center whitespace-nowrap rounded-sm ${daySize} typo-paragraph-sm font-normal bg-card text-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none`,
+                weekday: `text-muted-foreground ${weekdayW} h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center`,
+              }}
             />
           ) : (
             <Calendar
               mode="single"
               selected={inputState === "Value" ? selectedDate : undefined}
-              numberOfMonths={1}
+              numberOfMonths={numMonths}
+              captionLayout={captionLayout}
+              startMonth={new Date(2020, 0)}
+              endMonth={new Date(2030, 11)}
               showOutsideDays
-              className="rounded-xl border border-border bg-card shadow"
+              className="rounded-lg border border-border bg-card shadow"
+              classNames={{
+                day_button: `inline-flex items-center justify-center whitespace-nowrap rounded-sm ${daySize} typo-paragraph-sm font-normal bg-card text-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none`,
+                weekday: `text-muted-foreground ${weekdayW} h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center`,
+              }}
             />
           )}
         </div>
@@ -15846,27 +15873,38 @@ function DatePickerExploreBehavior() {
 
       {/* ── Controls panel ── */}
       <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-md">
+        <div className="flex flex-col gap-md">
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">Type</Label>
-            <Select value={calendarType} onValueChange={(v) => setCalendarType(v as "Basic" | "Range")}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Basic">Basic</SelectItem>
-                <SelectItem value="Range">Range</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {["Basic", "Range"].map(v => (
+                <button key={v} onClick={() => setCalendarType(v as any)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", calendarType === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Style</Label>
+            <div className="flex flex-wrap gap-xs">
+              {["1 Month", "2 Month", "Year and Month", "Only Month", "Only Year"].map(v => (
+                <button key={v} onClick={() => setCalendarStyle(v as any)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", calendarStyle === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <Label className="text-xs text-muted-foreground">Size</Label>
+            <div className="flex flex-wrap gap-xs">
+              {["Small", "Large", "Custom days"].map(v => (
+                <button key={v} onClick={() => setCalendarSize(v as any)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", calendarSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
           </div>
           <div className="space-y-xs">
             <Label className="text-xs text-muted-foreground">State</Label>
-            <Select value={inputState} onValueChange={(v) => setInputState(v as "Placeholder" | "Value" | "Focus")}>
-              <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Placeholder">Placeholder</SelectItem>
-                <SelectItem value="Value">Value</SelectItem>
-                <SelectItem value="Focus">Focus</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-xs">
+              {["Placeholder", "Value", "Focus"].map(v => (
+                <button key={v} onClick={() => setInputState(v as any)} className={cn("px-sm py-[2px] rounded-md text-xs border transition-colors", inputState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

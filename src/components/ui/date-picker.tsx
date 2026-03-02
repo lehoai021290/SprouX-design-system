@@ -1,6 +1,6 @@
 import * as React from "react"
 import { format } from "date-fns"
-import { CalendarIcon, Clock } from "lucide-react"
+import { CalendarIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
@@ -14,9 +14,9 @@ import {
 const triggerClass =
   "flex h-9 items-center gap-xs rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
 
-/* ── Shared time input class (Figma: Time Picker Input, 124×36, r=8, clock icon) ── */
+/* ── Shared time input class (Figma: Time Picker Input 4838:14965, 90×36, r=8, no icons, px=12) ── */
 const timeInputClass =
-  "h-9 w-[124px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+  "h-9 w-[90px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
 
 /**
  * SprouX Date Picker Input
@@ -255,16 +255,13 @@ function DateTimePicker({
                   {timeLabel}
                 </label>
               )}
-              <div className="flex items-center gap-xs">
-                <Clock className="size-md shrink-0 text-muted-foreground" />
-                <input
-                  type="time"
-                  value={time}
-                  onChange={handleTimeChange}
-                  placeholder="00:00"
-                  className={cn(timeInputClass, !time && "text-muted-foreground")}
-                />
-              </div>
+              <input
+                type="time"
+                value={time}
+                onChange={handleTimeChange}
+                placeholder="00:00"
+                className={cn(timeInputClass, !time && "text-muted-foreground")}
+              />
             </div>
           </div>
         </PopoverContent>
@@ -379,29 +376,23 @@ function DateRangeTimePicker({
           <div className="border-t border-border px-sm py-xs flex items-center gap-md">
             <div className="flex flex-col gap-[4px]">
               <label className="typo-paragraph-sm font-medium text-foreground">From</label>
-              <div className="flex items-center gap-xs">
-                <Clock className="size-md shrink-0 text-muted-foreground" />
-                <input
-                  type="time"
-                  value={fromTime}
-                  onChange={handleFromTime}
-                  placeholder="00:00"
-                  className={cn(timeInputClass, !fromTime && "text-muted-foreground")}
-                />
-              </div>
+              <input
+                type="time"
+                value={fromTime}
+                onChange={handleFromTime}
+                placeholder="00:00"
+                className={cn(timeInputClass, !fromTime && "text-muted-foreground")}
+              />
             </div>
             <div className="flex flex-col gap-[4px]">
               <label className="typo-paragraph-sm font-medium text-foreground">To</label>
-              <div className="flex items-center gap-xs">
-                <Clock className="size-md shrink-0 text-muted-foreground" />
-                <input
-                  type="time"
-                  value={toTime}
-                  onChange={handleToTime}
-                  placeholder="00:00"
-                  className={cn(timeInputClass, !toTime && "text-muted-foreground")}
-                />
-              </div>
+              <input
+                type="time"
+                value={toTime}
+                onChange={handleToTime}
+                placeholder="00:00"
+                className={cn(timeInputClass, !toTime && "text-muted-foreground")}
+              />
             </div>
           </div>
         </PopoverContent>
