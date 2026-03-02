@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { ButtonGroup, ButtonGroupItem } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -2654,7 +2655,7 @@ function ButtonDocs() {
               </p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
-              Planned
+              Available
             </span>
           </div>
           <div className="px-5 py-3.5 flex justify-between items-center">
@@ -2680,6 +2681,374 @@ function ButtonDocs() {
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
               Planned
             </span>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Component: Button Group Docs
+   ================================================================ */
+
+const buttonGroupSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+function ButtonGroupDocs() {
+  return (
+    <div className="space-y-12">
+      <TableOfContents sections={buttonGroupSections} />
+
+      {/* HEADER */}
+      <header className="space-y-md pb-3xl">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
+        <h1 className="typo-heading-2">Button Group</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Groups related buttons together with consistent spacing. Supports connected (merged borders) and separated modes.
+        </p>
+      </header>
+
+      {/* EXPLORE BEHAVIOR */}
+      <Playground
+        controls={[
+          { type: "select", label: "Variant", prop: "variant", defaultValue: "outline", options: [
+            { label: "Default (Primary)", value: "default" },
+            { label: "Secondary", value: "secondary" },
+            { label: "Outline", value: "outline" },
+            { label: "Ghost", value: "ghost" },
+          ]},
+          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
+            { label: "Large (40px)", value: "lg" },
+            { label: "Default (36px)", value: "default" },
+            { label: "Small (32px)", value: "sm" },
+            { label: "Mini (24px)", value: "xs" },
+          ]},
+          { type: "select", label: "Orientation", prop: "orientation", defaultValue: "horizontal", options: [
+            { label: "Horizontal", value: "horizontal" },
+            { label: "Vertical", value: "vertical" },
+          ]},
+          { type: "switch", label: "Connected", prop: "connected", defaultValue: true },
+        ]}
+        render={(p) => (
+          <ButtonGroup variant={p.variant as any} size={p.size as any} orientation={p.orientation as any} connected={p.connected}>
+            <ButtonGroupItem><AlignLeft className="size-4" /></ButtonGroupItem>
+            <ButtonGroupItem><AlignCenter className="size-4" /></ButtonGroupItem>
+            <ButtonGroupItem><AlignRight className="size-4" /></ButtonGroupItem>
+          </ButtonGroup>
+        )}
+      />
+
+      {/* INSTALLATION */}
+      <InstallationSection
+        deps="pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge"
+        importCode={`import { ButtonGroup, ButtonGroupItem } from "@/components/ui/button-group"`}
+      />
+
+      {/* EXAMPLES */}
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Example
+            title="Connected (default)"
+            description="Buttons merge into a single visual unit with shared borders."
+            code={`<ButtonGroup variant="outline" connected>\n  <ButtonGroupItem>Left</ButtonGroupItem>\n  <ButtonGroupItem>Center</ButtonGroupItem>\n  <ButtonGroupItem>Right</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="outline" connected>
+              <ButtonGroupItem>Left</ButtonGroupItem>
+              <ButtonGroupItem>Center</ButtonGroupItem>
+              <ButtonGroupItem>Right</ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Separated"
+            description="Buttons with gap between them."
+            code={`<ButtonGroup variant="outline">\n  <ButtonGroupItem>Left</ButtonGroupItem>\n  <ButtonGroupItem>Center</ButtonGroupItem>\n  <ButtonGroupItem>Right</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="outline">
+              <ButtonGroupItem>Left</ButtonGroupItem>
+              <ButtonGroupItem>Center</ButtonGroupItem>
+              <ButtonGroupItem>Right</ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Icon group"
+            description="Icon-only buttons for toolbar actions like text alignment."
+            code={`<ButtonGroup variant="outline" connected>\n  <ButtonGroupItem><AlignLeft /></ButtonGroupItem>\n  <ButtonGroupItem><AlignCenter /></ButtonGroupItem>\n  <ButtonGroupItem><AlignRight /></ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="outline" connected>
+              <ButtonGroupItem><AlignLeft className="size-4" /></ButtonGroupItem>
+              <ButtonGroupItem><AlignCenter className="size-4" /></ButtonGroupItem>
+              <ButtonGroupItem><AlignRight className="size-4" /></ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Primary variant"
+            description="Connected primary buttons for main actions."
+            code={`<ButtonGroup variant="default" connected>\n  <ButtonGroupItem>Save</ButtonGroupItem>\n  <ButtonGroupItem>Save & Close</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="default" connected>
+              <ButtonGroupItem>Save</ButtonGroupItem>
+              <ButtonGroupItem>Save & Close</ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Vertical"
+            description="Vertically stacked connected buttons."
+            code={`<ButtonGroup variant="outline" orientation="vertical" connected>\n  <ButtonGroupItem>Top</ButtonGroupItem>\n  <ButtonGroupItem>Middle</ButtonGroupItem>\n  <ButtonGroupItem>Bottom</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="outline" orientation="vertical" connected>
+              <ButtonGroupItem>Top</ButtonGroupItem>
+              <ButtonGroupItem>Middle</ButtonGroupItem>
+              <ButtonGroupItem>Bottom</ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Sizes"
+            description="All available sizes in connected mode."
+            code={`<ButtonGroup variant="outline" size="lg" connected>...</ButtonGroup>\n<ButtonGroup variant="outline" size="default" connected>...</ButtonGroup>\n<ButtonGroup variant="outline" size="sm" connected>...</ButtonGroup>`}
+          >
+            <div className="flex flex-col items-start gap-md">
+              <ButtonGroup variant="outline" size="lg" connected>
+                <ButtonGroupItem>A</ButtonGroupItem>
+                <ButtonGroupItem>B</ButtonGroupItem>
+                <ButtonGroupItem>C</ButtonGroupItem>
+              </ButtonGroup>
+              <ButtonGroup variant="outline" size="default" connected>
+                <ButtonGroupItem>A</ButtonGroupItem>
+                <ButtonGroupItem>B</ButtonGroupItem>
+                <ButtonGroupItem>C</ButtonGroupItem>
+              </ButtonGroup>
+              <ButtonGroup variant="outline" size="sm" connected>
+                <ButtonGroupItem>A</ButtonGroupItem>
+                <ButtonGroupItem>B</ButtonGroupItem>
+                <ButtonGroupItem>C</ButtonGroupItem>
+              </ButtonGroup>
+            </div>
+          </Example>
+        </div>
+      </section>
+
+      {/* PROPS */}
+      <section id="props" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+
+        <h3 className="font-body font-semibold text-sm mt-lg">ButtonGroup</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">variant</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"default" | "secondary" | "outline" | "ghost" | ...</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Button variant applied to all children via context.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">size</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"lg" | "default" | "sm" | "xs"</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">Button size applied to all children via context.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">orientation</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"horizontal" | "vertical"</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"horizontal"</td>
+                <td className="px-4 py-3 text-muted-foreground">Layout direction of the button group.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">connected</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">When true, buttons merge visually with shared borders and no gap.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="font-body font-semibold text-sm mt-lg">ButtonGroupItem</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">variant</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">ButtonProps["variant"]</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">context</td>
+                <td className="px-4 py-3 text-muted-foreground">Overrides parent variant for this item.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">size</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">ButtonProps["size"]</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">context</td>
+                <td className="px-4 py-3 text-muted-foreground">Overrides parent size for this item.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">...ButtonProps</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+                <td className="px-4 py-3 text-muted-foreground">All standard Button props (disabled, onClick, asChild, etc.)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* DESIGN TOKENS */}
+      <section id="design-tokens" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+        <p className="text-muted-foreground text-sm">
+          ButtonGroup inherits all design tokens from the <strong>Button</strong> component. The group itself only controls layout:
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Token</th>
+                <th className="px-4 py-3 font-semibold">Value</th>
+                <th className="px-4 py-3 font-semibold">Usage</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">--spacing-xs</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">8px</td>
+                <td className="px-4 py-3 text-muted-foreground">Gap between buttons in separated mode</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">--radius-lg</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">8px</td>
+                <td className="px-4 py-3 text-muted-foreground">Border radius on first/last items in connected mode</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* BEST PRACTICES */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Usage</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use connected mode for segmented controls where options are mutually related (e.g. text alignment).</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't mix different variants within a connected group — it breaks visual cohesion.</p>
+            </DontItem>
+          </div>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Keep groups to 2–5 buttons. For more options, consider a <strong>Select</strong> or <strong>Tabs</strong>.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't use ButtonGroup for navigation — use <strong>Tabs</strong> or <strong>NavigationMenu</strong> instead.</p>
+            </DontItem>
+          </div>
+        </div>
+      </section>
+
+      {/* FIGMA MAPPING */}
+      <FigmaMapping id="figma-mapping" rows={[
+        ["Layout", "Horizontal", "orientation", '"horizontal"'],
+        ["Layout", "Vertical", "orientation", '"vertical"'],
+        ["Style", "Connected", "connected", "true"],
+        ["Style", "Separated", "connected", "false"],
+        ["Variant", "Primary", "variant", '"default"'],
+        ["Variant", "Secondary", "variant", '"secondary"'],
+        ["Variant", "Outline", "variant", '"outline"'],
+        ["Size", "Large (40px)", "size", '"lg"'],
+        ["Size", "Default (36px)", "size", '"default"'],
+        ["Size", "Small (32px)", "size", '"sm"'],
+        ["Size", "Mini (24px)", "size", '"xs"'],
+      ]} />
+
+      {/* ACCESSIBILITY */}
+      <section id="accessibility" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Feature</th>
+                <th className="px-4 py-3 font-semibold">Details</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">role="group"</td>
+                <td className="px-4 py-3 text-muted-foreground">Container has group role for screen readers.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">aria-label</td>
+                <td className="px-4 py-3 text-muted-foreground">Add aria-label to ButtonGroup to describe the group purpose.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">Tab / Shift+Tab</td>
+                <td className="px-4 py-3 text-muted-foreground">Navigate between buttons in the group.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">Enter / Space</td>
+                <td className="px-4 py-3 text-muted-foreground">Activate focused button.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* RELATED COMPONENTS */}
+      <section id="related" className="space-y-4 pb-12">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Button</p>
+              <p className="text-muted-foreground mt-0.5">Individual button component with multiple variants and sizes.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">ToggleGroup</p>
+              <p className="text-muted-foreground mt-0.5">Groups multiple toggles with single/multiple selection mode.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Tabs</p>
+              <p className="text-muted-foreground mt-0.5">Tabbed navigation for switching between content panels.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
         </div>
       </section>
@@ -18408,6 +18777,7 @@ const components = [
   { id: "badge", label: "Badge" },
   { id: "breadcrumb", label: "Breadcrumb" },
   { id: "button", label: "Button" },
+  { id: "button-group", label: "Button Group" },
   { id: "calendar", label: "Calendar" },
   { id: "card", label: "Card" },
   { id: "checkbox", label: "Checkbox" },
@@ -18506,7 +18876,7 @@ function ComponentsGrid({ onNavigate }: { onNavigate: (id: ComponentId) => void 
 function App() {
   const [active, setActiveRaw] = useState<ComponentId | null>(() => {
     const hash = window.location.hash.slice(1)
-    return hash ? (hash as ComponentId) : null
+    return hash ? (hash as ComponentId) : "accordion"
   })
   const setActive = (id: ComponentId | null) => {
     setActiveRaw(id)
@@ -18529,7 +18899,7 @@ function App() {
   useEffect(() => {
     const onHash = () => {
       const hash = window.location.hash.slice(1)
-      setActiveRaw(hash ? (hash as ComponentId) : null)
+      setActiveRaw(hash ? (hash as ComponentId) : "accordion")
     }
     window.addEventListener("hashchange", onHash)
     return () => window.removeEventListener("hashchange", onHash)
@@ -18644,6 +19014,7 @@ function App() {
           {active === "icons" && <IconsDocs />}
           {active === "illustrations" && <IllustrationsDocs />}
           {active === "button" && <ButtonDocs />}
+          {active === "button-group" && <ButtonGroupDocs />}
           {active === "input" && <InputDocs />}
           {active === "textarea" && <TextareaDocs />}
           {active === "select" && <SelectDocs />}
