@@ -2704,6 +2704,183 @@ const buttonGroupSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function ButtonGroupExploreBehavior() {
+  const [skin, setSkin] = useState("outline")
+  const [size, setSize] = useState("default")
+  const [state, setState] = useState("default")
+  const [showLeftIcon, setShowLeftIcon] = useState(false)
+  const [showRightIcon, setShowRightIcon] = useState(false)
+  const [leftIcon, setLeftIcon] = useState("Mail")
+  const [rightIcon, setRightIcon] = useState("ChevronRight")
+  // Icon Button tab
+  const [ibSkin, setIbSkin] = useState("outline")
+  const [ibSize, setIbSize] = useState("default")
+  const [ibState, setIbState] = useState("default")
+  const [ibIcon, setIbIcon] = useState("AlignLeft")
+
+  const LeftIconComp = (lucideIcons as any)[leftIcon]
+  const RightIconComp = (lucideIcons as any)[rightIcon]
+  const IbIconComp = (lucideIcons as any)[ibIcon]
+
+  const variantMap: Record<string, string> = { outlined: "outline", ghost: "ghost" }
+  const sizeMap: Record<string, string> = { large: "lg", regular: "default", small: "sm", default: "default" }
+  const isDisabled = state === "disabled" || ibState === "disabled"
+
+  return (
+    <section id="explore-behavior" className="space-y-6">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <Tabs defaultValue="button-group">
+        <TabsList>
+          <TabsTrigger value="button-group">Button Group</TabsTrigger>
+          <TabsTrigger value="icon-button">Icon Button</TabsTrigger>
+        </TabsList>
+
+        {/* Tab 1: Button Group (784:82792) — 8 properties */}
+        <TabsContent value="button-group" className="mt-md">
+          <div className="rounded-xl border border-border overflow-hidden bg-background">
+            <div className="p-4xl flex items-center justify-center min-h-[200px]">
+              <ButtonGroup variant={variantMap[skin] as any} size={sizeMap[size] as any}>
+                <ButtonGroupItem disabled={isDisabled}>
+                  {showLeftIcon && LeftIconComp && <LeftIconComp className="size-4" />}
+                  Left
+                  {showRightIcon && RightIconComp && <RightIconComp className="size-4" />}
+                </ButtonGroupItem>
+                <ButtonGroupItem disabled={isDisabled}>
+                  {showLeftIcon && LeftIconComp && <LeftIconComp className="size-4" />}
+                  Middle
+                  {showRightIcon && RightIconComp && <RightIconComp className="size-4" />}
+                </ButtonGroupItem>
+                <ButtonGroupItem disabled={isDisabled}>
+                  {showLeftIcon && LeftIconComp && <LeftIconComp className="size-4" />}
+                  Right
+                  {showRightIcon && RightIconComp && <RightIconComp className="size-4" />}
+                </ButtonGroupItem>
+              </ButtonGroup>
+            </div>
+            <div className="border-t border-border bg-muted/50 p-lg">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Skin</Label>
+                  <Select value={skin} onValueChange={setSkin}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="outlined">Outlined</SelectItem>
+                      <SelectItem value="ghost">Ghost</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Size</Label>
+                  <Select value={size} onValueChange={setSize}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="large">Large</SelectItem>
+                      <SelectItem value="regular">Regular</SelectItem>
+                      <SelectItem value="small">Small</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">State</Label>
+                  <Select value={state} onValueChange={setState}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="default">Default</SelectItem>
+                      <SelectItem value="focus">Focus</SelectItem>
+                      <SelectItem value="hover">Hover</SelectItem>
+                      <SelectItem value="disabled">Disabled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
+                  <div className="pt-1">
+                    <Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} />
+                  </div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
+                  <div className="pt-1">
+                    <Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} />
+                  </div>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Left Icon</Label>
+                  <IconPicker value={leftIcon} onChange={setLeftIcon} disabled={!showLeftIcon} />
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Right Icon</Label>
+                  <IconPicker value={rightIcon} onChange={setRightIcon} disabled={!showRightIcon} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Tab 2: Button Group Icon Button (784:87178) — 5 properties */}
+        <TabsContent value="icon-button" className="mt-md">
+          <div className="rounded-xl border border-border overflow-hidden bg-background">
+            <div className="p-4xl flex items-center justify-center min-h-[200px]">
+              <ButtonGroup variant={variantMap[ibSkin] as any} size={sizeMap[ibSize] as any}>
+                <ButtonGroupItem size="icon" disabled={ibState === "disabled"} aria-label="Align left">
+                  {IbIconComp ? <IbIconComp className="size-4" /> : <AlignLeft className="size-4" />}
+                </ButtonGroupItem>
+                <ButtonGroupItem size="icon" disabled={ibState === "disabled"} aria-label="Align center">
+                  <AlignCenter className="size-4" />
+                </ButtonGroupItem>
+                <ButtonGroupItem size="icon" disabled={ibState === "disabled"} aria-label="Align right">
+                  <AlignRight className="size-4" />
+                </ButtonGroupItem>
+              </ButtonGroup>
+            </div>
+            <div className="border-t border-border bg-muted/50 p-lg">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Skin</Label>
+                  <Select value={ibSkin} onValueChange={setIbSkin}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="outlined">Outlined</SelectItem>
+                      <SelectItem value="ghost">Ghost</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Size</Label>
+                  <Select value={ibSize} onValueChange={setIbSize}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="large">Large</SelectItem>
+                      <SelectItem value="default">Default</SelectItem>
+                      <SelectItem value="small">Small</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">State</Label>
+                  <Select value={ibState} onValueChange={setIbState}>
+                    <SelectTrigger size="sm"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="default">Default</SelectItem>
+                      <SelectItem value="focus">Focus</SelectItem>
+                      <SelectItem value="hover">Hover</SelectItem>
+                      <SelectItem value="disabled">Disabled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Icon</Label>
+                  <IconPicker value={ibIcon} onChange={setIbIcon} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </section>
+  )
+}
+
 function ButtonGroupDocs() {
   return (
     <div className="space-y-12">
@@ -2714,39 +2891,12 @@ function ButtonGroupDocs() {
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Button Group</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          Groups related buttons together with consistent spacing. Supports connected (merged borders) and separated modes.
+          Groups related buttons together with consistent spacing and merged borders. Includes text buttons with optional icons and icon-only buttons.
         </p>
       </header>
 
       {/* EXPLORE BEHAVIOR */}
-      <Playground
-        controls={[
-          { type: "select", label: "Variant", prop: "variant", defaultValue: "outline", options: [
-            { label: "Default (Primary)", value: "default" },
-            { label: "Secondary", value: "secondary" },
-            { label: "Outline", value: "outline" },
-            { label: "Ghost", value: "ghost" },
-          ]},
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large (40px)", value: "lg" },
-            { label: "Default (36px)", value: "default" },
-            { label: "Small (32px)", value: "sm" },
-            { label: "Mini (24px)", value: "xs" },
-          ]},
-          { type: "select", label: "Orientation", prop: "orientation", defaultValue: "horizontal", options: [
-            { label: "Horizontal", value: "horizontal" },
-            { label: "Vertical", value: "vertical" },
-          ]},
-          { type: "switch", label: "Connected", prop: "connected", defaultValue: true },
-        ]}
-        render={(p) => (
-          <ButtonGroup variant={p.variant as any} size={p.size as any} orientation={p.orientation as any} connected={p.connected}>
-            <ButtonGroupItem><AlignLeft className="size-4" /></ButtonGroupItem>
-            <ButtonGroupItem><AlignCenter className="size-4" /></ButtonGroupItem>
-            <ButtonGroupItem><AlignRight className="size-4" /></ButtonGroupItem>
-          </ButtonGroup>
-        )}
-      />
+      <ButtonGroupExploreBehavior />
 
       {/* INSTALLATION */}
       <InstallationSection
@@ -2759,20 +2909,8 @@ function ButtonGroupDocs() {
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Example
-            title="Connected (default)"
+            title="Outline (default)"
             description="Buttons merge into a single visual unit with shared borders."
-            code={`<ButtonGroup variant="outline" connected>\n  <ButtonGroupItem>Left</ButtonGroupItem>\n  <ButtonGroupItem>Center</ButtonGroupItem>\n  <ButtonGroupItem>Right</ButtonGroupItem>\n</ButtonGroup>`}
-          >
-            <ButtonGroup variant="outline" connected>
-              <ButtonGroupItem>Left</ButtonGroupItem>
-              <ButtonGroupItem>Center</ButtonGroupItem>
-              <ButtonGroupItem>Right</ButtonGroupItem>
-            </ButtonGroup>
-          </Example>
-
-          <Example
-            title="Separated"
-            description="Buttons with gap between them."
             code={`<ButtonGroup variant="outline">\n  <ButtonGroupItem>Left</ButtonGroupItem>\n  <ButtonGroupItem>Center</ButtonGroupItem>\n  <ButtonGroupItem>Right</ButtonGroupItem>\n</ButtonGroup>`}
           >
             <ButtonGroup variant="outline">
@@ -2783,62 +2921,75 @@ function ButtonGroupDocs() {
           </Example>
 
           <Example
-            title="Icon group"
+            title="Ghost variant"
+            description="Ghost skin without border."
+            code={`<ButtonGroup variant="ghost">\n  <ButtonGroupItem>Left</ButtonGroupItem>\n  <ButtonGroupItem>Center</ButtonGroupItem>\n  <ButtonGroupItem>Right</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="ghost">
+              <ButtonGroupItem>Left</ButtonGroupItem>
+              <ButtonGroupItem>Center</ButtonGroupItem>
+              <ButtonGroupItem>Right</ButtonGroupItem>
+            </ButtonGroup>
+          </Example>
+
+          <Example
+            title="Icon buttons"
             description="Icon-only buttons for toolbar actions like text alignment."
-            code={`<ButtonGroup variant="outline" connected>\n  <ButtonGroupItem><AlignLeft /></ButtonGroupItem>\n  <ButtonGroupItem><AlignCenter /></ButtonGroupItem>\n  <ButtonGroupItem><AlignRight /></ButtonGroupItem>\n</ButtonGroup>`}
+            code={`<ButtonGroup variant="outline">\n  <ButtonGroupItem size="icon" aria-label="Align left"><AlignLeft /></ButtonGroupItem>\n  <ButtonGroupItem size="icon" aria-label="Align center"><AlignCenter /></ButtonGroupItem>\n  <ButtonGroupItem size="icon" aria-label="Align right"><AlignRight /></ButtonGroupItem>\n</ButtonGroup>`}
           >
-            <ButtonGroup variant="outline" connected>
-              <ButtonGroupItem><AlignLeft className="size-4" /></ButtonGroupItem>
-              <ButtonGroupItem><AlignCenter className="size-4" /></ButtonGroupItem>
-              <ButtonGroupItem><AlignRight className="size-4" /></ButtonGroupItem>
+            <ButtonGroup variant="outline">
+              <ButtonGroupItem size="icon" aria-label="Align left"><AlignLeft className="size-4" /></ButtonGroupItem>
+              <ButtonGroupItem size="icon" aria-label="Align center"><AlignCenter className="size-4" /></ButtonGroupItem>
+              <ButtonGroupItem size="icon" aria-label="Align right"><AlignRight className="size-4" /></ButtonGroupItem>
             </ButtonGroup>
           </Example>
 
           <Example
-            title="Primary variant"
-            description="Connected primary buttons for main actions."
-            code={`<ButtonGroup variant="default" connected>\n  <ButtonGroupItem>Save</ButtonGroupItem>\n  <ButtonGroupItem>Save & Close</ButtonGroupItem>\n</ButtonGroup>`}
+            title="With left icon"
+            description="Text buttons with leading icons."
+            code={`<ButtonGroup variant="outline">\n  <ButtonGroupItem><Mail className="size-4" />Inbox</ButtonGroupItem>\n  <ButtonGroupItem><Bell className="size-4" />Alerts</ButtonGroupItem>\n  <ButtonGroupItem><Settings className="size-4" />Settings</ButtonGroupItem>\n</ButtonGroup>`}
           >
-            <ButtonGroup variant="default" connected>
-              <ButtonGroupItem>Save</ButtonGroupItem>
-              <ButtonGroupItem>Save & Close</ButtonGroupItem>
-            </ButtonGroup>
-          </Example>
-
-          <Example
-            title="Vertical"
-            description="Vertically stacked connected buttons."
-            code={`<ButtonGroup variant="outline" orientation="vertical" connected>\n  <ButtonGroupItem>Top</ButtonGroupItem>\n  <ButtonGroupItem>Middle</ButtonGroupItem>\n  <ButtonGroupItem>Bottom</ButtonGroupItem>\n</ButtonGroup>`}
-          >
-            <ButtonGroup variant="outline" orientation="vertical" connected>
-              <ButtonGroupItem>Top</ButtonGroupItem>
-              <ButtonGroupItem>Middle</ButtonGroupItem>
-              <ButtonGroupItem>Bottom</ButtonGroupItem>
+            <ButtonGroup variant="outline">
+              <ButtonGroupItem><Mail className="size-4" />Inbox</ButtonGroupItem>
+              <ButtonGroupItem><Bell className="size-4" />Alerts</ButtonGroupItem>
+              <ButtonGroupItem><Settings className="size-4" />Settings</ButtonGroupItem>
             </ButtonGroup>
           </Example>
 
           <Example
             title="Sizes"
-            description="All available sizes in connected mode."
-            code={`<ButtonGroup variant="outline" size="lg" connected>...</ButtonGroup>\n<ButtonGroup variant="outline" size="default" connected>...</ButtonGroup>\n<ButtonGroup variant="outline" size="sm" connected>...</ButtonGroup>`}
+            description="Large, Regular, and Small sizes matching Figma specs."
+            code={`<ButtonGroup variant="outline" size="lg">...</ButtonGroup>\n<ButtonGroup variant="outline">...</ButtonGroup>\n<ButtonGroup variant="outline" size="sm">...</ButtonGroup>`}
           >
             <div className="flex flex-col items-start gap-md">
-              <ButtonGroup variant="outline" size="lg" connected>
+              <ButtonGroup variant="outline" size="lg">
                 <ButtonGroupItem>A</ButtonGroupItem>
                 <ButtonGroupItem>B</ButtonGroupItem>
                 <ButtonGroupItem>C</ButtonGroupItem>
               </ButtonGroup>
-              <ButtonGroup variant="outline" size="default" connected>
+              <ButtonGroup variant="outline">
                 <ButtonGroupItem>A</ButtonGroupItem>
                 <ButtonGroupItem>B</ButtonGroupItem>
                 <ButtonGroupItem>C</ButtonGroupItem>
               </ButtonGroup>
-              <ButtonGroup variant="outline" size="sm" connected>
+              <ButtonGroup variant="outline" size="sm">
                 <ButtonGroupItem>A</ButtonGroupItem>
                 <ButtonGroupItem>B</ButtonGroupItem>
                 <ButtonGroupItem>C</ButtonGroupItem>
               </ButtonGroup>
             </div>
+          </Example>
+
+          <Example
+            title="Disabled state"
+            description="All buttons in group are disabled."
+            code={`<ButtonGroup variant="outline">\n  <ButtonGroupItem disabled>Left</ButtonGroupItem>\n  <ButtonGroupItem disabled>Center</ButtonGroupItem>\n  <ButtonGroupItem disabled>Right</ButtonGroupItem>\n</ButtonGroup>`}
+          >
+            <ButtonGroup variant="outline">
+              <ButtonGroupItem disabled>Left</ButtonGroupItem>
+              <ButtonGroupItem disabled>Center</ButtonGroupItem>
+              <ButtonGroupItem disabled>Right</ButtonGroupItem>
+            </ButtonGroup>
           </Example>
         </div>
       </section>
@@ -2861,27 +3012,15 @@ function ButtonGroupDocs() {
             <tbody className="divide-y divide-border">
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">variant</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default" | "secondary" | "outline" | "ghost" | ...</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Button variant applied to all children via context.</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"outline" | "ghost"</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"outline"</td>
+                <td className="px-4 py-3 text-muted-foreground">Skin applied to all children via context. Maps to Figma Skin.</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">size</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"lg" | "default" | "sm" | "xs"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Button size applied to all children via context.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">orientation</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"horizontal" | "vertical"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"horizontal"</td>
-                <td className="px-4 py-3 text-muted-foreground">Layout direction of the button group.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">connected</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">false</td>
-                <td className="px-4 py-3 text-muted-foreground">When true, buttons merge visually with shared borders and no gap.</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"lg" | "default" | "sm"</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"default"</td>
+                <td className="px-4 py-3 text-muted-foreground">Size applied to all children. Maps to Figma Size (Large/Regular/Small).</td>
               </tr>
             </tbody>
           </table>
@@ -2901,21 +3040,27 @@ function ButtonGroupDocs() {
             <tbody className="divide-y divide-border">
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">variant</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">ButtonProps["variant"]</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"outline" | "ghost"</td>
                 <td className="px-4 py-3 font-mono text-muted-foreground">context</td>
                 <td className="px-4 py-3 text-muted-foreground">Overrides parent variant for this item.</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">size</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">ButtonProps["size"]</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">"lg" | "default" | "sm" | "icon"</td>
                 <td className="px-4 py-3 font-mono text-muted-foreground">context</td>
-                <td className="px-4 py-3 text-muted-foreground">Overrides parent size for this item.</td>
+                <td className="px-4 py-3 text-muted-foreground">Overrides parent size. Use "icon" for icon-only buttons.</td>
               </tr>
               <tr>
-                <td className="px-4 py-3 font-mono text-primary">...ButtonProps</td>
+                <td className="px-4 py-3 font-mono text-primary">disabled</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">boolean</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">false</td>
+                <td className="px-4 py-3 text-muted-foreground">Maps to Figma State: Disabled.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">children</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td>
                 <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">All standard Button props (disabled, onClick, asChild, etc.)</td>
+                <td className="px-4 py-3 text-muted-foreground">Label text and/or icons. Figma: Left icon + Label + Right icon.</td>
               </tr>
             </tbody>
           </table>
@@ -2926,7 +3071,7 @@ function ButtonGroupDocs() {
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="text-muted-foreground text-sm">
-          ButtonGroup inherits all design tokens from the <strong>Button</strong> component. The group itself only controls layout:
+          ButtonGroup inherits all design tokens from the <strong>Button</strong> component. The group itself controls layout and border merging:
         </p>
         <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-xs">
@@ -2939,14 +3084,14 @@ function ButtonGroupDocs() {
             </thead>
             <tbody className="divide-y divide-border">
               <tr>
-                <td className="px-4 py-3 font-mono text-primary">--spacing-xs</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">8px</td>
-                <td className="px-4 py-3 text-muted-foreground">Gap between buttons in separated mode</td>
-              </tr>
-              <tr>
                 <td className="px-4 py-3 font-mono text-primary">--radius-lg</td>
                 <td className="px-4 py-3 font-mono text-muted-foreground">8px</td>
-                <td className="px-4 py-3 text-muted-foreground">Border radius on first/last items in connected mode</td>
+                <td className="px-4 py-3 text-muted-foreground">Border radius on first/last items (Position: Left/Right)</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">border-l-0</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">CSS</td>
+                <td className="px-4 py-3 text-muted-foreground">Remove left border on middle/right items to avoid double borders</td>
               </tr>
             </tbody>
           </table>
@@ -2960,10 +3105,10 @@ function ButtonGroupDocs() {
           <h3 className="font-body font-semibold text-sm">Usage</h3>
           <div className="flex gap-4">
             <DoItem>
-              <p>Use connected mode for segmented controls where options are mutually related (e.g. text alignment).</p>
+              <p>Use for segmented controls where options are mutually related (e.g. text alignment, view modes).</p>
             </DoItem>
             <DontItem>
-              <p>Don't mix different variants within a connected group — it breaks visual cohesion.</p>
+              <p>Don't mix different skins within a group — it breaks visual cohesion.</p>
             </DontItem>
           </div>
           <div className="flex gap-4">
@@ -2978,18 +3123,33 @@ function ButtonGroupDocs() {
       </section>
 
       {/* FIGMA MAPPING */}
+      <h3 className="font-body font-semibold text-sm mt-xl">Button Group (784:82792)</h3>
       <FigmaMapping id="figma-mapping" rows={[
-        ["Layout", "Horizontal", "orientation", '"horizontal"'],
-        ["Layout", "Vertical", "orientation", '"vertical"'],
-        ["Style", "Connected", "connected", "true"],
-        ["Style", "Separated", "connected", "false"],
-        ["Variant", "Primary", "variant", '"default"'],
-        ["Variant", "Secondary", "variant", '"secondary"'],
-        ["Variant", "Outline", "variant", '"outline"'],
-        ["Size", "Large (40px)", "size", '"lg"'],
-        ["Size", "Default (36px)", "size", '"default"'],
-        ["Size", "Small (32px)", "size", '"sm"'],
-        ["Size", "Mini (24px)", "size", '"xs"'],
+        ["Skin", "Outlined", "variant", '"outline"'],
+        ["Skin", "Ghost", "variant", '"ghost"'],
+        ["Size", "Large", "size", '"lg"'],
+        ["Size", "Regular", "size", '"default"'],
+        ["Size", "Small", "size", '"sm"'],
+        ["Position", "Left | Middle | Right | Single", "—", "Auto via CSS :first-child/:last-child"],
+        ["State", "Default", "—", "Native default"],
+        ["State", "Focus", "—", "Native :focus-visible"],
+        ["State", "Hover", "—", "Native :hover"],
+        ["State", "Disabled", "disabled", "true"],
+        ["Show left icon", "True / False", "children", "Include icon before label"],
+        ["Show right icon", "True / False", "children", "Include icon after label"],
+        ["Left icon", "Instance swap", "children", "ReactNode icon component"],
+        ["Right icon", "Instance swap", "children", "ReactNode icon component"],
+      ]} />
+      <h3 className="font-body font-semibold text-sm mt-lg">Button Group Icon Button (784:87178)</h3>
+      <FigmaMapping id="figma-mapping-icon" rows={[
+        ["Skin", "Outlined", "variant", '"outline"'],
+        ["Skin", "Ghost", "variant", '"ghost"'],
+        ["Size", "Large", "size", '"icon-lg"'],
+        ["Size", "Default", "size", '"icon"'],
+        ["Size", "Small", "size", '"icon-sm"'],
+        ["Position", "Left | Middle | Right | Single", "—", "Auto via CSS"],
+        ["State", "Default | Focus | Hover | Disabled", "disabled", "Native states + disabled prop"],
+        ["Icon", "Instance swap", "children", "ReactNode icon component"],
       ]} />
 
       {/* ACCESSIBILITY */}
@@ -3011,6 +3171,10 @@ function ButtonGroupDocs() {
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">aria-label</td>
                 <td className="px-4 py-3 text-muted-foreground">Add aria-label to ButtonGroup to describe the group purpose.</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-3 font-mono text-primary">aria-label (icon)</td>
+                <td className="px-4 py-3 text-muted-foreground">Icon-only ButtonGroupItems MUST have aria-label.</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-mono text-primary">Tab / Shift+Tab</td>

@@ -6,67 +6,62 @@ import { Button, type ButtonProps } from "@/components/ui/button"
 /**
  * SprouX Button Group
  *
- * Figma: [SprouX - DS] Foundation & Component
+ * Figma: [SprouX - DS] Foundation & Component (node 784:82792, 784:87178)
  *
- * Groups related buttons together with consistent spacing.
- * Supports connected (merged borders) and separated (gap) modes.
+ * Two component sets on Figma:
+ *   1. Button Group (784:82792) — text buttons with optional left/right icons
+ *   2. Button Group Icon Button (784:87178) — icon-only buttons
  *
- * Props:
- *   variant:     Inherits Button variants (default, secondary, outline, ghost, etc.)
- *   size:        Inherits Button sizes (lg, default, sm, xs)
- *   orientation: "horizontal" | "vertical"
- *   connected:   true = merged borders/radius, false = gap between buttons
+ * Figma "Button Group" properties:
+ *   Skin:             Outlined | Ghost                → variant: "outline" | "ghost"
+ *   Size:             Large | Regular | Small          → size: "lg" | "default" | "sm"
+ *   Position:         Left | Middle | Right | Single   → auto via CSS :first-child/:last-child
+ *   State:            Default | Focus | Hover | Disabled → native button states
+ *   Show left icon:   True | False                     → showLeftIcon boolean
+ *   Show right icon:  True | False                     → showRightIcon boolean
+ *   Left icon:        Instance swap                    → leftIcon ReactNode
+ *   Right icon:       Instance swap                    → rightIcon ReactNode
+ *
+ * Figma "Button Group Icon Button" properties:
+ *   Skin:             Outlined | Ghost                → variant: "outline" | "ghost"
+ *   Size:             Large | Default | Small          → size: "lg" | "default" | "sm"
+ *   Position:         Left | Middle | Right | Single   → auto via CSS
+ *   State:            Default | Focus | Disabled | Hover → native button states
+ *   Icon:             Instance swap                    → children (icon ReactNode)
  */
 
 type ButtonGroupContextValue = {
   variant?: ButtonProps["variant"]
   size?: ButtonProps["size"]
-  connected?: boolean
-  orientation?: "horizontal" | "vertical"
 }
 
 const ButtonGroupContext = React.createContext<ButtonGroupContextValue>({})
 
 function ButtonGroup({
   className,
-  variant,
+  variant = "outline",
   size,
-  orientation = "horizontal",
-  connected = false,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
   variant?: ButtonProps["variant"]
   size?: ButtonProps["size"]
-  orientation?: "horizontal" | "vertical"
-  connected?: boolean
 }) {
   return (
     <div
       role="group"
       data-slot="button-group"
-      data-orientation={orientation}
-      data-connected={connected}
       className={cn(
-        "inline-flex",
-        orientation === "vertical" ? "flex-col" : "flex-row",
-        !connected && (orientation === "vertical" ? "gap-xs" : "gap-xs"),
-        connected && "[&>*:not(:first-child):not(:last-child)]:rounded-none",
-        connected && orientation === "horizontal" && [
-          "[&>*:first-child]:rounded-r-none",
-          "[&>*:last-child]:rounded-l-none",
-          "[&>*:not(:first-child)]:border-l-0",
-        ],
-        connected && orientation === "vertical" && [
-          "[&>*:first-child]:rounded-b-none",
-          "[&>*:last-child]:rounded-t-none",
-          "[&>*:not(:first-child)]:border-t-0",
-        ],
+        "inline-flex flex-row",
+        "[&>*:not(:first-child):not(:last-child)]:rounded-none",
+        "[&>*:first-child]:rounded-r-none",
+        "[&>*:last-child]:rounded-l-none",
+        "[&>*:not(:first-child)]:border-l-0",
         className
       )}
       {...props}
     >
-      <ButtonGroupContext.Provider value={{ variant, size, connected, orientation }}>
+      <ButtonGroupContext.Provider value={{ variant, size }}>
         {children}
       </ButtonGroupContext.Provider>
     </div>
