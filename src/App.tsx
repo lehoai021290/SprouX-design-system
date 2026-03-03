@@ -19035,19 +19035,22 @@ function ContextMenuDocs() {
               </ContextMenuContent>
             </ContextMenu>
           </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <p className="typo-paragraph-mini text-muted-foreground">Right-click the dashed area to open. Figma: bg-card, border-border, rounded-md, shadow-md. Items: rounded-md, focus:bg-accent, gap-xs.</p>
+          </div>
         </div>
       </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add @radix-ui/react-context-menu`}
-        importCode={`import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@/components/ui/context-menu"`}
+        importCode={`import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent } from "@/components/ui/context-menu"`}
       />
 
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Example
           title="With Sub-menu & Shortcuts"
           description="Right-click to open. Includes nested sub-menu and keyboard shortcuts."
@@ -19102,26 +19105,38 @@ function ContextMenuDocs() {
         </div>
       </section>
 
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use ContextMenu for secondary actions that complement visible controls.</p>
-              <p>Mirror common actions users expect from right-click menus.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't put essential actions only in the context menu — they're not discoverable on touch devices.</p>
-              <p>Don't use ContextMenu for primary navigation or workflows.</p>
-            </DontItem>
-          </div>
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-4 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <p className="typo-paragraph-sm text-muted-foreground">
+          Built on{" "}
+          <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-context-menu</code>.
+          Supports all Radix ContextMenu props.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Component</th>
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ContextMenuItem</td><td className="px-4 py-3 font-mono">inset</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Adds left padding for alignment with checkbox/radio items</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ContextMenuItem</td><td className="px-4 py-3 font-mono">disabled</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Prevents interaction and dims the item</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ContextMenuCheckboxItem</td><td className="px-4 py-3 font-mono">checked</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Controlled checked state</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ContextMenuRadioGroup</td><td className="px-4 py-3 font-mono">value</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled selected radio value</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ContextMenuSubTrigger</td><td className="px-4 py-3 font-mono">inset</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Adds left padding for alignment</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
@@ -19137,13 +19152,32 @@ function ContextMenuDocs() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu border, separator</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#f3f3f2</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f3f3f2" }} /></td><td className="px-4 py-3 text-muted-foreground">Item focus / hover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#6f6f6a</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#6f6f6a" }} /></td><td className="px-4 py-3 text-muted-foreground">Shortcut text, disabled state</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Menu shadow</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu content background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu border + separator</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Item focus/hover background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Item text + label text</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#6f6f6a</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#6f6f6a" }} /></td><td className="px-4 py-3 text-muted-foreground">Shortcut text, disabled items</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Menu elevation shadow</td></tr>
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Usage</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use ContextMenu for secondary actions that complement visible controls.</p>
+              <p>Mirror common actions users expect from right-click menus.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't put essential actions only in the context menu — they're not discoverable on touch devices.</p>
+              <p>Don't use ContextMenu for primary navigation or workflows.</p>
+            </DontItem>
+          </div>
         </div>
       </section>
 
@@ -19181,18 +19215,17 @@ function ContextMenuDocs() {
         </div>
       </section>
 
-                  {/* ---- Figma Mapping ---- */}
+      {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" rows={[
-        ["Trigger", "Right-click area", "ContextMenuTrigger", "Any element as trigger"],
-        ["Content", "Menu panel", "ContextMenuContent", "rounded-md, bg-card, border, shadow-md, p-1"],
-        ["Item", "6/8 padding", "ContextMenuItem", "rounded-md px-xs py-2xs gap-xs"],
-        ["Item Focus", "bg-accent", "—", "focus:bg-accent focus:text-foreground"],
-        ["Item Disabled", "opacity-50", "disabled", "data-[disabled]:opacity-50"],
-        ["Sub-menu", "ChevronRight", "ContextMenuSubTrigger", "ChevronRight icon ml-auto"],
-        ["Checkbox Item", "Check icon", "ContextMenuCheckboxItem", "Check indicator, pl-2xl"],
-        ["Radio Item", "Circle icon", "ContextMenuRadioItem", "Circle indicator, pl-2xl"],
-        ["Shortcut", "muted-foreground", "ContextMenuShortcut", "ml-auto typo-paragraph-mini"],
-        ["Icon Size", "16px", "—", "[&_svg]:size-md"],
+        ["—", "Context Menu", "ContextMenu", "Mirrors DropdownMenu/Menubar item pattern"],
+        ["—", "Trigger area", "ContextMenuTrigger", "Any element, activated by right-click"],
+        ["—", "Content panel", "ContextMenuContent", "rounded-md, bg-card, border-border, shadow-md, p-1, animated"],
+        ["—", "Item", "ContextMenuItem", "rounded-md, px-xs py-2xs, gap-xs, focus:bg-accent"],
+        ["—", "Sub-menu", "ContextMenuSub + SubTrigger + SubContent", "ChevronRight indicator, nested dropdown"],
+        ["—", "Checkbox Item", "ContextMenuCheckboxItem", "Check icon indicator, pl-2xl"],
+        ["—", "Radio Item", "ContextMenuRadioItem", "Circle icon indicator, pl-2xl"],
+        ["—", "Shortcut", "ContextMenuShortcut", "ml-auto typo-paragraph-mini text-muted-foreground"],
+        ["—", "Separator", "ContextMenuSeparator", "h-px bg-border"],
       ]} />
 
       {/* ---- Related Components ---- */}
