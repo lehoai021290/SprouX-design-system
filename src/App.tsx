@@ -160,6 +160,10 @@ import {
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuLabel,
 } from "@/components/ui/context-menu"
 import {
   SidebarProvider,
@@ -12626,22 +12630,39 @@ function DialogDocs() {
         <p className="typo-paragraph text-muted-foreground max-w-3xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Dialog>
-          <DialogTrigger asChild><Button variant="outline">Open Dialog</Button></DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Dialog Title</DialogTitle>
-              <DialogDescription>This is a dialog description.</DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-      )} />
-
-
-
-      
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border overflow-hidden bg-background">
+          <div className="p-4xl flex items-center justify-center min-h-[160px]">
+            <Dialog>
+              <DialogTrigger asChild><Button variant="outline">Open Dialog</Button></DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit profile</DialogTitle>
+                  <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-md py-md">
+                  <div className="grid grid-cols-4 items-center gap-md">
+                    <Label htmlFor="dialog-name" className="text-right">Name</Label>
+                    <Input id="dialog-name" defaultValue="Pedro Duarte" className="col-span-3" />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-md">
+                    <Label htmlFor="dialog-username" className="text-right">Username</Label>
+                    <Input id="dialog-username" defaultValue="@peduarte" className="col-span-3" />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <p className="typo-paragraph-mini text-muted-foreground">Click "Open Dialog" to see the modal. Figma (151:12298): bg-card, border-border, rounded-xl, shadow, p-md, close button top-right.</p>
+          </div>
+        </div>
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -12719,8 +12740,37 @@ function DialogDocs() {
       </section>
 
 
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-4 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <p className="typo-paragraph-sm text-muted-foreground">
+          Built on{" "}
+          <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-dialog</code>.
+          Supports all Radix Dialog props.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Component</th>
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">Dialog</td><td className="px-4 py-3 font-mono">open</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled open state</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">Dialog</td><td className="px-4 py-3 font-mono">onOpenChange</td><td className="px-4 py-3 text-muted-foreground">{"(open: boolean) => void"}</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when open state changes</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">DialogContent</td><td className="px-4 py-3 font-mono">showCloseButton</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3 text-muted-foreground">Show/hide the X close button</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">DialogTrigger</td><td className="px-4 py-3 font-mono">asChild</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Merge props onto child element</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
@@ -12736,11 +12786,13 @@ function DialogDocs() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Dialog content background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Dialog text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Dialog border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-lg</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation shadow</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Dialog elevation</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-xl</td><td className="px-4 py-3 font-mono text-muted-foreground">12px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Dialog border radius</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Content background (bg-card)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Title text (typo-heading-4)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#6f6f6a</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#6f6f6a" }} /></td><td className="px-4 py-3 text-muted-foreground">Description text</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Content border</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">shadow</td><td className="px-4 py-3 font-mono text-muted-foreground">0 1px 3px + 0 1px 2px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Content elevation (Figma shadow-sm = Tailwind shadow)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-xl</td><td className="px-4 py-3 font-mono text-muted-foreground">12px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Content border radius (sm:rounded-xl)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--spacing-md</td><td className="px-4 py-3 font-mono text-muted-foreground">16px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Content padding (p-md)</td></tr>
             </tbody>
           </table>
         </div>
@@ -12805,17 +12857,16 @@ function DialogDocs() {
         </div>
       </section>
 
-            {/* ---- Figma Mapping ---- */}
+      {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" rows={[
-        ["Overlay", "Black 80%", "—", "bg-black/80, fixed inset-0"],
-        ["Content Width", "max-w-lg", "—", "sm:max-w-lg"],
-        ["Animation", "Open", "—", "zoom-in-95, fade-in-0"],
-        ["Animation", "Close", "—", "zoom-out-95, fade-out-0"],
-        ["Sub-component", "Header", "DialogHeader", "flex flex-col gap-2xs"],
-        ["Sub-component", "Footer", "DialogFooter", "flex flex-col-reverse sm:flex-row"],
-        ["Sub-component", "Title", "DialogTitle", "text-lg font-semibold"],
-        ["Sub-component", "Description", "DialogDescription", "text-sm text-muted-foreground"],
-        ["Close Button", "X icon", "DialogClose", "top-right corner, size-md icon"],
+        ["151:12298", "Dialog", "Dialog", "Root wrapper, controlled with open/onOpenChange"],
+        ["Overlay", "Backdrop", "DialogOverlay", "bg-black/50, fixed inset-0, fade animation"],
+        ["Content", "Modal Card", "DialogContent", "bg-card, border-border, sm:rounded-xl, shadow, p-md, sm:max-w-lg"],
+        ["Header", "Title + Description", "DialogHeader", "flex flex-col gap-xs, text-center sm:text-left"],
+        ["Title", "Heading", "DialogTitle", "typo-heading-4 text-foreground"],
+        ["Description", "Body text", "DialogDescription", "typo-paragraph-sm text-muted-foreground"],
+        ["Footer", "Action buttons", "DialogFooter", "flex flex-col-reverse gap-xs sm:flex-row sm:justify-end"],
+        ["Close", "X button", "DialogClose / showCloseButton", "absolute right-md top-md, X icon size-md"],
       ]} />
 
       {/* ---- Related Components ---- */}
@@ -16337,6 +16388,8 @@ const collapsibleSections: TocSection[] = [
 
 function CollapsibleDocs() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isOpen2, setIsOpen2] = useState(false)
+  const [isOpen3, setIsOpen3] = useState(false)
 
   return (
     <div className="space-y-12">
@@ -16345,20 +16398,26 @@ function CollapsibleDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Collapsible</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Toggle visibility of a content section. Simpler than Accordion for single-item toggling.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Toggle visibility of a content section with "Show more / Show less" text triggers. Simpler than Accordion for single-item toggling.</p>
       </header>
 
-      <Playground controls={[]} render={() => (
-        <Collapsible className="w-[300px]">
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm">Toggle items</Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="space-y-2 mt-2">
-            <div className="rounded-md border px-4 py-2 text-sm">Item 1</div>
-            <div className="rounded-md border px-4 py-2 text-sm">Item 2</div>
-          </CollapsibleContent>
-        </Collapsible>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[400px]">
+              <p className="typo-paragraph-sm text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
+              <CollapsibleContent>
+                <p className="typo-paragraph-sm text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
+              </CollapsibleContent>
+              <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs inline-block">
+                {isOpen ? "Show less" : "Show more"}
+              </CollapsibleTrigger>
+            </Collapsible>
+          </div>
+        </div>
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -16369,22 +16428,37 @@ function CollapsibleDocs() {
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Controlled collapsible with a chevron trigger and animated content reveal." code={`<Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[350px] space-y-2">\n  <div className="flex items-center justify-between space-x-4 px-4">\n    <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>\n    <CollapsibleTrigger asChild>\n      <Button variant="ghost" size="sm">\n        <ChevronsUpDown className="size-4" />\n        <span className="sr-only">Toggle</span>\n      </Button>\n    </CollapsibleTrigger>\n  </div>\n  <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/primitives</div>\n  <CollapsibleContent className="space-y-2">\n    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/colors</div>\n    <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@stitches/react</div>\n  </CollapsibleContent>\n</Collapsible>`}>
-          <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[350px] space-y-2">
-            <div className="flex items-center justify-between space-x-4 px-4">
-              <h4 className="text-sm font-semibold">@peduarte starred 3 repositories</h4>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <ChevronsUpDown className="size-4" />
-                  <span className="sr-only">Toggle</span>
-                </Button>
-              </CollapsibleTrigger>
-            </div>
-            <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/primitives</div>
-            <CollapsibleContent className="space-y-2">
-              <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@radix-ui/colors</div>
-              <div className="rounded-md border border-border px-4 py-2 font-mono text-sm">@stitches/react</div>
+        <Example title="Show More / Less" description="Classic text truncation pattern with a toggle trigger." code={`<Collapsible open={isOpen} onOpenChange={setIsOpen}>\n  <p className="typo-paragraph-sm text-muted-foreground">\n    SprouX is a comprehensive design system built for SaaS applications...\n  </p>\n  <CollapsibleContent>\n    <p className="typo-paragraph-sm text-muted-foreground mt-xs">\n      It includes over 40 production-ready components with dark mode support...\n    </p>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs">\n    {isOpen ? "Show less" : "Show more"}\n  </CollapsibleTrigger>\n</Collapsible>`}>
+          <Collapsible open={isOpen2} onOpenChange={setIsOpen2} className="max-w-sm">
+            <p className="typo-paragraph-sm text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
+            <CollapsibleContent>
+              <p className="typo-paragraph-sm text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
             </CollapsibleContent>
+            <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs inline-block">
+              {isOpen2 ? "Show less" : "Show more"}
+            </CollapsibleTrigger>
+          </Collapsible>
+        </Example>
+
+        <Example title="List Reveal" description="Show first item, reveal the rest on click." code={`<Collapsible className="space-y-xs">\n  <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/primitives</div>\n  <CollapsibleContent className="space-y-xs">\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/tokens</div>\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/react</div>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-mini font-medium text-primary hover:underline">\n    Show 2 more\n  </CollapsibleTrigger>\n</Collapsible>`}>
+          <Collapsible open={isOpen3} onOpenChange={setIsOpen3} className="space-y-xs max-w-sm">
+            <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/primitives</div>
+            <CollapsibleContent className="space-y-xs">
+              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/tokens</div>
+              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/react</div>
+            </CollapsibleContent>
+            <CollapsibleTrigger className="typo-paragraph-mini font-medium text-primary hover:underline">
+              {isOpen3 ? "Show less" : "Show 2 more"}
+            </CollapsibleTrigger>
+          </Collapsible>
+        </Example>
+
+        <Example title="Disabled" description="Prevents interaction when disabled prop is set." code={`<Collapsible disabled>\n  <p className="typo-paragraph-sm text-muted-foreground">This content cannot be expanded.</p>\n  <CollapsibleTrigger className="typo-paragraph-sm font-medium text-muted-foreground/50 mt-xs cursor-not-allowed">\n    Show more\n  </CollapsibleTrigger>\n</Collapsible>`}>
+          <Collapsible disabled className="max-w-sm">
+            <p className="typo-paragraph-sm text-muted-foreground">This content cannot be expanded because the section is locked.</p>
+            <CollapsibleTrigger className="typo-paragraph-sm font-medium text-muted-foreground/50 mt-xs inline-block cursor-not-allowed">
+              Show more
+            </CollapsibleTrigger>
           </Collapsible>
         </Example>
         </div>
@@ -18815,6 +18889,10 @@ const contextMenuSections: TocSection[] = [
 ]
 
 function ContextMenuDocs() {
+  const [showBookmarks, setShowBookmarks] = useState(true)
+  const [showUrls, setShowUrls] = useState(false)
+  const [person, setPerson] = useState("pedro")
+
   return (
     <div className="space-y-12">
       <TableOfContents sections={contextMenuSections} />
@@ -18827,19 +18905,34 @@ function ContextMenuDocs() {
         </p>
       </header>
 
-      <Playground controls={[]} render={() => (
-        <ContextMenu>
-          <ContextMenuTrigger className="flex h-[120px] w-[250px] items-center justify-center rounded-md border border-dashed text-sm">
-            Right click here
-          </ContextMenuTrigger>
-          <ContextMenuContent className="w-48">
-            <ContextMenuItem>Back</ContextMenuItem>
-            <ContextMenuItem>Forward</ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem>Reload</ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <ContextMenu>
+              <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
+                Right click here
+              </ContextMenuTrigger>
+              <ContextMenuContent className="w-56">
+                <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>
+                <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>
+                <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuSub>
+                  <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+                  <ContextMenuSubContent className="w-48">
+                    <ContextMenuItem>Save Page As…</ContextMenuItem>
+                    <ContextMenuItem>Create Shortcut…</ContextMenuItem>
+                  </ContextMenuSubContent>
+                </ContextMenuSub>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Inspect</ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
+          </div>
+        </div>
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -18852,15 +18945,15 @@ function ContextMenuDocs() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Example
-          title="Basic context menu"
-          description="Right-click the area below to open the menu. Includes sub-menus and shortcuts."
-          code={`<ContextMenu>\n  <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">\n    Right click here\n  </ContextMenuTrigger>\n  <ContextMenuContent className="w-64">\n    <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuSeparator />\n    <ContextMenuSub>\n      <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>\n      <ContextMenuSubContent className="w-48">\n        <ContextMenuItem>Save Page As… <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut></ContextMenuItem>\n        <ContextMenuItem>Create Shortcut…</ContextMenuItem>\n        <ContextMenuItem>Name Window…</ContextMenuItem>\n      </ContextMenuSubContent>\n    </ContextMenuSub>\n    <ContextMenuSeparator />\n    <ContextMenuItem>Inspect</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`}
+          title="With Sub-menu & Shortcuts"
+          description="Right-click to open. Includes nested sub-menu and keyboard shortcuts."
+          code={`<ContextMenu>\n  <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground">\n    Right click here\n  </ContextMenuTrigger>\n  <ContextMenuContent className="w-56">\n    <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuSeparator />\n    <ContextMenuSub>\n      <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>\n      <ContextMenuSubContent className="w-48">\n        <ContextMenuItem>Save Page As…</ContextMenuItem>\n        <ContextMenuItem>Create Shortcut…</ContextMenuItem>\n      </ContextMenuSubContent>\n    </ContextMenuSub>\n    <ContextMenuSeparator />\n    <ContextMenuItem>Inspect</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`}
         >
           <ContextMenu>
-            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
               Right click here
             </ContextMenuTrigger>
-            <ContextMenuContent className="w-64">
+            <ContextMenuContent className="w-56">
               <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>
               <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>
               <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>
@@ -18868,13 +18961,37 @@ function ContextMenuDocs() {
               <ContextMenuSub>
                 <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
                 <ContextMenuSubContent className="w-48">
-                  <ContextMenuItem>Save Page As… <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut></ContextMenuItem>
+                  <ContextMenuItem>Save Page As…</ContextMenuItem>
                   <ContextMenuItem>Create Shortcut…</ContextMenuItem>
-                  <ContextMenuItem>Name Window…</ContextMenuItem>
                 </ContextMenuSubContent>
               </ContextMenuSub>
               <ContextMenuSeparator />
               <ContextMenuItem>Inspect</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+        </Example>
+
+        <Example
+          title="Checkbox & Radio Items"
+          description="Context menu with toggleable checkbox items and radio group selection."
+          code={`<ContextMenu>\n  <ContextMenuTrigger>Right click here</ContextMenuTrigger>\n  <ContextMenuContent className="w-56">\n    <ContextMenuLabel>Appearance</ContextMenuLabel>\n    <ContextMenuSeparator />\n    <ContextMenuCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>Show Bookmarks</ContextMenuCheckboxItem>\n    <ContextMenuCheckboxItem checked={showUrls} onCheckedChange={setShowUrls}>Show Full URLs</ContextMenuCheckboxItem>\n    <ContextMenuSeparator />\n    <ContextMenuLabel>People</ContextMenuLabel>\n    <ContextMenuSeparator />\n    <ContextMenuRadioGroup value={person} onValueChange={setPerson}>\n      <ContextMenuRadioItem value="pedro">Pedro</ContextMenuRadioItem>\n      <ContextMenuRadioItem value="colm">Colm</ContextMenuRadioItem>\n    </ContextMenuRadioGroup>\n  </ContextMenuContent>\n</ContextMenu>`}
+        >
+          <ContextMenu>
+            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
+              Right click here
+            </ContextMenuTrigger>
+            <ContextMenuContent className="w-56">
+              <ContextMenuLabel>Appearance</ContextMenuLabel>
+              <ContextMenuSeparator />
+              <ContextMenuCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>Show Bookmarks</ContextMenuCheckboxItem>
+              <ContextMenuCheckboxItem checked={showUrls} onCheckedChange={setShowUrls}>Show Full URLs</ContextMenuCheckboxItem>
+              <ContextMenuSeparator />
+              <ContextMenuLabel>People</ContextMenuLabel>
+              <ContextMenuSeparator />
+              <ContextMenuRadioGroup value={person} onValueChange={setPerson}>
+                <ContextMenuRadioItem value="pedro">Pedro</ContextMenuRadioItem>
+                <ContextMenuRadioItem value="colm">Colm</ContextMenuRadioItem>
+              </ContextMenuRadioGroup>
             </ContextMenuContent>
           </ContextMenu>
         </Example>
@@ -18917,8 +19034,9 @@ function ContextMenuDocs() {
             </thead>
             <tbody>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Item hover background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu border, separator</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#f3f3f2</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f3f3f2" }} /></td><td className="px-4 py-3 text-muted-foreground">Item focus / hover background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#6f6f6a</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#6f6f6a" }} /></td><td className="px-4 py-3 text-muted-foreground">Shortcut text, disabled state</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Menu shadow</td></tr>
             </tbody>
           </table>
@@ -18962,14 +19080,14 @@ function ContextMenuDocs() {
                   {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" rows={[
         ["Trigger", "Right-click area", "ContextMenuTrigger", "Any element as trigger"],
-        ["Content Min Width", "8rem", "—", "min-w-[8rem]"],
-        ["Item Padding", "px-xs py-2xs", "—", "px-xs py-2xs text-sm"],
-        ["Item State", "Focus", "—", "focus:bg-muted focus:text-foreground"],
-        ["Item State", "Disabled", "disabled", "data-[disabled]:opacity-50"],
-        ["Sub-menu", "Trigger", "ContextMenuSubTrigger", "ChevronRight icon ml-auto"],
-        ["Checkbox Item", "Checked", "ContextMenuCheckboxItem", "Check icon indicator"],
-        ["Radio Item", "Selected", "ContextMenuRadioItem", "Circle icon indicator"],
-        ["Shortcut", "Right-aligned", "ContextMenuShortcut", "ml-auto text-xs"],
+        ["Content", "Menu panel", "ContextMenuContent", "rounded-md, bg-card, border, shadow-md, p-1"],
+        ["Item", "6/8 padding", "ContextMenuItem", "rounded-md px-xs py-2xs gap-xs"],
+        ["Item Focus", "bg-accent", "—", "focus:bg-accent focus:text-foreground"],
+        ["Item Disabled", "opacity-50", "disabled", "data-[disabled]:opacity-50"],
+        ["Sub-menu", "ChevronRight", "ContextMenuSubTrigger", "ChevronRight icon ml-auto"],
+        ["Checkbox Item", "Check icon", "ContextMenuCheckboxItem", "Check indicator, pl-2xl"],
+        ["Radio Item", "Circle icon", "ContextMenuRadioItem", "Circle indicator, pl-2xl"],
+        ["Shortcut", "muted-foreground", "ContextMenuShortcut", "ml-auto typo-paragraph-mini"],
         ["Icon Size", "16px", "—", "[&_svg]:size-md"],
       ]} />
 
@@ -19027,78 +19145,79 @@ function NavigationMenuDocs() {
         </p>
       </header>
 
-      <Playground
-        controls={[
-          { type: "select", label: "Viewport", prop: "viewport", defaultValue: "true", options: [
-            { label: "With viewport", value: "true" },
-            { label: "Without viewport", value: "false" },
-          ]},
-        ]}
-        render={() => (
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md" href="#">
-                          <div className="mb-2 mt-4 typo-paragraph-bold">SprouX DS</div>
-                          <p className="typo-paragraph-mini text-muted-foreground">Beautifully designed components built with Radix UI and Tailwind CSS.</p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <a className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted focus:bg-muted" href="#">
-                          <div className="typo-paragraph-sm-bold">Introduction</div>
-                          <p className="typo-paragraph-mini text-muted-foreground">Re-usable components built using Radix UI and Tailwind CSS.</p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <a className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted focus:bg-muted" href="#">
-                          <div className="typo-paragraph-sm-bold">Installation</div>
-                          <p className="typo-paragraph-mini text-muted-foreground">How to install dependencies and structure your app.</p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                    {[
-                      { title: "Alert Dialog", desc: "A modal dialog that interrupts the user." },
-                      { title: "Hover Card", desc: "For sighted users to preview content." },
-                      { title: "Progress", desc: "Displays an indicator of completion." },
-                      { title: "Tabs", desc: "Organize content into tabbed panels." },
-                    ].map(({ title, desc }) => (
-                      <li key={title}>
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border bg-background">
+          <div className="p-4xl pb-[280px] flex items-start justify-center min-h-[160px]">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-sm p-md md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                      <li className="row-span-3">
                         <NavigationMenuLink asChild>
-                          <a className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted focus:bg-muted" href="#">
-                            <div className="typo-paragraph-sm-bold">{title}</div>
-                            <p className="typo-paragraph-mini text-muted-foreground">{desc}</p>
+                          <a className="flex h-full w-full select-none flex-col justify-end rounded-lg bg-gradient-to-b from-muted/50 to-muted p-xl no-underline outline-none focus:shadow-md" href="#">
+                            <div className="mb-xs mt-md typo-paragraph-bold">SprouX DS</div>
+                            <p className="typo-paragraph-mini text-muted-foreground">Beautifully designed components built with Radix UI and Tailwind CSS.</p>
                           </a>
                         </NavigationMenuLink>
                       </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()} href="#">
-                  Documentation
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        )}
-      />
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
+                            <div className="typo-paragraph-sm-bold">Introduction</div>
+                            <p className="typo-paragraph-mini text-muted-foreground">Re-usable components built using Radix UI and Tailwind CSS.</p>
+                          </a>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <NavigationMenuLink asChild>
+                          <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
+                            <div className="typo-paragraph-sm-bold">Installation</div>
+                            <p className="typo-paragraph-mini text-muted-foreground">How to install dependencies and structure your app.</p>
+                          </a>
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-sm p-md md:w-[500px] md:grid-cols-2">
+                      {[
+                        { title: "Alert Dialog", desc: "A modal dialog that interrupts the user." },
+                        { title: "Hover Card", desc: "For sighted users to preview content." },
+                        { title: "Progress", desc: "Displays an indicator of completion." },
+                        { title: "Tabs", desc: "Organize content into tabbed panels." },
+                      ].map(({ title, desc }) => (
+                        <li key={title}>
+                          <NavigationMenuLink asChild>
+                            <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
+                              <div className="typo-paragraph-sm-bold">{title}</div>
+                              <p className="typo-paragraph-mini text-muted-foreground">{desc}</p>
+                            </a>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()} href="#">
+                    Documentation
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg rounded-b-xl">
+            <p className="typo-paragraph-mini text-muted-foreground">Click triggers to open dropdown content panels. Figma component (294:233298) uses Ghost Button instances with rounded-lg (8px), text-muted-foreground default, hover:bg-accent.</p>
+          </div>
+        </div>
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -19175,6 +19294,7 @@ function NavigationMenuDocs() {
             </thead>
             <tbody className="divide-y divide-border">
               <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">NavigationMenu</td><td className="px-4 py-3 font-mono">value</td><td className="px-4 py-3 text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled active item value</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">NavigationMenu</td><td className="px-4 py-3 font-mono">viewport</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">true</td><td className="px-4 py-3 text-muted-foreground">Render shared viewport container for content</td></tr>
               <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">NavigationMenu</td><td className="px-4 py-3 font-mono">onValueChange</td><td className="px-4 py-3 text-muted-foreground">{"(value: string) => void"}</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when active value changes</td></tr>
               <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">NavigationMenuTrigger</td><td className="px-4 py-3 font-mono">children</td><td className="px-4 py-3 text-muted-foreground">ReactNode</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Trigger label text</td></tr>
               <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">NavigationMenuContent</td><td className="px-4 py-3 font-mono">children</td><td className="px-4 py-3 text-muted-foreground">ReactNode</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Dropdown content panel</td></tr>
@@ -19186,7 +19306,7 @@ function NavigationMenuDocs() {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
@@ -19202,10 +19322,10 @@ function NavigationMenuDocs() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--background</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Trigger background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Hover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Active text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Default trigger text</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--background</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Trigger default background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Trigger/link hover & focus background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Active/hover text color</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#6f6f6a</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#6f6f6a" }} /></td><td className="px-4 py-3 text-muted-foreground">Default trigger text (Figma #6f6f6a)</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Viewport/content background</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Viewport border</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
@@ -19234,11 +19354,12 @@ function NavigationMenuDocs() {
       </section>
 
       <FigmaMapping id="figma-mapping" rows={[
-        ["—", "—", "viewport", "true | false (controls viewport rendering)"],
-        ["Trigger", "Ghost Button", "NavigationMenuTrigger", "Button with ChevronDown icon"],
-        ["Content", "Dropdown Panel", "NavigationMenuContent", "Animated dropdown content"],
-        ["Link", "Text Link", "NavigationMenuLink", "Navigation link with hover states"],
-        ["Indicator", "Arrow", "NavigationMenuIndicator", "Visual arrow pointing to active item"],
+        ["294:233298", "Navigation Menu", "NavigationMenu", "Root container, viewport prop controls shared dropdown container"],
+        ["Button/Ghost", "Trigger", "NavigationMenuTrigger", "h-9, rounded-lg (8px), px-md py-xs, typo-paragraph-sm-bold, hover:bg-accent"],
+        ["—", "Content Panel", "NavigationMenuContent", "Animated dropdown, bg-card border-border shadow-md"],
+        ["—", "Link Item", "NavigationMenuLink", "rounded-md, p-xs gap-3xs, hover:bg-accent, focus:ring-[3px]"],
+        ["—", "Viewport", "NavigationMenuViewport", "Shared container for content panels, rounded-md, animated"],
+        ["—", "Indicator", "NavigationMenuIndicator", "Arrow pointing to active trigger"],
       ]} />
 
       {/* ---- Accessibility ---- */}
@@ -19337,67 +19458,73 @@ function MenubarDocs() {
         </p>
       </header>
 
-      <Playground
-        controls={[]}
-        render={() => (
-          <Menubar>
-            <MenubarMenu>
-              <MenubarTrigger>File</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
-                <MenubarItem>New Window <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
-                <MenubarItem disabled>New Incognito Window</MenubarItem>
-                <MenubarSeparator />
-                <MenubarSub>
-                  <MenubarSubTrigger>Share</MenubarSubTrigger>
-                  <MenubarSubContent>
-                    <MenubarItem>Email link</MenubarItem>
-                    <MenubarItem>Messages</MenubarItem>
-                    <MenubarItem>Notes</MenubarItem>
-                  </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSeparator />
-                <MenubarItem>Print... <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Edit</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Undo <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
-                <MenubarItem>Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Cut</MenubarItem>
-                <MenubarItem>Copy</MenubarItem>
-                <MenubarItem>Paste</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>View</MenubarTrigger>
-              <MenubarContent>
-                <MenubarCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>Show Bookmarks <MenubarShortcut>⌘⇧B</MenubarShortcut></MenubarCheckboxItem>
-                <MenubarCheckboxItem checked={showFullUrls} onCheckedChange={setShowFullUrls}>Show Full URLs</MenubarCheckboxItem>
-                <MenubarSeparator />
-                <MenubarItem inset>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
-                <MenubarItem inset disabled>Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut></MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Profiles</MenubarTrigger>
-              <MenubarContent>
-                <MenubarRadioGroup value={person} onValueChange={setPerson}>
-                  <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
-                  <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
-                  <MenubarRadioItem value="pedro">Pedro</MenubarRadioItem>
-                </MenubarRadioGroup>
-                <MenubarSeparator />
-                <MenubarItem inset>Edit...</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem inset>Add Profile...</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar>
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <div className="rounded-xl border border-border overflow-hidden bg-background">
+          <div className="p-4xl flex items-center justify-center min-h-[160px]">
+            <Menubar>
+              <MenubarMenu>
+                <MenubarTrigger>File</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
+                  <MenubarItem>New Window <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+                  <MenubarItem disabled>New Incognito Window</MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarSub>
+                    <MenubarSubTrigger>Share</MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem>Email link</MenubarItem>
+                      <MenubarItem>Messages</MenubarItem>
+                      <MenubarItem>Notes</MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                  <MenubarSeparator />
+                  <MenubarItem>Print... <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger>Edit</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>Undo <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
+                  <MenubarItem>Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>Cut</MenubarItem>
+                  <MenubarItem>Copy</MenubarItem>
+                  <MenubarItem>Paste</MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger>View</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>Show Bookmarks <MenubarShortcut>⌘⇧B</MenubarShortcut></MenubarCheckboxItem>
+                  <MenubarCheckboxItem checked={showFullUrls} onCheckedChange={setShowFullUrls}>Show Full URLs</MenubarCheckboxItem>
+                  <MenubarSeparator />
+                  <MenubarItem inset>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
+                  <MenubarItem inset disabled>Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut></MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger>Profiles</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarRadioGroup value={person} onValueChange={setPerson}>
+                    <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+                    <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
+                    <MenubarRadioItem value="pedro">Pedro</MenubarRadioItem>
+                  </MenubarRadioGroup>
+                  <MenubarSeparator />
+                  <MenubarItem inset>Edit...</MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem inset>Add Profile...</MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <p className="typo-paragraph-mini text-muted-foreground">Click on File, Edit, View, or Profiles to open dropdown menus. No Figma variant properties — code-only component following DropdownMenu/ContextMenu pattern.</p>
+          </div>
+        </div>
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -19410,8 +19537,8 @@ function MenubarDocs() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Example
-          title="Basic menubar"
-          description="A standard menubar with File, Edit, View menus featuring shortcuts, sub-menus, checkbox and radio items."
+          title="Basic with shortcuts"
+          description="A single File menu with keyboard shortcuts and a sub-menu."
           code={`<Menubar>\n  <MenubarMenu>\n    <MenubarTrigger>File</MenubarTrigger>\n    <MenubarContent>\n      <MenubarItem>\n        New Tab <MenubarShortcut>⌘T</MenubarShortcut>\n      </MenubarItem>\n      <MenubarItem>\n        New Window <MenubarShortcut>⌘N</MenubarShortcut>\n      </MenubarItem>\n      <MenubarSeparator />\n      <MenubarSub>\n        <MenubarSubTrigger>Share</MenubarSubTrigger>\n        <MenubarSubContent>\n          <MenubarItem>Email link</MenubarItem>\n          <MenubarItem>Messages</MenubarItem>\n        </MenubarSubContent>\n      </MenubarSub>\n      <MenubarSeparator />\n      <MenubarItem>\n        Print... <MenubarShortcut>⌘P</MenubarShortcut>\n      </MenubarItem>\n    </MenubarContent>\n  </MenubarMenu>\n</Menubar>`}
         >
           <Menubar>
@@ -19430,6 +19557,35 @@ function MenubarDocs() {
                 </MenubarSub>
                 <MenubarSeparator />
                 <MenubarItem>Print... <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+        </Example>
+
+        <Example
+          title="Checkbox & radio items"
+          description="View menu with checkbox toggles and Profiles menu with radio selection."
+          code={`<Menubar>\n  <MenubarMenu>\n    <MenubarTrigger>View</MenubarTrigger>\n    <MenubarContent>\n      <MenubarCheckboxItem checked>\n        Show Bookmarks <MenubarShortcut>⌘⇧B</MenubarShortcut>\n      </MenubarCheckboxItem>\n      <MenubarCheckboxItem>Show Full URLs</MenubarCheckboxItem>\n      <MenubarSeparator />\n      <MenubarItem inset>\n        Reload <MenubarShortcut>⌘R</MenubarShortcut>\n      </MenubarItem>\n    </MenubarContent>\n  </MenubarMenu>\n  <MenubarMenu>\n    <MenubarTrigger>Profiles</MenubarTrigger>\n    <MenubarContent>\n      <MenubarRadioGroup value="pedro">\n        <MenubarRadioItem value="andy">Andy</MenubarRadioItem>\n        <MenubarRadioItem value="pedro">Pedro</MenubarRadioItem>\n      </MenubarRadioGroup>\n      <MenubarSeparator />\n      <MenubarItem inset>Add Profile...</MenubarItem>\n    </MenubarContent>\n  </MenubarMenu>\n</Menubar>`}
+        >
+          <Menubar>
+            <MenubarMenu>
+              <MenubarTrigger>View</MenubarTrigger>
+              <MenubarContent>
+                <MenubarCheckboxItem checked>Show Bookmarks <MenubarShortcut>⌘⇧B</MenubarShortcut></MenubarCheckboxItem>
+                <MenubarCheckboxItem>Show Full URLs</MenubarCheckboxItem>
+                <MenubarSeparator />
+                <MenubarItem inset>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>Profiles</MenubarTrigger>
+              <MenubarContent>
+                <MenubarRadioGroup value="pedro">
+                  <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+                  <MenubarRadioItem value="pedro">Pedro</MenubarRadioItem>
+                </MenubarRadioGroup>
+                <MenubarSeparator />
+                <MenubarItem inset>Add Profile...</MenubarItem>
               </MenubarContent>
             </MenubarMenu>
           </Menubar>
@@ -19469,7 +19625,7 @@ function MenubarDocs() {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
@@ -19488,7 +19644,7 @@ function MenubarDocs() {
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--background</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Bar background</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Bar & menu border</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Dropdown background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Item hover background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Item focus/hover & trigger open state</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-xs</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Bar shadow</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Dropdown shadow</td></tr>
             </tbody>
@@ -19516,16 +19672,16 @@ function MenubarDocs() {
       </section>
 
       <FigmaMapping id="figma-mapping" rows={[
-        ["—", "—", "—", "No Figma component — code-only, follows DropdownMenu pattern"],
-        ["Root", "Bar container", "Menubar", "h-9, border, rounded-md, shadow-xs"],
-        ["Trigger", "Menu name", "MenubarTrigger", "Font-semibold, rounded-sm"],
-        ["Content", "Dropdown", "MenubarContent", "border, bg-card, shadow-md, animated"],
-        ["Item", "Menu item", "MenubarItem", "inset prop for indentation"],
-        ["Shortcut", "Kbd hint", "MenubarShortcut", "Right-aligned muted text"],
+        ["—", "—", "—", "No Figma component — code-only, follows DropdownMenu/ContextMenu pattern"],
+        ["Root", "Bar container", "Menubar", "auto-height, p-3xs, border, rounded-md, shadow-xs"],
+        ["Trigger", "Menu name", "MenubarTrigger", "typo-paragraph-sm-bold, rounded-md, focus:bg-accent"],
+        ["Content", "Dropdown", "MenubarContent", "border, bg-card, shadow-md, rounded-md, animated"],
+        ["Item", "Menu item", "MenubarItem", "rounded-md, focus:bg-accent, gap-xs, inset prop"],
+        ["Shortcut", "Kbd hint", "MenubarShortcut", "Right-aligned, typo-paragraph-mini, text-muted-foreground"],
         ["Separator", "Divider", "MenubarSeparator", "h-px bg-border"],
-        ["CheckboxItem", "Toggle item", "MenubarCheckboxItem", "Check icon indicator"],
-        ["RadioItem", "Radio item", "MenubarRadioItem", "Circle icon indicator"],
-        ["Sub", "Sub-menu", "MenubarSub + SubTrigger + SubContent", "Nested dropdown"],
+        ["CheckboxItem", "Toggle item", "MenubarCheckboxItem", "Check icon, rounded-md, focus:bg-accent"],
+        ["RadioItem", "Radio item", "MenubarRadioItem", "Circle icon, rounded-md, focus:bg-accent"],
+        ["Sub", "Sub-menu", "MenubarSub + SubTrigger + SubContent", "Nested dropdown, ChevronRight indicator"],
       ]} />
 
       {/* ---- Accessibility ---- */}
