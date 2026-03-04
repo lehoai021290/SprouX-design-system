@@ -14540,40 +14540,188 @@ const popoverSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function PopoverPropsTable() {
+  const renderTable = (title: string, props: { name: string; type: string; default: string; description: string }[]) => (
+    <div className="space-y-2">
+      <h3 className="font-body font-semibold text-sm">{title}</h3>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th>
+              <th className="px-4 py-3 font-semibold">Type</th>
+              <th className="px-4 py-3 font-semibold">Default</th>
+              <th className="px-4 py-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.map((p) => (
+              <tr key={p.name} className="border-b border-border last:border-0">
+                <td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">{p.name}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground max-w-xs">{p.type}</td>
+                <td className="px-4 py-3 font-mono">{p.default}</td>
+                <td className="px-4 py-3 text-muted-foreground">{p.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="space-y-4">
+      {renderTable("Popover (Root)", [
+        { name: "open", type: "boolean", default: "—", description: "Controlled open state." },
+        { name: "onOpenChange", type: "(open: boolean) => void", default: "—", description: "Called when open state changes." },
+        { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state (uncontrolled)." },
+        { name: "modal", type: "boolean", default: "false", description: "Trap focus and block outside interactions." },
+      ])}
+      {renderTable("PopoverTrigger", [
+        { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element instead of rendering a default button." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Trigger element." },
+      ])}
+      {renderTable("PopoverContent", [
+        { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Horizontal alignment relative to trigger." },
+        { name: "sideOffset", type: "number", default: "4", description: "Distance from the trigger in pixels." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes (e.g., w-80)." },
+      ])}
+      {renderTable("PopoverAnchor", [
+        { name: "asChild", type: "boolean", default: "false", description: "Use custom anchor element for positioning instead of trigger." },
+      ])}
+    </div>
+  )
+}
+
+function PopoverTokensTable() {
+  const tokens = [
+    { token: "--card", value: "#ffffff / #252522", hex: "#ffffff", usage: "Content background" },
+    { token: "--border", value: "#e9e9e7 / #4f4f4a", hex: "#e9e9e7", usage: "Content border" },
+    { token: "--foreground", value: "#252522 / #f7f7f6", hex: "#252522", usage: "Text color" },
+    { token: "shadow", value: "2 drop-shadows", hex: "—", usage: "Content elevation (synced with Dialog/Drawer/HoverCard)" },
+    { token: "rounded-lg", value: "8px", hex: "—", usage: "Content border-radius (synced with HoverCard)" },
+    { token: "--spacing-md", value: "16px", hex: "—", usage: "Content padding (larger for interactive content)" },
+  ]
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-border">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Token</th>
+            <th className="px-4 py-3 font-semibold">Value (Light / Dark)</th>
+            <th className="px-4 py-3 font-semibold">Swatch</th>
+            <th className="px-4 py-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((t) => (
+            <tr key={t.token} className="border-b border-border last:border-0">
+              <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.token}</td>
+              <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+              <td className="px-4 py-3">
+                {t.hex !== "—" && (
+                  <div className="size-5 rounded border border-border" style={{ backgroundColor: t.hex }} />
+                )}
+              </td>
+              <td className="px-4 py-3 text-muted-foreground">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/**
+ * Explore Behavior — static face preview.
+ *
+ * No Figma component — code-only, tokens synced with HoverCard.
+ * Static preview shows popover content face with form controls (Rule #34).
+ */
+function PopoverExploreBehavior() {
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Static popover face preview — matches PopoverContent structure */}
+        <div className="w-80 rounded-lg border border-border bg-card p-md shadow pointer-events-none">
+          <div className="grid gap-4">
+            <div className="space-y-2">
+              <h4 className="font-medium leading-none">Dimensions</h4>
+              <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+            </div>
+            <div className="grid gap-2">
+              <div className="grid grid-cols-3 items-center gap-4">
+                <Label>Width</Label>
+                <Input defaultValue="100%" className="col-span-2 h-8" tabIndex={-1} />
+              </div>
+              <div className="grid grid-cols-3 items-center gap-4">
+                <Label>Height</Label>
+                <Input defaultValue="25px" className="col-span-2 h-8" tabIndex={-1} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <p className="typo-paragraph-mini text-muted-foreground">No Figma component — code-only. Tokens synced with HoverCard (303:246487): rounded-lg, bg-card, shadow. Padding p-md (16px) for interactive content.</p>
+      </div>
+    </div>
+  )
+}
+
 function PopoverDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={popoverSections} />
 
+      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Popover</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Floating content panel anchored to a trigger. For rich interactive content.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Floating content panel anchored to a trigger. For rich interactive content like forms, filters, and selection panels.
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Popover>
-          <PopoverTrigger asChild><Button variant="outline">Open Popover</Button></PopoverTrigger>
-          <PopoverContent className="w-60"><p className="text-sm">Popover content goes here.</p></PopoverContent>
-        </Popover>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <PopoverExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add @radix-ui/react-popover`}
-        importCode={`import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"`}
+        importCode={`import { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "@/components/ui/popover"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
+
+        {/* Static previews — popover face visible without clicking */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Basic popover with form content anchored to a trigger button." code={`<Popover>\n  <PopoverTrigger asChild>\n    <Button variant="outline">Open Popover</Button>\n  </PopoverTrigger>\n  <PopoverContent className="w-80">\n    <div className="grid gap-4">\n      <div className="space-y-2">\n        <h4 className="font-medium leading-none">Dimensions</h4>\n        <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>\n      </div>\n      <div className="grid gap-2">\n        <div className="grid grid-cols-3 items-center gap-4">\n          <Label htmlFor="width">Width</Label>\n          <Input id="width" defaultValue="100%" className="col-span-2 h-8" />\n        </div>\n      </div>\n    </div>\n  </PopoverContent>\n</Popover>`}>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">Open Popover</Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80">
+          <Example title="Form Content" description="Popover with labeled inputs for a form-like interaction." code={`<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open Popover</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-80">
+    <div className="grid gap-4">
+      <div className="space-y-2">
+        <h4 className="font-medium leading-none">Dimensions</h4>
+        <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+      </div>
+      <div className="grid gap-2">
+        <div className="grid grid-cols-3 items-center gap-4">
+          <Label htmlFor="width">Width</Label>
+          <Input id="width" defaultValue="100%" className="col-span-2 h-8" />
+        </div>
+      </div>
+    </div>
+  </PopoverContent>
+</Popover>`}>
+            <div className="w-80 rounded-lg border border-border bg-card p-md shadow pointer-events-none">
               <div className="grid gap-4">
                 <div className="space-y-2">
                   <h4 className="font-medium leading-none">Dimensions</h4>
@@ -14581,74 +14729,96 @@ function PopoverDocs() {
                 </div>
                 <div className="grid gap-2">
                   <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="pop-width">Width</Label>
-                    <Input id="pop-width" defaultValue="100%" className="col-span-2 h-8" />
+                    <Label>Width</Label>
+                    <Input defaultValue="100%" className="col-span-2 h-8" tabIndex={-1} />
                   </div>
                   <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="pop-height">Height</Label>
-                    <Input id="pop-height" defaultValue="25px" className="col-span-2 h-8" />
+                    <Label>Height</Label>
+                    <Input defaultValue="25px" className="col-span-2 h-8" tabIndex={-1} />
                   </div>
                 </div>
               </div>
-            </PopoverContent>
-          </Popover>
-        </Example>
+            </div>
+          </Example>
+
+          <Example title="Simple Content" description="Popover with text-only content." code={`<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Info</Button>
+  </PopoverTrigger>
+  <PopoverContent className="w-60">
+    <p className="typo-paragraph-sm text-muted-foreground">
+      This is a simple popover with informational content. Click the trigger to toggle.
+    </p>
+  </PopoverContent>
+</Popover>`}>
+            <div className="w-60 rounded-lg border border-border bg-card p-md shadow pointer-events-none">
+              <p className="typo-paragraph-sm text-muted-foreground">
+                This is a simple popover with informational content. Click the trigger to toggle.
+              </p>
+            </div>
+          </Example>
+        </div>
+
+        {/* Interactive demos — click to open real popovers */}
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="px-md py-xs bg-muted/50 border-b border-border">
+            <span className="text-xs font-medium text-muted-foreground">Interactive Demo</span>
+          </div>
+          <div className="p-lg flex flex-wrap gap-sm">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">Form Popover</Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium leading-none">Dimensions</h4>
+                    <p className="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="pop-w2">Width</Label>
+                      <Input id="pop-w2" defaultValue="100%" className="col-span-2 h-8" />
+                    </div>
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="pop-h2">Height</Label>
+                      <Input id="pop-h2" defaultValue="25px" className="col-span-2 h-8" />
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">Simple Popover</Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-60">
+                <p className="typo-paragraph-sm text-muted-foreground">Simple informational content. Click the trigger to toggle.</p>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </section>
-
 
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          Built on{" "}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-popover</code>.
-          All Radix Popover props are forwarded.
-        </p>
-        <div>
-          <h3 className="font-body font-semibold text-sm mb-2">PopoverContent</h3>
-          <div className="overflow-x-auto rounded-xl border border-border">
-            <table className="w-full text-xs">
-              <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-              <tbody className="divide-y divide-border">
-                <tr><td className="px-4 py-3 font-mono text-primary">align</td><td className="px-4 py-3 font-mono text-muted-foreground">"start" | "center" | "end"</td><td className="px-4 py-3 font-mono text-muted-foreground">"center"</td><td className="px-4 py-3 text-muted-foreground">Alignment relative to trigger.</td></tr>
-                <tr><td className="px-4 py-3 font-mono text-primary">sideOffset</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">4</td><td className="px-4 py-3 text-muted-foreground">Distance from trigger in pixels.</td></tr>
-                <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes (e.g., w-80).</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <PopoverPropsTable />
       </section>
 
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
+          Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>. No dedicated Figma component — tokens synced with floating panel family (HoverCard, Dialog, Drawer).
         </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Popover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Popover border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation shadow</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Popover shadow</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-lg</td><td className="px-4 py-3 font-mono text-muted-foreground">8px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Popover border radius</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <PopoverTokensTable />
       </section>
 
       {/* ---- Best Practices ---- */}
       <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+
         <div className="space-y-4">
           <h3 className="font-body font-semibold text-sm">Usage</h3>
           <div className="flex gap-4">
@@ -14657,13 +14827,35 @@ function PopoverDocs() {
               <p>Keep popover content focused — one task or concept per popover.</p>
             </DoItem>
             <DontItem>
-              <p>Don't use Popover for static information — use <strong>Tooltip</strong> instead.</p>
+              <p>Don't use Popover for static information — use <strong>Tooltip</strong> or <strong>HoverCard</strong> instead.</p>
               <p>Don't nest popovers — it creates confusing navigation patterns.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Sizing</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Set explicit width on PopoverContent via className (w-60, w-72, w-80).</p>
+              <p>Use <code className="text-xs bg-muted px-1 rounded font-mono">align="start"</code> for left-aligned form popovers.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't let popover content grow unbounded — always constrain width.</p>
+              <p>Don't put scrollable lists in Popover — use <strong>DropdownMenu</strong> or <strong>Command</strong> instead.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" rows={[
+        ["Content", "No Figma component (synced with HoverCard)", "PopoverContent", "rounded-lg border border-border bg-card p-md shadow"],
+        ["Width", "288px default", "className", "w-72 (override with w-60, w-80, etc.)"],
+        ["Alignment", "Center (default)", "align", '"center"'],
+        ["Side Offset", "4px", "sideOffset", "4"],
+        ["Animation", "Open/Close", "—", "zoom-in-95/fade-in, zoom-out-95/fade-out"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
@@ -14671,32 +14863,42 @@ function PopoverDocs() {
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><code className="bg-muted px-1 rounded font-mono">Escape</code> — Close the popover.</li>
-              <li><code className="bg-muted px-1 rounded font-mono">Tab</code> — Navigate inside popover.</li>
-            </ul>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-border text-left">
+                    <th className="pr-6 py-2 font-semibold">Key</th>
+                    <th className="pr-6 py-2 font-semibold">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Escape</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Close the popover</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Navigate through popover content</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd> / <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Space</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Toggle popover via trigger</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <h3 className="font-body font-semibold text-sm text-foreground">Focus Management</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
               <li>Built on Radix Popover — focus is managed automatically.</li>
               <li>Escape closes the popover; focus returns to trigger.</li>
               <li>Content is portaled to avoid clipping issues.</li>
+              <li>Use <code className="bg-muted px-1 rounded font-mono">modal</code> prop to trap focus inside popover.</li>
             </ul>
           </div>
         </div>
       </section>
-
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Content Width", "288px", "—", "w-72"],
-        ["Alignment", "Center (default)", "align", '"center"'],
-        ["Side Offset", "4px", "sideOffset", "4"],
-        ["Animation", "Open", "—", "zoom-in-95, fade-in-0"],
-        ["Animation", "Close", "—", "zoom-out-95, fade-out-0"],
-        ["Border", "Border", "—", "border border-border"],
-        ["Shadow", "Medium", "—", "shadow-md"],
-      ]} />
 
       {/* ---- Related Components ---- */}
       <section id="related" className="space-y-4 pb-12">
@@ -14719,7 +14921,7 @@ function PopoverDocs() {
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
               <p className="font-semibold text-foreground">HoverCard</p>
-              <p className="text-muted-foreground mt-0.5">Hover-triggered preview card.</p>
+              <p className="text-muted-foreground mt-0.5">Hover-triggered preview card — non-interactive content.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
