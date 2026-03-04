@@ -6,10 +6,21 @@ import { cn } from "@/lib/utils"
 /**
  * SprouX Drawer
  *
- * Figma: [SprouX - DS] Foundation & Component
+ * Figma: [SprouX - DS] Foundation & Component → Drawer (151:12313)
  *
  * Mobile-first bottom drawer built on vaul.
  * Swipe to close, snap points, nested scrolling.
+ *
+ * Figma tokens:
+ * - Content BG: --card (#ffffff / #252522)
+ * - Content border: --border (#e9e9e7)
+ * - Content radius: 8px (--radius-lg) — top corners only
+ * - Content shadow: shadow (2 drop-shadows)
+ * - Handle: 50×3px, r=2 (--radius-sm), fill --muted (#f3f3f2)
+ * - Slot/Card padding: T:24 L:16 R:16 B:16 (xl/md/md/md)
+ * - Inner gap: 24px (--spacing-xl)
+ * - Title: heading 4 (Geist/600 20px/24px)
+ * - Description: paragraph small (Geist/400 14px/20px)
  */
 function Drawer({
   shouldScaleBackground = true,
@@ -66,12 +77,12 @@ function DrawerContent({
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-border bg-card",
+          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-lg border border-border bg-card shadow",
           className
         )}
         {...props}
       >
-        <div className="mx-auto mt-md h-2xs w-[100px] rounded-full bg-muted" />
+        <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>
@@ -82,7 +93,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="drawer-header"
-      className={cn("grid gap-2xs p-md text-center sm:text-left", className)}
+      className={cn("flex flex-col gap-xs p-md text-center sm:text-left", className)}
       {...props}
     />
   )
@@ -92,7 +103,10 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="drawer-footer"
-      className={cn("mt-auto flex flex-col gap-xs p-md", className)}
+      className={cn(
+        "flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end",
+        className
+      )}
       {...props}
     />
   )

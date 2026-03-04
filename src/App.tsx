@@ -371,8 +371,8 @@ function Example({
 }) {
   const [showCode, setShowCode] = useState(false)
   return (
-    <div className="rounded-xl border border-border overflow-hidden bg-background flex flex-col">
-      <div className="px-xl pt-md pb-2xs border-b border-border bg-muted/50 space-y-2xs">
+    <div className="rounded-xl border border-border overflow-visible bg-background flex flex-col">
+      <div className="px-xl pt-md pb-2xs border-b border-border bg-muted/50 space-y-2xs rounded-t-xl">
         <h3 className="font-body font-semibold text-sm">{title}</h3>
         {description && (
           <p className="text-muted-foreground text-xs leading-relaxed">
@@ -383,7 +383,7 @@ function Example({
       <div className="px-xl py-lg flex flex-wrap items-center gap-sm bg-background flex-1">
         {children}
       </div>
-      <div className="border-t border-border mt-auto">
+      <div className="border-t border-border mt-auto rounded-b-xl overflow-hidden">
         <button
           onClick={() => setShowCode(!showCode)}
           className="w-full flex items-center justify-between px-md py-xs text-xs text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors font-mono"
@@ -7887,6 +7887,124 @@ const labelSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function LabelExploreBehavior() {
+  const [size, setSize] = React.useState<"sm" | "default">("sm")
+  const [layout, setLayout] = React.useState<"block" | "inline">("block")
+
+  const toggleBtn = (active: boolean) =>
+    cn(
+      "px-sm py-[5px] rounded-md text-xs border transition-colors",
+      active
+        ? "bg-primary text-primary-foreground border-primary"
+        : "bg-card text-foreground border-border hover:bg-accent"
+    )
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      {/* Preview */}
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        {layout === "block" ? (
+          <div className="w-[280px] space-y-xs">
+            <Label size={size} htmlFor="explore-input">Email address</Label>
+            <Input id="explore-input" placeholder="you@example.com" />
+          </div>
+        ) : (
+          <div className="flex items-center gap-xs">
+            <Checkbox id="explore-check" />
+            <Label size={size} htmlFor="explore-check">Accept terms</Label>
+          </div>
+        )}
+      </div>
+
+      {/* Controls */}
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <div className="flex flex-col gap-md">
+          <div className="space-y-xs">
+            <label className="text-xs text-muted-foreground">Size</label>
+            <div className="flex flex-wrap gap-xs">
+              <button type="button" className={toggleBtn(size === "sm")} onClick={() => setSize("sm")}>Small (14px)</button>
+              <button type="button" className={toggleBtn(size === "default")} onClick={() => setSize("default")}>Regular (16px)</button>
+            </div>
+          </div>
+          <div className="space-y-xs">
+            <label className="text-xs text-muted-foreground">Layout</label>
+            <div className="flex flex-wrap gap-xs">
+              <button type="button" className={toggleBtn(layout === "block")} onClick={() => setLayout("block")}>Block</button>
+              <button type="button" className={toggleBtn(layout === "inline")} onClick={() => setLayout("inline")}>Inline</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LabelPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-border">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Prop</th>
+            <th className="px-4 py-3 font-semibold">Type</th>
+            <th className="px-4 py-3 font-semibold">Default</th>
+            <th className="px-4 py-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="px-4 py-3 font-mono text-primary">size</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">"sm" | "default"</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">"sm"</td>
+            <td className="px-4 py-3 text-muted-foreground">Label text size. Small = 14/20, Regular = 16/24.</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 font-mono text-primary">htmlFor</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">string</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+            <td className="px-4 py-3 text-muted-foreground">Associates the label with a form control by ID.</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 font-mono text-primary">className</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">string</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+            <td className="px-4 py-3 text-muted-foreground">Additional CSS classes.</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 font-mono text-primary">children</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td>
+            <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
+            <td className="px-4 py-3 text-muted-foreground">Label text content.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function LabelTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-border">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Token</th>
+            <th className="px-4 py-3 font-semibold">Value</th>
+            <th className="px-4 py-3 font-semibold">Swatch</th>
+            <th className="px-4 py-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">typo-paragraph-sm-medium</td><td className="px-4 py-3 font-mono text-muted-foreground">Geist 500 14/20</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Small label text (default)</td></tr>
+          <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">typo-paragraph-medium</td><td className="px-4 py-3 font-mono text-muted-foreground">Geist 500 16/24</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Regular label text</td></tr>
+          <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Label text color</td></tr>
+          <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">peer-disabled:opacity-50</td><td className="px-4 py-3 font-mono text-muted-foreground">50%</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Disabled state opacity</td></tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function LabelDocs() {
   return (
     <div className="space-y-12">
@@ -7899,16 +8017,21 @@ function LabelDocs() {
         </p>
         <h1 className="typo-heading-2">Label</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          Renders an accessible label associated with form controls. Supports required indicator and disabled state via peer utilities.
+          Renders an accessible label associated with form controls.
+          Two sizes per Figma spec (Small 14/20, Regular 16/24).
+          Auto-dims when the associated control is disabled via peer-disabled utilities.
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => <Label>Email address</Label>} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <LabelExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add @radix-ui/react-label`}
+        deps={`pnpm add @radix-ui/react-label class-variance-authority`}
         importCode={`import { Label } from "@/components/ui/label"`}
       />
 
@@ -7917,29 +8040,29 @@ function LabelDocs() {
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Associate a label with an input using the htmlFor prop matching the input's id." code={`<Label htmlFor="email">Email address</Label>\n<Input id="email" type="email" placeholder="you@example.com" />`}>
-          <div className="space-y-2">
+        <Example title="Default (Small)" description="Associate a label with an input using the htmlFor prop." code={`<div className="space-y-xs">\n  <Label htmlFor="email">Email address</Label>\n  <Input id="email" type="email" placeholder="you@example.com" />\n</div>`}>
+          <div className="space-y-xs">
             <Label htmlFor="email-demo">Email address</Label>
             <Input id="email-demo" type="email" placeholder="you@example.com" />
           </div>
         </Example>
 
-        <Example title="With Checkbox" description="Clicking the label toggles the checkbox — no extra JavaScript needed." code={`<div className="flex items-center gap-2">\n  <Checkbox id="terms" />\n  <Label htmlFor="terms">Accept terms and conditions</Label>\n</div>`}>
-          <div className="flex items-center gap-2">
+        <Example title="Regular Size" description="Use size='default' for the larger 16/24 label." code={`<div className="space-y-xs">\n  <Label size="default" htmlFor="name">Full name</Label>\n  <Input id="name" placeholder="John Doe" />\n</div>`}>
+          <div className="space-y-xs">
+            <Label size="default" htmlFor="name-demo">Full name</Label>
+            <Input id="name-demo" placeholder="John Doe" />
+          </div>
+        </Example>
+
+        <Example title="With Checkbox (Inline)" description="Clicking the label toggles the checkbox — no extra JS needed." code={`<div className="flex items-center gap-xs">\n  <Checkbox id="terms" />\n  <Label htmlFor="terms">Accept terms and conditions</Label>\n</div>`}>
+          <div className="flex items-center gap-xs">
             <Checkbox id="terms-demo" />
             <Label htmlFor="terms-demo">Accept terms and conditions</Label>
           </div>
         </Example>
 
-        <Example title="With Switch" description="Works the same way as checkbox — clicking the label toggles the switch." code={`<div className="flex items-center gap-2">\n  <Switch id="notifications" />\n  <Label htmlFor="notifications">Enable notifications</Label>\n</div>`}>
-          <div className="flex items-center gap-2">
-            <Switch id="notifications-demo" />
-            <Label htmlFor="notifications-demo">Enable notifications</Label>
-          </div>
-        </Example>
-
-        <Example title="Disabled (via peer)" description="When the associated control is disabled, the label auto-dims via peer-disabled utility." code={`<div className="space-y-2">\n  <Input id="disabled" disabled placeholder="Disabled input" />\n  <Label htmlFor="disabled">Disabled field</Label>\n</div>`}>
-          <div className="flex items-center gap-2">
+        <Example title="Disabled (via peer)" description="When the associated control is disabled, the label auto-dims via peer-disabled." code={`<div className="flex items-center gap-xs">\n  <Checkbox id="disabled" disabled />\n  <Label htmlFor="disabled">Disabled option</Label>\n</div>`}>
+          <div className="flex items-center gap-xs">
             <Checkbox id="disabled-demo" disabled />
             <Label htmlFor="disabled-demo">Disabled option</Label>
           </div>
@@ -7947,66 +8070,19 @@ function LabelDocs() {
         </div>
       </section>
 
-      {/* ---- API Reference ---- */}
+      {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">htmlFor</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">string</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Associates the label with a form control by ID.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">className</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">string</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Additional CSS classes.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">children</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Label text content.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <LabelPropsTable />
       </section>
 
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
+          Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">typo-paragraph-sm-medium</td><td className="px-4 py-3 font-mono text-muted-foreground">Geist 500 14/20</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Label text style</td></tr>
-              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Label text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">peer-disabled:opacity-50</td><td className="px-4 py-3 font-mono text-muted-foreground">50%</td><td className="px-4 py-3 text-muted-foreground">Disabled state opacity</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <LabelTokensTable />
       </section>
 
       {/* ---- Best Practices ---- */}
@@ -8025,7 +8101,29 @@ function LabelDocs() {
             </DontItem>
           </div>
         </div>
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Sizing</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">size="sm"</code> (default) for most form fields — matches standard input height.</p>
+              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">size="default"</code> for section headings or prominent fields.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't mix label sizes within the same form group — keep them consistent.</p>
+            </DontItem>
+          </div>
+        </div>
       </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="103:9453" rows={[
+        ["Size", "Small", "size='sm'", "typo-paragraph-sm-medium (14/20)"],
+        ["Size", "Regular", "size='default'", "typo-paragraph-medium (16/24)"],
+        ["Layout", "Block", "—", "Label above input (fills width)"],
+        ["Layout", "Inline", "—", "Label beside checkbox/switch"],
+        ["State", "Default", "—", "text-foreground"],
+        ["State", "Disabled", "—", "peer-disabled:opacity-50"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
@@ -8085,7 +8183,7 @@ function LabelDocs() {
                 Checkbox control — pair with Label for click-to-toggle.
               </p>
             </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
               Available
             </span>
           </div>
@@ -8102,14 +8200,6 @@ function LabelDocs() {
           </div>
         </div>
       </section>
-
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["State", "Default", "—", "default"],
-        ["State", "Disabled", "—", "peer-disabled:opacity-50"],
-        ["Font", "Geist Medium 14/20", "—", "text-sm font-medium"],
-        ["Required Indicator", "Visible", "data-required", "Shows * indicator"],
-      ]} />
     </div>
   )
 }
@@ -13943,103 +14033,384 @@ const drawerSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function DrawerPropsTable() {
+  const renderTable = (title: string, props: { name: string; type: string; default: string; description: string }[]) => (
+    <div className="space-y-2">
+      <h3 className="font-body font-semibold text-sm">{title}</h3>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th>
+              <th className="px-4 py-3 font-semibold">Type</th>
+              <th className="px-4 py-3 font-semibold">Default</th>
+              <th className="px-4 py-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.map((p) => (
+              <tr key={p.name} className="border-b border-border last:border-0">
+                <td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">{p.name}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground max-w-xs">{p.type}</td>
+                <td className="px-4 py-3 font-mono">{p.default}</td>
+                <td className="px-4 py-3 text-muted-foreground">{p.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="space-y-4">
+      {renderTable("Drawer (Root)", [
+        { name: "open", type: "boolean", default: "—", description: "Controlled open state." },
+        { name: "onOpenChange", type: "(open: boolean) => void", default: "—", description: "Callback when open state changes." },
+        { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state (uncontrolled)." },
+        { name: "shouldScaleBackground", type: "boolean", default: "true", description: "Scale the page background when drawer opens." },
+      ])}
+      {renderTable("DrawerTrigger", [
+        { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element instead of rendering a default button." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Trigger element." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes." },
+      ])}
+      {renderTable("DrawerPortal", [
+        { name: "container", type: "HTMLElement", default: "document.body", description: "The container element to portal the overlay and content into." },
+      ])}
+      {renderTable("DrawerOverlay", [
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes for the overlay backdrop." },
+      ])}
+      {renderTable("DrawerContent", [
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes for the content panel." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Drawer content (header, body, footer). Handle bar is auto-rendered." },
+      ])}
+      {renderTable("DrawerHeader", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Title and description elements." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Renders as a div (not a Radix primitive)." },
+      ])}
+      {renderTable("DrawerFooter", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Action and close buttons." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Stacks vertically." },
+      ])}
+      {renderTable("DrawerTitle", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Title text content." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-heading-4 text-foreground." },
+      ])}
+      {renderTable("DrawerDescription", [
+        { name: "children", type: "React.ReactNode", default: "—", description: "Description text content." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-sm text-muted-foreground." },
+      ])}
+      {renderTable("DrawerClose", [
+        { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element." },
+        { name: "children", type: "React.ReactNode", default: "—", description: "Close trigger element." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes." },
+      ])}
+    </div>
+  )
+}
+
+function DrawerTokensTable() {
+  const tokens = [
+    { token: "--card", value: "#ffffff / #252522", hex: "#ffffff", usage: "Content background" },
+    { token: "--border", value: "#e9e9e7 / #4f4f4a", hex: "#e9e9e7", usage: "Content border" },
+    { token: "--muted", value: "#f7f7f6 / #2f2f2b", hex: "#f7f7f6", usage: "Handle bar indicator" },
+    { token: "--foreground", value: "#252522 / #f7f7f6", hex: "#252522", usage: "DrawerTitle text color" },
+    { token: "--muted-foreground", value: "#6f6f6a / #c6c6c2", hex: "#6f6f6a", usage: "DrawerDescription text color" },
+    { token: "bg-black/50", value: "rgba(0,0,0,0.5)", hex: "rgba(0,0,0,0.5)", usage: "Overlay backdrop" },
+    { token: "shadow", value: "2 drop-shadows", hex: "—", usage: "Content elevation (same as Dialog)" },
+    { token: "rounded-t-lg", value: "8px top corners", hex: "—", usage: "Content border-radius (Figma r=8)" },
+    { token: "rounded-sm", value: "2px", hex: "—", usage: "Handle bar border-radius (Figma r=2)" },
+    { token: "--spacing-md", value: "16px", hex: "—", usage: "Header/footer padding, handle margin-top" },
+    { token: "--spacing-xs", value: "8px", hex: "—", usage: "Header/footer gap, footer button gap" },
+  ]
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-border">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Token</th>
+            <th className="px-4 py-3 font-semibold">Value (Light / Dark)</th>
+            <th className="px-4 py-3 font-semibold">Swatch</th>
+            <th className="px-4 py-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((t) => (
+            <tr key={t.token} className="border-b border-border last:border-0">
+              <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.token}</td>
+              <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+              <td className="px-4 py-3">
+                {t.hex !== "—" && (
+                  <div className="size-5 rounded border border-border" style={{ backgroundColor: t.hex }} />
+                )}
+              </td>
+              <td className="px-4 py-3 text-muted-foreground">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+/**
+ * Explore Behavior — static variant preview matching Figma component.
+ *
+ * Figma "Drawer" component (151:12313):
+ *   No variant properties. Two children: Slot/Card (content) + Handle (50×3px r=2).
+ *   Content: r=8 (rounded-t-lg), bg-card, border, shadow.
+ *   Static preview shows drawer content face directly (Rule #34).
+ */
+function DrawerExploreBehavior() {
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Static drawer face preview — matches DrawerContent structure */}
+        <div className="w-full max-w-sm bg-card border border-border rounded-t-lg shadow pointer-events-none">
+          {/* Handle bar — 50×3 r=2 (rounded-sm) bg-muted */}
+          <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
+          {/* Header */}
+          <div className="flex flex-col gap-xs p-md text-left">
+            <h3 className="typo-heading-4 text-foreground">Drawer Title</h3>
+            <p className="typo-paragraph-sm text-muted-foreground">Swipe down or click overlay to close.</p>
+          </div>
+          {/* Body */}
+          <div className="px-md pb-md">
+            <p className="typo-paragraph-sm text-muted-foreground">Drawer body content goes here. Drag the handle bar to dismiss.</p>
+          </div>
+          {/* Footer */}
+          <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
+            <Button variant="outline" className="pointer-events-none">Cancel</Button>
+            <Button className="pointer-events-none">Submit</Button>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <p className="typo-paragraph-mini text-muted-foreground">Figma (151:12313): No variant properties. Content r=8 (rounded-t-lg), Handle 50×3px r=2 (rounded-sm), bg-card, shadow. Header/Footer gap synced with Dialog/AlertDialog/Sheet siblings.</p>
+      </div>
+    </div>
+  )
+}
+
 function DrawerDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={drawerSections} />
 
+      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay</p>
         <h1 className="typo-heading-2">Drawer</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Mobile-first bottom drawer with swipe-to-close. Built on vaul.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Mobile-first bottom drawer with swipe-to-close. Built on vaul.
+          Includes a drag handle, overlay backdrop, and snap-to-close gesture support.
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Drawer>
-          <DrawerTrigger asChild><Button variant="outline">Open Drawer</Button></DrawerTrigger>
-          <DrawerContent>
-            <DrawerHeader>
-              <DrawerTitle>Drawer Title</DrawerTitle>
-              <DrawerDescription>This is a drawer panel.</DrawerDescription>
-            </DrawerHeader>
-            <DrawerFooter>
-              <DrawerClose asChild><Button variant="outline">Close</Button></DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-4">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <DrawerExploreBehavior />
+      </section>
 
-      
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add vaul`}
-        importCode={`import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from "@/components/ui/drawer"`}
+        importCode={`import {\n  Drawer,\n  DrawerTrigger,\n  DrawerContent,\n  DrawerHeader,\n  DrawerTitle,\n  DrawerDescription,\n  DrawerFooter,\n  DrawerClose,\n} from "@/components/ui/drawer"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
+        {/* Static previews — drawer face visible without clicking */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="A mobile-friendly bottom drawer with header, body content, and footer actions." code={`<Drawer>\n  <DrawerTrigger asChild>\n    <Button variant="outline">Open Drawer</Button>\n  </DrawerTrigger>\n  <DrawerContent>\n    <DrawerHeader className="text-left">\n      <DrawerTitle>Move Goal</DrawerTitle>\n      <DrawerDescription>Set your daily activity goal.</DrawerDescription>\n    </DrawerHeader>\n    <div className="p-4">\n      <p>Drawer body content goes here.</p>\n    </div>\n    <DrawerFooter>\n      <Button>Submit</Button>\n      <DrawerClose asChild>\n        <Button variant="outline">Cancel</Button>\n      </DrawerClose>\n    </DrawerFooter>\n  </DrawerContent>\n</Drawer>`}>
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button variant="outline">Open Drawer</Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <div className="mx-auto w-full max-w-sm">
-                <DrawerHeader>
-                  <DrawerTitle>Move Goal</DrawerTitle>
-                  <DrawerDescription>Set your daily activity goal.</DrawerDescription>
-                </DrawerHeader>
-                <div className="p-4 pb-0">
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="flex-1 text-center">
-                      <div className="text-7xl font-bold tracking-tighter">350</div>
-                      <div className="text-[0.70rem] uppercase text-muted-foreground">Calories/day</div>
-                    </div>
-                  </div>
-                </div>
-                <DrawerFooter>
-                  <Button>Submit</Button>
-                  <DrawerClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DrawerClose>
-                </DrawerFooter>
+          <Example title="Basic" description="Bottom drawer with header, body, and footer actions." code={`<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Open Drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <div className="mx-auto w-full max-w-sm">
+      <DrawerHeader>
+        <DrawerTitle>Move Goal</DrawerTitle>
+        <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+      </DrawerHeader>
+      <div className="px-md pb-md">
+        <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
+      </div>
+      <DrawerFooter>
+        <Button>Submit</Button>
+        <DrawerClose asChild>
+          <Button variant="outline">Cancel</Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </div>
+  </DrawerContent>
+</Drawer>`}>
+            <div className="w-full border border-border rounded-t-lg bg-card shadow pointer-events-none">
+              <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
+              <div className="flex flex-col gap-xs p-md text-left">
+                <h3 className="typo-heading-4 text-foreground">Move Goal</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">Set your daily activity goal.</p>
               </div>
-            </DrawerContent>
-          </Drawer>
-        </Example>
+              <div className="px-md pb-md">
+                <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
+                <Button variant="outline" className="pointer-events-none">Cancel</Button>
+                <Button className="pointer-events-none">Submit</Button>
+              </div>
+            </div>
+          </Example>
+
+          <Example title="Header Only" description="Minimal drawer with just a title and close button." code={`<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Notifications</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <div className="mx-auto w-full max-w-sm">
+      <DrawerHeader>
+        <DrawerTitle>Notifications</DrawerTitle>
+        <DrawerDescription>You have no new notifications.</DrawerDescription>
+      </DrawerHeader>
+      <DrawerFooter>
+        <DrawerClose asChild>
+          <Button variant="outline">Close</Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </div>
+  </DrawerContent>
+</Drawer>`}>
+            <div className="w-full border border-border rounded-t-lg bg-card shadow pointer-events-none">
+              <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
+              <div className="flex flex-col gap-xs p-md text-left">
+                <h3 className="typo-heading-4 text-foreground">Notifications</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">You have no new notifications.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
+                <Button variant="outline" className="pointer-events-none">Close</Button>
+              </div>
+            </div>
+          </Example>
+
+          <Example title="No Scale Background" description="Disable the page background scaling animation." code={`<Drawer shouldScaleBackground={false}>
+  <DrawerTrigger asChild>
+    <Button variant="outline">No Scale</Button>
+  </DrawerTrigger>
+  <DrawerContent>
+    <div className="mx-auto w-full max-w-sm">
+      <DrawerHeader>
+        <DrawerTitle>Settings</DrawerTitle>
+        <DrawerDescription>Background does not scale when drawer opens.</DrawerDescription>
+      </DrawerHeader>
+      <DrawerFooter>
+        <DrawerClose asChild>
+          <Button variant="outline">Done</Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </div>
+  </DrawerContent>
+</Drawer>`}>
+            <div className="w-full border border-border rounded-t-lg bg-card shadow pointer-events-none">
+              <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
+              <div className="flex flex-col gap-xs p-md text-left">
+                <h3 className="typo-heading-4 text-foreground">Settings</h3>
+                <p className="typo-paragraph-sm text-muted-foreground">Background does not scale when drawer opens.</p>
+              </div>
+              <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
+                <Button variant="outline" className="pointer-events-none">Done</Button>
+              </div>
+            </div>
+          </Example>
+        </div>
+
+        {/* Interactive demos — click to open real drawers */}
+        <div className="rounded-xl border border-border overflow-hidden">
+          <div className="px-md py-xs bg-muted/50 border-b border-border">
+            <span className="text-xs font-medium text-muted-foreground">Interactive Demo</span>
+          </div>
+          <div className="p-lg flex flex-wrap gap-sm">
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="outline" size="sm">Basic</Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <div className="mx-auto w-full max-w-sm">
+                  <DrawerHeader>
+                    <DrawerTitle>Move Goal</DrawerTitle>
+                    <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+                  </DrawerHeader>
+                  <div className="px-md pb-md">
+                    <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
+                  </div>
+                  <DrawerFooter>
+                    <Button>Submit</Button>
+                    <DrawerClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </div>
+              </DrawerContent>
+            </Drawer>
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="outline" size="sm">Header Only</Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <div className="mx-auto w-full max-w-sm">
+                  <DrawerHeader>
+                    <DrawerTitle>Notifications</DrawerTitle>
+                    <DrawerDescription>You have no new notifications.</DrawerDescription>
+                  </DrawerHeader>
+                  <DrawerFooter>
+                    <DrawerClose asChild>
+                      <Button variant="outline">Close</Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </div>
+              </DrawerContent>
+            </Drawer>
+            <Drawer shouldScaleBackground={false}>
+              <DrawerTrigger asChild>
+                <Button variant="outline" size="sm">No Scale</Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <div className="mx-auto w-full max-w-sm">
+                  <DrawerHeader>
+                    <DrawerTitle>Settings</DrawerTitle>
+                    <DrawerDescription>Background does not scale when drawer opens.</DrawerDescription>
+                  </DrawerHeader>
+                  <DrawerFooter>
+                    <DrawerClose asChild>
+                      <Button variant="outline">Done</Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          </div>
         </div>
       </section>
 
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <DrawerPropsTable />
+      </section>
 
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
+          Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Drawer background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Drawer border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Handle indicator color</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <DrawerTokensTable />
       </section>
 
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -14050,13 +14421,38 @@ function DrawerDocs() {
               <p>Include a drag handle for intuitive swipe-to-dismiss.</p>
             </DoItem>
             <DontItem>
-              <p>Don't use Drawer on desktop when a Dialog or Sheet would be more natural.</p>
+              <p>Don't use Drawer on desktop when a <strong>Dialog</strong> or <strong>Sheet</strong> would be more natural.</p>
               <p>Don't place critical content deep inside a Drawer — users may dismiss it accidentally.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-body font-semibold text-sm">Content</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Always provide DrawerTitle for screen reader accessibility.</p>
+              <p>Keep drawer content focused — one task per drawer.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't use Drawer for navigation menus — use <strong>Sheet</strong> with side placement.</p>
+              <p>Don't omit DrawerTitle — screen readers need it.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="151:12313" rows={[
+        ["Content", "Drawer Content (r=8, bg-card, shadow)", "DrawerContent", "fixed inset-x-0 bottom-0, rounded-t-lg, border border-border, bg-card, shadow"],
+        ["Handle", "50×3px r=2 bg-muted", "—", "mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted"],
+        ["Overlay", "Black 50%", "DrawerOverlay", "bg-black/50"],
+        ["Header", "flex col gap-xs p-md", "DrawerHeader", "flex flex-col gap-xs p-md text-center sm:text-left"],
+        ["Footer", "flex col-reverse gap-xs p-md", "DrawerFooter", "flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end"],
+        ["Title", "heading 4 (Geist/600 20/24)", "DrawerTitle", "typo-heading-4 text-foreground"],
+        ["Description", "paragraph sm (Geist/400 14/20)", "DrawerDescription", "typo-paragraph-sm text-muted-foreground"],
+        ["Scale Background", "true", "shouldScaleBackground", "true (default)"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
@@ -14064,31 +14460,38 @@ function DrawerDocs() {
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Escape</kbd> — Close the drawer.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Tab</kbd> — Move focus within drawer.</li>
-            </ul>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-border text-left">
+                    <th className="pr-6 py-2 font-semibold">Key</th>
+                    <th className="pr-6 py-2 font-semibold">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Escape</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Close the drawer</td>
+                  </tr>
+                  <tr className="border-b border-border">
+                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td>
+                    <td className="pr-6 py-2 text-muted-foreground">Move focus within drawer content</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <h3 className="font-body font-semibold text-sm text-foreground">Touch & Focus</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
               <li>Built on Vaul — swipe-to-dismiss for touch devices.</li>
               <li>Focus is trapped inside when open.</li>
               <li>Always provide DrawerTitle for screen readers.</li>
+              <li>Overlay click dismisses the drawer.</li>
             </ul>
           </div>
         </div>
       </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Position", "Bottom", "—", "fixed inset-x-0 bottom-0"],
-        ["Handle Bar", "100×4px", "—", "w-[100px] h-2xs rounded-full bg-muted"],
-        ["Top Radius", "10px", "—", "rounded-t-[10px]"],
-        ["Overlay", "Black 80%", "—", "bg-black/80"],
-        ["Gesture", "Swipe to close", "—", "vaul library built-in"],
-        ["Scale Background", "true", "shouldScaleBackground", "true (default)"],
-      ]} />
 
       {/* ---- Related Components ---- */}
       <section id="related" className="space-y-4 pb-12">
@@ -14105,6 +14508,13 @@ function DrawerDocs() {
             <div>
               <p className="font-semibold text-foreground">Dialog</p>
               <p className="text-muted-foreground mt-0.5">Centered modal alternative.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Alert Dialog</p>
+              <p className="text-muted-foreground mt-0.5">Confirmation modal with required action.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -19293,7 +19703,7 @@ function NavigationMenuDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border bg-background overflow-visible">
-          <div className="p-4xl pb-[300px] flex items-start justify-center min-h-[160px] overflow-visible">
+          <div className="p-4xl pb-lg flex items-start justify-center min-h-[160px] overflow-visible">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -19375,8 +19785,8 @@ function NavigationMenuDocs() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Example
           title="With dropdown content"
-          description="Navigation items with rich dropdown panels containing links."
-          code={`<NavigationMenu>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>\n      <NavigationMenuContent>\n        <ul className="grid gap-sm p-md w-[400px]">\n          <li>\n            <NavigationMenuLink asChild>\n              <a href="/docs">Introduction</a>\n            </NavigationMenuLink>\n          </li>\n        </ul>\n      </NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>`}
+          description="Navigation items with rich dropdown panels. Click trigger to open."
+          code={`<NavigationMenu viewport={false}>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>\n      <NavigationMenuContent>\n        <ul className="grid gap-sm p-md w-[400px]">\n          <li>\n            <NavigationMenuLink asChild>\n              <a href="/docs">Introduction</a>\n            </NavigationMenuLink>\n          </li>\n        </ul>\n      </NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>`}
         >
           <NavigationMenu viewport={false}>
             <NavigationMenuList>
@@ -20366,58 +20776,72 @@ const foundations = [
   { id: "illustrations", label: "Illustrations" },
 ] as const
 
-const components = [
-  { id: "accordion", label: "Accordion" },
-  { id: "alert", label: "Alert" },
-  { id: "alert-dialog", label: "Alert Dialog" },
-  { id: "aspect-ratio", label: "Aspect Ratio" },
-  { id: "avatar", label: "Avatar" },
-  { id: "badge", label: "Badge" },
-  { id: "breadcrumb", label: "Breadcrumb" },
-  { id: "button", label: "Button" },
-  { id: "button-group", label: "Button Group" },
-  { id: "calendar", label: "Calendar" },
-  { id: "carousel", label: "Carousel" },
-  { id: "card", label: "Card" },
-  { id: "checkbox", label: "Checkbox" },
-  { id: "chip", label: "Chip" },
-  { id: "collapsible", label: "Collapsible" },
-  { id: "combobox", label: "Combobox" },
-  { id: "command", label: "Command" },
-  { id: "context-menu", label: "Context Menu" },
-  { id: "date-picker", label: "Date Picker" },
-  { id: "menubar", label: "Menubar" },
-  { id: "navigation-menu", label: "Navigation Menu" },
-  { id: "dialog", label: "Dialog" },
-  { id: "drawer", label: "Drawer" },
-  { id: "dropdown-menu", label: "Dropdown Menu" },
-  { id: "hover-card", label: "Hover Card" },
-  { id: "input", label: "Input" },
-  { id: "input-otp", label: "Input OTP" },
-  { id: "label", label: "Label" },
-  { id: "pagination", label: "Pagination" },
-  { id: "popover", label: "Popover" },
-  { id: "progress", label: "Progress" },
-  { id: "radio-group", label: "Radio Group" },
-  { id: "resizable", label: "Resizable" },
-  { id: "scroll-area", label: "Scroll Area" },
-  { id: "select", label: "Select" },
-  { id: "separator", label: "Separator" },
-  { id: "sheet", label: "Sheet" },
-  { id: "sidebar", label: "Sidebar" },
-  { id: "skeleton", label: "Skeleton" },
-  { id: "slider", label: "Slider" },
-  { id: "spinner", label: "Spinner" },
-  { id: "switch", label: "Switch" },
-  { id: "table", label: "Table" },
-  { id: "data-table", label: "Data Table" },
-  { id: "tabs", label: "Tabs" },
-  { id: "textarea", label: "Textarea" },
-  { id: "toast", label: "Toast (Sonner)" },
-  { id: "toggle", label: "Toggle" },
-  { id: "toggle-group", label: "Toggle Group" },
-  { id: "tooltip", label: "Tooltip" },
+const componentGroups = [
+  { group: "Forms", items: [
+    { id: "button", label: "Button" },
+    { id: "button-group", label: "Button Group" },
+    { id: "calendar", label: "Calendar" },
+    { id: "checkbox", label: "Checkbox" },
+    { id: "combobox", label: "Combobox" },
+    { id: "date-picker", label: "Date Picker" },
+    { id: "input", label: "Input" },
+    { id: "input-otp", label: "Input OTP" },
+    { id: "label", label: "Label" },
+    { id: "radio-group", label: "Radio Group" },
+    { id: "select", label: "Select" },
+    { id: "slider", label: "Slider" },
+    { id: "switch", label: "Switch" },
+    { id: "textarea", label: "Textarea" },
+    { id: "toggle", label: "Toggle" },
+    { id: "toggle-group", label: "Toggle Group" },
+  ]},
+  { group: "Data Display", items: [
+    { id: "avatar", label: "Avatar" },
+    { id: "badge", label: "Badge" },
+    { id: "card", label: "Card" },
+    { id: "carousel", label: "Carousel" },
+    { id: "chip", label: "Chip" },
+    { id: "data-table", label: "Data Table" },
+    { id: "progress", label: "Progress" },
+    { id: "separator", label: "Separator" },
+    { id: "skeleton", label: "Skeleton" },
+    { id: "spinner", label: "Spinner" },
+    { id: "table", label: "Table" },
+  ]},
+  { group: "Feedback", items: [
+    { id: "alert", label: "Alert" },
+    { id: "toast", label: "Toast (Sonner)" },
+  ]},
+  { group: "Overlay", items: [
+    { id: "alert-dialog", label: "Alert Dialog" },
+    { id: "dialog", label: "Dialog" },
+    { id: "drawer", label: "Drawer" },
+    { id: "hover-card", label: "Hover Card" },
+    { id: "popover", label: "Popover" },
+    { id: "sheet", label: "Sheet" },
+    { id: "tooltip", label: "Tooltip" },
+  ]},
+  { group: "Navigation", items: [
+    { id: "breadcrumb", label: "Breadcrumb" },
+    { id: "command", label: "Command" },
+    { id: "context-menu", label: "Context Menu" },
+    { id: "dropdown-menu", label: "Dropdown Menu" },
+    { id: "menubar", label: "Menubar" },
+    { id: "navigation-menu", label: "Navigation Menu" },
+    { id: "pagination", label: "Pagination" },
+    { id: "tabs", label: "Tabs" },
+  ]},
+  { group: "Layout", items: [
+    { id: "accordion", label: "Accordion" },
+    { id: "aspect-ratio", label: "Aspect Ratio" },
+    { id: "collapsible", label: "Collapsible" },
+    { id: "resizable", label: "Resizable" },
+    { id: "scroll-area", label: "Scroll Area" },
+    { id: "sidebar", label: "Sidebar" },
+  ]},
 ] as const
+
+const components = componentGroups.flatMap(g => [...g.items])
 
 type ComponentId = (typeof foundations)[number]["id"] | (typeof components)[number]["id"]
 
@@ -20571,7 +20995,7 @@ function App() {
         <aside className="fixed left-0 top-16 w-[260px] h-[calc(100vh-4rem)] bg-background border-r border-border/50 overflow-y-auto z-10">
           <nav className="p-md space-y-lg">
             <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-xs px-sm">Foundations</p>
+              <p className="text-[11px] font-semibold text-foreground uppercase tracking-wider mb-xs px-sm">Foundations</p>
               <div className="flex flex-col gap-0.5">
                 {foundations.map(c => (
                   <button key={c.id} onClick={() => setActive(c.id)}
@@ -20585,20 +21009,25 @@ function App() {
                 ))}
               </div>
             </div>
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-xs px-sm">Components</p>
-              <div className="flex flex-col gap-0.5">
-                {components.map(c => (
-                  <button key={c.id} onClick={() => setActive(c.id)}
-                    className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
-                      active === c.id
-                        ? "bg-muted font-medium text-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}>
-                    {c.label}
-                  </button>
-                ))}
-              </div>
+            <div className="space-y-md">
+              <p className="text-[11px] font-semibold text-foreground uppercase tracking-wider px-sm">Components</p>
+              {componentGroups.map(g => (
+                <div key={g.group}>
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-0.5 px-sm">{g.group}</p>
+                  <div className="flex flex-col gap-0.5">
+                    {g.items.map(c => (
+                      <button key={c.id} onClick={() => setActive(c.id)}
+                        className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
+                          active === c.id
+                            ? "bg-muted font-medium text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}>
+                        {c.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </nav>
         </aside>
