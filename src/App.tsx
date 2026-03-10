@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
-import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { Button, IconButton } from "@/components/ui/button"
+import { Button, IconButton, buttonVariants } from "@/components/ui/button"
 import { ButtonGroup, ButtonGroupItem } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
+import { DecorationInput } from "@/components/ui/decoration-input"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
@@ -14,6 +14,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  selectTriggerVariants,
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
@@ -264,6 +265,8 @@ import {
   ChevronLeft,
   ArrowUpDown,
   CircleAlert,
+  SquareDashed,
+  ChevronDown,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -562,7 +565,11 @@ function Playground({
   )
 }
 
-/** PropertyTabs — Figma-style enum selector for Explore Behavior controls */
+/**
+ * PropertyTabs — Figma-style enum selector for Explore Behavior controls.
+ * Layout: label on top, pill buttons below.
+ * Active = bg-primary text-primary-foreground. Inactive = bordered pill.
+ */
 function PropertyTabs({ label, value, options, onChange }: {
   label: string
   value: string
@@ -570,24 +577,41 @@ function PropertyTabs({ label, value, options, onChange }: {
   onChange: (value: string) => void
 }) {
   return (
-    <div className="flex items-center gap-sm">
-      <span className="typo-paragraph-sm font-medium text-foreground min-w-[80px]">{label}</span>
-      <div className="flex gap-3xs">
+    <div className="space-y-xs">
+      <span className="typo-paragraph-sm font-medium text-foreground">{label}</span>
+      <div className="flex flex-wrap gap-xs">
         {options.map(opt => (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "px-sm py-3xs rounded-md typo-paragraph-sm transition-colors",
+              "px-xs py-3xs rounded-md typo-paragraph-mini border transition-colors",
               value === opt.value
-                ? "bg-foreground text-background font-medium"
-                : "bg-muted text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-card text-foreground border-border hover:bg-accent"
             )}
           >
             {opt.label}
           </button>
         ))}
       </div>
+    </div>
+  )
+}
+
+/**
+ * PropertyToggle — Boolean (yes/no) control for Explore Behavior.
+ * Layout: label on top, Switch below.
+ */
+function PropertyToggle({ label, checked, onChange }: {
+  label: string
+  checked: boolean
+  onChange: (checked: boolean) => void
+}) {
+  return (
+    <div className="space-y-xs">
+      <p className="typo-paragraph-sm font-medium text-foreground">{label}</p>
+      <Switch checked={checked} onCheckedChange={onChange} />
     </div>
   )
 }
@@ -3382,6 +3406,122 @@ const inputSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+type InputTabId = "input" | "decoration-input"
+const inputBehaviorTabs: { value: InputTabId; label: string }[] = [
+  { value: "input", label: "Input" },
+  { value: "decoration-input", label: "Decoration Input" },
+]
+
+function InputTab() {
+  const [size, setSize] = useState("default")
+  const [state, setState] = useState("default")
+  const [showDecoLeft, setShowDecoLeft] = useState(false)
+  const [showDecoRight, setShowDecoRight] = useState(false)
+
+  const isDisabled = state === "disabled"
+  const isError = state === "error" || state === "error-focus"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
+        <Input
+          size={size as any}
+          disabled={isDisabled}
+          aria-invalid={isError || undefined}
+          placeholder="Placeholder text"
+          className="max-w-xs"
+          decorationLeft={showDecoLeft ? <DecorationInput type="icon"><Search className="size-md text-muted-foreground" /></DecorationInput> : undefined}
+          decorationRight={showDecoRight ? <DecorationInput type="icon"><Settings className="size-md text-muted-foreground" /></DecorationInput> : undefined}
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Size" value={size} options={[
+          { value: "lg", label: "Large" },
+          { value: "default", label: "Regular" },
+          { value: "sm", label: "Small" },
+          { value: "xs", label: "Mini" },
+        ]} onChange={setSize} />
+        <PropertyTabs label="State" value={state} options={[
+          { value: "default", label: "Default" },
+          { value: "focus", label: "Focus" },
+          { value: "error", label: "Error" },
+          { value: "error-focus", label: "Error Focus" },
+          { value: "disabled", label: "Disabled" },
+        ]} onChange={setState} />
+        <div className="flex gap-md">
+          <PropertyToggle label="Show Decoration Left" checked={showDecoLeft} onChange={setShowDecoLeft} />
+          <PropertyToggle label="Show Decoration Right" checked={showDecoRight} onChange={setShowDecoRight} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function DecorationInputTab() {
+  const [type, setType] = useState<string>("icon")
+
+  const renderContent = () => {
+    switch (type) {
+      case "icon": return <Settings className="size-md" />
+      case "text": return <>Action</>
+      case "text-muted": return <>Optional</>
+      case "icon-muted": return <Settings className="size-md" />
+      case "avatar": return <Avatar className="size-lg"><AvatarFallback className="text-[8px]">CN</AvatarFallback></Avatar>
+      case "text-button": return <TextButton variant="primary">Text Button</TextButton>
+      case "payment-card": return <><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-red-500">MC</span></div><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-blue-600">V</span></div></>
+      default: return <Settings className="size-md" />
+    }
+  }
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
+        <DecorationInput type={type as any}>{renderContent()}</DecorationInput>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} options={[
+          { value: "icon", label: "Icon" },
+          { value: "text", label: "Text" },
+          { value: "text-muted", label: "Text Muted" },
+          { value: "icon-muted", label: "Icon Muted" },
+          { value: "avatar", label: "Avatar" },
+          { value: "text-button", label: "Text Button" },
+          { value: "payment-card", label: "Payment Card" },
+        ]} onChange={setType} />
+      </div>
+    </>
+  )
+}
+
+function InputExploreBehavior() {
+  const [activeTab, setActiveTab] = useState<InputTabId>("input")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      <div className="border-b border-border px-lg overflow-x-auto">
+        <div className="flex">
+          {inputBehaviorTabs.map(tab => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={cn(
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
+                activeTab === tab.value
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {activeTab === "input" && <InputTab />}
+      {activeTab === "decoration-input" && <DecorationInputTab />}
+    </div>
+  )
+}
+
 function InputPropsTable() {
   const props = [
     {
@@ -3413,6 +3553,18 @@ function InputPropsTable() {
       type: "boolean",
       default: "false",
       description: "Marks the input as invalid, applying a red border and red focus ring.",
+    },
+    {
+      name: "decorationLeft",
+      type: "ReactNode",
+      default: "—",
+      description: "Left decoration slot. Pass <DecorationInput> for icon, text, avatar, etc.",
+    },
+    {
+      name: "decorationRight",
+      type: "ReactNode",
+      default: "—",
+      description: "Right decoration slot. Pass <DecorationInput> for icon, text, avatar, etc.",
     },
     {
       name: "className",
@@ -3479,12 +3631,6 @@ function InputTokensTable() {
       value: "hsl(60 5% 91%)",
       hex: "#e9e9e7",
       usage: "Input border",
-    },
-    {
-      token: "--border-strong",
-      value: "hsl(60 2% 68%)",
-      hex: "#afafab",
-      usage: "Border when focused + has value",
     },
     {
       token: "--foreground",
@@ -3622,34 +3768,16 @@ function InputDocs() {
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large (40px)", value: "lg" },
-            { label: "Default (36px)", value: "default" },
-            { label: "Small (32px)", value: "sm" },
-            { label: "Mini (24px)", value: "xs" },
-          ]},
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-          { type: "switch", label: "Error", prop: "error", defaultValue: false },
-          { type: "text", label: "Placeholder", prop: "placeholder", defaultValue: "Type something…", placeholder: "Placeholder text" },
-        ]}
-        render={(p) => (
-          <Input
-            size={p.size}
-            disabled={p.disabled}
-            aria-invalid={p.error || undefined}
-            placeholder={p.placeholder}
-            className="max-w-xs"
-          />
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <InputExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add class-variance-authority clsx tailwind-merge`}
-        importCode={`import { Input } from "@/components/ui/input"`}
+        importCode={`import { Input } from "@/components/ui/input"\nimport { DecorationInput } from "@/components/ui/decoration-input"`}
       />
 
       {/* ---- Examples ---- */}
@@ -4044,6 +4172,50 @@ const handleFormSubmit = (e: React.FormEvent) => {
         >
           <FocusBlurDemo />
         </Example>
+
+        {/* With DecorationInput left */}
+        <Example
+          title="With decoration left (icon)"
+          description="Use decorationLeft prop with <DecorationInput> instead of absolute positioning. The gap between icon and text adjusts per size automatically."
+          code={`<Input
+  placeholder="Search..."
+  decorationLeft={
+    <DecorationInput type="icon">
+      <Search className="size-md text-muted-foreground" />
+    </DecorationInput>
+  }
+/>`}
+        >
+          <Input
+            className="max-w-sm"
+            placeholder="Search..."
+            decorationLeft={<DecorationInput type="icon"><Search className="size-md text-muted-foreground" /></DecorationInput>}
+          />
+        </Example>
+
+        {/* With DecorationInput both sides */}
+        <Example
+          title="With decorations on both sides"
+          description="Combine decorationLeft and decorationRight for inputs with icons on both sides."
+          code={`<Input
+  placeholder="Username"
+  decorationLeft={
+    <DecorationInput type="icon">
+      <User className="size-md text-muted-foreground" />
+    </DecorationInput>
+  }
+  decorationRight={
+    <DecorationInput type="text-muted">Optional</DecorationInput>
+  }
+/>`}
+        >
+          <Input
+            className="max-w-sm"
+            placeholder="Username"
+            decorationLeft={<DecorationInput type="icon"><User className="size-md text-muted-foreground" /></DecorationInput>}
+            decorationRight={<DecorationInput type="text-muted">Optional</DecorationInput>}
+          />
+        </Example>
         </div>
       </section>
 
@@ -4179,10 +4351,10 @@ const handleFormSubmit = (e: React.FormEvent) => {
         ["State", "Disabled", "disabled", "true"],
         ["Content", "Placeholder", "placeholder", '"Hint text"'],
         ["Content", "Value", "value / defaultValue", '"Entered text"'],
-        ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
-        ["Font", "Geist Regular 12/16", "—", "text-xs (xs size)"],
-        ["Show Left Icon", "true", "—", "Compose: icon + pl-9"],
-        ["Show Right Icon", "true", "—", "Compose: icon + pr-9"],
+        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-sm (lg/default/sm)"],
+        ["Font", "Geist Regular 12/16", "—", "typo-paragraph-mini (xs/mini)"],
+        ["Show Decoration Left", "true", "decorationLeft", "<DecorationInput> slot"],
+        ["Show Decoration Right", "true", "decorationRight", "<DecorationInput> slot"],
       ]} />
 
       {/* ---- Accessibility ---- */}
@@ -4345,18 +4517,6 @@ const handleFormSubmit = (e: React.FormEvent) => {
 /* ================================================================
    Component: Textarea Docs
    ================================================================ */
-
-const textareaSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
 
 function TextareaPropsTable() {
   const props = [
@@ -4537,6 +4697,78 @@ function TextareaTokensTable() {
   )
 }
 
+const textareaSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+function TextareaExploreBehavior() {
+  const [state, setState] = useState("default")
+  const [value, setValue] = useState("placeholder")
+  const [showResizable, setShowResizable] = useState(false)
+
+  const isDisabled = state === "disabled"
+  const isError = state === "error" || state === "error-focus"
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        {/* Preview */}
+        <div className="p-4xl flex items-center justify-center min-h-[200px]">
+          <Textarea
+            disabled={isDisabled}
+            aria-invalid={isError || undefined}
+            placeholder={value === "placeholder" ? "Type your message here." : undefined}
+            defaultValue={value === "value" ? "This is some entered text content that demonstrates the value state of the textarea component." : undefined}
+            key={`${state}-${value}-${showResizable}`}
+            className={[
+              "max-w-sm",
+              !showResizable && "resize-none",
+            ].filter(Boolean).join(" ")}
+            autoFocus={state === "focus" || state === "error-focus" ? true : undefined}
+          />
+        </div>
+        {/* Controls */}
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          {/* PropertyTabs row */}
+          <div className="space-y-sm">
+            <PropertyTabs label="State" value={state} onChange={setState} options={[
+              { value: "default", label: "Default" },
+              { value: "focus", label: "Focus" },
+              { value: "error", label: "Error" },
+              { value: "error-focus", label: "Error Focus" },
+              { value: "disabled", label: "Disabled" },
+            ]} />
+            <PropertyTabs label="Value" value={value} onChange={setValue} options={[
+              { value: "empty", label: "Empty" },
+              { value: "placeholder", label: "Placeholder" },
+              { value: "value", label: "Value" },
+            ]} />
+            <PropertyTabs label="Roundness" value="default" onChange={() => {}} options={[
+              { value: "default", label: "Default" },
+            ]} />
+          </div>
+          {/* Toggles row */}
+          <div className="flex flex-wrap gap-lg">
+            <div className="space-y-xs">
+              <span className="text-xs font-medium text-muted-foreground">Show Resizable</span>
+              <div><Switch checked={showResizable} onCheckedChange={setShowResizable} /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function TextareaDocs() {
   const [controlled, setControlled] = useState("")
   const maxLen = 200
@@ -4576,22 +4808,8 @@ function TextareaDocs() {
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-          { type: "switch", label: "Error", prop: "error", defaultValue: false },
-          { type: "text", label: "Placeholder", prop: "placeholder", defaultValue: "Type your message here.", placeholder: "Placeholder text" },
-        ]}
-        render={(p) => (
-          <Textarea
-            disabled={p.disabled}
-            aria-invalid={p.error || undefined}
-            placeholder={p.placeholder}
-            className="max-w-sm"
-          />
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <TextareaExploreBehavior />
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -4600,10 +4818,10 @@ function TextareaDocs() {
       />
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default textarea"
@@ -4870,7 +5088,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           Textarea extends all native{" "}
@@ -4883,7 +5101,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -4897,7 +5115,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -4986,11 +5204,11 @@ const handleSubmit = (e: React.FormEvent) => {
         ["Value", "Empty", "—", "no value"],
         ["Value", "Placeholder", "placeholder", '"Type your message here."'],
         ["Value", "Value", "value / defaultValue", '"Entered text"'],
-        ["Font", "Geist Regular 14/20", "—", "text-sm (font-normal)"],
+        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-sm"],
       ]} />
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -5112,7 +5330,7 @@ const handleSubmit = (e: React.FormEvent) => {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4 pb-12">
+      <section id="related" className="space-y-4 pb-12">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -5135,8 +5353,8 @@ const handleSubmit = (e: React.FormEvent) => {
                 Dropdown selection for choosing from predefined options.
               </p>
             </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
-              Planned
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
             </span>
           </div>
           <div className="px-5 py-3.5 flex justify-between items-center">
@@ -5159,18 +5377,6 @@ const handleSubmit = (e: React.FormEvent) => {
 /* ================================================================
    Component: Select Docs
    ================================================================ */
-
-const selectSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
 
 function SelectPropsTable() {
   const props = [
@@ -5395,6 +5601,100 @@ function SelectTokensTable() {
   )
 }
 
+const selectSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+function SelectExploreBehavior() {
+  const [size, setSize] = useState("default")
+  const [state, setState] = useState("default")
+  const [lines, setLines] = useState("1-line")
+  const [value, setValue] = useState("placeholder")
+
+  const isDisabled = state === "disabled"
+  const isError = state === "error" || state === "error-focus"
+  const isFocus = state === "focus" || state === "error-focus"
+  const showValue = value === "value"
+  const is2Lines = lines === "2-lines"
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        {/* Preview — static face matching Figma spec */}
+        <div className="p-4xl flex items-center justify-center min-h-[200px]">
+          <div
+            className={cn(
+              selectTriggerVariants({ size: size as "lg" | "default" | "sm" | "xs" }),
+              "w-[280px]",
+              is2Lines && "h-auto py-xs [&>span]:line-clamp-none",
+              isFocus && "ring-[3px]",
+              isFocus && !isError && "ring-ring",
+              isError && "border-destructive-border",
+              isError && isFocus && "ring-ring-error",
+              isDisabled && "opacity-50 cursor-not-allowed",
+            )}
+          >
+            {is2Lines ? (
+              <span className="!flex flex-col min-w-0 flex-1">
+                <span className="typo-paragraph-mini-bold text-muted-foreground truncate">Text</span>
+                <span className={cn(
+                  "typo-paragraph-sm truncate",
+                  showValue ? "text-foreground" : "text-muted-foreground"
+                )}>
+                  {showValue ? "Item selected" : "Select an item"}
+                </span>
+              </span>
+            ) : (
+              <span className={cn(
+                "truncate",
+                showValue ? "text-foreground" : "text-muted-foreground"
+              )}>
+                {showValue ? "Item selected" : "Select an item"}
+              </span>
+            )}
+            <ChevronDown className="size-md text-muted-foreground shrink-0" />
+          </div>
+        </div>
+        {/* Controls */}
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <div className="space-y-sm">
+            <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+              { value: "lg", label: "Large" },
+              { value: "default", label: "Regular" },
+              { value: "sm", label: "Small" },
+              { value: "xs", label: "Mini" },
+            ]} />
+            <PropertyTabs label="State" value={state} onChange={setState} options={[
+              { value: "default", label: "Default" },
+              { value: "focus", label: "Focus" },
+              { value: "error", label: "Error" },
+              { value: "error-focus", label: "Error Focus" },
+              { value: "disabled", label: "Disabled" },
+            ]} />
+            <PropertyTabs label="Lines" value={lines} onChange={setLines} options={[
+              { value: "1-line", label: "1 Line" },
+              { value: "2-lines", label: "2 Lines" },
+            ]} />
+            <PropertyTabs label="Value" value={value} onChange={setValue} options={[
+              { value: "placeholder", label: "Placeholder" },
+              { value: "value", label: "Value" },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function SelectDocs() {
   const [controlled, setControlled] = useState("")
   const [formRole, setFormRole] = useState("")
@@ -5431,31 +5731,8 @@ function SelectDocs() {
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large (40px)", value: "lg" },
-            { label: "Default (36px)", value: "default" },
-            { label: "Small (32px)", value: "sm" },
-            { label: "Mini (24px)", value: "xs" },
-          ]},
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-          { type: "switch", label: "Error", prop: "error", defaultValue: false },
-        ]}
-        render={(p) => (
-          <Select disabled={p.disabled}>
-            <SelectTrigger size={p.size} aria-invalid={p.error || undefined} className="w-[200px]">
-              <SelectValue placeholder="Select option" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="option1">Option 1</SelectItem>
-              <SelectItem value="option2">Option 2</SelectItem>
-              <SelectItem value="option3">Option 3</SelectItem>
-            </SelectContent>
-          </Select>
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <SelectExploreBehavior />
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -5464,10 +5741,10 @@ function SelectDocs() {
       />
 
       {/* ---- Examples ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-xl">
         {/* Default */}
         <Example
           title="Default select"
@@ -5901,7 +6178,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Props ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           Select is a compound component built on{" "}
@@ -5914,7 +6191,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
         <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
@@ -5928,7 +6205,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
         <div className="space-y-4">
@@ -6025,10 +6302,11 @@ const handleSubmit = (e) => {
         ["Value", "Placeholder", "—", '<SelectValue placeholder="..." />'],
         ["Value", "Value", "value / defaultValue", "string"],
         ["Lines", "1 Line", "—", "[&>span]:line-clamp-1"],
+        ["Lines", "2 Lines", "className", '"[&>span]:line-clamp-2"'],
       ]} />
 
       {/* ---- Accessibility ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
@@ -6129,7 +6407,7 @@ const handleSubmit = (e) => {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4 pb-12">
+      <section id="related" className="space-y-4 pb-12">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -7340,9 +7618,273 @@ const someChecked = items.some(i => i.checked) && !allChecked
   )
 }
 
+
 /* ================================================================
    Switch Docs
    ================================================================ */
+
+function SwitchTab() {
+  const [checked, setChecked] = useState("false")
+  const [state, setState] = useState("default")
+  const isChecked = checked === "true"
+  const isDisabled = state === "disabled"
+  const isFocus = state === "focus"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <Switch
+          checked={isChecked}
+          onCheckedChange={(v) => setChecked(v ? "true" : "false")}
+          disabled={isDisabled}
+          className={cn(isFocus && "ring-[3px] ring-ring")}
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Checked?" value={checked} onChange={setChecked} options={[
+            { value: "false", label: "False" },
+            { value: "true", label: "True" },
+          ]} />
+          <PropertyTabs label="State" value={state} onChange={setState} options={[
+            { value: "default", label: "Default" },
+            { value: "focus", label: "Focus" },
+            { value: "disabled", label: "Disabled" },
+          ]} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function SwitchGroupTab() {
+  const [checked, setChecked] = useState("false")
+  const [layout, setLayout] = useState("inline")
+  const isChecked = checked === "true"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className={layout === "inline" ? "flex items-center gap-xs" : "space-y-sm"}>
+          <div className="flex items-center gap-xs">
+            <Switch
+              checked={isChecked}
+              onCheckedChange={(v) => setChecked(v ? "true" : "false")}
+              id="sw-grp-explore"
+            />
+            <Label htmlFor="sw-grp-explore">Label</Label>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Checked?" value={checked} onChange={setChecked} options={[
+            { value: "false", label: "False" },
+            { value: "true", label: "True" },
+          ]} />
+          <PropertyTabs label="Layout" value={layout} onChange={setLayout} options={[
+            { value: "inline", label: "Inline" },
+            { value: "block", label: "Block" },
+          ]} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function RichSwitchGroupTab() {
+  const [checked, setChecked] = useState("false")
+  const [flipped, setFlipped] = useState("false")
+  const [showLine2, setShowLine2] = useState(false)
+  const isChecked = checked === "true"
+  const isFlipped = flipped === "true"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px]">
+        <div className={cn(
+          "flex gap-xs items-start rounded-[10px] border bg-card px-sm py-xs w-[240px]",
+          isChecked ? "border-primary" : "border-border",
+          isFlipped && "flex-row-reverse"
+        )}>
+          <div className="flex items-center pt-[1.5px] shrink-0">
+            <Switch
+              checked={isChecked}
+              onCheckedChange={(v) => setChecked(v ? "true" : "false")}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="typo-paragraph-sm text-foreground-subtle">Label</p>
+            {showLine2 && (
+              <p className="typo-paragraph-mini text-muted-foreground">Secondary text</p>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Checked?" value={checked} onChange={setChecked} options={[
+            { value: "false", label: "False" },
+            { value: "true", label: "True" },
+          ]} />
+          <PropertyTabs label="Flipped" value={flipped} onChange={setFlipped} options={[
+            { value: "false", label: "False" },
+            { value: "true", label: "True" },
+          ]} />
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Line 2</span>
+            <div><Switch checked={showLine2} onCheckedChange={setShowLine2} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const switchBehaviorTabs = [
+  { value: "switch", label: "Switch" },
+  { value: "switch-group", label: "Switch Group" },
+  { value: "rich-switch-group", label: "Rich Switch Group" },
+]
+
+function SwitchExploreBehavior() {
+  const [tab, setTab] = useState("switch")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="flex border-b border-border bg-muted/50">
+          {switchBehaviorTabs.map((t) => (
+            <button
+              key={t.value}
+              onClick={() => setTab(t.value)}
+              className={cn(
+                "px-md py-sm typo-paragraph-sm-medium transition-colors",
+                tab === t.value
+                  ? "text-foreground border-b-2 border-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        {tab === "switch" && <SwitchTab />}
+        {tab === "switch-group" && <SwitchGroupTab />}
+        {tab === "rich-switch-group" && <RichSwitchGroupTab />}
+      </div>
+    </section>
+  )
+}
+
+function SwitchPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">checked</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Controlled checked state.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">defaultChecked</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">false</td>
+            <td className="p-3">Initial checked state (uncontrolled).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">onCheckedChange</td>
+            <td className="p-3 font-mono text-xs">{`(checked: boolean) => void`}</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Callback when checked state changes.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">disabled</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">false</td>
+            <td className="p-3">Disables the switch.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">name</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Form field name.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Additional CSS classes merged via cn().</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function SwitchTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-accent-selected</td>
+            <td className="p-3 font-mono text-xs">var(--accent-selected)</td>
+            <td className="p-3">Unchecked track background (#dadad7)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-primary</td>
+            <td className="p-3 font-mono text-xs">var(--primary)</td>
+            <td className="p-3">Checked track background</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-background</td>
+            <td className="p-3 font-mono text-xs">var(--background)</td>
+            <td className="p-3">Thumb fill (always white)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">ring-ring</td>
+            <td className="p-3 font-mono text-xs">var(--ring) 3px</td>
+            <td className="p-3">Focus ring</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size-md</td>
+            <td className="p-3 font-mono text-xs">16px</td>
+            <td className="p-3">Thumb size (circle)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">rounded-xl</td>
+            <td className="p-3 font-mono text-xs">12px</td>
+            <td className="p-3">Track border radius (pill)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">opacity-50</td>
+            <td className="p-3 font-mono text-xs">0.5</td>
+            <td className="p-3">Disabled state opacity</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
 const switchSections: TocSection[] = [
   { id: "explore-behavior", label: "Explore Behavior" },
@@ -7358,554 +7900,162 @@ const switchSections: TocSection[] = [
 
 function SwitchDocs() {
   const [checked, setChecked] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    marketing: false,
-  })
-  const [formSubmitted, setFormSubmitted] = useState(false)
 
   return (
     <div className="space-y-12">
       <TableOfContents sections={switchSections} />
 
-      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
-          Components / Forms
-        </p>
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Switch</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          A toggle control for binary on/off settings. Unlike Checkbox, the
-          switch implies an immediate effect — the setting takes effect as soon
-          as it is toggled.
+          A toggle control for binary on/off settings. Unlike Checkbox, the switch implies an immediate effect. Includes Switch, Switch Group with label, and Rich Switch Group with card-style layout. Built on Radix Switch primitive.
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "switch", label: "Checked", prop: "checked", defaultValue: false },
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-        ]}
-        render={(p) => (
-          <div className="flex items-center gap-xs">
-            <Switch id="playground-switch" checked={p.checked} disabled={p.disabled} />
-            <Label htmlFor="playground-switch">{p.checked ? "On" : "Off"}</Label>
-          </div>
-        )}
-      />
+      <SwitchExploreBehavior />
 
-      {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add @radix-ui/react-switch`}
-        importCode={`import { Switch } from "@/components/ui/switch"`}
+        deps="pnpm add @radix-ui/react-switch"
+        importCode={`import { Switch } from "@/components/ui/switch"\nimport { Label } from "@/components/ui/label"`}
       />
 
-      {/* ---- Examples ---- */}
-      <section className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
-          {/* Default */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Example
-            title="Default switch"
-            description="Basic unchecked switch. Click to toggle."
-            code={`<Switch />`}
+            title="Default"
+            description="Basic switch with label."
+            code={`<div className="flex items-center gap-xs">\n  <Switch id="airplane" />\n  <Label htmlFor="airplane">Airplane Mode</Label>\n</div>`}
           >
-            <Switch />
+            <div className="flex items-center gap-xs">
+              <Switch id="ex-airplane" />
+              <Label htmlFor="ex-airplane">Airplane Mode</Label>
+            </div>
           </Example>
 
-          {/* Default checked */}
-          <Example
-            title="Default checked"
-            description="Use defaultChecked for uncontrolled switches that start in the on state."
-            code={`<Switch defaultChecked />`}
-          >
-            <Switch defaultChecked />
-          </Example>
-
-          {/* Controlled */}
           <Example
             title="Controlled"
             description="Use checked + onCheckedChange for controlled state."
-            code={`const [checked, setChecked] = useState(false)
-
-<Switch
-  checked={checked}
-  onCheckedChange={setChecked}
-/>`}
+            code={`const [checked, setChecked] = useState(false)\n\n<Switch checked={checked} onCheckedChange={setChecked} />`}
           >
-            <div className="flex items-center gap-3">
-              <Switch
-                checked={checked}
-                onCheckedChange={setChecked}
-                id="ctrl-switch"
-              />
-              <label htmlFor="ctrl-switch" className="text-sm cursor-pointer select-none">
-                {checked ? "On" : "Off"}
-              </label>
+            <div className="flex items-center gap-xs">
+              <Switch checked={checked} onCheckedChange={setChecked} id="ex-ctrl" />
+              <Label htmlFor="ex-ctrl">{checked ? "On" : "Off"}</Label>
             </div>
           </Example>
 
-          {/* With label */}
-          <Example
-            title="With label"
-            description="Pair with a <label> via matching id/htmlFor for accessible click targets."
-            code={`<div className="flex items-center gap-3">
-  <Switch id="airplane" />
-  <label htmlFor="airplane" className="text-sm">
-    Airplane Mode
-  </label>
-</div>`}
-          >
-            <div className="flex items-center gap-3">
-              <Switch id="airplane-demo" />
-              <label
-                htmlFor="airplane-demo"
-                className="text-sm cursor-pointer select-none"
-              >
-                Airplane Mode
-              </label>
-            </div>
-          </Example>
-
-          {/* Disabled */}
           <Example
             title="Disabled"
-            description="Disabled switches are non-interactive and visually dimmed to 50% opacity."
-            code={`<Switch disabled />
-<Switch disabled defaultChecked />`}
+            description="Disabled switches at 50% opacity."
+            code={`<Switch disabled />\n<Switch disabled defaultChecked />`}
           >
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3">
-                <Switch disabled id="dis-off-sw" />
-                <label htmlFor="dis-off-sw" className="text-sm text-muted-foreground">
-                  Disabled off
-                </label>
+            <div className="flex items-center gap-lg">
+              <div className="flex items-center gap-xs">
+                <Switch disabled id="ex-dis-off" />
+                <Label htmlFor="ex-dis-off" className="text-muted-foreground">Off</Label>
               </div>
-              <div className="flex items-center gap-3">
-                <Switch disabled defaultChecked id="dis-on-sw" />
-                <label htmlFor="dis-on-sw" className="text-sm text-muted-foreground">
-                  Disabled on
-                </label>
+              <div className="flex items-center gap-xs">
+                <Switch disabled defaultChecked id="ex-dis-on" />
+                <Label htmlFor="ex-dis-on" className="text-muted-foreground">On</Label>
               </div>
             </div>
           </Example>
 
-          {/* With description */}
-          <Example
-            title="With description"
-            description="Label + supporting text for more context about what the switch controls."
-            code={`<div className="flex items-center justify-between">
-  <div>
-    <label htmlFor="dark" className="text-sm font-medium">
-      Dark mode
-    </label>
-    <p className="text-xs text-muted-foreground">
-      Switch between light and dark themes.
-    </p>
-  </div>
-  <Switch id="dark" />
-</div>`}
-          >
-            <div className="flex items-center justify-between gap-4 max-w-xs w-full">
-              <div>
-                <label
-                  htmlFor="dark-demo"
-                  className="text-sm font-medium cursor-pointer select-none"
-                >
-                  Dark mode
-                </label>
-                <p className="text-xs text-muted-foreground">
-                  Switch between light and dark themes.
-                </p>
-              </div>
-              <Switch
-                id="dark-demo"
-                checked={darkMode}
-                onCheckedChange={setDarkMode}
-              />
-            </div>
-          </Example>
-
-          {/* Settings list */}
           <Example
             title="Settings list"
-            description="Multiple switches in a settings-style layout with labels and descriptions."
-            code={`<div className="divide-y divide-border">
-  {settings.map(s => (
-    <div key={s.id} className="flex items-center justify-between py-3">
-      <div>
-        <label>{s.label}</label>
-        <p>{s.description}</p>
-      </div>
-      <Switch checked={s.checked} onCheckedChange={...} />
-    </div>
-  ))}
-</div>`}
+            description="Multiple switches in a settings layout."
+            code={`<div className="divide-y divide-border">\n  <div className="flex items-center justify-between py-sm">\n    <div>\n      <Label>Email</Label>\n      <p className="typo-paragraph-mini text-muted-foreground">Receive alerts</p>\n    </div>\n    <Switch />\n  </div>\n  ...\n</div>`}
           >
-            <div className="divide-y divide-border max-w-xs w-full">
-              <div className="flex items-center justify-between gap-4 py-3">
+            <div className="divide-y divide-border w-[260px]">
+              <div className="flex items-center justify-between gap-xs py-sm">
                 <div>
-                  <label
-                    htmlFor="set-email"
-                    className="text-sm font-medium cursor-pointer select-none"
-                  >
-                    Email notifications
-                  </label>
-                  <p className="text-xs text-muted-foreground">
-                    Receive email alerts
-                  </p>
-                </div>
-                <Switch
-                  id="set-email"
-                  checked={notifications.email}
-                  onCheckedChange={(v) =>
-                    setNotifications((p) => ({ ...p, email: v }))
-                  }
-                />
-              </div>
-              <div className="flex items-center justify-between gap-4 py-3">
-                <div>
-                  <label
-                    htmlFor="set-push"
-                    className="text-sm font-medium cursor-pointer select-none"
-                  >
-                    Push notifications
-                  </label>
-                  <p className="text-xs text-muted-foreground">
-                    Browser push alerts
-                  </p>
-                </div>
-                <Switch
-                  id="set-push"
-                  checked={notifications.push}
-                  onCheckedChange={(v) =>
-                    setNotifications((p) => ({ ...p, push: v }))
-                  }
-                />
-              </div>
-              <div className="flex items-center justify-between gap-4 py-3">
-                <div>
-                  <label
-                    htmlFor="set-mkt"
-                    className="text-sm font-medium cursor-pointer select-none"
-                  >
-                    Marketing emails
-                  </label>
-                  <p className="text-xs text-muted-foreground">
-                    Product news & offers
-                  </p>
-                </div>
-                <Switch
-                  id="set-mkt"
-                  checked={notifications.marketing}
-                  onCheckedChange={(v) =>
-                    setNotifications((p) => ({ ...p, marketing: v }))
-                  }
-                />
-              </div>
-            </div>
-          </Example>
-
-          {/* In a card */}
-          <Example
-            title="Card layout"
-            description="Switch used inside a card component for feature toggles."
-            code={`<div className="rounded-lg border p-4">
-  <div className="flex items-center justify-between">
-    <div>
-      <p className="font-medium">Auto-save</p>
-      <p className="text-xs text-muted-foreground">
-        Automatically save changes
-      </p>
-    </div>
-    <Switch defaultChecked />
-  </div>
-</div>`}
-          >
-            <div className="rounded-lg border border-border bg-background p-4 max-w-xs w-full">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-medium">Auto-save</p>
-                  <p className="text-xs text-muted-foreground">
-                    Automatically save changes as you type
-                  </p>
+                  <p className="typo-paragraph-sm-medium text-foreground">Email</p>
+                  <p className="typo-paragraph-mini text-muted-foreground">Receive alerts</p>
                 </div>
                 <Switch defaultChecked />
               </div>
-            </div>
-          </Example>
-
-          {/* Form usage */}
-          <Example
-            title="Form with switch"
-            description="Switch inside a form. The name and value are submitted with the form data."
-            code={`<form onSubmit={handleSubmit}>
-  <Switch name="newsletter" />
-  <label>Subscribe to newsletter</label>
-  <Button type="submit">Save</Button>
-</form>`}
-          >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                setFormSubmitted(true)
-                setTimeout(() => setFormSubmitted(false), 3000)
-              }}
-              className="space-y-3 max-w-xs w-full"
-            >
-              <div className="flex items-center gap-3">
-                <Switch name="newsletter" id="form-newsletter" />
-                <label
-                  htmlFor="form-newsletter"
-                  className="text-sm cursor-pointer select-none"
-                >
-                  Subscribe to newsletter
-                </label>
-              </div>
-              <Button type="submit" size="sm">
-                {formSubmitted ? "Saved!" : "Save preferences"}
-              </Button>
-            </form>
-          </Example>
-
-          {/* Right-to-left label */}
-          <Example
-            title="Label on left"
-            description="Place the label before the switch for left-to-right reading flow in settings panels."
-            code={`<label className="flex items-center justify-between w-full">
-  <span className="text-sm font-medium">Wi-Fi</span>
-  <Switch />
-</label>`}
-          >
-            <label className="flex items-center justify-between max-w-xs w-full cursor-pointer">
-              <span className="text-sm font-medium select-none">Wi-Fi</span>
-              <Switch />
-            </label>
-          </Example>
-
-          {/* Compact inline */}
-          <Example
-            title="Compact inline"
-            description="Switch used inline with text in a more compact layout."
-            code={`<p className="text-sm flex items-center gap-2">
-  Show completed tasks <Switch defaultChecked />
-</p>`}
-          >
-            <p className="text-sm flex items-center gap-2">
-              Show completed tasks <Switch defaultChecked />
-            </p>
-          </Example>
-
-          {/* Custom size */}
-          <Example
-            title="Custom size"
-            description="Override dimensions with className. The default is 33×18px per Figma spec."
-            code={`{/* Larger */}
-<Switch className="h-6 w-11 [&>span]:size-5
-  [&>span]:data-[state=checked]:translate-x-5" />`}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Switch
-                  className="h-6 w-11 [&>span]:size-5 [&>span]:data-[state=checked]:translate-x-5"
-                  defaultChecked
-                />
-                <span className="text-sm">Large (44×24)</span>
+              <div className="flex items-center justify-between gap-xs py-sm">
+                <div>
+                  <p className="typo-paragraph-sm-medium text-foreground">Push</p>
+                  <p className="typo-paragraph-mini text-muted-foreground">Browser alerts</p>
+                </div>
+                <Switch />
               </div>
             </div>
           </Example>
         </div>
       </section>
 
-      {/* ---- Props ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          Extends <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
-          Radix SwitchPrimitive.Root</code> — all native props forwarded.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="text-left px-4 py-2 font-medium">Prop</th>
-                <th className="text-left px-4 py-2 font-medium">Type</th>
-                <th className="text-left px-4 py-2 font-medium">Default</th>
-                <th className="text-left px-4 py-2 font-medium">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">checked</td>
-                <td className="px-4 py-2 font-mono text-xs">boolean</td>
-                <td className="px-4 py-2 text-muted-foreground">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Controlled checked state</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">defaultChecked</td>
-                <td className="px-4 py-2 font-mono text-xs">boolean</td>
-                <td className="px-4 py-2 text-muted-foreground">false</td>
-                <td className="px-4 py-2 text-muted-foreground">Initial checked state (uncontrolled)</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">onCheckedChange</td>
-                <td className="px-4 py-2 font-mono text-xs">{"(checked: boolean) => void"}</td>
-                <td className="px-4 py-2 text-muted-foreground">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Called when checked state changes</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">disabled</td>
-                <td className="px-4 py-2 font-mono text-xs">boolean</td>
-                <td className="px-4 py-2 text-muted-foreground">false</td>
-                <td className="px-4 py-2 text-muted-foreground">Disables the switch</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">required</td>
-                <td className="px-4 py-2 font-mono text-xs">boolean</td>
-                <td className="px-4 py-2 text-muted-foreground">false</td>
-                <td className="px-4 py-2 text-muted-foreground">Marks the switch as required for forms</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">name</td>
-                <td className="px-4 py-2 font-mono text-xs">string</td>
-                <td className="px-4 py-2 text-muted-foreground">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Form field name</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">value</td>
-                <td className="px-4 py-2 font-mono text-xs">string</td>
-                <td className="px-4 py-2 text-muted-foreground">"on"</td>
-                <td className="px-4 py-2 text-muted-foreground">Value submitted with forms</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">className</td>
-                <td className="px-4 py-2 font-mono text-xs">string</td>
-                <td className="px-4 py-2 text-muted-foreground">—</td>
-                <td className="px-4 py-2 text-muted-foreground">Additional CSS classes merged via cn()</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SwitchPropsTable />
       </section>
 
-      {/* ---- Design Tokens ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border bg-muted/50">
-                <th className="text-left px-4 py-2 font-medium">Token</th>
-                <th className="text-left px-4 py-2 font-medium">Role</th>
-                <th className="text-left px-4 py-2 font-medium">CSS Variable</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">input</td>
-                <td className="px-4 py-2 text-muted-foreground">Unchecked track background</td>
-                <td className="px-4 py-2 font-mono text-xs">--input</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">primary</td>
-                <td className="px-4 py-2 text-muted-foreground">Checked track background</td>
-                <td className="px-4 py-2 font-mono text-xs">--primary</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">background</td>
-                <td className="px-4 py-2 text-muted-foreground">Thumb color (always white)</td>
-                <td className="px-4 py-2 font-mono text-xs">--background</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-mono text-xs">ring</td>
-                <td className="px-4 py-2 text-muted-foreground">Focus ring (3px spread)</td>
-                <td className="px-4 py-2 font-mono text-xs">--ring</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SwitchTokensTable />
       </section>
 
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="grid grid-cols-2 gap-6">
-          <DoItem text="Use Switch for settings that take immediate effect (e.g. dark mode, notifications)." />
-          <DontItem text="Don't use Switch when the change requires a form submission — use Checkbox instead." />
-          <DoItem text="Always pair with a visible label describing what the switch controls." />
-          <DontItem text="Don't use a switch for agreeing to terms — use a Checkbox." />
-          <DoItem text="Place the switch to the right of its label in settings panels for consistent scan pattern." />
-          <DontItem text="Don't use Switch for mutually exclusive options — use Radio Group instead." />
-        </div>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Use Switch for settings that take immediate effect (e.g. dark mode, notifications)." />
+        <DontItem text="Don't use Switch when the change requires a form submission — use Checkbox instead." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Always pair with a visible label describing what the switch controls." />
+        <DontItem text="Don't use Switch for mutually exclusive options — use Radio Group instead." />
       </section>
 
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping nodeId="16:1801" rows={[
-        ["Checked", "False", "checked", "{false} — neutral track, thumb left"],
-        ["Checked", "True", "checked", "{true} — primary track, thumb right"],
-        ["State", "Default", "—", "default"],
-        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
-        ["State", "Disabled", "disabled", "true (50% opacity)"],
+      <FigmaMapping id="figma-mapping" nodeId="16:1801" rows={[
         ["Track Size", "33×18px", "—", "h-[18px] w-[33px]"],
-        ["Thumb Size", "16×16px circle", "—", "size-md rounded-full"],
-        ["Radius", "Pill (12px)", "—", "rounded-full"],
+        ["Track Radius", "12px (pill)", "—", "rounded-xl"],
+        ["Checked?", "False", "data-[state=unchecked]", "bg-accent-selected"],
+        ["Checked?", "True", "data-[state=checked]", "bg-primary"],
+        ["Thumb", "16px white circle", "—", "size-md bg-background rounded-full"],
+        ["State", "Focus", "focus-visible", "ring-[3px] ring-ring"],
+        ["State", "Disabled", "disabled", "opacity-50"],
       ]} />
 
-      {/* ---- Accessibility ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
-          <li>Built on Radix Switch — renders a native <code className="text-xs bg-muted px-1.5 py-0.5 rounded">button</code> with <code className="text-xs bg-muted px-1.5 py-0.5 rounded">role="switch"</code>.</li>
-          <li>Supports <code className="text-xs bg-muted px-1.5 py-0.5 rounded">aria-checked="true" | "false"</code> automatically.</li>
-          <li><code className="text-xs bg-muted px-1.5 py-0.5 rounded">Space</code> key toggles the switch (native button behavior).</li>
-          <li>Always pair with a visible <code className="text-xs bg-muted px-1.5 py-0.5 rounded">{"<label>"}</code> or <code className="text-xs bg-muted px-1.5 py-0.5 rounded">aria-label</code>.</li>
-          <li>Focus ring is 3px with <code className="text-xs bg-muted px-1.5 py-0.5 rounded">--ring</code> token, meeting WCAG 2.4.7.</li>
-          <li>Color contrast between checked (teal-700) and unchecked (neutral) tracks clearly communicates state.</li>
-        </ul>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Navigation</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b border-border"><th className="text-left p-2 font-semibold">Key</th><th className="text-left p-2 font-semibold">Action</th></tr></thead>
+              <tbody className="divide-y divide-border">
+                <tr><td className="p-2 font-mono">Tab</td><td className="p-2">Move focus to/from the switch</td></tr>
+                <tr><td className="p-2 font-mono">Space</td><td className="p-2">Toggle the switch on/off</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">ARIA Attributes</h3>
+          <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+            <li>Renders as <code className="bg-muted px-1 rounded font-mono">button</code> with <code className="bg-muted px-1 rounded font-mono">role="switch"</code>.</li>
+            <li>Provides <code className="bg-muted px-1 rounded font-mono">aria-checked="true" | "false"</code> automatically.</li>
+            <li>Always pair with a visible <code className="bg-muted px-1 rounded font-mono">Label</code> or <code className="bg-muted px-1 rounded font-mono">aria-label</code>.</li>
+            <li>Focus ring (3px) meets WCAG 2.4.7 focus visible requirement.</li>
+          </ul>
+        </div>
       </section>
 
-      {/* ---- Related Components ---- */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">
-          Related Components
-        </h2>
-        <div className="rounded-lg border border-border divide-y divide-border">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Checkbox</p>
-              <p className="text-muted-foreground mt-0.5">
-                For form fields where the change is applied on submit, not immediately.
-              </p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
-              Available
-            </span>
+      <section id="related" className="space-y-md pb-12">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Checkbox</p>
+            <p className="text-muted-foreground mt-0.5">For form fields where changes are applied on submit, not immediately.</p>
           </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Radio Group</p>
-              <p className="text-muted-foreground mt-0.5">
-                For mutually exclusive choices where only one option can be selected.
-              </p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
-              Planned
-            </span>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Radio</p>
+            <p className="text-muted-foreground mt-0.5">For mutually exclusive choices where only one option can be selected.</p>
           </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Toggle</p>
-              <p className="text-muted-foreground mt-0.5">
-                A pressable button that toggles between two visual states.
-              </p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
-              Planned
-            </span>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Toggle</p>
+            <p className="text-muted-foreground mt-0.5">A pressable button that toggles between two visual states.</p>
           </div>
         </div>
       </section>
@@ -8250,6 +8400,173 @@ function LabelDocs() {
    Slider Docs
    ================================================================ */
 
+function SliderExploreBehavior() {
+  const [type, setType] = useState("default")
+  const [orientation, setOrientation] = useState<"horizontal" | "vertical">("horizontal")
+  const [value, setValue] = useState([50])
+  const [rangeValue, setRangeValue] = useState([25, 75])
+
+  const isVertical = orientation === "vertical"
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="p-4xl flex items-center justify-center min-h-[200px]">
+          {type === "default" && (
+            <Slider value={value} onValueChange={setValue} max={100} step={1} orientation={orientation} className={isVertical ? "h-[180px]" : "w-[240px]"} />
+          )}
+          {type === "range-narrow" && (
+            <Slider value={rangeValue} onValueChange={setRangeValue} max={100} step={1} orientation={orientation} className={isVertical ? "h-[180px]" : "w-[240px]"} />
+          )}
+          {type === "range-wide" && (
+            <Slider value={rangeValue} onValueChange={setRangeValue} max={100} step={1} orientation={orientation} className={isVertical ? "h-[180px]" : "w-[240px]"} />
+          )}
+        </div>
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <div className="space-y-sm">
+            <PropertyTabs label="Orientation" value={orientation} onChange={(v) => setOrientation(v as "horizontal" | "vertical")} options={[
+              { value: "horizontal", label: "Horizontal" },
+              { value: "vertical", label: "Vertical" },
+            ]} />
+            <PropertyTabs label="Type" value={type} onChange={(v) => {
+              setType(v)
+              if (v === "default") setValue([50])
+              else if (v === "range-narrow") setRangeValue([40, 60])
+              else setRangeValue([15, 85])
+            }} options={[
+              { value: "default", label: "Default" },
+              { value: "range-narrow", label: "Range narrow" },
+              { value: "range-wide", label: "Range wide" },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SliderPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">defaultValue</td>
+            <td className="p-3 font-mono text-xs">number[]</td>
+            <td className="p-3 font-mono text-xs">[0]</td>
+            <td className="p-3">Initial value(s). Use 2 values for range mode.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">value</td>
+            <td className="p-3 font-mono text-xs">number[]</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Controlled value(s).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">onValueChange</td>
+            <td className="p-3 font-mono text-xs">{`(value: number[]) => void`}</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Callback when value changes.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">min</td>
+            <td className="p-3 font-mono text-xs">number</td>
+            <td className="p-3 font-mono text-xs">0</td>
+            <td className="p-3">Minimum value.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">max</td>
+            <td className="p-3 font-mono text-xs">number</td>
+            <td className="p-3 font-mono text-xs">100</td>
+            <td className="p-3">Maximum value.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">step</td>
+            <td className="p-3 font-mono text-xs">number</td>
+            <td className="p-3 font-mono text-xs">1</td>
+            <td className="p-3">Step increment.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">orientation</td>
+            <td className="p-3 font-mono text-xs">"horizontal" | "vertical"</td>
+            <td className="p-3 font-mono text-xs">"horizontal"</td>
+            <td className="p-3">Slider axis direction.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">disabled</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">false</td>
+            <td className="p-3">Disables the slider.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Additional CSS classes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function SliderTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-accent-selected</td>
+            <td className="p-3 font-mono text-xs">var(--accent-selected)</td>
+            <td className="p-3">Track background (#dadad7)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-primary</td>
+            <td className="p-3 font-mono text-xs">var(--primary)</td>
+            <td className="p-3">Range fill (active portion)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-background</td>
+            <td className="p-3 font-mono text-xs">var(--background)</td>
+            <td className="p-3">Thumb fill (#f7f7f6)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">border-foreground</td>
+            <td className="p-3 font-mono text-xs">var(--foreground)</td>
+            <td className="p-3">Thumb border 1px (#252522)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">ring-ring</td>
+            <td className="p-3 font-mono text-xs">var(--ring) 3px</td>
+            <td className="p-3">Focus ring</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">opacity-50</td>
+            <td className="p-3 font-mono text-xs">0.5</td>
+            <td className="p-3">Disabled state opacity</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 const sliderSections: TocSection[] = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
@@ -8271,231 +8588,144 @@ function SliderDocs() {
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Slider</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          A range input that allows users to select a value or range by dragging a thumb along a track. Supports single and dual thumb.
+          A range input that allows users to select a value or range by dragging a thumb along a track. Supports single and dual thumb modes. Built on Radix Slider primitive.
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-        ]}
-        render={(p) => <Slider defaultValue={[50]} max={100} step={1} disabled={p.disabled} className="w-60" />}
-      />
+      <SliderExploreBehavior />
 
-      
-
-      {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add @radix-ui/react-slider`}
+        deps="pnpm add @radix-ui/react-slider"
         importCode={`import { Slider } from "@/components/ui/slider"`}
       />
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Example title="Default" description="Basic slider with a single thumb at the midpoint." code={`<Slider defaultValue={[50]} max={100} step={1} />`}>
-            <Slider defaultValue={[50]} max={100} step={1} className="w-60" />
+          <Example
+            title="Default"
+            description="Single thumb slider."
+            code={`<Slider defaultValue={[50]} max={100} step={1} />`}
+          >
+            <Slider defaultValue={[50]} max={100} step={1} className="w-[240px]" />
           </Example>
 
-          <Example title="With min/max/step" description="Custom range boundaries and step increments for coarser selection." code={`<Slider defaultValue={[25]} min={0} max={100} step={5} />`}>
-            <Slider defaultValue={[25]} min={0} max={100} step={5} className="w-60" />
+          <Example
+            title="Range (dual thumb)"
+            description="Two thumbs for selecting a range."
+            code={`<Slider defaultValue={[25, 75]} max={100} step={1} />`}
+          >
+            <Slider defaultValue={[25, 75]} max={100} step={1} className="w-[240px]" />
           </Example>
 
-          <Example title="Range (dual thumb)" description="Two thumbs to select a value range. Pass an array of two values." code={`<Slider defaultValue={[25, 75]} max={100} step={1} />`}>
-            <Slider defaultValue={[25, 75]} max={100} step={1} className="w-60" />
+          <Example
+            title="Custom step"
+            description="Step increment of 5."
+            code={`<Slider defaultValue={[25]} min={0} max={100} step={5} />`}
+          >
+            <Slider defaultValue={[25]} min={0} max={100} step={5} className="w-[240px]" />
           </Example>
 
-          <Example title="Disabled" description="Non-interactive state with reduced opacity." code={`<Slider defaultValue={[50]} disabled />`}>
-            <Slider defaultValue={[50]} max={100} disabled className="w-60" />
+          <Example
+            title="Vertical"
+            description="Vertical orientation slider."
+            code={`<Slider defaultValue={[50]} orientation="vertical" />`}
+          >
+            <Slider defaultValue={[50]} max={100} step={1} orientation="vertical" className="h-[140px]" />
+          </Example>
+
+          <Example
+            title="Vertical Range"
+            description="Vertical with dual thumbs."
+            code={`<Slider defaultValue={[25, 75]} orientation="vertical" />`}
+          >
+            <Slider defaultValue={[25, 75]} max={100} step={1} orientation="vertical" className="h-[140px]" />
+          </Example>
+
+          <Example
+            title="Disabled"
+            description="Disabled at 50% opacity."
+            code={`<Slider defaultValue={[50]} disabled />`}
+          >
+            <Slider defaultValue={[50]} max={100} disabled className="w-[240px]" />
           </Example>
         </div>
       </section>
 
-      <section id="props" className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">defaultValue</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">number[]</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">[0]</td>
-                <td className="px-4 py-3 text-muted-foreground">Initial value(s). Use 2 values for range mode.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">value</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">number[]</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Controlled value(s).</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">onValueChange</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">(value: number[]) =&gt; void</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Callback when value changes.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">min</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">number</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">0</td>
-                <td className="px-4 py-3 text-muted-foreground">Minimum value.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">max</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">number</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">100</td>
-                <td className="px-4 py-3 text-muted-foreground">Maximum value.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">step</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">number</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">1</td>
-                <td className="px-4 py-3 text-muted-foreground">Step increment.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">disabled</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">false</td>
-                <td className="px-4 py-3 text-muted-foreground">Disables the slider.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SliderPropsTable />
       </section>
 
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Track filled range color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Track background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--background</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Thumb fill color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Thumb border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SliderTokensTable />
       </section>
 
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Slider when users need to select a value within a defined range.</p>
-              <p>Display the current value next to the slider for clarity.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Slider for precise numeric input — use an Input with type="number" instead.</p>
-              <p>Don't use Slider with extremely large ranges (e.g., 0–10000) without meaningful step increments.</p>
-            </DontItem>
-          </div>
-        </div>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Use Slider for numeric ranges like volume, price, or brightness." />
+        <DontItem text="Don't use Slider when precise numeric input is needed — use Input type='number' instead." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Show the current value label alongside the slider for clarity." />
+        <DontItem text="Don't use a slider with too many discrete steps — keep the experience smooth." />
       </section>
 
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pr-6 py-2 font-semibold">Key</th>
-                    <th className="pr-6 py-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Right</kbd> / <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Up</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Increase value by step</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Left</kbd> / <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Down</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Decrease value by step</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Home</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Set to minimum value</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">End</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Set to maximum value</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix Slider — fully keyboard accessible with arrow keys.</li>
-              <li>Tab to focus the thumb, then use Arrow Left/Right (horizontal) or Up/Down (vertical) to adjust.</li>
-              <li>Home/End keys jump to min/max values.</li>
-              <li>Always provide an accessible label via <code className="bg-muted px-1 rounded font-mono">aria-label</code> or a visible Label.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-lg border border-border divide-y divide-border">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Input</p>
-              <p className="text-muted-foreground mt-0.5">Use for precise numeric values where typing is preferred.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Progress</p>
-              <p className="text-muted-foreground mt-0.5">Read-only progress indicator — use when the value is not user-controlled.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Planned</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Track Height", "6px", "—", "h-1.5"],
-        ["Thumb Size", "16×16px", "—", "size-md rounded-full"],
-        ["State", "Default", "—", "default"],
-        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
-        ["State", "Disabled", "disabled", "true (opacity-50)"],
-        ["Range", "Single thumb", "defaultValue", "[50]"],
-        ["Range", "Dual thumb", "defaultValue", "[25, 75]"],
+      <FigmaMapping id="figma-mapping" nodeId="65:4902" rows={[
+        ["Track", "6px thickness", "—", "h-1.5 / w-1.5 bg-accent-selected rounded-full"],
+        ["Range", "Primary fill", "—", "bg-primary"],
+        ["Thumb", "14px circle", "—", "size-[14px] bg-background border border-foreground"],
+        ["Orientation", "Horizontal", "65:4902", "data-[orientation=horizontal]"],
+        ["Orientation", "Vertical", "162:17939", "data-[orientation=vertical]"],
+        ["Type", "Default", "—", "Single thumb"],
+        ["Type", "Range narrow", "—", "Dual thumb, narrow range"],
+        ["Type", "Range wide", "—", "Dual thumb, wide range"],
+        ["State", "Focus", "focus-visible", "ring-[3px] ring-ring"],
+        ["State", "Disabled", "data-[disabled]", "opacity-50"],
       ]} />
+
+      <section id="accessibility" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Navigation</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b border-border"><th className="text-left p-2 font-semibold">Key</th><th className="text-left p-2 font-semibold">Action</th></tr></thead>
+              <tbody className="divide-y divide-border">
+                <tr><td className="p-2 font-mono">Arrow Right/Up</td><td className="p-2">Increase value by one step</td></tr>
+                <tr><td className="p-2 font-mono">Arrow Left/Down</td><td className="p-2">Decrease value by one step</td></tr>
+                <tr><td className="p-2 font-mono">Home</td><td className="p-2">Set to minimum value</td></tr>
+                <tr><td className="p-2 font-mono">End</td><td className="p-2">Set to maximum value</td></tr>
+                <tr><td className="p-2 font-mono">Page Up</td><td className="p-2">Increase by a larger step</td></tr>
+                <tr><td className="p-2 font-mono">Page Down</td><td className="p-2">Decrease by a larger step</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">ARIA Attributes</h3>
+          <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+            <li>Radix provides <code className="bg-muted px-1 rounded font-mono">role="slider"</code> on each thumb.</li>
+            <li>Each thumb has <code className="bg-muted px-1 rounded font-mono">aria-valuemin</code>, <code className="bg-muted px-1 rounded font-mono">aria-valuemax</code>, <code className="bg-muted px-1 rounded font-mono">aria-valuenow</code>.</li>
+            <li>Use <code className="bg-muted px-1 rounded font-mono">aria-label</code> when no visible label is provided.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="related" className="space-y-md pb-12">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Input</p>
+            <p className="text-muted-foreground mt-0.5">Use for precise numeric values where typing is preferred.</p>
+          </div>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Progress</p>
+            <p className="text-muted-foreground mt-0.5">Read-only progress indicator — use when the value is not user-controlled.</p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
@@ -8503,6 +8733,441 @@ function SliderDocs() {
 /* ================================================================
    Toggle Docs
    ================================================================ */
+
+const positionRadiusMap: Record<string, string> = {
+  Single: "",
+  Left: "!rounded-r-none",
+  Middle: "!rounded-none",
+  Right: "!rounded-l-none",
+}
+const positionRadiusMiniMap: Record<string, string> = {
+  Single: "",
+  Left: "!rounded-r-none !rounded-l-sm",
+  Middle: "!rounded-none",
+  Right: "!rounded-l-none !rounded-r-sm",
+}
+
+function ToggleIconButtonTab() {
+  const [skin, setSkin] = useState("default")
+  const [size, setSize] = useState("default")
+  const [position, setPosition] = useState("Single")
+  const [state, setState] = useState("Default")
+  const [active, setActive] = useState(false)
+  const [iconName, setIconName] = useState("Bold")
+
+  const isDisabled = state === "Disabled"
+  const isFocus = state === "Focus"
+  const IconComp = allLucideIcons.find((i) => i.name === iconName)?.icon ?? Bold
+  const posRadius = size === "mini" ? positionRadiusMiniMap[position] : positionRadiusMap[position]
+
+  return (
+    <div className="space-y-md">
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
+          <Toggle
+            variant={skin === "outlined" ? "outline" : "default"}
+            size={size as "default" | "sm" | "lg" | "mini"}
+            pressed={active}
+            onPressedChange={isDisabled ? undefined : setActive}
+            disabled={isDisabled}
+            className={posRadius}
+            aria-label="Toggle icon"
+          >
+            <IconComp className="size-md" />
+          </Toggle>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Roundness" value="default" onChange={() => {}} options={[
+            { value: "default", label: "Default" },
+          ]} />
+          <PropertyTabs label="Skin" value={skin} onChange={setSkin} options={[
+            { value: "default", label: "Ghost" },
+            { value: "outlined", label: "Outlined" },
+          ]} />
+          <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+            { value: "default", label: "Default" },
+            { value: "lg", label: "Large" },
+            { value: "sm", label: "Small" },
+            { value: "mini", label: "Mini" },
+          ]} />
+          <PropertyTabs label="Position" value={position} onChange={setPosition} options={[
+            { value: "Left", label: "Left" },
+            { value: "Middle", label: "Middle" },
+            { value: "Right", label: "Right" },
+            { value: "Single", label: "Single" },
+          ]} />
+          <PropertyTabs label="Active?" value={active ? "Yes" : "No"} onChange={(v) => setActive(v === "Yes")} options={[
+            { value: "Yes", label: "Yes" },
+            { value: "No", label: "No" },
+          ]} />
+          <PropertyTabs label="State" value={state} onChange={setState} options={[
+            { value: "Default", label: "Default" },
+            { value: "Disabled", label: "Disabled" },
+            { value: "Focus", label: "Focus" },
+          ]} />
+        </div>
+        <div className="flex flex-wrap gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Icon</span>
+            <IconPicker value={iconName} onChange={setIconName} size="sm" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ToggleButtonTab() {
+  const [skin, setSkin] = useState("default")
+  const [size, setSize] = useState("default")
+  const [position, setPosition] = useState("Single")
+  const [state, setState] = useState("Default")
+  const [active, setActive] = useState(false)
+  const [showLeftIcon, setShowLeftIcon] = useState(false)
+  const [showRightIcon, setShowRightIcon] = useState(false)
+  const [leftIcon, setLeftIcon] = useState("Italic")
+  const [rightIcon, setRightIcon] = useState("ChevronDown")
+
+  const isDisabled = state === "Disabled"
+  const isFocus = state === "Focus"
+  const LeftIconComp = allLucideIcons.find((i) => i.name === leftIcon)?.icon ?? Italic
+  const RightIconComp = allLucideIcons.find((i) => i.name === rightIcon)?.icon ?? ChevronDown
+  const posRadius = size === "mini" ? positionRadiusMiniMap[position] : positionRadiusMap[position]
+
+  return (
+    <div className="space-y-md">
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
+          <Toggle
+            variant={skin === "outlined" ? "outline" : "default"}
+            size={size as "default" | "sm" | "lg" | "mini"}
+            pressed={active}
+            onPressedChange={isDisabled ? undefined : setActive}
+            disabled={isDisabled}
+            className={posRadius}
+            aria-label="Toggle button"
+          >
+            {showLeftIcon && <LeftIconComp className="size-md" />}
+            Italic
+            {showRightIcon && <RightIconComp className="size-md" />}
+          </Toggle>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Roundness" value="default" onChange={() => {}} options={[
+            { value: "default", label: "Default" },
+          ]} />
+          <PropertyTabs label="Skin" value={skin} onChange={setSkin} options={[
+            { value: "outlined", label: "Outlined" },
+            { value: "default", label: "Ghost" },
+          ]} />
+          <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+            { value: "default", label: "Regular" },
+            { value: "lg", label: "Large" },
+            { value: "sm", label: "Small" },
+            { value: "mini", label: "Mini" },
+          ]} />
+          <PropertyTabs label="Position" value={position} onChange={setPosition} options={[
+            { value: "Left", label: "Left" },
+            { value: "Middle", label: "Middle" },
+            { value: "Right", label: "Right" },
+            { value: "Single", label: "Single" },
+          ]} />
+          <PropertyTabs label="Active?" value={active ? "Yes" : "No"} onChange={(v) => setActive(v === "Yes")} options={[
+            { value: "Yes", label: "Yes" },
+            { value: "No", label: "No" },
+          ]} />
+          <PropertyTabs label="State" value={state} onChange={setState} options={[
+            { value: "Default", label: "Default" },
+            { value: "Disabled", label: "Disabled" },
+            { value: "Focus", label: "Focus" },
+          ]} />
+        </div>
+        <div className="flex flex-wrap gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show left icon</span>
+            <div><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
+          </div>
+          {showLeftIcon && <div className="space-y-xs"><span className="text-xs font-medium text-muted-foreground">Left icon</span><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show right icon</span>
+            <div><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
+          </div>
+          {showRightIcon && <div className="space-y-xs"><span className="text-xs font-medium text-muted-foreground">Right icon</span><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ToggleGroupTab() {
+  const [type, setType] = useState("single")
+  const [skin, setSkin] = useState("default")
+  const [size, setSize] = useState("default")
+
+  return (
+    <div className="space-y-md">
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        {type === "single" ? (
+          <ToggleGroup type="single" variant={skin === "outlined" ? "outline" : "default"} size={size as "default" | "sm" | "lg" | "mini"} defaultValue="center">
+            <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-md" /></ToggleGroupItem>
+            <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-md" /></ToggleGroupItem>
+            <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-md" /></ToggleGroupItem>
+          </ToggleGroup>
+        ) : (
+          <ToggleGroup type="multiple" variant={skin === "outlined" ? "outline" : "default"} size={size as "default" | "sm" | "lg" | "mini"} defaultValue={["bold"]}>
+            <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-md" /></ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-md" /></ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-md" /></ToggleGroupItem>
+          </ToggleGroup>
+        )}
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Type" value={type} onChange={setType} options={[
+            { value: "single", label: "Single" },
+            { value: "multiple", label: "Multiple" },
+          ]} />
+          <PropertyTabs label="Skin" value={skin} onChange={setSkin} options={[
+            { value: "default", label: "Ghost" },
+            { value: "outlined", label: "Outlined" },
+          ]} />
+          <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+            { value: "lg", label: "Large" },
+            { value: "default", label: "Default" },
+            { value: "sm", label: "Small" },
+            { value: "mini", label: "Mini" },
+          ]} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const toggleBehaviorTabs = [
+  { value: "icon-button", label: "Toggle Icon Button" },
+  { value: "button", label: "Toggle Button" },
+  { value: "group", label: "Toggle Group" },
+]
+
+function ToggleExploreBehavior() {
+  const [activeTab, setActiveTab] = useState("icon-button")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="flex border-b border-border bg-muted/50">
+          {toggleBehaviorTabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={cn(
+                "px-lg py-sm text-xs font-medium transition-colors",
+                activeTab === tab.value ? "text-foreground border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        {activeTab === "icon-button" && <ToggleIconButtonTab />}
+        {activeTab === "button" && <ToggleButtonTab />}
+        {activeTab === "group" && <ToggleGroupTab />}
+      </div>
+    </section>
+  )
+}
+
+function TogglePropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">variant</td>
+            <td className="p-3 font-mono text-xs">"default" | "outline"</td>
+            <td className="p-3 font-mono text-xs">"default"</td>
+            <td className="p-3">Ghost (default) or outlined style.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size</td>
+            <td className="p-3 font-mono text-xs">"mini" | "sm" | "default" | "lg"</td>
+            <td className="p-3 font-mono text-xs">"default"</td>
+            <td className="p-3">24px / 32px / 36px / 40px.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">pressed</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Controlled pressed (active) state.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">defaultPressed</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">false</td>
+            <td className="p-3">Initial pressed state (uncontrolled).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">onPressedChange</td>
+            <td className="p-3 font-mono text-xs">{`(pressed: boolean) => void`}</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Callback when pressed state changes.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">disabled</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">false</td>
+            <td className="p-3">Disables interaction.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function ToggleGroupPropsTable() {
+  return (
+    <div className="space-y-md">
+      <h3 className="typo-paragraph-bold mt-lg">ToggleGroup</h3>
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border bg-muted">
+              <th className="text-left p-3 font-semibold">Prop</th>
+              <th className="text-left p-3 font-semibold">Type</th>
+              <th className="text-left p-3 font-semibold">Default</th>
+              <th className="text-left p-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            <tr>
+              <td className="p-3 font-mono text-xs">type</td>
+              <td className="p-3 font-mono text-xs">"single" | "multiple"</td>
+              <td className="p-3 font-mono text-xs">—</td>
+              <td className="p-3">Selection mode (required).</td>
+            </tr>
+            <tr>
+              <td className="p-3 font-mono text-xs">variant</td>
+              <td className="p-3 font-mono text-xs">"default" | "outline"</td>
+              <td className="p-3 font-mono text-xs">"default"</td>
+              <td className="p-3">Applied to all items via context.</td>
+            </tr>
+            <tr>
+              <td className="p-3 font-mono text-xs">size</td>
+              <td className="p-3 font-mono text-xs">"mini" | "sm" | "default" | "lg"</td>
+              <td className="p-3 font-mono text-xs">"default"</td>
+              <td className="p-3">Applied to all items via context.</td>
+            </tr>
+            <tr>
+              <td className="p-3 font-mono text-xs">value</td>
+              <td className="p-3 font-mono text-xs">string | string[]</td>
+              <td className="p-3 font-mono text-xs">—</td>
+              <td className="p-3">Controlled selected value(s).</td>
+            </tr>
+            <tr>
+              <td className="p-3 font-mono text-xs">defaultValue</td>
+              <td className="p-3 font-mono text-xs">string | string[]</td>
+              <td className="p-3 font-mono text-xs">—</td>
+              <td className="p-3">Initial selected value(s).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 className="typo-paragraph-bold mt-lg">ToggleGroupItem</h3>
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border bg-muted">
+              <th className="text-left p-3 font-semibold">Prop</th>
+              <th className="text-left p-3 font-semibold">Type</th>
+              <th className="text-left p-3 font-semibold">Default</th>
+              <th className="text-left p-3 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            <tr>
+              <td className="p-3 font-mono text-xs">value</td>
+              <td className="p-3 font-mono text-xs">string</td>
+              <td className="p-3 font-mono text-xs">—</td>
+              <td className="p-3">Unique value for this item (required).</td>
+            </tr>
+            <tr>
+              <td className="p-3 font-mono text-xs">disabled</td>
+              <td className="p-3 font-mono text-xs">boolean</td>
+              <td className="p-3 font-mono text-xs">false</td>
+              <td className="p-3">Disables this item.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
+function ToggleTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-ghost-hover</td>
+            <td className="p-3 font-mono text-xs">var(--ghost-hover)</td>
+            <td className="p-3">Ghost: hover + active BG (rgba(0,0,0,0.05))</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-outline-hover</td>
+            <td className="p-3 font-mono text-xs">var(--outline-hover)</td>
+            <td className="p-3">Outline: hover + active BG (rgba(51,65,85,0.03))</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">text-foreground</td>
+            <td className="p-3 font-mono text-xs">var(--foreground)</td>
+            <td className="p-3">Text label color (#252522)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">[&_svg]:text-muted-foreground</td>
+            <td className="p-3 font-mono text-xs">var(--muted-foreground)</td>
+            <td className="p-3">Icon color — all states (#6f6f6a)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">border-border</td>
+            <td className="p-3 font-mono text-xs">var(--border)</td>
+            <td className="p-3">Outline variant border (#e9e9e7)</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">ring-ring</td>
+            <td className="p-3 font-mono text-xs">var(--ring) 3px</td>
+            <td className="p-3">Focus ring</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">opacity-50</td>
+            <td className="p-3 font-mono text-xs">0.5</td>
+            <td className="p-3">Disabled state</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
 const toggleSections: TocSection[] = [
   { id: "explore-behavior", label: "Explore Behavior" },
@@ -8523,235 +9188,229 @@ function ToggleDocs() {
 
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
-        <h1 className="typo-heading-2">Toggle</h1>
+        <h1 className="typo-heading-2">Toggle & Toggle Group</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          A two-state button that can be toggled on or off. Commonly used for formatting options like bold, italic, underline.
+          Toggle: A two-state button that can be either on or off. Toggle Group: A set of two-state buttons that can be toggled on or off. A single Toggle can be created by using the "single" component variant.
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
-            { label: "Default", value: "default" },
-            { label: "Outline", value: "outline" },
-          ]},
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large (40px)", value: "lg" },
-            { label: "Default (36px)", value: "default" },
-            { label: "Small (32px)", value: "sm" },
-          ]},
-          { type: "switch", label: "Pressed", prop: "pressed", defaultValue: false },
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-        ]}
-        render={(p) => (
-          <Toggle
-            variant={p.variant}
-            size={p.size}
-            pressed={p.pressed}
-            disabled={p.disabled}
-            aria-label="Toggle bold"
+      <ToggleExploreBehavior />
+
+      <InstallationSection
+        deps="pnpm add @radix-ui/react-toggle @radix-ui/react-toggle-group"
+        importCode={`import { Toggle } from "@/components/ui/toggle"\nimport { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"`}
+      />
+
+      <section id="examples" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Example
+            title="Ghost (default)"
+            description="Icon-only toggle with ghost style."
+            code={`<Toggle aria-label="Toggle bold">\n  <Bold className="size-md" />\n</Toggle>`}
           >
-            <Bold className="size-4" />
-          </Toggle>
-        )}
-      />
+            <Toggle aria-label="Toggle bold"><Bold className="size-md" /></Toggle>
+          </Example>
 
-      
+          <Example
+            title="Outline"
+            description="Toggle with visible border."
+            code={`<Toggle variant="outline" aria-label="Toggle italic">\n  <Italic className="size-md" />\n</Toggle>`}
+          >
+            <Toggle variant="outline" aria-label="Toggle italic"><Italic className="size-md" /></Toggle>
+          </Example>
 
-      {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add @radix-ui/react-toggle`}
-        importCode={`import { Toggle } from "@/components/ui/toggle"`}
-      />
+          <Example
+            title="With text"
+            description="Toggle button with icon and label."
+            code={`<Toggle aria-label="Toggle italic">\n  <Italic className="size-md" />\n  Italic\n</Toggle>`}
+          >
+            <Toggle aria-label="Toggle italic"><Italic className="size-md" />Italic</Toggle>
+          </Example>
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Basic toggle that switches between on and off states." code={`<Toggle aria-label="Toggle bold">\n  <Bold className="size-4" />\n</Toggle>`}>
-          <Toggle aria-label="Toggle bold"><Bold className="size-4" /></Toggle>
-        </Example>
-
-        <Example title="Outline variant" description="Bordered variant for lower-emphasis toggles in toolbars." code={`<Toggle variant="outline" aria-label="Toggle italic">\n  <Italic className="size-4" />\n</Toggle>`}>
-          <Toggle variant="outline" aria-label="Toggle italic"><Italic className="size-4" /></Toggle>
-        </Example>
-
-        <Example title="With text" description="Combine icon with text label for clarity." code={`<Toggle aria-label="Toggle italic">\n  <Italic className="size-4" />\n  Italic\n</Toggle>`}>
-          <Toggle aria-label="Toggle italic"><Italic className="size-4" />Italic</Toggle>
-        </Example>
-
-        <Example title="Sizes" description="Three sizes to match surrounding UI density." code={`<Toggle size="sm" aria-label="Bold"><Bold className="size-4" /></Toggle>\n<Toggle size="default" aria-label="Bold"><Bold className="size-4" /></Toggle>\n<Toggle size="lg" aria-label="Bold"><Bold className="size-4" /></Toggle>`}>
-          <div className="flex items-center gap-2">
-            <Toggle size="sm" aria-label="Bold"><Bold className="size-4" /></Toggle>
-            <Toggle size="default" aria-label="Bold"><Bold className="size-4" /></Toggle>
-            <Toggle size="lg" aria-label="Bold"><Bold className="size-4" /></Toggle>
-          </div>
-        </Example>
-
-        <Example title="Disabled" description="Non-interactive state with reduced opacity." code={`<Toggle disabled aria-label="Bold"><Bold className="size-4" /></Toggle>`}>
-          <Toggle disabled aria-label="Bold"><Bold className="size-4" /></Toggle>
-        </Example>
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">variant</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default" | "outline"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default"</td>
-                <td className="px-4 py-3 text-muted-foreground">Visual style of the toggle.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">size</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"sm" | "default" | "lg"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default"</td>
-                <td className="px-4 py-3 text-muted-foreground">Size of the toggle button.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">pressed</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">boolean</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Controlled pressed state.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">onPressedChange</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">(pressed: boolean) =&gt; void</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Callback when pressed state changes.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Hover & pressed background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Pressed text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Default text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Outline variant border</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Always provide <code className="bg-muted px-1 rounded font-mono text-xs">aria-label</code> when using icon-only toggles.</p>
-              <p>Use Toggle for binary state changes: bold on/off, view mode grid/list.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Toggle for navigation — use <strong>Tabs</strong> or <strong>Button</strong> instead.</p>
-              <p>Don't use Toggle when there are more than 2 states — use <strong>ToggleGroup</strong> or <strong>Select</strong>.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pr-6 py-2 font-semibold">Key</th>
-                    <th className="pr-6 py-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Move focus to the toggle</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd> / <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Space</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Toggle pressed state</td>
-                  </tr>
-                </tbody>
-              </table>
+          <Example
+            title="All sizes"
+            description="Mini (24px), Small (32px), Default (36px), Large (40px)."
+            code={`<Toggle size="mini">...</Toggle>\n<Toggle size="sm">...</Toggle>\n<Toggle>...</Toggle>\n<Toggle size="lg">...</Toggle>`}
+          >
+            <div className="flex items-center gap-xs">
+              <Toggle size="mini" aria-label="Bold"><Bold className="size-md" /></Toggle>
+              <Toggle size="sm" aria-label="Bold"><Bold className="size-md" /></Toggle>
+              <Toggle aria-label="Bold"><Bold className="size-md" /></Toggle>
+              <Toggle size="lg" aria-label="Bold"><Bold className="size-md" /></Toggle>
             </div>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Uses <code className="bg-muted px-1 rounded font-mono">aria-pressed</code> to communicate state to assistive technology.</li>
-              <li>Tab to focus, Space or Enter to toggle.</li>
-              <li>Icon-only toggles <strong>must</strong> have <code className="bg-muted px-1 rounded font-mono">aria-label</code>.</li>
-            </ul>
-          </div>
+          </Example>
+
+          <Example
+            title="Pressed (default)"
+            description="Toggle starts in active/on state — still interactive."
+            code={`<Toggle defaultPressed aria-label="Bold">\n  <Bold className="size-md" />\n</Toggle>`}
+          >
+            <Toggle defaultPressed aria-label="Bold"><Bold className="size-md" /></Toggle>
+          </Example>
+
+          <Example
+            title="Disabled"
+            description="Non-interactive at 50% opacity."
+            code={`<Toggle disabled aria-label="Bold">\n  <Bold className="size-md" />\n</Toggle>`}
+          >
+            <Toggle disabled aria-label="Bold"><Bold className="size-md" /></Toggle>
+          </Example>
+
+          <Example
+            title="Toggle Group — Ghost"
+            description="Connected items, no gap. Icon-only + text groups."
+            code={`<ToggleGroup type="single" defaultValue="center">\n  <ToggleGroupItem value="left"><AlignLeft /></ToggleGroupItem>\n  <ToggleGroupItem value="center"><AlignCenter /></ToggleGroupItem>\n  <ToggleGroupItem value="right"><AlignRight /></ToggleGroupItem>\n</ToggleGroup>`}
+          >
+            <div className="flex items-center gap-lg flex-wrap">
+              <ToggleGroup type="single" defaultValue="center">
+                <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-md" /></ToggleGroupItem>
+                <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-md" /></ToggleGroupItem>
+                <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-md" /></ToggleGroupItem>
+              </ToggleGroup>
+              <ToggleGroup type="single" defaultValue="all">
+                <ToggleGroupItem value="all">All</ToggleGroupItem>
+                <ToggleGroupItem value="missed">Missed</ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+          </Example>
+
+          <Example
+            title="Toggle Group — Outline"
+            description="Shared border wrapping connected items."
+            code={`<ToggleGroup type="single" variant="outline" defaultValue="center">\n  <ToggleGroupItem value="left"><AlignLeft /></ToggleGroupItem>\n  <ToggleGroupItem value="center"><AlignCenter /></ToggleGroupItem>\n  <ToggleGroupItem value="right"><AlignRight /></ToggleGroupItem>\n</ToggleGroup>`}
+          >
+            <div className="flex items-center gap-lg flex-wrap">
+              <ToggleGroup type="single" variant="outline" defaultValue="left">
+                <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-md" /></ToggleGroupItem>
+                <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-md" /></ToggleGroupItem>
+                <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-md" /></ToggleGroupItem>
+              </ToggleGroup>
+              <ToggleGroup type="single" variant="outline" defaultValue="24h">
+                <ToggleGroupItem value="24h">Last 24 hours</ToggleGroupItem>
+                <ToggleGroupItem value="7d">Last 7 days</ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+          </Example>
+
+          <Example
+            title="Toggle Group — All sizes"
+            description="Large, Default, Small, Mini — matching Figma."
+            code={`<ToggleGroup type="single" size="lg" variant="outline">\n  ...\n</ToggleGroup>`}
+          >
+            <div className="flex flex-col gap-md items-start">
+              {(["lg", "default", "sm", "mini"] as const).map((s) => (
+                <div key={s} className="flex items-center gap-lg flex-wrap">
+                  <ToggleGroup type="single" size={s} variant="outline" defaultValue="center">
+                    <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-md" /></ToggleGroupItem>
+                    <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-md" /></ToggleGroupItem>
+                    <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-md" /></ToggleGroupItem>
+                  </ToggleGroup>
+                  <ToggleGroup type="single" size={s} variant="outline" defaultValue="24h">
+                    <ToggleGroupItem value="24h">Last 24 hours</ToggleGroupItem>
+                    <ToggleGroupItem value="7d">Last 7 days</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              ))}
+            </div>
+          </Example>
+
+          <Example
+            title="Toggle Group — Multiple"
+            description="Multiple selection mode — any number of items active."
+            code={`<ToggleGroup type="multiple" defaultValue={["bold"]}>\n  <ToggleGroupItem value="bold"><Bold /></ToggleGroupItem>\n  <ToggleGroupItem value="italic"><Italic /></ToggleGroupItem>\n  <ToggleGroupItem value="underline"><Underline /></ToggleGroupItem>\n</ToggleGroup>`}
+          >
+            <ToggleGroup type="multiple" defaultValue={["bold"]}>
+              <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-md" /></ToggleGroupItem>
+              <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-md" /></ToggleGroupItem>
+              <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-md" /></ToggleGroupItem>
+            </ToggleGroup>
+          </Example>
         </div>
       </section>
 
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Variant", "Default", "variant", '"default"'],
-        ["Variant", "Outline", "variant", '"outline"'],
+      <section id="props" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <h3 className="typo-paragraph-bold">Toggle</h3>
+        <TogglePropsTable />
+        <ToggleGroupPropsTable />
+      </section>
+
+      <section id="design-tokens" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+        <ToggleTokensTable />
+      </section>
+
+      <section id="best-practices" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Always provide an aria-label when using icon-only toggles." />
+        <DontItem text="Don't use text-only toggles without an icon — they look like plain buttons." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Use Toggle for binary on/off actions (bold, mute, bookmark)." />
+        <DontItem text="Don't use Toggle for navigation — use Tabs or Buttons instead." />
+        <h3 className="typo-paragraph-bold mt-lg">Toggle Group</h3>
+        <DoItem text="Use type='single' for mutually exclusive options like text alignment." />
+        <DoItem text="Use type='multiple' for independent options like bold + italic + underline." />
+        <DontItem text="Don't mix standalone Toggle and ToggleGroup in the same toolbar." />
+      </section>
+
+      <FigmaMapping id="figma-mapping" nodeId="274:53016" rows={[
+        ["Component", "Toggle Icon Button", "164:20378", "Icon-only toggle"],
+        ["Component", "Toggle Button", "816:112827", "Toggle with text label"],
+        ["Skin", "Ghost", "variant", '"default" — no border'],
+        ["Skin", "Outlined", "variant", '"outline" — visible border'],
         ["Size", "Large (40px)", "size", '"lg"'],
         ["Size", "Default (36px)", "size", '"default"'],
         ["Size", "Small (32px)", "size", '"sm"'],
-        ["State", "Default", "—", "default"],
-        ["State", "Hover", "—", "CSS :hover (bg-muted)"],
-        ["State", "Pressed / On", "—", 'data-[state=on] (bg-muted)'],
-        ["State", "Focus", "—", "CSS :focus-visible (3px ring)"],
-        ["State", "Disabled", "disabled", "true (opacity-50)"],
+        ["Size", "Mini (24px)", "size", '"mini"'],
+        ["Active?", "Yes", "pressed", "true — data-[state=on]"],
+        ["Active?", "No", "pressed", "false — data-[state=off]"],
+        ["Position", "Single / Left / Middle / Right", "—", "ToggleGroup handles position via flex"],
+        ["State", "Focus", "focus-visible", "ring-[3px] ring-ring"],
+        ["State", "Disabled", "disabled", "true — opacity-50"],
       ]} />
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      <section id="accessibility" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Navigation</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="border-b border-border"><th className="text-left p-2 font-semibold">Key</th><th className="text-left p-2 font-semibold">Action</th></tr></thead>
+              <tbody className="divide-y divide-border">
+                <tr><td className="p-2 font-mono">Space / Enter</td><td className="p-2">Toggle pressed state</td></tr>
+                <tr><td className="p-2 font-mono">Tab</td><td className="p-2">Move focus to/from toggle (or into/out of group)</td></tr>
+                <tr><td className="p-2 font-mono">Arrow Left/Right</td><td className="p-2">Move between items in Toggle Group</td></tr>
+                <tr><td className="p-2 font-mono">Home / End</td><td className="p-2">Focus first/last item in Toggle Group</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+          <h3 className="font-body font-semibold text-sm text-foreground">ARIA Attributes</h3>
+          <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+            <li>Radix applies <code className="bg-muted px-1 rounded font-mono">aria-pressed</code> automatically.</li>
+            <li>Use <code className="bg-muted px-1 rounded font-mono">aria-label</code> for icon-only toggles.</li>
+            <li><code className="bg-muted px-1 rounded font-mono">data-state="on" | "off"</code> reflects current state.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="related" className="space-y-md pb-12">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
         <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">ToggleGroup</p>
-              <p className="text-muted-foreground mt-0.5">Groups multiple toggles with single/multiple selection mode.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Toggle Group</p>
+            <p className="text-muted-foreground mt-0.5">Group of toggle buttons with single or multiple selection.</p>
           </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Button</p>
-              <p className="text-muted-foreground mt-0.5">Use when the action is not a toggle between two states.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Button</p>
+            <p className="text-muted-foreground mt-0.5">Use Button for one-time actions, Toggle for persistent on/off state.</p>
+          </div>
+          <div className="px-5 py-3.5">
+            <p className="font-semibold text-foreground">Switch</p>
+            <p className="text-muted-foreground mt-0.5">Use Switch for settings that take effect immediately.</p>
           </div>
         </div>
       </section>
@@ -8759,275 +9418,7 @@ function ToggleDocs() {
   )
 }
 
-/* ================================================================
-   Toggle Group Docs
-   ================================================================ */
 
-const toggleGroupSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
-
-function ToggleGroupDocs() {
-  return (
-    <div className="space-y-12">
-      <TableOfContents sections={toggleGroupSections} />
-
-      <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
-        <h1 className="typo-heading-2">Toggle Group</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          A group of toggle buttons supporting single or multiple selection. Ideal for toolbar actions, text formatting, view modes.
-        </p>
-      </header>
-
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Type", prop: "type", defaultValue: "single", options: [
-            { label: "Single", value: "single" },
-            { label: "Multiple", value: "multiple" },
-          ]},
-          { type: "select", label: "Variant", prop: "variant", defaultValue: "default", options: [
-            { label: "Default", value: "default" },
-            { label: "Outline", value: "outline" },
-          ]},
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Large", value: "lg" },
-            { label: "Default", value: "default" },
-            { label: "Small", value: "sm" },
-          ]},
-        ]}
-        render={(p) => {
-          const items = (
-            <>
-              <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>
-              <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>
-              <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>
-            </>
-          )
-          return p.type === "multiple" ? (
-            <ToggleGroup type="multiple" variant={p.variant} size={p.size}>{items}</ToggleGroup>
-          ) : (
-            <ToggleGroup type="single" variant={p.variant} size={p.size} defaultValue="center">{items}</ToggleGroup>
-          )
-        }}
-      />
-
-      
-
-      {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add @radix-ui/react-toggle-group`}
-        importCode={`import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"`}
-      />
-
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Single selection" description="Mutually exclusive \u2014 only one item can be active at a time. Ideal for text alignment." code={`<ToggleGroup type="single" defaultValue="center">\n  <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
-          <ToggleGroup type="single" defaultValue="center">
-            <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="center" aria-label="Align center"><AlignCenter className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="right" aria-label="Align right"><AlignRight className="size-4" /></ToggleGroupItem>
-          </ToggleGroup>
-        </Example>
-
-        <Example title="Multiple selection" description="Independent toggles \u2014 any combination can be active. Ideal for text formatting." code={`<ToggleGroup type="multiple" defaultValue={["bold"]}>\n  <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
-          <ToggleGroup type="multiple" defaultValue={["bold"]}>
-            <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>
-          </ToggleGroup>
-        </Example>
-
-        <Example title="Outline variant" description="Bordered variant matching the Toggle outline style." code={`<ToggleGroup type="single" variant="outline" defaultValue="left">\n  <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
-          <ToggleGroup type="single" variant="outline" defaultValue="left">
-            <ToggleGroupItem value="left" aria-label="Left"><AlignLeft className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="center" aria-label="Center"><AlignCenter className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="right" aria-label="Right"><AlignRight className="size-4" /></ToggleGroupItem>
-          </ToggleGroup>
-        </Example>
-
-        <Example title="Small size" description="Compact size for dense UIs and toolbars." code={`<ToggleGroup type="multiple" size="sm">\n  <ToggleGroupItem value="bold"><Bold className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="italic"><Italic className="size-4" /></ToggleGroupItem>\n  <ToggleGroupItem value="underline"><Underline className="size-4" /></ToggleGroupItem>\n</ToggleGroup>`}>
-          <ToggleGroup type="multiple" size="sm">
-            <ToggleGroupItem value="bold" aria-label="Bold"><Bold className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="italic" aria-label="Italic"><Italic className="size-4" /></ToggleGroupItem>
-            <ToggleGroupItem value="underline" aria-label="Underline"><Underline className="size-4" /></ToggleGroupItem>
-          </ToggleGroup>
-        </Example>
-        </div>
-      </section>
-
-      <section id="props" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <h3 className="font-heading font-semibold text-lg">ToggleGroup</h3>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">type</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"single" | "multiple"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">—</td>
-                <td className="px-4 py-3 text-muted-foreground">Selection mode (required).</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">variant</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default" | "outline"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default"</td>
-                <td className="px-4 py-3 text-muted-foreground">Applied to all items.</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-3 font-mono text-primary">size</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"sm" | "default" | "lg"</td>
-                <td className="px-4 py-3 font-mono text-muted-foreground">"default"</td>
-                <td className="px-4 py-3 text-muted-foreground">Applied to all items.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Hover & pressed background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Pressed text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Outline variant border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Selection Mode</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">type="single"</code> for mutually exclusive options like text alignment.</p>
-              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">type="multiple"</code> for independent formatting options like bold + italic + underline.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't mix standalone Toggle and ToggleGroup in the same toolbar — pick one pattern.</p>
-              <p>Don't use ToggleGroup for navigation — use <strong>Tabs</strong> instead.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pr-6 py-2 font-semibold">Key</th>
-                    <th className="pr-6 py-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Move focus to the group</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Left/Right</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Navigate between items</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd> / <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Space</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Toggle focused item</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Renders as a roving tabindex group — Tab moves focus to the group, Arrow keys navigate between items.</li>
-              <li>Space or Enter toggles the focused item.</li>
-              <li>type="single" enforces one selection; type="multiple" allows any combination.</li>
-              <li>Always provide <code className="bg-muted px-1 rounded font-mono">aria-label</code> on each ToggleGroupItem.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Type", "Single", "type", '"single" — one at a time'],
-        ["Type", "Multiple", "type", '"multiple" — any number'],
-        ["Variant", "Default", "variant", '"default" (inherits Toggle)'],
-        ["Variant", "Outline", "variant", '"outline" (inherits Toggle)'],
-        ["Size", "Large (40px)", "size", '"lg"'],
-        ["Size", "Default (36px)", "size", '"default"'],
-        ["Size", "Small (32px)", "size", '"sm"'],
-        ["State", "Default", "—", "default"],
-        ["State", "Pressed / On", "—", "data-[state=on]"],
-        ["State", "Disabled", "disabled", "true"],
-      ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Toggle</p>
-              <p className="text-muted-foreground mt-0.5">Single standalone toggle button.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Tabs</p>
-              <p className="text-muted-foreground mt-0.5">For navigating between content panels (not toggling state).</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
-      </section>
-    </div>
-  )
-}
 
 /* ================================================================
    Chip Docs
@@ -10222,10 +10613,11 @@ function AvatarDocs() {
 }
 
 /* ================================================================
+/* ================================================================
    Progress Docs
    ================================================================ */
 
-const progressSections: TocSection[] = [
+const progressSections = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
@@ -10237,155 +10629,250 @@ const progressSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function ProgressExploreBehavior() {
+  const [value, setValue] = useState(50)
+  const [size, setSize] = useState("default")
+  const [variant, setVariant] = useState("default")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="p-4xl flex items-center justify-center min-h-[160px]">
+          <Progress value={value} size={size as any} variant={variant as any} className="w-80" />
+        </div>
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <div className="space-y-sm">
+            <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+              { value: "default", label: "Default" },
+              { value: "sm", label: "Small" },
+            ]} />
+            <PropertyTabs label="Value" value={variant} onChange={setVariant} options={[
+              { value: "default", label: "Primary" },
+              { value: "success", label: "Success" },
+            ]} />
+            <div className="space-y-xs">
+              <span className="text-xs font-medium text-muted-foreground">Progress: {value}%</span>
+              <input type="range" min={0} max={100} value={value} onChange={e => setValue(Number(e.target.value))} className="w-full accent-primary" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ProgressPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">value</td>
+            <td className="p-3 font-mono text-xs">number</td>
+            <td className="p-3 font-mono text-xs">0</td>
+            <td className="p-3">Current progress (0–100).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size</td>
+            <td className="p-3 font-mono text-xs">{`"default" | "sm"`}</td>
+            <td className="p-3 font-mono text-xs">{`"default"`}</td>
+            <td className="p-3">Track height: default (8px) or small (4px).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">variant</td>
+            <td className="p-3 font-mono text-xs">{`"default" | "success"`}</td>
+            <td className="p-3 font-mono text-xs">{`"default"`}</td>
+            <td className="p-3">Indicator color: primary (teal) or success (green).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Additional CSS classes for the track.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function ProgressTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-muted</td>
+            <td className="p-3 font-mono text-xs">#f3f3f2</td>
+            <td className="p-3">Track background</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-primary</td>
+            <td className="p-3 font-mono text-xs">#0f766e</td>
+            <td className="p-3">Default indicator color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-success</td>
+            <td className="p-3 font-mono text-xs">#16a34a</td>
+            <td className="p-3">Success indicator color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">h-xs</td>
+            <td className="p-3 font-mono text-xs">8px</td>
+            <td className="p-3">Default track height</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">h-3xs</td>
+            <td className="p-3 font-mono text-xs">4px</td>
+            <td className="p-3">Small track height</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">rounded-full</td>
+            <td className="p-3 font-mono text-xs">9999px</td>
+            <td className="p-3">Pill shape for track and indicator</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function ProgressDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={progressSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Progress</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Progress bar indicating completion status. Supports determinate values (0-100).</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Determinate progress bar showing completion status. Two sizes (default 8px, small 4px) and two color variants (primary, success).
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Value", prop: "value", defaultValue: "50", options: [
-            { label: "0%", value: "0" },
-            { label: "25%", value: "25" },
-            { label: "50%", value: "50" },
-            { label: "75%", value: "75" },
-          ]},
-        ]}
-        render={(p) => <Progress value={Number(p.value)} className="w-60" />}
-      />
+      <ProgressExploreBehavior />
 
-      
-      {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add @radix-ui/react-progress`}
+        deps="pnpm add @radix-ui/react-progress"
         importCode={`import { Progress } from "@/components/ui/progress"`}
       />
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Example title="25%" description="Quarter progress — early stage of a task." code={`<Progress value={25} />`}>
-            <Progress value={25} className="w-60" />
+          <Example
+            title="Default"
+            description="Standard primary progress bar."
+            code={`<Progress value={50} />`}
+          >
+            <Progress value={50} />
           </Example>
-          <Example title="50%" description="Half-way through — mid-point indicator." code={`<Progress value={50} />`}>
-            <Progress value={50} className="w-60" />
+
+          <Example
+            title="Success variant"
+            description="Green indicator for completed or positive progress."
+            code={`<Progress value={75} variant="success" />`}
+          >
+            <Progress value={75} variant="success" />
           </Example>
-          <Example title="75%" description="Nearly complete — approaching finish." code={`<Progress value={75} />`}>
-            <Progress value={75} className="w-60" />
+
+          <Example
+            title="Small size"
+            description="Compact 4px height for tight layouts."
+            code={`<Progress value={60} size="sm" />`}
+          >
+            <Progress value={60} size="sm" />
           </Example>
-          <Example title="100%" description="Fully complete — task finished." code={`<Progress value={100} />`}>
-            <Progress value={100} className="w-60" />
+
+          <Example
+            title="Complete"
+            description="Full progress with success variant."
+            code={`<Progress value={100} variant="success" />`}
+          >
+            <Progress value={100} variant="success" />
           </Example>
         </div>
       </section>
 
-      <section id="props" className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">value</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">0</td><td className="px-4 py-3 text-muted-foreground">Current progress (0–100).</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <ProgressPropsTable />
       </section>
 
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Filled indicator color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Track background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-full</td><td className="px-4 py-3 font-mono text-muted-foreground">9999px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Track border radius</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <ProgressTokensTable />
       </section>
 
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Progress for determinate tasks where you can track percentage completion.</p>
-              <p>Display a text label alongside (e.g., "75% complete") for clarity.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Progress for indeterminate tasks — use <strong>Spinner</strong> instead.</p>
-              <p>Don't jump values abruptly — animate transitions for a smoother experience.</p>
-            </DontItem>
-          </div>
-        </div>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Use progress when the completion percentage is known. Use Spinner for indeterminate loading." />
+        <DontItem text="Animate progress backwards — always move forward to give a sense of accomplishment." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Use success variant when progress reaches 100% to signal completion." />
+        <DontItem text="Stack multiple progress bars in a single view — consolidate into one if possible." />
       </section>
 
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix Progress — renders with <code className="bg-muted px-1 rounded font-mono">role="progressbar"</code>.</li>
-              <li>Automatically sets <code className="bg-muted px-1 rounded font-mono">aria-valuenow</code>, <code className="bg-muted px-1 rounded font-mono">aria-valuemin</code>, and <code className="bg-muted px-1 rounded font-mono">aria-valuemax</code>.</li>
-              <li>Add <code className="bg-muted px-1 rounded font-mono">aria-label</code> for non-obvious progress bars.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-                  {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Track Height", "6px", "—", "h-1.5"],
-        ["Track Color", "Muted", "—", "bg-muted"],
-        ["Indicator Color", "Primary", "—", "bg-primary"],
-        ["Value", "0–100", "value", "number (0–100)"],
+      <FigmaMapping id="figma-mapping" nodeId="438:64981" rows={[
+        ["Size", "Default (8px)", "size", '"default" — h-xs'],
+        ["Size", "Small (4px)", "size", '"sm" — h-3xs'],
+        ["Value", "Primary (teal)", "variant", '"default" — bg-primary'],
+        ["Value", "Success (green)", "variant", '"success" — bg-success'],
+        ["Progress", "0–100", "value", "number (0–100)"],
+        ["Track", "Muted background", "—", "bg-muted"],
         ["Radius", "Full (pill)", "—", "rounded-full"],
       ]} />
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Slider</p>
-              <p className="text-muted-foreground mt-0.5">User-controlled range input — use when value is adjustable.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Spinner</p>
-              <p className="text-muted-foreground mt-0.5">Indeterminate loading indicator for unknown progress.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
+      <section id="accessibility" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Feature</th>
+                <th className="text-left p-3 font-semibold">Details</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-medium">role</td>
+                <td className="p-3">Radix provides <code className="text-xs bg-muted px-1 py-0.5 rounded">role="progressbar"</code> automatically.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">aria-valuenow</td>
+                <td className="p-3">Set automatically by Radix from the <code className="text-xs bg-muted px-1 py-0.5 rounded">value</code> prop.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">aria-label</td>
+                <td className="p-3">Provide a descriptive label (e.g. <code className="text-xs bg-muted px-1 py-0.5 rounded">aria-label="Upload progress"</code>).</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
+
+      <section id="related" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+          <li><strong>Spinner</strong> — Use for indeterminate loading with no known percentage.</li>
+          <li><strong>Skeleton</strong> — Use for layout-aware content placeholders.</li>
+        </ul>
       </section>
     </div>
   )
@@ -11643,10 +12130,12 @@ function BadgeDocs() {
 }
 
 /* ================================================================
+/* ================================================================
    Separator Docs
    ================================================================ */
 
-const separatorSections: TocSection[] = [
+/* -- Separator Explore Behavior -- */
+const separatorSections = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
@@ -11658,157 +12147,318 @@ const separatorSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+const separatorBehaviorTabs = [
+  { value: "divider", label: "Divider" },
+  { value: "dot", label: "Dot" },
+]
+
+function SeparatorDividerTab() {
+  const [direction, setDirection] = useState("horizontal")
+  const isVertical = direction === "vertical"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        {isVertical ? (
+          <div className="flex items-center gap-md h-xl">
+            <span className="typo-paragraph-sm text-muted-foreground">Left</span>
+            <Separator orientation="vertical" />
+            <span className="typo-paragraph-sm text-muted-foreground">Right</span>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-md items-center w-[200px]">
+            <span className="typo-paragraph-sm text-muted-foreground">Content above</span>
+            <Separator orientation="horizontal" />
+            <span className="typo-paragraph-sm text-muted-foreground">Content below</span>
+          </div>
+        )}
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Direction" value={direction} onChange={setDirection} options={[
+            { value: "horizontal", label: "Default" },
+            { value: "vertical", label: "Vertical" },
+          ]} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function SeparatorDotTab() {
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className="flex items-center gap-xs">
+          <span className="typo-paragraph-sm text-muted-foreground">Item 1</span>
+          <div className="size-[3px] rounded-full bg-muted-foreground" />
+          <span className="typo-paragraph-sm text-muted-foreground">Item 2</span>
+          <div className="size-[3px] rounded-full bg-muted-foreground" />
+          <span className="typo-paragraph-sm text-muted-foreground">Item 3</span>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg">
+        <p className="typo-paragraph-sm text-muted-foreground">Dot separator has no configurable properties. 3×3px circle, color: muted-foreground.</p>
+      </div>
+    </>
+  )
+}
+
+function SeparatorExploreBehavior() {
+  const [activeTab, setActiveTab] = useState("divider")
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="border-b border-border px-lg overflow-x-auto">
+          <div className="flex">
+            {separatorBehaviorTabs.map(tab => (
+              <button key={tab.value} onClick={() => setActiveTab(tab.value)}
+                className={cn(
+                  "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
+                  activeTab === tab.value
+                    ? "border-primary text-foreground typo-paragraph-sm-medium"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}>{tab.label}</button>
+            ))}
+          </div>
+        </div>
+        {activeTab === "divider" && <SeparatorDividerTab />}
+        {activeTab === "dot" && <SeparatorDotTab />}
+      </div>
+    </section>
+  )
+}
+
+function SeparatorPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">orientation</td>
+            <td className="p-3 font-mono text-xs">{`"horizontal" | "vertical"`}</td>
+            <td className="p-3 font-mono text-xs">{`"horizontal"`}</td>
+            <td className="p-3">Direction of the divider line.</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">decorative</td>
+            <td className="p-3 font-mono text-xs">boolean</td>
+            <td className="p-3 font-mono text-xs">true</td>
+            <td className="p-3">If true, hidden from screen readers (role=none).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Additional CSS classes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function SeparatorTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">CSS Variable</th>
+            <th className="text-left p-3 font-semibold">Value (Light)</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-border</td>
+            <td className="p-3 font-mono text-xs">--border</td>
+            <td className="p-3"><ColorSwatch hex="#E9E9E7" label="border" /></td>
+            <td className="p-3">Divider line color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-muted-foreground</td>
+            <td className="p-3 font-mono text-xs">--muted-foreground</td>
+            <td className="p-3"><ColorSwatch hex="#6F6F6A" label="muted-fg" /></td>
+            <td className="p-3">Dot separator color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">h-px / w-px</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3 font-mono text-xs">1px</td>
+            <td className="p-3">Divider line thickness</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size-[3px]</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3 font-mono text-xs">3×3px</td>
+            <td className="p-3">Dot size</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function SeparatorDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={separatorSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Separator</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line, or a dot between inline items.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Orientation", prop: "orientation", defaultValue: "horizontal", options: [
-            { label: "Horizontal", value: "horizontal" },
-            { label: "Vertical", value: "vertical" },
-          ]},
-        ]}
-        render={(p) => (
-          p.orientation === "horizontal" ? (
-            <div className="space-y-4 w-60">
-              <p className="text-sm">Content above</p>
-              <Separator />
-              <p className="text-sm">Content below</p>
-            </div>
-          ) : (
-            <div className="flex items-center gap-4 h-8">
-              <span className="text-sm">Left</span>
-              <Separator orientation="vertical" />
-              <span className="text-sm">Right</span>
-            </div>
-          )
-        )}
-      />
+      <SeparatorExploreBehavior />
 
-      
       {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add @radix-ui/react-separator`}
-        importCode={`import { Separator } from "@/components/ui/separator"`}
-      />
+      <section id="installation" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Installation</h2>
+        <CodeBlock code={`import { Separator } from "@/components/ui/separator"`} />
+      </section>
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      {/* ---- Examples ---- */}
+      <section id="examples" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Example title="Horizontal" description="Default orientation — spans the full width of its container." code={`<Separator />`}>
+          <Example title="Horizontal" code={`<Separator />`}>
             <div className="space-y-4 w-60">
               <p className="text-sm">Content above</p>
               <Separator />
               <p className="text-sm">Content below</p>
             </div>
           </Example>
-          <Example title="Vertical" description="Use in toolbars or inline layouts to divide items side by side." code={`<Separator orientation="vertical" />`}>
+
+          <Example title="Vertical" code={`<Separator orientation="vertical" />`}>
             <div className="flex items-center gap-4 h-8">
               <span className="text-sm">Left</span>
               <Separator orientation="vertical" />
               <span className="text-sm">Right</span>
             </div>
           </Example>
+
+          <Example title="In a card" code={`<div className="space-y-4">\n  <div>\n    <h4 className="font-semibold">Title</h4>\n    <p className="text-sm text-muted-foreground">Description</p>\n  </div>\n  <Separator />\n  <p className="text-sm">Footer content</p>\n</div>`}>
+            <div className="space-y-4 w-60">
+              <div>
+                <h4 className="font-semibold">Title</h4>
+                <p className="text-sm text-muted-foreground">Description text here</p>
+              </div>
+              <Separator />
+              <p className="text-sm">Footer content</p>
+            </div>
+          </Example>
+
+          <Example title="Dot separator (custom)" code={`<div className="flex items-center gap-2">\n  <span className="text-sm">Item 1</span>\n  <div className="size-[3px] rounded-full bg-muted-foreground" />\n  <span className="text-sm">Item 2</span>\n</div>`}>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Item 1</span>
+              <div className="size-[3px] rounded-full bg-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Item 2</span>
+              <div className="size-[3px] rounded-full bg-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Item 3</span>
+            </div>
+          </Example>
         </div>
       </section>
 
+      {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">orientation</td><td className="px-4 py-3 font-mono text-muted-foreground">"horizontal" | "vertical"</td><td className="px-4 py-3 font-mono text-muted-foreground">"horizontal"</td><td className="px-4 py-3 text-muted-foreground">Direction of the divider.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">decorative</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">true</td><td className="px-4 py-3 text-muted-foreground">If true, hides from screen readers.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SeparatorPropsTable />
       </section>
-
 
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
+        <SeparatorTokensTable />
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <h3 className="typo-paragraph-bold">Structure</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DoItem text="Use horizontal separators between stacked content sections." />
+          <DontItem text="Don't use separators between every element — only between distinct groups." />
+        </div>
+        <h3 className="typo-paragraph-bold">Content</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DoItem text="Use dot separators between inline metadata items (e.g., author · date · category)." />
+          <DontItem text="Don't mix divider and dot separators in the same context." />
+        </div>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="176:26202" rows={[
+        ["Direction", "Default (H)", "orientation=\"horizontal\"", "h-px w-full bg-border"],
+        ["Direction", "Vertical", "orientation=\"vertical\"", "w-px h-full bg-border"],
+        ["Spacing", "None / Regular / Spacious", "—", "Controlled by parent layout gap"],
+        ["Dot", "3×3px circle", "—", "size-[3px] rounded-full bg-muted-foreground"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Feature</th>
+                <th className="text-left p-3 font-semibold">Details</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Separator color</td></tr>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-mono text-xs">role</td>
+                <td className="p-3">decorative=true → role="none" (hidden). decorative=false → role="separator".</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">aria-orientation</td>
+                <td className="p-3">Set automatically when decorative=false. Communicates direction to assistive technology.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-mono text-xs">data-orientation</td>
+                <td className="p-3">Always set — useful for CSS styling hooks.</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Separator to visually divide related content sections.</p>
-              <p>Use vertical orientation in toolbars and inline lists.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Separator purely for spacing — use CSS margin or padding instead.</p>
-              <p>Don't overuse separators — too many visual dividers add clutter.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix Separator — renders as <code className="bg-muted px-1 rounded font-mono">role="separator"</code> or <code className="bg-muted px-1 rounded font-mono">role="none"</code> when decorative.</li>
-              <li>Set <code className="bg-muted px-1 rounded font-mono">decorative={false}</code> when the separator has semantic meaning for screen readers.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-                  {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Orientation", "Horizontal", "orientation", '"horizontal" — h-px w-full'],
-        ["Orientation", "Vertical", "orientation", '"vertical" — h-full w-px'],
-        ["Color", "Border", "—", "bg-border"],
-        ["Decorative", "true", "decorative", "true (hidden from screen readers)"],
-      ]} />
-
       {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      <section id="related" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
+        <div className="rounded-lg border border-border divide-y divide-border">
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
               <p className="font-semibold text-foreground">Card</p>
-              <p className="text-muted-foreground mt-0.5">Content container — separators are often used within cards.</p>
+              <p className="text-muted-foreground mt-0.5">Commonly uses Separator between header and content.</p>
             </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+            <span className="text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Dropdown Menu</p>
+              <p className="text-muted-foreground mt-0.5">Uses separator between menu item groups.</p>
+            </div>
+            <span className="text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Breadcrumb</p>
+              <p className="text-muted-foreground mt-0.5">Uses separator between breadcrumb items.</p>
+            </div>
+            <span className="text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">Available</span>
           </div>
         </div>
       </section>
@@ -11817,10 +12467,11 @@ function SeparatorDocs() {
 }
 
 /* ================================================================
+/* ================================================================
    Skeleton Docs
    ================================================================ */
 
-const skeletonSections: TocSection[] = [
+const skeletonSections = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
@@ -11832,173 +12483,245 @@ const skeletonSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function SkeletonExploreBehavior() {
+  const [shape, setShape] = useState("card")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="p-4xl flex items-center justify-center min-h-[160px]">
+          {shape === "card" && (
+            <div className="flex items-start gap-sm">
+              <Skeleton className="size-[48px] rounded-full shrink-0" />
+              <div className="flex flex-col gap-sm w-[260px]">
+                <Skeleton className="h-md w-full" />
+                <Skeleton className="h-[132px] w-full rounded-lg" />
+              </div>
+            </div>
+          )}
+          {shape === "text" && (
+            <div className="space-y-xs w-60">
+              <Skeleton className="h-md w-full" />
+              <Skeleton className="h-md w-4/5" />
+              <Skeleton className="h-md w-3/5" />
+            </div>
+          )}
+          {shape === "circle" && (
+            <Skeleton className="size-4xl rounded-full" />
+          )}
+          {shape === "object" && (
+            <Skeleton className="w-[260px] h-[132px] rounded-lg" />
+          )}
+        </div>
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <div className="space-y-sm">
+            <PropertyTabs label="Skeleton" value={shape} onChange={setShape} options={[
+              { value: "card", label: "Default" },
+              { value: "circle", label: "Placeholder Avatar" },
+              { value: "text", label: "Placeholder Line" },
+              { value: "object", label: "Placeholder Object" },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SkeletonPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Controls dimensions and shape. Use h-*, w-*, rounded-full, etc.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function SkeletonTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">bg-muted</td>
+            <td className="p-3 font-mono text-xs">#f5f5f4</td>
+            <td className="p-3">Placeholder background color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">rounded-lg</td>
+            <td className="p-3 font-mono text-xs">8px</td>
+            <td className="p-3">Default border radius</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">animate-pulse</td>
+            <td className="p-3 font-mono text-xs">opacity 0→1→0</td>
+            <td className="p-3">Shimmer animation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function SkeletonDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={skeletonSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Skeleton</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Loading placeholder with a pulse animation. Use to indicate content is being loaded.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Loading placeholder with a pulse animation. Shape and size are fully controlled via className — compose multiple skeletons to match any content layout.
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Shape", prop: "shape", defaultValue: "card", options: [
-            { label: "Card", value: "card" },
-            { label: "Text Block", value: "text" },
-            { label: "Circle", value: "circle" },
-          ]},
-        ]}
-        render={(p) =>
-          p.shape === "card" ? (
-            <div className="flex items-center gap-4">
-              <Skeleton className="size-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[200px]" />
-                <Skeleton className="h-4 w-[160px]" />
-              </div>
-            </div>
-          ) : p.shape === "text" ? (
-            <div className="space-y-2 w-60">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-4/5" />
-              <Skeleton className="h-4 w-3/5" />
-            </div>
-          ) : (
-            <Skeleton className="size-16 rounded-full" />
-          )
-        }
-      />
+      <SkeletonExploreBehavior />
 
-      
-      {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add clsx tailwind-merge`}
+        deps="# No additional dependencies"
         importCode={`import { Skeleton } from "@/components/ui/skeleton"`}
       />
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Example title="Card skeleton" description="Avatar with two text lines — typical user card placeholder." code={`<div className="flex items-center gap-4">\n  <Skeleton className="size-12 rounded-full" />\n  <div className="space-y-2">\n    <Skeleton className="h-4 w-[200px]" />\n    <Skeleton className="h-4 w-[160px]" />\n  </div>\n</div>`}>
-            <div className="flex items-center gap-4">
-              <Skeleton className="size-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[200px]" />
-                <Skeleton className="h-4 w-[160px]" />
+          <Example
+            title="Card skeleton"
+            description="Avatar + text lines mimicking a user card."
+            code={`<div className="flex items-center gap-md">\n  <Skeleton className="size-3xl rounded-full" />\n  <div className="space-y-xs">\n    <Skeleton className="h-md w-[200px]" />\n    <Skeleton className="h-md w-[160px]" />\n  </div>\n</div>`}
+          >
+            <div className="flex items-center gap-md">
+              <Skeleton className="size-3xl rounded-full" />
+              <div className="space-y-xs">
+                <Skeleton className="h-md w-[200px]" />
+                <Skeleton className="h-md w-[160px]" />
               </div>
             </div>
           </Example>
-          <Example title="Text block" description="Paragraph placeholder — staggered widths mimic natural text." code={`<div className="space-y-2">\n  <Skeleton className="h-4 w-full" />\n  <Skeleton className="h-4 w-4/5" />\n  <Skeleton className="h-4 w-3/5" />\n</div>`}>
-            <div className="space-y-2 w-60">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-4/5" />
-              <Skeleton className="h-4 w-3/5" />
+
+          <Example
+            title="Text block"
+            description="Multiple lines with decreasing width."
+            code={`<div className="space-y-xs w-60">\n  <Skeleton className="h-md w-full" />\n  <Skeleton className="h-md w-4/5" />\n  <Skeleton className="h-md w-3/5" />\n</div>`}
+          >
+            <div className="space-y-xs w-60">
+              <Skeleton className="h-md w-full" />
+              <Skeleton className="h-md w-4/5" />
+              <Skeleton className="h-md w-3/5" />
+            </div>
+          </Example>
+
+          <Example
+            title="Image placeholder"
+            description="A large rectangular skeleton for image areas."
+            code={`<Skeleton className="h-[180px] w-full rounded-xl" />`}
+          >
+            <Skeleton className="h-[180px] w-full rounded-xl" />
+          </Example>
+
+          <Example
+            title="Table rows"
+            description="Skeleton rows simulating a data table."
+            code={`<div className="space-y-sm">\n  {[1, 2, 3].map(i => (\n    <div key={i} className="flex gap-md">\n      <Skeleton className="h-md w-1/4" />\n      <Skeleton className="h-md w-1/2" />\n      <Skeleton className="h-md w-1/4" />\n    </div>\n  ))}\n</div>`}
+          >
+            <div className="space-y-sm">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="flex gap-md">
+                  <Skeleton className="h-md w-1/4" />
+                  <Skeleton className="h-md w-1/2" />
+                  <Skeleton className="h-md w-1/4" />
+                </div>
+              ))}
             </div>
           </Example>
         </div>
       </section>
 
-      <section id="props" className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes for sizing and shape (e.g., h-4 w-full, rounded-full).</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SkeletonPropsTable />
       </section>
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Skeleton background color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">animate-pulse</td><td className="px-4 py-3 font-mono text-muted-foreground">CSS keyframe</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Pulse animation</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">rounded-lg</td><td className="px-4 py-3 font-mono text-muted-foreground">8px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Default border radius</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SkeletonTokensTable />
       </section>
 
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Loading UX</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Match skeleton shapes to the content they represent — text lines, circles for avatars, rectangles for images.</p>
-              <p>Show skeletons immediately rather than a spinner for content-heavy pages.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't show skeletons for more than 3-5 seconds — fall back to an error or timeout state.</p>
-              <p>Don't use generic rectangles — match the actual layout for better perceived performance.</p>
-            </DontItem>
-          </div>
-        </div>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Match the skeleton shape and size to the actual content it replaces." />
+        <DontItem text="Use skeleton for content that loads instantly — only for async loading states." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Use rounded-full for avatar placeholders and rounded-lg for text/card areas." />
+        <DontItem text="Show a single skeleton for an entire page — compose multiple to match the layout." />
       </section>
 
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Skeleton is purely visual — hidden from assistive technology.</li>
-              <li>Use <code className="bg-muted px-1 rounded font-mono">aria-busy="true"</code> on the parent container while loading.</li>
-              <li>Add <code className="bg-muted px-1 rounded font-mono">aria-live="polite"</code> on the region to announce when content loads.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" rows={[
         ["Animation", "Pulse", "—", "animate-pulse"],
-        ["Shape", "Rounded", "—", "rounded-lg"],
-        ["Color", "Muted", "—", "bg-muted"],
-        ["Sizing", "Custom via className", "className", "h-4 w-[200px]"],
+        ["Shape", "Rounded", "—", "rounded-lg (default)"],
+        ["Color", "Muted background", "—", "bg-muted"],
+        ["Sizing", "Custom via className", "className", "h-*, w-*, size-*"],
       ]} />
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Spinner</p>
-              <p className="text-muted-foreground mt-0.5">Small inline loading indicator for buttons and actions.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Progress</p>
-              <p className="text-muted-foreground mt-0.5">Determinate progress bar when percentage is known.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
+      <section id="accessibility" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Feature</th>
+                <th className="text-left p-3 font-semibold">Details</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-medium">aria-busy</td>
+                <td className="p-3">Add <code className="text-xs bg-muted px-1 py-0.5 rounded">aria-busy="true"</code> to the parent container while loading.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">aria-label</td>
+                <td className="p-3">Provide <code className="text-xs bg-muted px-1 py-0.5 rounded">aria-label="Loading content"</code> on the skeleton container.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Motion</td>
+                <td className="p-3">The <code className="text-xs bg-muted px-1 py-0.5 rounded">animate-pulse</code> respects <code className="text-xs bg-muted px-1 py-0.5 rounded">prefers-reduced-motion</code>.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
+
+      <section id="related" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+          <li><strong>Spinner</strong> — Use for indeterminate loading without layout structure.</li>
+          <li><strong>Progress</strong> — Use when loading progress percentage is known.</li>
+        </ul>
       </section>
     </div>
   )
@@ -17544,128 +18267,415 @@ const datePickerSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
-function DatePickerExploreBehavior() {
-  const [inputState, setInputState] = useState<"Placeholder" | "Value" | "Focus">("Placeholder")
-  const [calendarType, setCalendarType] = useState<"Basic" | "Range">("Basic")
-  const [calendarStyle, setCalendarStyle] = useState<"1 Month" | "2 Month" | "Year and Month" | "Only Month" | "Only Year">("1 Month")
-  const [calendarSize, setCalendarSize] = useState<"Small" | "Large" | "Custom days">("Small")
-  const [selectedDate] = useState(new Date())
+/** Shared helper: build Calendar classNames overrides for size/dropdown/range */
+function useDatePickerClassNames(size: string, style: string, type: string) {
+  const isDropdown = ["year-month", "only-month", "only-year"].includes(style)
+  const weekdayW = size === "small" ? "w-[32px]" : "w-[48px]"
+
+  /* DayCell handles all state colors internally — only pass size override */
+  const sizeClassNames = size !== "small" ? {
+    day: "relative p-0 text-center focus-within:relative focus-within:z-20 [&>button]:size-[48px]",
+    weekday: `text-muted-foreground ${weekdayW} h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center`,
+  } : {}
+
+  const ghostNavBtn = "!size-[32px] rounded-lg p-[7px] bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground"
+  const dropdownClassNames = isDropdown ? {
+    button_previous: cn(ghostNavBtn, "col-start-1 row-start-1 self-center"),
+    button_next: cn(ghostNavBtn, "col-start-3 row-start-1 self-center"),
+  } : {}
+
+  /* DayCell handles range_start/end/middle styling — wrapper only needs marker classes */
+  const rangeClassNames = type === "range" ? {
+    range_start: "day-range-start",
+    range_end: "day-range-end",
+    range_middle: "",
+    selected: "rounded-sm",
+  } : {}
+
+  return { ...sizeClassNames, ...dropdownClassNames, ...rangeClassNames }
+}
+
+/* -- Date Picker Main Tab (Figma 288:119954 — NO card wrapper) -- */
+function DatePickerMainTab() {
+  const [type, setType] = useState("basic")
+  const [style, setStyle] = useState("1-month")
+  const [size, setSize] = useState("small")
+
+  const captionLayout = style === "year-month" ? "dropdown" as const
+    : style === "only-month" ? "dropdown-months" as const
+    : style === "only-year" ? "dropdown-years" as const
+    : "label" as const
+  const numMonths = style === "2-month" ? 2
+    : type === "range" && style === "1-month" ? 2
+    : 1
+
+  const classNamesOverride = useDatePickerClassNames(size, style, type)
   const rangeFrom = new Date(2025, 0, 15)
   const rangeTo = new Date(2025, 1, 14)
 
-  /* Map Style → rdp captionLayout + numberOfMonths
-     "dropdown-months" = month IS dropdown → Figma "Only Month"
-     "dropdown-years"  = year IS dropdown  → Figma "Only Year" */
-  const captionLayout = calendarStyle === "Year and Month" ? "dropdown" as const
-    : calendarStyle === "Only Month" ? "dropdown-months" as const
-    : calendarStyle === "Only Year" ? "dropdown-years" as const
-    : "label" as const
-  const numMonths = calendarStyle === "2 Month" ? 2 : calendarType === "Range" && calendarStyle === "1 Month" ? 2 : 1
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] overflow-x-auto">
+        {type === "range" ? (
+          <Calendar
+            mode="range"
+            selected={{ from: rangeFrom, to: rangeTo }}
+            numberOfMonths={numMonths}
+            captionLayout={captionLayout}
+            startMonth={new Date(2020, 0)}
+            endMonth={new Date(2030, 11)}
+            showOutsideDays
+            className="bg-transparent"
+            classNames={classNamesOverride}
+          />
+        ) : (
+          <Calendar
+            mode="single"
+            selected={new Date()}
+            numberOfMonths={numMonths}
+            captionLayout={captionLayout}
+            startMonth={new Date(2020, 0)}
+            endMonth={new Date(2030, 11)}
+            showOutsideDays
+            className="bg-transparent"
+            classNames={classNamesOverride}
+          />
+        )}
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={setType} options={[
+          { value: "basic", label: "Basic" },
+          { value: "range", label: "Range" },
+        ]} />
+        <PropertyTabs label="Style" value={style} onChange={setStyle} options={[
+          { value: "1-month", label: "1 Month" },
+          { value: "2-month", label: "2 Months" },
+          { value: "year-month", label: "Year and Month" },
+          { value: "only-month", label: "Only Month" },
+          { value: "only-year", label: "Only Year" },
+        ]} />
+        <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+          { value: "small", label: "Small (32px)" },
+          { value: "large", label: "Large (48px)" },
+          { value: "custom", label: "Custom days (48px)" },
+        ]} />
+      </div>
+    </>
+  )
+}
 
-  /* Map Size → day button size class */
-  const daySize = calendarSize === "Small" ? "size-[32px]" : "size-[48px]"
-  const weekdayW = calendarSize === "Small" ? "w-[32px]" : "w-[48px]"
+/* -- Calendar Tab (Figma 4820:5638 — card wrapper: bg-card border rounded-lg p-md shadow) -- */
+function CalendarTab() {
+  const [type, setType] = useState("basic")
+
+  const classNamesOverride = useDatePickerClassNames("small", "1-month", type)
+  const rangeFrom = new Date(2025, 0, 15)
+  const rangeTo = new Date(2025, 1, 14)
 
   return (
-    <div className="rounded-xl border border-border overflow-hidden">
-      {/* ── Static preview ── */}
-      <div className="bg-primary/5 p-4xl flex flex-col items-center justify-center gap-xs min-h-[200px]">
-        {/* Date Picker Input preview */}
-        <div
-          className={cn(
-            "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm transition-colors",
-            calendarType === "Basic" ? "w-[197px]" : "w-auto min-w-[197px]",
-            inputState === "Focus"
-              ? "border-border ring-[3px] ring-ring"
-              : "border-border",
-            inputState === "Value" ? "text-foreground" : "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="size-md shrink-0" />
-          <span className="flex-1 text-left whitespace-nowrap">
-            {inputState === "Value"
-              ? calendarType === "Range"
-                ? `${format(rangeFrom, "LLL dd, y")} – ${format(rangeTo, "LLL dd, y")}`
-                : format(selectedDate, "PPP")
-              : calendarType === "Range"
-                ? "Pick a date range"
-                : "Pick a date"}
-          </span>
-        </div>
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] overflow-x-auto">
+        {type === "range" ? (
+          <Calendar
+            mode="range"
+            selected={{ from: rangeFrom, to: rangeTo }}
+            numberOfMonths={2}
+            startMonth={new Date(2020, 0)}
+            endMonth={new Date(2030, 11)}
+            showOutsideDays
+            className="rounded-lg border border-border bg-card shadow"
+            classNames={classNamesOverride}
+          />
+        ) : (
+          <Calendar
+            mode="single"
+            selected={new Date()}
+            startMonth={new Date(2020, 0)}
+            endMonth={new Date(2030, 11)}
+            showOutsideDays
+            className="rounded-lg border border-border bg-card shadow"
+          />
+        )}
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={setType} options={[
+          { value: "basic", label: "Basic" },
+          { value: "range", label: "Range" },
+        ]} />
+      </div>
+    </>
+  )
+}
 
-        {/* Calendar preview (Figma: Calendar 4820:5638 = card r=8 p=16 wrapping Date Picker) */}
-        <div className="mt-xs overflow-x-auto">
-          {calendarType === "Range" ? (
-            <Calendar
-              mode="range"
-              selected={inputState === "Value" ? { from: rangeFrom, to: rangeTo } : undefined}
-              numberOfMonths={numMonths}
-              captionLayout={captionLayout}
-              startMonth={new Date(2020, 0)}
-              endMonth={new Date(2030, 11)}
-              showOutsideDays
-              className="rounded-lg border border-border bg-card shadow"
-              classNames={{
-                day_button: `inline-flex items-center justify-center whitespace-nowrap rounded-sm ${daySize} typo-paragraph-sm font-normal bg-card text-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none`,
-                weekday: `text-muted-foreground ${weekdayW} h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center`,
-              }}
-            />
-          ) : (
-            <Calendar
-              mode="single"
-              selected={inputState === "Value" ? selectedDate : undefined}
-              numberOfMonths={numMonths}
-              captionLayout={captionLayout}
-              startMonth={new Date(2020, 0)}
-              endMonth={new Date(2030, 11)}
-              showOutsideDays
-              className="rounded-lg border border-border bg-card shadow"
-              classNames={{
-                day_button: `inline-flex items-center justify-center whitespace-nowrap rounded-sm ${daySize} typo-paragraph-sm font-normal bg-card text-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none`,
-                weekday: `text-muted-foreground ${weekdayW} h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center`,
-              }}
-            />
+/* -- Date Picker / Day Tab -- */
+
+/** Valid states per position (from Figma component set 781:40922) */
+const dayDefaultPosStates = [
+  { value: "default", label: "Default" },
+  { value: "hover", label: "Hover & Active" },
+  { value: "disabled", label: "Disabled" },
+  { value: "outside", label: "Outside" },
+  { value: "today", label: "Today" },
+]
+const daySelectedPosStates = [
+  { value: "hover", label: "Hover & Active" },
+  { value: "selected", label: "Selected" },
+  { value: "focus", label: "Focus" },
+  { value: "disabled", label: "Disabled" },
+  { value: "selected-disable", label: "Selected Disable" },
+]
+
+function DatePickerDayTab() {
+  const [position, setPosition] = useState("default")
+  const [state, setState] = useState("default")
+  const [size, setSize] = useState("small")
+
+  const isDefaultPos = position === "default"
+  const stateOptions = isDefaultPos ? dayDefaultPosStates : daySelectedPosStates
+  const activeState = stateOptions.find(o => o.value === state) ? state : stateOptions[0].value
+
+  const daySize = size === "small" ? "size-[32px]" : "size-[48px]"
+  const isCustom = size === "custom"
+
+  /* Background + text color per state (matched to Figma hex)
+     Position=Middle uses bg-accent (range middle days), others use bg-primary */
+  const isMiddle = position === "middle"
+  const stateClass =
+    activeState === "hover" && isDefaultPos ? "bg-accent text-foreground"
+    : activeState === "hover" && isMiddle ? "bg-accent text-foreground"
+    : activeState === "hover" ? "bg-primary text-foreground"
+    : activeState === "selected" && isMiddle ? "bg-accent text-foreground"
+    : activeState === "selected" ? "bg-primary text-primary-foreground"
+    : activeState === "selected-disable" && isMiddle ? "bg-accent text-foreground opacity-50"
+    : activeState === "selected-disable" ? "bg-primary text-primary-foreground opacity-50"
+    : activeState === "focus" && isMiddle ? "bg-accent text-foreground ring-[3px] ring-ring"
+    : activeState === "focus" ? "bg-primary text-primary-foreground ring-[3px] ring-ring"
+    : activeState === "disabled" ? "bg-background text-foreground opacity-50"
+    : activeState === "outside" ? "bg-background text-foreground opacity-40"
+    : activeState === "today" ? "bg-card text-foreground border border-brand-border"
+    : isMiddle ? "bg-accent text-foreground"
+    : "bg-card text-foreground"
+
+  const posClass = position === "single" ? "rounded-sm"
+    : position === "start" ? "rounded-l-sm rounded-r-none"
+    : position === "end" ? "rounded-r-sm rounded-l-none"
+    : position === "middle" ? "rounded-none"
+    : "rounded-sm"
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className={cn(
+          "inline-flex flex-col items-center justify-center typo-paragraph-sm font-normal transition-colors cursor-default overflow-clip",
+          daySize, posClass, stateClass
+        )}>
+          <span>{activeState === "outside" ? "30" : "15"}</span>
+          {isCustom && (
+            <span className={cn(
+              "typo-paragraph-mini whitespace-nowrap",
+              activeState === "selected" || activeState === "focus" || activeState === "selected-disable"
+                ? "opacity-70"
+                : "text-muted-foreground"
+            )}>
+              $220
+            </span>
           )}
         </div>
       </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Position" value={position} onChange={(v) => {
+          setPosition(v)
+          const opts = v === "default" ? dayDefaultPosStates : daySelectedPosStates
+          if (!opts.find(o => o.value === state)) setState(opts[0].value)
+        }} options={[
+          { value: "default", label: "Default" },
+          { value: "single", label: "Single" },
+          { value: "start", label: "Start" },
+          { value: "end", label: "End" },
+          { value: "middle", label: "Middle" },
+        ]} />
+        <PropertyTabs label="State" value={activeState} onChange={setState} options={stateOptions} />
+        <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+          { value: "small", label: "Small (32px)" },
+          { value: "large", label: "Large (48px)" },
+          { value: "custom", label: "Custom days (48px)" },
+        ]} />
+      </div>
+    </>
+  )
+}
 
-      {/* ── Controls panel ── */}
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Basic", "Range"].map(v => (
-                <button key={v} onClick={() => setCalendarType(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", calendarType === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Style</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["1 Month", "2 Month", "Year and Month", "Only Month", "Only Year"].map(v => (
-                <button key={v} onClick={() => setCalendarStyle(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", calendarStyle === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Size</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Small", "Large", "Custom days"].map(v => (
-                <button key={v} onClick={() => setCalendarSize(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", calendarSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">State</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Placeholder", "Value", "Focus"].map(v => (
-                <button key={v} onClick={() => setInputState(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", inputState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
+/* -- Date Picker / Header Tab -- */
+function DatePickerHeaderTab() {
+  const [type, setType] = useState("1-month")
+
+  const is2Month = type === "2-month"
+  const isDropdown = ["year-month", "only-month", "only-year"].includes(type)
+  const captionLayout = type === "year-month" ? "dropdown" as const
+    : type === "only-month" ? "dropdown-months" as const
+    : type === "only-year" ? "dropdown-years" as const
+    : "label" as const
+  const numMonths = is2Month ? 2 : 1
+  const headerWidth = is2Month ? "w-[320px]" : "w-[240px]"
+
+  /* Figma: dropdown types use ghost nav buttons, label types use outline */
+  const ghostNavBtn = "!size-[32px] rounded-lg p-[7px] bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground"
+  const outlineNavBtn = cn(
+    buttonVariants({ variant: "outline" }),
+    "!size-[32px] rounded-lg p-[7px]"
+  )
+  const navBtnClass = isDropdown ? ghostNavBtn : outlineNavBtn
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] overflow-x-auto">
+        <div className={headerWidth}>
+          <Calendar
+            mode="single"
+            numberOfMonths={numMonths}
+            captionLayout={captionLayout}
+            startMonth={new Date(2020, 0)}
+            endMonth={new Date(2030, 11)}
+            showOutsideDays={false}
+            className="bg-transparent p-0"
+            classNames={{
+              month_grid: "hidden",
+              months: "flex gap-md",
+              month: "grid grid-cols-[auto_1fr_auto] w-full",
+              button_previous: cn(navBtnClass, "col-start-1 row-start-1 self-center"),
+              button_next: cn(navBtnClass, "col-start-3 row-start-1 self-center"),
+              month_caption: "col-start-2 row-start-1 flex items-center justify-center h-[32px]",
+            }}
+          />
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={setType} options={[
+          { value: "1-month", label: "1 Month" },
+          { value: "2-month", label: "2 Months" },
+          { value: "year-month", label: "Year and Month" },
+          { value: "only-month", label: "Only Month" },
+          { value: "only-year", label: "Only Year" },
+        ]} />
+      </div>
+    </>
+  )
+}
+
+/* -- Date Picker Input Tab -- */
+function DatePickerInputTab() {
+  const [state, setState] = useState("placeholder")
+  const [showLabel, setShowLabel] = useState(false)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className="flex flex-col gap-[4px]">
+          {showLabel && <label className="typo-paragraph-sm font-medium text-foreground">Date</label>}
+          <div
+            className={cn(
+              "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm w-[197px] transition-colors",
+              state === "focus" ? "border-border ring-[3px] ring-ring" : "border-border",
+              state === "value" ? "text-foreground" : "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="size-md shrink-0" />
+            <span className="flex-1 text-left">
+              {state === "value" ? "Jan 20, 2025" : "Pick a date"}
+            </span>
           </div>
         </div>
       </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="State" value={state} onChange={setState} options={[
+          { value: "placeholder", label: "Placeholder" },
+          { value: "value", label: "Value" },
+          { value: "focus", label: "Focus" },
+        ]} />
+        <div className="space-y-xs">
+          <span className="text-xs font-medium text-muted-foreground">Show Label</span>
+          <div><Switch checked={showLabel} onCheckedChange={setShowLabel} /></div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+/* -- Time Picker Input Tab -- */
+function TimePickerInputTab() {
+  const [state, setState] = useState("placeholder")
+  const [showLabel, setShowLabel] = useState(false)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px]">
+        <div className="flex flex-col gap-[4px]">
+          {showLabel && <label className="typo-paragraph-sm font-medium text-foreground">Time</label>}
+          <div
+            className={cn(
+              "h-9 w-[100px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm transition-colors inline-flex items-center",
+              state === "focus" ? "ring-[3px] ring-ring" : "",
+              state === "value" ? "text-foreground" : "text-muted-foreground"
+            )}
+          >
+            <span className="whitespace-nowrap">
+              {state === "value" ? "10:30:00" : "00:00:00"}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="State" value={state} onChange={setState} options={[
+          { value: "placeholder", label: "Placeholder" },
+          { value: "value", label: "Value" },
+          { value: "focus", label: "Focus" },
+        ]} />
+        <div className="space-y-xs">
+          <span className="text-xs font-medium text-muted-foreground">Show Label</span>
+          <div><Switch checked={showLabel} onCheckedChange={setShowLabel} /></div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+/* -- Tabbed Explore Behavior -- */
+const datePickerBehaviorTabs = [
+  { value: "date-picker", label: "Date Picker" },
+  { value: "calendar", label: "Calendar" },
+  { value: "header", label: "Header" },
+  { value: "day", label: "Day Cell" },
+  { value: "input", label: "Date Picker Input" },
+  { value: "time-input", label: "Time Picker Input" },
+]
+
+function DatePickerExploreBehavior() {
+  const [tab, setTab] = useState("date-picker")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      <div className="flex border-b border-border bg-muted/50 overflow-x-auto">
+        {datePickerBehaviorTabs.map((t) => (
+          <button
+            key={t.value}
+            onClick={() => setTab(t.value)}
+            className={cn(
+              "px-md py-sm typo-paragraph-sm-medium transition-colors whitespace-nowrap",
+              tab === t.value
+                ? "text-foreground border-b-2 border-primary"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === "date-picker" && <DatePickerMainTab />}
+      {tab === "calendar" && <CalendarTab />}
+      {tab === "header" && <DatePickerHeaderTab />}
+      {tab === "day" && <DatePickerDayTab />}
+      {tab === "input" && <DatePickerInputTab />}
+      {tab === "time-input" && <TimePickerInputTab />}
     </div>
   )
 }
@@ -17976,18 +18986,6 @@ function DatePickerDocs() {
    Combobox Docs
    ================================================================ */
 
-const comboboxSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
-
 function ComboboxDocs() {
   const frameworks = [
     { value: "next", label: "Next.js" },
@@ -17999,8 +18997,6 @@ function ComboboxDocs() {
 
   return (
     <div className="space-y-12">
-      <TableOfContents sections={comboboxSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Combobox</h1>
@@ -18021,123 +19017,59 @@ function ComboboxDocs() {
         />
       )} />
 
-      
+      <section className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Import</h2>
+        <Example title="Import" code={`import { Combobox } from "@/components/ui/combobox"`}>
+          <p className="text-xs text-muted-foreground italic">Import statement only — see examples below.</p>
+        </Example>
+      </section>
 
-      {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add cmdk@1.1.1 @radix-ui/react-popover`}
-        importCode={`import { Combobox } from "@/components/ui/combobox"`}
-      />
-
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Searchable dropdown with a list of framework options." code={`const frameworks = [\n  { value: "next", label: "Next.js" },\n  { value: "sveltekit", label: "SvelteKit" },\n  { value: "nuxt", label: "Nuxt.js" },\n  { value: "remix", label: "Remix" },\n  { value: "astro", label: "Astro" },\n]\n\n<Combobox\n  options={frameworks}\n  placeholder="Select framework..."\n  searchPlaceholder="Search framework..."\n/>`}>
+        <Example title="Default" code={`const frameworks = [\n  { value: "next", label: "Next.js" },\n  { value: "sveltekit", label: "SvelteKit" },\n  { value: "nuxt", label: "Nuxt.js" },\n  { value: "remix", label: "Remix" },\n  { value: "astro", label: "Astro" },\n]\n\n<Combobox\n  options={frameworks}\n  placeholder="Select framework..."\n  searchPlaceholder="Search framework..."\n/>`}>
           <Combobox
             options={frameworks}
             placeholder="Select framework..."
             searchPlaceholder="Search framework..."
           />
         </Example>
-        </div>
       </section>
 
-      <section id="props" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
+      <section className="space-y-4 pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">API Reference</h2>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Prop</th>
+                <th className="text-left p-3 font-semibold">Type</th>
+                <th className="text-left p-3 font-semibold">Default</th>
+                <th className="text-left p-3 font-semibold">Description</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">options</td><td className="px-4 py-3 font-mono text-muted-foreground">ComboboxOption[]</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Array of {`{ value, label }`} objects.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">value</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled selected value.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">onValueChange</td><td className="px-4 py-3 font-mono text-muted-foreground">(value: string) =&gt; void</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when value changes.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">placeholder</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">"Select option..."</td><td className="px-4 py-3 text-muted-foreground">Placeholder text.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">searchPlaceholder</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">"Search..."</td><td className="px-4 py-3 text-muted-foreground">Search input placeholder.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">emptyText</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">"No results found."</td><td className="px-4 py-3 text-muted-foreground">Text when no results match.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">options</td><td className="p-3 font-mono text-xs">ComboboxOption[]</td><td className="p-3 font-mono text-xs">—</td><td className="p-3">Array of {`{ value, label }`} objects.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">value</td><td className="p-3 font-mono text-xs">string</td><td className="p-3 font-mono text-xs">—</td><td className="p-3">Controlled selected value.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">onValueChange</td><td className="p-3 font-mono text-xs">(value: string) =&gt; void</td><td className="p-3 font-mono text-xs">—</td><td className="p-3">Callback when value changes.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">placeholder</td><td className="p-3 font-mono text-xs">string</td><td className="p-3 font-mono text-xs">"Select option..."</td><td className="p-3">Placeholder text.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">searchPlaceholder</td><td className="p-3 font-mono text-xs">string</td><td className="p-3 font-mono text-xs">"Search..."</td><td className="p-3">Search input placeholder.</td></tr>
+              <tr><td className="p-3 font-mono text-xs">emptyText</td><td className="p-3 font-mono text-xs">string</td><td className="p-3 font-mono text-xs">"No results found."</td><td className="p-3">Text when no results match.</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Popover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Item hover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Text color</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Search & Select</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Combobox when users need to search through a large list of options.</p>
-              <p>Show an empty state message when no results match the search query.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Combobox for short lists (&lt;5 items) — use <strong>Select</strong> instead.</p>
-              <p>Don't pre-populate the search field — let users type their query.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Enter</kbd> / <kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Space</kbd> — Open the popover.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Arrow Up/Down</kbd> — Navigate options.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Enter</kbd> — Select highlighted option.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Escape</kbd> — Close the popover.</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Combines Popover + Command — searchable dropdown with keyboard navigation.</li>
-              <li>Type to filter options, Arrow keys to navigate, Enter to select.</li>
-              <li>Selected value is announced to screen readers.</li>
-            </ul>
-          </div>
+        <div className="grid grid-cols-2 gap-6">
+          <DoItem text="Use Combobox when you have more than 7 options to search through." />
+          <DontItem text="Don't use Combobox for less than 5 options — use Select instead." />
         </div>
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
+      <FigmaMapping rows={[
         ["Trigger", "Outline button", "—", "Button variant=outline, w-[200px]"],
         ["Icon", "ChevronsUpDown", "—", "ChevronsUpDown icon, size-md"],
         ["Popover Width", "200px", "—", "w-[200px] (matches button)"],
@@ -18146,36 +19078,15 @@ function ComboboxDocs() {
         ["Empty State", "Text", "emptyText", '"No results found."'],
         ["Options", "Array", "options", "{ value, label }[]"],
       ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Select</p>
-              <p className="text-muted-foreground mt-0.5">Simple dropdown without search.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Command</p>
-              <p className="text-muted-foreground mt-0.5">Full command palette with groups.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
 
 /* ================================================================
-   Radio Group Docs
+   Radio Docs
    ================================================================ */
 
-const radioGroupSections: TocSection[] = [
+const radioSections: TocSection[] = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
@@ -18187,44 +19098,313 @@ const radioGroupSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
-function RadioGroupDocs() {
+function RadioExploreBehavior() {
+  // --- Radio ---
+  const [rdChecked, setRdChecked] = useState("False")
+  const [rdState, setRdState] = useState("Default")
+  // --- Radio Group ---
+  const [rgLayout, setRgLayout] = useState("Block")
+  const [rgDisabled, setRgDisabled] = useState(false)
+  // --- Rich Radio Group ---
+  const [richChecked, setRichChecked] = useState(false)
+  const [richFlipped, setRichFlipped] = useState(false)
+  const [richShowLine2, setRichShowLine2] = useState(true)
+  const [richShowBadge, setRichShowBadge] = useState(true)
+  const [richShowIcon, setRichShowIcon] = useState(false)
+  // --- Rich Radio Group/Advanced ---
+  const [raState, setRaState] = useState("Default")
+  const [raSize, setRaSize] = useState("Regular")
+  const [raDescription, setRaDescription] = useState(true)
+  const [raRecommended, setRaRecommended] = useState(true)
+  const [raShowBody, setRaShowBody] = useState(true)
+
+  const raIsDisabled = raState === "Disable" || raState === "Disable Selected"
+  const raIsSelected = raState === "Active" || raState === "Selected" || raState === "Selected - Hover" || raState === "Disable Selected"
+  const raIsHover = raState === "Hover" || raState === "Selected - Hover"
+
+  const [rdTab, setRdTab] = useState<"radio" | "group" | "rich" | "richAdvanced">("radio")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      {/* ── Tabs ── */}
+      <div className="flex border-b border-border bg-muted/30">
+        {(["radio", "group", "rich", "richAdvanced"] as const).map(t => (
+          <button key={t} onClick={() => setRdTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", rdTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+            {t === "radio" ? "Radio" : t === "group" ? "Radio Group" : t === "rich" ? "Rich" : "Rich Advanced"}
+          </button>
+        ))}
+      </div>
+
+      {/* ---- Tab: Radio ---- */}
+      {rdTab === "radio" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <RadioGroup value={rdChecked === "True" ? "item" : ""} disabled={rdState === "Disabled"}>
+              <RadioGroupItem
+                value="item"
+                aria-invalid={rdState === "Error" || rdState === "Error Focus" || undefined}
+                className={[
+                  rdState === "Focus" ? "ring-[3px] ring-ring" : "",
+                  rdState === "Error Focus" ? "ring-[3px] ring-ring-error" : "",
+                ].filter(Boolean).join(" ")}
+              />
+            </RadioGroup>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Checked?</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["False", "True"].map(v => (
+                    <button key={v} onClick={() => setRdChecked(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rdChecked === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["Default", "Focus", "Error", "Error Focus", "Disabled"].map(v => (
+                    <button key={v} onClick={() => setRdState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rdState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ---- Tab: Radio Group ---- */}
+      {rdTab === "group" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <RadioGroup
+              defaultValue="option-1"
+              disabled={rgDisabled}
+              className={rgLayout === "Inline" ? "flex gap-md" : "grid gap-sm"}
+            >
+              <div className="flex items-center gap-xs">
+                <RadioGroupItem value="option-1" id="rg-exp-1" />
+                <Label htmlFor="rg-exp-1">Label</Label>
+              </div>
+              <div className="flex items-center gap-xs">
+                <RadioGroupItem value="option-2" id="rg-exp-2" />
+                <Label htmlFor="rg-exp-2">Label</Label>
+              </div>
+              <div className="flex items-center gap-xs">
+                <RadioGroupItem value="option-3" id="rg-exp-3" />
+                <Label htmlFor="rg-exp-3">Label</Label>
+              </div>
+            </RadioGroup>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Layout</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["Inline", "Block"].map(v => (
+                    <button key={v} onClick={() => setRgLayout(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rgLayout === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-lg">
+                <div className="space-y-xs">
+                  <Label className="text-xs text-muted-foreground">Disabled</Label>
+                  <div className="pt-1"><Switch checked={rgDisabled} onCheckedChange={setRgDisabled} /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ---- Tab: Rich Radio Group (Figma 843:222230) ---- */}
+      {rdTab === "rich" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            {/* Figma: 240w, gap=8, pad=12h/8v, border=1 #e9e9e7 (--border), fill=#fff (--card), corner=10px */}
+            <div className={[
+              "flex gap-xs px-sm py-xs w-[240px] rounded-[10px] border border-border bg-card",
+              richFlipped ? "flex-row-reverse" : "",
+            ].filter(Boolean).join(" ")}>
+              {!richFlipped && (
+                <div className="shrink-0 flex items-center h-lg">
+                  <RadioGroup value={richChecked ? "item" : ""}>
+                    <RadioGroupItem value="item" />
+                  </RadioGroup>
+                </div>
+              )}
+              {richShowIcon && (
+                <div className="shrink-0 flex items-center justify-center size-[36px] rounded-full border border-border">
+                  <SquareDashed className="size-md text-muted-foreground" />
+                </div>
+              )}
+              <div className="flex-1 min-w-0 space-y-[2px]">
+                <div className="flex items-center gap-2xs">
+                  <span className="typo-paragraph-sm text-foreground flex-1 min-w-0">Label</span>
+                  {richShowBadge && !richFlipped && (
+                    <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Best</Badge>
+                  )}
+                </div>
+                {richShowLine2 && (
+                  <p className="typo-paragraph-mini text-muted-foreground">Secondary text</p>
+                )}
+              </div>
+              {richFlipped && (
+                <div className="shrink-0 flex items-center gap-xs h-lg">
+                  {richShowBadge && (
+                    <Badge variant="emphasis" level="secondary" size="sm">Best</Badge>
+                  )}
+                  <RadioGroup value={richChecked ? "item" : ""}>
+                    <RadioGroupItem value="item" />
+                  </RadioGroup>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-wrap gap-lg">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Checked?</Label>
+                <div className="pt-1"><Switch checked={richChecked} onCheckedChange={setRichChecked} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Flipped</Label>
+                <div className="pt-1"><Switch checked={richFlipped} onCheckedChange={setRichFlipped} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Line 2</Label>
+                <div className="pt-1"><Switch checked={richShowLine2} onCheckedChange={setRichShowLine2} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Badge</Label>
+                <div className="pt-1"><Switch checked={richShowBadge} onCheckedChange={setRichShowBadge} /></div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Show Icon</Label>
+                <div className="pt-1"><Switch checked={richShowIcon} onCheckedChange={setRichShowIcon} /></div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ---- Tab: Rich Radio Group/Advanced (Figma 2667:185) ---- */}
+      {rdTab === "richAdvanced" && (
+        <>
+          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            {raSize === "Regular" ? (
+              /* Figma Regular: 720w, flex-col, gap=12, pad=16, corner=12, stroke=1 */
+              <div className={[
+                "flex flex-col gap-sm p-md rounded-xl border w-full max-w-[720px] overflow-clip transition-all",
+                raIsSelected ? "border-border-strong" : "border-border",
+                raIsDisabled ? "bg-muted" : "bg-card",
+                raIsHover ? "shadow-[0px_0px_0px_3px_var(--ring)]" : "",
+              ].filter(Boolean).join(" ")}>
+                <div className="space-y-3xs">
+                  <div className="flex items-center gap-sm h-xl">
+                    <span className="typo-paragraph-bold text-foreground flex-1">Title</span>
+                    {raRecommended && (
+                      <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Recommended</Badge>
+                    )}
+                    <RadioGroup value={raIsSelected ? "item" : ""} disabled={raIsDisabled}>
+                      <RadioGroupItem value="item" className="shrink-0" />
+                    </RadioGroup>
+                  </div>
+                  {raDescription && (
+                    <p className="typo-paragraph-sm text-muted-foreground">Description</p>
+                  )}
+                </div>
+                {raShowBody && (
+                  <div className="flex items-center justify-center h-[48px] rounded-lg border border-dashed border-[#9747ff]">
+                    <span className="typo-paragraph-sm-bold text-[#c89dff]">Slot</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Figma Small: 720w, flex-row, gap=8, pad=16h/12v, corner=12, stroke=1 */
+              <div className={[
+                "flex items-start gap-xs px-md py-sm rounded-xl border w-full max-w-[720px] overflow-clip transition-all",
+                raIsSelected ? "border-border-strong" : "border-border",
+                raIsDisabled ? "bg-muted" : "bg-card",
+                raIsHover ? "shadow-[0px_0px_0px_3px_var(--ring)]" : "",
+              ].filter(Boolean).join(" ")}>
+                <div className="shrink-0 flex items-center justify-center">
+                  <Bug className="size-lg text-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-sm">
+                    <span className="typo-paragraph-sm text-foreground flex-1">Title</span>
+                    <RadioGroup value={raIsSelected ? "item" : ""} disabled={raIsDisabled}>
+                      <RadioGroupItem value="item" className="shrink-0" />
+                    </RadioGroup>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="border-t border-border bg-muted/50 p-lg">
+            <div className="flex flex-col gap-md">
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">State</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {[["Default","Default"],["Active","Active"],["Hover","Hover"],["Disable","Disable"],["Disable Selected","Disable Selected"],["Selected","Selected"],["Selected - Hover","Selected - Hover"]].map(([v,l]) => (
+                    <button key={v} onClick={() => setRaState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-xs">
+                <Label className="text-xs text-muted-foreground">Size</Label>
+                <div className="flex flex-wrap gap-xs">
+                  {["Regular", "Small"].map(v => (
+                    <button key={v} onClick={() => setRaSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
+                  ))}
+                </div>
+              </div>
+              {raSize === "Regular" && (
+                <div className="flex flex-wrap gap-lg">
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Recommended</Label>
+                    <div className="pt-1"><Switch checked={raRecommended} onCheckedChange={setRaRecommended} /></div>
+                  </div>
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Description</Label>
+                    <div className="pt-1"><Switch checked={raDescription} onCheckedChange={setRaDescription} /></div>
+                  </div>
+                  <div className="space-y-xs">
+                    <Label className="text-xs text-muted-foreground">Show Body</Label>
+                    <div className="pt-1"><Switch checked={raShowBody} onCheckedChange={setRaShowBody} /></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function RadioDocs() {
   return (
     <div className="space-y-12">
-      <TableOfContents sections={radioGroupSections} />
+      <TableOfContents sections={radioSections} />
 
       {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
-        <h1 className="typo-heading-2">Radio Group</h1>
+        <h1 className="typo-heading-2">Radio</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
           A set of checkable buttons — known as radio buttons — where only one can be checked at a time.
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "switch", label: "Disabled", prop: "disabled", defaultValue: false },
-        ]}
-        render={(p) => (
-          <RadioGroup defaultValue="option-1" disabled={p.disabled}>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="option-1" id="pg-r1" />
-              <Label htmlFor="pg-r1">Option One</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="option-2" id="pg-r2" />
-              <Label htmlFor="pg-r2">Option Two</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="option-3" id="pg-r3" />
-              <Label htmlFor="pg-r3">Option Three</Label>
-            </div>
-          </RadioGroup>
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-6">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <RadioExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -18237,49 +19417,62 @@ function RadioGroupDocs() {
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Vertical radio group with three options." code={`<RadioGroup defaultValue="option-1">\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-1" id="r1" />\n    <Label htmlFor="r1">Option One</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-2" id="r2" />\n    <Label htmlFor="r2">Option Two</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="option-3" id="r3" />\n    <Label htmlFor="r3">Option Three</Label>\n  </div>\n</RadioGroup>`}>
+        <Example title="Default" description="Vertical radio group with three options." code={`<RadioGroup defaultValue="option-1">\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="option-1" id="r1" />\n    <Label htmlFor="r1">Option One</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="option-2" id="r2" />\n    <Label htmlFor="r2">Option Two</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="option-3" id="r3" />\n    <Label htmlFor="r3">Option Three</Label>\n  </div>\n</RadioGroup>`}>
           <RadioGroup defaultValue="option-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="option-1" id="r1" />
               <Label htmlFor="r1">Option One</Label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="option-2" id="r2" />
               <Label htmlFor="r2">Option Two</Label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="option-3" id="r3" />
               <Label htmlFor="r3">Option Three</Label>
             </div>
           </RadioGroup>
         </Example>
 
-        <Example title="Horizontal" description="Horizontal layout using flex on the group." code={`<RadioGroup defaultValue="sm" className="flex gap-4">\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="sm" id="size-sm" />\n    <Label htmlFor="size-sm">Small</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="md" id="size-md" />\n    <Label htmlFor="size-md">Medium</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="lg" id="size-lg" />\n    <Label htmlFor="size-lg">Large</Label>\n  </div>\n</RadioGroup>`}>
-          <RadioGroup defaultValue="sm" className="flex gap-4">
-            <div className="flex items-center gap-2">
+        <Example title="Horizontal" description="Horizontal layout using flex on the group." code={`<RadioGroup defaultValue="sm" className="flex gap-md">\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="sm" id="size-sm" />\n    <Label htmlFor="size-sm">Small</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="md" id="size-md" />\n    <Label htmlFor="size-md">Medium</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="lg" id="size-lg" />\n    <Label htmlFor="size-lg">Large</Label>\n  </div>\n</RadioGroup>`}>
+          <RadioGroup defaultValue="sm" className="flex gap-md">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="sm" id="size-sm" />
               <Label htmlFor="size-sm">Small</Label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="md" id="size-md" />
               <Label htmlFor="size-md">Medium</Label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="lg" id="size-lg" />
               <Label htmlFor="size-lg">Large</Label>
             </div>
           </RadioGroup>
         </Example>
 
-        <Example title="Disabled" description="All items disabled via the group prop." code={`<RadioGroup defaultValue="active" disabled>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="active" id="d1" />\n    <Label htmlFor="d1">Active</Label>\n  </div>\n  <div className="flex items-center gap-2">\n    <RadioGroupItem value="inactive" id="d2" />\n    <Label htmlFor="d2">Inactive</Label>\n  </div>\n</RadioGroup>`}>
+        <Example title="Disabled" description="All items disabled via the group prop." code={`<RadioGroup defaultValue="active" disabled>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="active" id="d1" />\n    <Label htmlFor="d1">Active</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="inactive" id="d2" />\n    <Label htmlFor="d2">Inactive</Label>\n  </div>\n</RadioGroup>`}>
           <RadioGroup defaultValue="active" disabled>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="active" id="d1" />
               <Label htmlFor="d1">Active</Label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-xs">
               <RadioGroupItem value="inactive" id="d2" />
               <Label htmlFor="d2">Inactive</Label>
+            </div>
+          </RadioGroup>
+        </Example>
+
+        <Example title="Error state" description="Radio with validation error via aria-invalid." code={`<RadioGroup defaultValue="">\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="yes" id="err-1" aria-invalid />\n    <Label htmlFor="err-1" className="text-destructive">Yes</Label>\n  </div>\n  <div className="flex items-center gap-xs">\n    <RadioGroupItem value="no" id="err-2" aria-invalid />\n    <Label htmlFor="err-2" className="text-destructive">No</Label>\n  </div>\n</RadioGroup>`}>
+          <RadioGroup defaultValue="">
+            <div className="flex items-center gap-xs">
+              <RadioGroupItem value="yes" id="err-1" aria-invalid />
+              <Label htmlFor="err-1" className="text-destructive">Yes</Label>
+            </div>
+            <div className="flex items-center gap-xs">
+              <RadioGroupItem value="no" id="err-2" aria-invalid />
+              <Label htmlFor="err-2" className="text-destructive">No</Label>
             </div>
           </RadioGroup>
         </Example>
@@ -18359,7 +19552,6 @@ function RadioGroupDocs() {
         </div>
       </section>
 
-
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
@@ -18377,9 +19569,12 @@ function RadioGroupDocs() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Selected indicator fill</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Radio border</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--input</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Radio background</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border-strong</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Radio border (all states)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#0f766e</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#0f766e" }} /></td><td className="px-4 py-3 text-muted-foreground">Dot fill (checked)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--destructive</td><td className="px-4 py-3 font-mono text-muted-foreground">#ef4444</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ef4444" }} /></td><td className="px-4 py-3 text-muted-foreground">Dot fill (error checked)</td></tr>
               <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring-error</td><td className="px-4 py-3 font-mono text-muted-foreground">#fecaca</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#fecaca" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (error)</td></tr>
             </tbody>
           </table>
         </div>
@@ -18403,6 +19598,20 @@ function RadioGroupDocs() {
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="280:103567" rows={[
+        ["Item Size", "16×16px", "—", "size-md"],
+        ["BG", "white (--input)", "—", "bg-input"],
+        ["Border", "#afafab (--border-strong)", "—", "border-border-strong"],
+        ["Dot (checked)", "8×8px primary", "data-state=checked", "size-xs rounded-full bg-primary"],
+        ["Dot (error)", "8×8px destructive", "aria-invalid + checked", "group-aria-invalid:bg-destructive"],
+        ["Focus", "3px ring", "focus-visible", "ring-[3px] ring-ring"],
+        ["Error border", "destructive-border", "aria-invalid", "border-destructive-border"],
+        ["Error ring", "ring-error", "aria-invalid + focus", "ring-ring-error"],
+        ["Disabled unchecked", "opacity 0.5", "disabled", "disabled:opacity-50"],
+        ["Disabled checked", "opacity 0.3", "disabled + checked", "disabled:data-[state=checked]:opacity-30"],
+        ["Group Gap", "sm (12px)", "—", "gap-sm"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
@@ -18429,7 +19638,7 @@ function RadioGroupDocs() {
       </section>
 
       {/* ---- Related Components ---- */}
-      <section className="space-y-4 pt-3xl">
+      <section id="related" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">
           Related Components
         </h2>
@@ -18463,24 +19672,12 @@ function RadioGroupDocs() {
                 Button-style single/multiple selection with visual emphasis.
               </p>
             </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">
-              Planned
+            <span className="text-muted-foreground text-[10px] font-mono bg-teal-50 text-teal-700 px-2 py-0.5 rounded">
+              Available
             </span>
           </div>
         </div>
       </section>
-
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Item Size", "16×16px", "—", "size-md"],
-        ["State", "Default", "—", "border-border-strong bg-input"],
-        ["State", "Checked", "—", "data-[state=checked]:border-primary bg-primary"],
-        ["State", "Focus", "—", "focus-visible:ring-[3px] ring-ring"],
-        ["State", "Error", "aria-invalid", "destructive border + ring-error"],
-        ["State", "Disabled", "disabled", "opacity-50"],
-        ["Indicator", "Circle", "—", "size-2.5 fill-primary-foreground"],
-        ["Group Gap", "Gap sm", "—", "gap-sm"],
-      ]} />
     </div>
   )
 }
@@ -18489,23 +19686,9 @@ function RadioGroupDocs() {
    Input OTP
    ================================================================ */
 
-const inputOTPSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
-
 function InputOTPDocs() {
   return (
     <div className="space-y-12">
-      <TableOfContents sections={inputOTPSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Input OTP</h1>
@@ -18530,16 +19713,14 @@ function InputOTPDocs() {
         </InputOTP>
       )} />
 
-      {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add input-otp`}
-        importCode={`import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"`}
-      />
+      <section className="space-y-3 pt-xl border-t border-border">
+        <h2 className="typo-paragraph-bold">Import</h2>
+        <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
+      </section>
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+      <section className="space-y-4 pt-3xl">
+        <h2 className="typo-paragraph-bold">Examples</h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Example
           title="Basic 6-digit OTP"
           description="Standard 6-cell OTP input with separator."
@@ -18574,120 +19755,10 @@ function InputOTPDocs() {
             </InputOTPGroup>
           </InputOTP>
         </Example>
-        </div>
-      </section>
-
-      {/* ---- Props ---- */}
-      <section id="props" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Props</h2>
-
-        <h3 className="font-heading font-semibold text-lg">InputOTP</h3>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">maxLength</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Total number of OTP slots (required).</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">value</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled OTP value.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">onChange</td><td className="px-4 py-3 font-mono text-muted-foreground">(value: string) =&gt; void</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Callback when OTP value changes.</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">disabled</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Disables all input slots.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="font-heading font-semibold text-lg mt-6">InputOTPSlot</h3>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">index</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Zero-based slot position (required).</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Slot border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Input text color</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Verification</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Auto-focus the first input slot on mount for immediate entry.</p>
-              <p>Auto-submit when all digits are filled for faster verification.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use OTP input for passwords — use a standard password field.</p>
-              <p>Don't require more than 6 digits — longer codes increase error rates.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Arrow Left/Right</kbd> — Move between slots.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Backspace</kbd> — Clear current slot and move to previous.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Ctrl+V</kbd> / <kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Cmd+V</kbd> — Paste OTP code from clipboard.</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on input-otp — renders as a single <code className="bg-muted px-1 rounded font-mono">input</code> element for screen readers.</li>
-              <li>Paste support for OTP codes from clipboard.</li>
-              <li>Arrow keys move between slots.</li>
-            </ul>
-          </div>
-        </div>
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
+      <FigmaMapping rows={[
         ["Cell Size", "32×32px", "—", "size-3xl"],
         ["Cell Border", "Shared borders", "—", "border-y border-r, first:border-l"],
         ["Cell Radius", "First/Last rounded", "—", "first:rounded-l-md last:rounded-r-md"],
@@ -18696,20 +19767,6 @@ function InputOTPDocs() {
         ["Separator", "Minus icon", "InputOTPSeparator", "Minus icon between groups"],
         ["Gap", "Between cells", "—", "gap-xs"],
       ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Input</p>
-              <p className="text-muted-foreground mt-0.5">Standard text input for general purpose.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
@@ -18718,7 +19775,7 @@ function InputOTPDocs() {
    Spinner
    ================================================================ */
 
-const spinnerSections: TocSection[] = [
+const spinnerSections = [
   { id: "explore-behavior", label: "Explore Behavior" },
   { id: "installation", label: "Installation" },
   { id: "examples", label: "Examples" },
@@ -18730,197 +19787,238 @@ const spinnerSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function SpinnerExploreBehavior() {
+  const [size, setSize] = useState("default")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="p-4xl flex items-center justify-center min-h-[160px]">
+          <Spinner size={size as "sm" | "default" | "lg"} />
+        </div>
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <div className="space-y-sm">
+            <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+              { value: "sm", label: "Small" },
+              { value: "default", label: "Default" },
+              { value: "lg", label: "Large" },
+            ]} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SpinnerPropsTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Prop</th>
+            <th className="text-left p-3 font-semibold">Type</th>
+            <th className="text-left p-3 font-semibold">Default</th>
+            <th className="text-left p-3 font-semibold">Description</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">size</td>
+            <td className="p-3 font-mono text-xs">{`"sm" | "default" | "lg"`}</td>
+            <td className="p-3 font-mono text-xs">{`"default"`}</td>
+            <td className="p-3">Spinner size: sm (16px), default (24px), lg (32px).</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">className</td>
+            <td className="p-3 font-mono text-xs">string</td>
+            <td className="p-3 font-mono text-xs">—</td>
+            <td className="p-3">Additional CSS classes. Use to override color.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function SpinnerTokensTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border bg-muted">
+            <th className="text-left p-3 font-semibold">Token</th>
+            <th className="text-left p-3 font-semibold">Value</th>
+            <th className="text-left p-3 font-semibold">Usage</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-border">
+          <tr>
+            <td className="p-3 font-mono text-xs">text-foreground</td>
+            <td className="p-3 font-mono text-xs">#252522</td>
+            <td className="p-3">Default spinner color</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size-md</td>
+            <td className="p-3 font-mono text-xs">16px</td>
+            <td className="p-3">Small size</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size-xl</td>
+            <td className="p-3 font-mono text-xs">24px</td>
+            <td className="p-3">Default size</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">size-2xl</td>
+            <td className="p-3 font-mono text-xs">32px</td>
+            <td className="p-3">Large size</td>
+          </tr>
+          <tr>
+            <td className="p-3 font-mono text-xs">animate-spin</td>
+            <td className="p-3 font-mono text-xs">360° rotation</td>
+            <td className="p-3">Continuous rotation animation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function SpinnerDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={spinnerSections} />
-
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Spinner</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          Animated loading indicator. Three sizes: sm (16px), default (24px), lg (32px).
+          Animated loading indicator with continuous rotation. Available in three sizes: sm (16px), default (24px), and lg (32px).
         </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Size", prop: "size", defaultValue: "default", options: [
-            { label: "Small (16px)", value: "sm" },
-            { label: "Default (24px)", value: "default" },
-            { label: "Large (32px)", value: "lg" },
-          ]},
-          { type: "select", label: "Color", prop: "color", defaultValue: "", options: [
-            { label: "Default", value: "" },
-            { label: "Primary", value: "text-primary" },
-            { label: "Destructive", value: "text-destructive" },
-          ]},
-        ]}
-        render={(p) => <Spinner size={p.size} className={p.color || undefined} />}
-      />
+      <SpinnerExploreBehavior />
 
-      {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add clsx tailwind-merge`}
+        deps="# No additional dependencies"
         importCode={`import { Spinner } from "@/components/ui/spinner"`}
       />
 
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
+      <section id="examples" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example
-          title="Sizes"
-          description="All three spinner sizes side by side."
-          code={`<Spinner size="sm" />\n<Spinner />\n<Spinner size="lg" />`}
-        >
-          <Spinner size="sm" />
-          <Spinner />
-          <Spinner size="lg" />
-        </Example>
+          <Example
+            title="Sizes"
+            description="All three spinner sizes side by side."
+            code={`<div className="flex items-center gap-lg">\n  <Spinner size="sm" />\n  <Spinner />\n  <Spinner size="lg" />\n</div>`}
+          >
+            <div className="flex items-center gap-lg">
+              <Spinner size="sm" />
+              <Spinner />
+              <Spinner size="lg" />
+            </div>
+          </Example>
 
-        <Example
-          title="Custom color"
-          description="Override the color with a text utility class."
-          code={`<Spinner className="text-primary" />`}
-        >
-          <Spinner className="text-primary" />
-          <Spinner className="text-destructive" />
-        </Example>
+          <Example
+            title="Custom color"
+            description="Override the default color with className."
+            code={`<Spinner className="text-primary" />\n<Spinner className="text-destructive" />`}
+          >
+            <div className="flex items-center gap-lg">
+              <Spinner className="text-primary" />
+              <Spinner className="text-destructive" />
+            </div>
+          </Example>
 
-        <Example
-          title="With text"
-          description="Combine with a loading label for clarity."
-          code={`<div className="flex items-center gap-2">\n  <Spinner size="sm" />\n  <span className="text-sm text-muted-foreground">Loading...</span>\n</div>`}
-        >
-          <div className="flex items-center gap-2">
-            <Spinner size="sm" />
-            <span className="text-sm text-muted-foreground">Loading...</span>
-          </div>
-        </Example>
+          <Example
+            title="With text"
+            description="Pair with a loading label for context."
+            code={`<div className="flex items-center gap-xs">\n  <Spinner size="sm" />\n  <span className="typo-paragraph-sm text-muted-foreground">Loading...</span>\n</div>`}
+          >
+            <div className="flex items-center gap-xs">
+              <Spinner size="sm" />
+              <span className="typo-paragraph-sm text-muted-foreground">Loading...</span>
+            </div>
+          </Example>
 
-        <Example
-          title="Inside button"
-          description="Show a spinner inside a disabled button during async actions."
-          code={`<Button disabled>\n  <Spinner size="sm" />\n  Saving...\n</Button>`}
-        >
-          <Button disabled>
-            <Spinner size="sm" />
-            Saving...
-          </Button>
-        </Example>
+          <Example
+            title="Centered in container"
+            description="Center the spinner in a bounded area."
+            code={`<div className="flex items-center justify-center h-[120px] border border-dashed border-border rounded-lg">\n  <Spinner />\n</div>`}
+          >
+            <div className="flex items-center justify-center h-[120px] border border-dashed border-border rounded-lg">
+              <Spinner />
+            </div>
+          </Example>
         </div>
       </section>
 
-      {/* ---- Props ---- */}
-      <section id="props" className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          Spinner renders an SVG element. Supports all native SVG attributes in addition to the following:
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary">size</td><td className="px-4 py-3 font-mono text-muted-foreground">"sm" | "default" | "lg"</td><td className="px-4 py-3 font-mono text-muted-foreground">"default"</td><td className="px-4 py-3 text-muted-foreground">Spinner diameter: sm (16px), default (24px), lg (32px).</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes. Use text color utilities to change spinner color.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SpinnerPropsTable />
       </section>
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Spinner color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">animate-spin</td><td className="px-4 py-3 font-mono text-muted-foreground">CSS keyframe</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Rotation animation</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <SpinnerTokensTable />
       </section>
 
-      {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Loading</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Spinner for indeterminate loading states where progress can't be measured.</p>
-              <p>Place the spinner near the content it represents (e.g., inside a button, next to a form).</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Spinner for determinate progress — use <strong>Progress</strong> bar instead.</p>
-              <p>Don't show a spinner for operations under 300ms — the flash is more distracting than helpful.</p>
-            </DontItem>
-          </div>
-        </div>
+        <h3 className="typo-paragraph-bold mt-lg">Content</h3>
+        <DoItem text="Pair with a descriptive label when the loading context isn't obvious." />
+        <DontItem text="Use a spinner as the only feedback — provide text context for accessibility." />
+        <h3 className="typo-paragraph-bold mt-lg">Structure</h3>
+        <DoItem text="Use the sm size inside buttons or inline elements." />
+        <DontItem text="Use the lg size inside compact UI areas like table cells." />
+        <DoItem text="Center the spinner in its container for visual balance." />
+        <DontItem text="Show multiple spinners simultaneously in the same view." />
       </section>
 
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
+      <FigmaMapping id="figma-mapping" nodeId="757:154511" rows={[
+        ["Type", "Default", "—", "Default arc direction"],
+        ["Type", "Mirrored", "—", "Mirrored arc direction"],
         ["Size", "Small (16px)", "size", '"sm" — size-md'],
         ["Size", "Default (24px)", "size", '"default" — size-xl'],
         ["Size", "Large (32px)", "size", '"lg" — size-2xl'],
+        ["Color", "Foreground", "—", "text-foreground (#252522)"],
         ["Animation", "Spin", "—", "animate-spin"],
-        ["Color", "Muted foreground", "—", "text-muted-foreground"],
       ]} />
 
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Renders with <code className="bg-muted px-1 rounded font-mono">role="status"</code> and <code className="bg-muted px-1 rounded font-mono">aria-label="Loading"</code>.</li>
-              <li>Screen readers announce "Loading" when the spinner appears.</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
-            <p className="text-muted-foreground">
-              Spinner is a purely visual indicator — it has no keyboard interaction. Focus management should be handled by the parent component (e.g., a button that triggered the loading state).
-            </p>
-          </div>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left p-3 font-semibold">Feature</th>
+                <th className="text-left p-3 font-semibold">Details</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr>
+                <td className="p-3 font-medium">role</td>
+                <td className="p-3">Add <code className="text-xs bg-muted px-1 py-0.5 rounded">role="status"</code> for screen readers.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">aria-label</td>
+                <td className="p-3">Provide <code className="text-xs bg-muted px-1 py-0.5 rounded">aria-label="Loading"</code> for non-visual context.</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-medium">Motion</td>
+                <td className="p-3">The <code className="text-xs bg-muted px-1 py-0.5 rounded">animate-spin</code> class respects <code className="text-xs bg-muted px-1 py-0.5 rounded">prefers-reduced-motion</code> via Tailwind defaults.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      <section id="related" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Skeleton</p>
-              <p className="text-muted-foreground mt-0.5">Content placeholder with pulse animation.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Progress</p>
-              <p className="text-muted-foreground mt-0.5">Determinate progress bar.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
+        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+          <li><strong>Button</strong> — Use Spinner inside a button to indicate loading state.</li>
+          <li><strong>Skeleton</strong> — Content placeholder for layout-aware loading.</li>
+        </ul>
       </section>
     </div>
   )
@@ -21332,20 +22430,33 @@ function RightDecorationTab() {
       case "text": return <>Action</>
       case "text-muted": return <>Optional</>
       case "icon-muted": return <Settings className="size-md" />
-      case "badge": return <Badge>New</Badge>
-      case "switch": return <><Label className="typo-paragraph-sm text-muted-foreground">Toggle</Label><Switch /></>
-      case "button": return <Button size="sm">Save</Button>
+      case "deco-icon-primary": return <Settings className="size-md" />
+      case "deco-icon-outline": return <Settings className="size-md" />
+      case "avatar": return <Avatar className="size-lg"><AvatarFallback className="text-[8px]">CN</AvatarFallback></Avatar>
+      case "badge": return <Badge variant="success">Success</Badge>
+      case "switch": return <><Switch /><Settings className="size-md" /></>
+      case "text-button": return <TextButton variant="primary">Text Button</TextButton>
+      case "button": return <Button size="sm">Label</Button>
+      case "button-group": return <><Button size="sm">Label</Button><Button size="sm" variant="outline">Label</Button></>
+      case "tabs": return <div className="bg-accent flex items-center p-3xs rounded-xl"><div className="bg-card px-xs py-[2px] rounded-[10px] shadow typo-paragraph-sm-bold">Label</div><div className="px-xs py-[2px] typo-paragraph-sm-bold text-foreground">Label</div></div>
+      case "select": return <div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-sm text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div>
+      case "text-select": return <><span className="typo-paragraph-sm text-foreground-subtle">Label</span><div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-sm text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div></>
+      case "count-character": return <><span>0/{`{number}`}</span><span>characters</span></>
+      case "count-word": return <><span>0/{`{number}`}</span><span>words</span></>
+      case "payment-card": return <><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-red-500">MC</span></div><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-blue-600">V</span></div></>
+      case "icon-button": return <Button size="icon" variant="outline" className="size-2xl"><MoreHorizontal className="size-[18px]" /></Button>
+      case "filter": return <><Chip selected>All status</Chip><Chip>Funding</Chip><Chip>Delivering</Chip><Chip>Completed</Chip></>
       default: return <Settings className="size-md" />
     }
   }
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
         <RightDecoration type={type as any}>{renderContent()}</RightDecoration>
       </div>
       <div className="border-t border-border bg-muted/50 p-lg space-y-md">
-        <div className="space-y-sm">
+        <div className="space-y-sm flex flex-wrap gap-xs">
           <PropertyTabs label="Type" value={type} options={[
             { value: "icon", label: "Icon" },
             { value: "text", label: "Text" },
@@ -21353,10 +22464,20 @@ function RightDecorationTab() {
             { value: "icon-muted", label: "Icon Muted" },
             { value: "deco-icon-primary", label: "Deco Primary" },
             { value: "deco-icon-outline", label: "Deco Outline" },
-            { value: "badge", label: "Badge" },
+            { value: "avatar", label: "Avatar" },
             { value: "switch", label: "Switch" },
+            { value: "text-button", label: "Text Button" },
             { value: "button", label: "Button" },
             { value: "button-group", label: "Button Group" },
+            { value: "tabs", label: "Tabs" },
+            { value: "select", label: "Select" },
+            { value: "text-select", label: "Text + Select" },
+            { value: "count-character", label: "Count Character" },
+            { value: "count-word", label: "Count Word" },
+            { value: "badge", label: "Badge" },
+            { value: "payment-card", label: "Payment Card" },
+            { value: "icon-button", label: "Icon Button" },
+            { value: "filter", label: "Filter" },
           ]} onChange={setType} />
         </div>
       </div>
@@ -21788,20 +22909,18 @@ const componentGroups = [
   { group: "Forms", items: [
     { id: "button", label: "Button" },
     { id: "button-group", label: "Button Group" },
-    { id: "calendar", label: "Calendar" },
     { id: "checkbox", label: "Checkbox" },
     { id: "combobox", label: "Combobox" },
     { id: "date-picker", label: "Date Picker" },
     { id: "input", label: "Input" },
     { id: "input-otp", label: "Input OTP" },
     { id: "label", label: "Label" },
-    { id: "radio-group", label: "Radio Group" },
+    { id: "radio", label: "Radio" },
     { id: "select", label: "Select" },
     { id: "slider", label: "Slider" },
     { id: "switch", label: "Switch" },
     { id: "textarea", label: "Textarea" },
     { id: "toggle", label: "Toggle" },
-    { id: "toggle-group", label: "Toggle Group" },
   ]},
   { group: "Data Display", items: [
     { id: "avatar", label: "Avatar" },
@@ -22060,9 +23179,8 @@ function App() {
           {active === "checkbox" && <CheckboxDocs />}
           {active === "switch" && <SwitchDocs />}
           {active === "label" && <LabelDocs />}
-          {active === "radio-group" && <RadioGroupDocs />}
+          {active === "radio" && <RadioDocs />}
           {active === "toggle" && <ToggleDocs />}
-          {active === "toggle-group" && <ToggleGroupDocs />}
           {active === "slider" && <SliderDocs />}
           {active === "carousel" && <CarouselDocs />}
           {active === "chip" && <ChipDocs />}

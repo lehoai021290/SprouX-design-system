@@ -475,6 +475,7 @@ function TextValue({
      count-character  — "0/{max} characters" counter
      count-word       — "0/{max} words" counter
      badge            — Pass <Badge> component
+     payment-card     — Payment card icons in flex row (gap-3xs)
      icon-button      — Pass icon button with border
      filter           — Chip filter group
    ---------------------------------------------------------------- */
@@ -484,25 +485,26 @@ const rightDecorationVariants = cva(
   {
     variants: {
       type: {
-        "icon": "p-4xs",
-        "text": "typo-paragraph-sm text-foreground",
-        "text-muted": "typo-paragraph-sm text-muted-foreground",
+        "icon": "p-[2px]",
+        "text": "flex-col h-lg justify-center typo-paragraph-sm text-foreground",
+        "text-muted": "flex-col h-lg justify-center typo-paragraph-sm text-muted-foreground",
         "icon-muted": "justify-center p-xs size-lg text-muted-foreground",
         "deco-icon-primary": "justify-center p-xs rounded-sm size-lg bg-primary text-primary-foreground overflow-clip",
         "deco-icon-outline": "justify-center p-xs rounded-sm size-lg border border-border",
         "avatar": "",
         "switch": "gap-md",
-        "text-button": "",
-        "button": "",
-        "button-group": "gap-xs",
-        "tabs": "",
+        "text-button": "flex-col h-lg justify-center",
+        "button": "flex-col justify-center",
+        "button-group": "gap-xs justify-center",
+        "tabs": "items-start",
         "select": "",
         "text-select": "gap-md",
-        "count-character": "gap-4xs typo-paragraph-sm text-muted-foreground",
-        "count-word": "gap-4xs typo-paragraph-sm text-muted-foreground",
-        "badge": "",
-        "icon-button": "",
-        "filter": "gap-xl overflow-clip",
+        "count-character": "gap-[2px] h-lg justify-center typo-paragraph-sm text-muted-foreground",
+        "count-word": "gap-[2px] h-lg justify-center typo-paragraph-sm text-muted-foreground",
+        "badge": "items-start",
+        "payment-card": "gap-3xs",
+        "icon-button": "items-start",
+        "filter": "gap-xs overflow-clip",
       },
     },
     defaultVariants: {
@@ -529,6 +531,7 @@ type RightDecorationType =
   | "count-character"
   | "count-word"
   | "badge"
+  | "payment-card"
   | "icon-button"
   | "filter"
 

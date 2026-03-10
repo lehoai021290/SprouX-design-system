@@ -74,7 +74,7 @@ function DatePicker({
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
+        <PopoverContent className="w-auto !p-0">
           <Calendar
             mode="single"
             selected={selected}
@@ -149,7 +149,7 @@ function DateRangePicker({
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto !p-0" align="start">
           <Calendar
             mode="range"
             selected={range.from ? { from: range.from, to: range.to } : undefined}
@@ -241,7 +241,7 @@ function DateTimePicker({
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
+        <PopoverContent className="w-auto !p-0">
           <Calendar
             mode="single"
             selected={selected}
@@ -365,7 +365,7 @@ function DateRangeTimePicker({
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto !p-0" align="start">
           <Calendar
             mode="range"
             selected={range.from ? { from: range.from, to: range.to } : undefined}

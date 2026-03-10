@@ -1,6 +1,7 @@
 import * as React from "react"
 import { DayPicker } from "react-day-picker"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import type { DayButtonProps } from "react-day-picker"
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -12,7 +13,7 @@ import { buttonVariants } from "@/components/ui/button"
  *   - Calendar (4820:5638): card wrapper p=16 r=8
  *   - Date Picker (288:119954): Type, Style, Size
  *   - Date Picker / Header (264:29273): [IconButton 32×32] [Caption] [IconButton 32×32]
- *   - Date Picker / Day (781:40922): 32×32 (Small) | 48×48 (Large/Custom)
+ *   - Day Cell (781:40922): 32×32 (Small) | 48×48 (Large/Custom)
  *
  * navLayout="around": PreviousMonthButton + NextMonthButton as children of Month.
  * CSS Grid on month: row 1 = [prev | caption | next], row 2 = [grid col-span-full].
@@ -31,10 +32,86 @@ import { buttonVariants } from "@/components/ui/button"
  *   "dropdown-months" → Only Month (month select + year text)
  *   "dropdown-years"  → Only Year (year select + month text)
  */
+
+/**
+ * DayCell — Custom DayButton component (Figma 781:40922)
+ *
+ * Maps react-day-picker modifiers to Figma Day Cell states:
+ *   Position: range_start → Start, range_end → End, range_middle → Middle,
+ *             selected (single) → Single, default → Default
+ *   State: selected, disabled, outside, today, focused → matching Figma states
+ *
+ * Position=Middle uses bg-accent (not bg-primary) per Figma spec.
+ */
+function DayCell({
+  day,
+  modifiers,
+  className,
+  ...props
+}: DayButtonProps) {
+  const {
+    selected,
+    disabled,
+    outside,
+    today,
+    range_start,
+    range_end,
+    range_middle,
+  } = modifiers
+
+  const isMiddle = !!range_middle
+  const isRangeEndpoint = !!range_start || !!range_end
+
+  /* ── Position → border-radius ── */
+  const posClass = range_start
+    ? "rounded-l-sm rounded-r-none"
+    : range_end
+    ? "rounded-r-sm rounded-l-none"
+    : isMiddle
+    ? "rounded-none"
+    : "rounded-sm"
+
+  /* ── State → bg + text + effects ── */
+  let stateClass: string
+  if (disabled) {
+    stateClass = isMiddle
+      ? "bg-accent text-foreground opacity-50 pointer-events-none"
+      : "bg-card text-muted-foreground opacity-50 pointer-events-none"
+  } else if (outside) {
+    stateClass = "bg-background text-foreground opacity-40"
+  } else if (selected || isRangeEndpoint) {
+    stateClass = isMiddle
+      ? "bg-accent text-foreground hover:bg-accent/80"
+      : "bg-primary text-primary-foreground hover:bg-primary"
+  } else if (today) {
+    stateClass = "bg-card text-foreground border border-brand-border"
+  } else {
+    stateClass = isMiddle
+      ? "bg-accent text-foreground hover:bg-accent/80"
+      : "bg-card text-foreground hover:bg-accent hover:text-foreground"
+  }
+
+  return (
+    <button
+      data-slot="day-cell"
+      className={cn(
+        "inline-flex items-center justify-center whitespace-nowrap size-[32px] typo-paragraph-sm font-normal transition-colors",
+        "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring",
+        posClass,
+        stateClass,
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  formatters,
+  components,
   ...props
 }: React.ComponentProps<typeof DayPicker>) {
   return (
@@ -42,6 +119,11 @@ function Calendar({
       data-slot="calendar"
       showOutsideDays={showOutsideDays}
       navLayout="around"
+      formatters={{
+        formatMonthDropdown: (month) =>
+          month.toLocaleString("en-US", { month: "short" }),
+        ...formatters,
+      }}
       className={cn("p-md", className)}
       classNames={{
         /* ── Layout ── */
@@ -91,44 +173,39 @@ function Calendar({
         weekday:
           "text-muted-foreground w-[32px] h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center",
 
-        /* ── Day cell wrapper (32×32 grid cell) ── */
+        /* ── Day cell wrapper ── */
         day: cn(
-          "relative p-0 text-center typo-paragraph-sm focus-within:relative focus-within:z-20",
+          "relative p-0 text-center focus-within:relative focus-within:z-20",
           props.mode === "range"
             ? "[&:has(>.day-range-end)]:rounded-r-sm [&:has(>.day-range-start)]:rounded-l-sm first:[&:has([aria-selected])]:rounded-l-sm last:[&:has([aria-selected])]:rounded-r-sm"
             : "[&:has([aria-selected])]:rounded-sm"
         ),
 
-        /* ── Day button (Figma: 32×32 r=4) ── */
-        day_button:
-          "inline-flex items-center justify-center whitespace-nowrap rounded-sm size-[32px] typo-paragraph-sm font-normal bg-card text-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none",
-
-        /* ── Day states ── */
-        selected:
-          "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button]:hover:bg-primary [&>button]:hover:text-primary-foreground rounded-sm",
-        range_start:
-          "day-range-start [&>button]:rounded-l-sm [&>button]:rounded-r-none",
-        range_end:
-          "day-range-end [&>button]:rounded-r-sm [&>button]:rounded-l-none",
-        range_middle:
-          "[&>button]:aria-selected:bg-accent [&>button]:aria-selected:text-foreground [&>button]:aria-selected:rounded-none [&>button]:aria-selected:hover:bg-accent/80",
-        today: "relative z-10 ring-inset ring-1 ring-primary/40 rounded-sm",
-        outside:
-          "day-outside text-muted-foreground/40 [&>button]:text-muted-foreground/40 [&>button]:aria-selected:text-primary-foreground/70",
-        disabled:
-          "[&>button]:bg-card [&>button]:text-muted-foreground [&>button]:opacity-50 [&>button]:pointer-events-none",
+        /* ── Day states (applied to wrapper <td>, DayCell handles visual) ── */
+        selected: "rounded-sm",
+        range_start: "day-range-start",
+        range_end: "day-range-end",
+        range_middle: "",
+        today: "relative z-10",
+        outside: "day-outside",
+        disabled: "",
         hidden: "invisible",
         ...classNames,
       }}
       components={{
         Chevron: ({ orientation }) => {
+          if (orientation === "down") {
+            return <ChevronDown aria-hidden="true" className="size-md text-muted-foreground" />
+          }
           const Icon = orientation === "left" ? ChevronLeft : ChevronRight
           return <Icon aria-hidden="true" className="size-[18px]" />
         },
+        DayButton: DayCell,
+        ...components,
       }}
       {...props}
     />
   )
 }
 
-export { Calendar }
+export { Calendar, DayCell }
