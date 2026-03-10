@@ -38,8 +38,7 @@ import {
   TableCell,
   TableCaption,
 } from "@/components/ui/table"
-// Dialog components — static preview only (no live Dialog in showcase)
-// Import retained for reference: Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription
+import { dialogClassNames } from "@/components/ui/dialog"
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -54,10 +53,13 @@ import {
 import {
   Sheet,
   SheetTrigger,
+  SheetClose,
   SheetContent,
   SheetHeader,
+  SheetFooter,
   SheetTitle,
   SheetDescription,
+  sheetClassNames,
 } from "@/components/ui/sheet"
 import {
   Drawer,
@@ -68,11 +70,13 @@ import {
   DrawerDescription,
   DrawerFooter,
   DrawerClose,
+  drawerClassNames,
 } from "@/components/ui/drawer"
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  popoverClassNames,
 } from "@/components/ui/popover"
 import {
   Tooltip,
@@ -80,7 +84,7 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "@/components/ui/tooltip"
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster, toastClassNames, toastIcons } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import {
@@ -113,6 +117,10 @@ import {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  menuClassNames,
 } from "@/components/ui/dropdown-menu"
 import {
   Command,
@@ -142,7 +150,7 @@ import { DatePicker, DateRangePicker, DateTimePicker, DateRangeTimePicker } from
 import { Combobox } from "@/components/ui/combobox"
 import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"
 import { Spinner } from "@/components/ui/spinner"
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
+import { HoverCard, HoverCardTrigger, HoverCardContent, hoverCardClassNames } from "@/components/ui/hover-card"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import {
   ContextMenu,
@@ -247,7 +255,7 @@ import {
   TriangleAlert,
   CreditCard,
   LogOut,
-  LifeBuoy,
+  Circle,
   Calculator,
   Calendar as CalendarIcon,
   Smile,
@@ -514,7 +522,7 @@ function Playground({
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
         {render(values)}
       </div>
       {controls.length > 0 && (
@@ -573,14 +581,15 @@ function Playground({
 function PropertyTabs({ label, value, options, onChange }: {
   label: string
   value: string
-  options: { value: string; label: string }[]
+  options: ({ value: string; label: string } | [string, string])[]
   onChange: (value: string) => void
 }) {
+  const normalized = options.map(o => Array.isArray(o) ? { value: o[0], label: o[1] } : o)
   return (
     <div className="space-y-xs">
-      <span className="typo-paragraph-sm font-medium text-foreground">{label}</span>
+      <span className="typo-paragraph-mini text-muted-foreground">{label}</span>
       <div className="flex flex-wrap gap-xs">
-        {options.map(opt => (
+        {normalized.map(opt => (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
@@ -610,7 +619,7 @@ function PropertyToggle({ label, checked, onChange }: {
 }) {
   return (
     <div className="space-y-xs">
-      <p className="typo-paragraph-sm font-medium text-foreground">{label}</p>
+      <p className="typo-paragraph-mini text-muted-foreground">{label}</p>
       <Switch checked={checked} onCheckedChange={onChange} />
     </div>
   )
@@ -1993,7 +2002,7 @@ function ButtonExploreBehavior() {
       {tab === "button" ? (
         <>
           {/* ── Button preview ── */}
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
             <div className={[
               "pointer-events-none",
               isHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -2021,61 +2030,40 @@ function ButtonExploreBehavior() {
             </div>
           </div>
           {/* ── Button controls ── */}
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Variant</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["ghost-muted","Ghost Muted"],["destructive","Destructive"],["destructive-secondary","Destructive Secondary"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", variant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["lg","Large (40px)"],["default","Regular (36px)"],["sm","Small (32px)"],["xs","Mini (24px)"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default","Hover & Active","Focus","Disabled"].map(v => (
-                    <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-lg">
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
-                  <div className="pt-1"><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
-                  <div className="pt-1"><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
-                </div>
-                {showLeftIcon && (
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Left Icon</Label>
-                    <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
-                  </div>
-                )}
-                {showRightIcon && (
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Right Icon</Label>
-                    <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
-                  </div>
-                )}
-              </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+            <PropertyTabs label="Variant" value={variant} onChange={setVariant} options={[
+              { value: "default", label: "Primary" },
+              { value: "secondary", label: "Secondary" },
+              { value: "outline", label: "Outline" },
+              { value: "ghost", label: "Ghost" },
+              { value: "ghost-muted", label: "Ghost Muted" },
+              { value: "destructive", label: "Destructive" },
+              { value: "destructive-secondary", label: "Destructive Secondary" },
+            ]} />
+            <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+              { value: "lg", label: "Large (40px)" },
+              { value: "default", label: "Regular (36px)" },
+              { value: "sm", label: "Small (32px)" },
+              { value: "xs", label: "Mini (24px)" },
+            ]} />
+            <PropertyTabs label="State" value={state} onChange={setState} options={[
+              { value: "Default", label: "Default" },
+              { value: "Hover & Active", label: "Hover & Active" },
+              { value: "Focus", label: "Focus" },
+              { value: "Disabled", label: "Disabled" },
+            ]} />
+            <div className="flex flex-wrap gap-lg">
+              <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
+              {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+              <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
+              {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
             </div>
           </div>
         </>
       ) : (
         <>
           {/* ── Icon Button preview ── */}
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
             <div className={[
               "pointer-events-none",
               ibIsHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -2100,44 +2088,34 @@ function ButtonExploreBehavior() {
             </div>
           </div>
           {/* ── Icon Button controls ── */}
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Variant</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["ghost-muted","Ghost Muted"],["destructive","Destructive"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setIbVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {([["lg","Large (40px)"],["default","Regular (36px)"],["sm","Small (32px)"],["xs","Mini (24px)"]] as const).map(([v,l]) => (
-                    <button key={v} onClick={() => setIbSize(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Roundness</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["false","Default (r=8)"],["true","Round (full)"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setIbRound(v === "true")} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", String(ibRound) === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default","Hover & Active","Focus","Disabled"].map(v => (
-                    <button key={v} onClick={() => setIbState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs max-w-[200px]">
-                <Label className="text-xs text-muted-foreground">Icon</Label>
-                <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
-              </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+            <PropertyTabs label="Variant" value={ibVariant} onChange={setIbVariant} options={[
+              { value: "default", label: "Primary" },
+              { value: "secondary", label: "Secondary" },
+              { value: "outline", label: "Outline" },
+              { value: "ghost", label: "Ghost" },
+              { value: "ghost-muted", label: "Ghost Muted" },
+              { value: "destructive", label: "Destructive" },
+            ]} />
+            <PropertyTabs label="Size" value={ibSize} onChange={(v) => setIbSize(v as any)} options={[
+              { value: "lg", label: "Large (40px)" },
+              { value: "default", label: "Regular (36px)" },
+              { value: "sm", label: "Small (32px)" },
+              { value: "xs", label: "Mini (24px)" },
+            ]} />
+            <PropertyTabs label="Roundness" value={String(ibRound)} onChange={(v) => setIbRound(v === "true")} options={[
+              { value: "false", label: "Default (r=8)" },
+              { value: "true", label: "Round (full)" },
+            ]} />
+            <PropertyTabs label="State" value={ibState} onChange={setIbState} options={[
+              { value: "Default", label: "Default" },
+              { value: "Hover & Active", label: "Hover & Active" },
+              { value: "Focus", label: "Focus" },
+              { value: "Disabled", label: "Disabled" },
+            ]} />
+            <div className="space-y-xs max-w-[240px]">
+              <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+              <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
             </div>
           </div>
         </>
@@ -2922,7 +2900,7 @@ function ButtonGroupExploreBehavior() {
         {/* Tab 1: Button Group (784:82792) — 8 properties */}
         {bgTab === "button-group" && (
           <>
-            <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
               <ButtonGroup variant={variantMap[skin] as any} size={sizeMap[size] as any}>
                 <ButtonGroupItem disabled={isDisabled}>
                   {showLeftIcon && LeftIconComp && <LeftIconComp className="size-4" />}
@@ -2941,54 +2919,27 @@ function ButtonGroupExploreBehavior() {
                 </ButtonGroupItem>
               </ButtonGroup>
             </div>
-            <div className="border-t border-border bg-muted/50 p-lg">
-              <div className="flex flex-col gap-md">
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Skin</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["outlined","Outlined"],["ghost","Ghost"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setSkin(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", skin === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Size</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["large","Large"],["regular","Regular"],["small","Small"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">State</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["default","Default"],["focus","Focus"],["hover","Hover"],["disabled","Disabled"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-lg">
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Show Left Icon</Label>
-                    <div className="pt-1"><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Show Right Icon</Label>
-                    <div className="pt-1"><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
-                  </div>
-                  {showLeftIcon && (
-                    <div className="space-y-xs max-w-[200px]">
-                      <Label className="text-xs text-muted-foreground">Left Icon</Label>
-                      <IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" />
-                    </div>
-                  )}
-                  {showRightIcon && (
-                    <div className="space-y-xs max-w-[200px]">
-                      <Label className="text-xs text-muted-foreground">Right Icon</Label>
-                      <IconPicker value={rightIcon} onChange={setRightIcon} size="sm" />
-                    </div>
-                  )}
-                </div>
+            <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Skin" value={skin} onChange={setSkin} options={[
+                { value: "outlined", label: "Outlined" },
+                { value: "ghost", label: "Ghost" },
+              ]} />
+              <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+                { value: "large", label: "Large" },
+                { value: "regular", label: "Regular" },
+                { value: "small", label: "Small" },
+              ]} />
+              <PropertyTabs label="State" value={state} onChange={setState} options={[
+                { value: "default", label: "Default" },
+                { value: "focus", label: "Focus" },
+                { value: "hover", label: "Hover" },
+                { value: "disabled", label: "Disabled" },
+              ]} />
+              <div className="flex flex-wrap gap-lg">
+                <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
+                {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+                <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
+                {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
               </div>
             </div>
           </>
@@ -2997,7 +2948,7 @@ function ButtonGroupExploreBehavior() {
         {/* Tab 2: Button Group Icon Button (784:87178) — 5 properties */}
         {bgTab === "icon-button" && (
           <>
-            <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+            <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
               <ButtonGroup variant={variantMap[ibSkin] as any} size={sizeMap[ibSize] as any}>
                 <ButtonGroupItem size="icon" disabled={ibState === "disabled"} aria-label="Align left">
                   {IbIconComp ? <IbIconComp className="size-4" /> : <AlignLeft className="size-4" />}
@@ -3010,36 +2961,25 @@ function ButtonGroupExploreBehavior() {
                 </ButtonGroupItem>
               </ButtonGroup>
             </div>
-            <div className="border-t border-border bg-muted/50 p-lg">
-              <div className="flex flex-col gap-md">
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Skin</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["outlined","Outlined"],["ghost","Ghost"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setIbSkin(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibSkin === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Size</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["large","Large"],["default","Default"],["small","Small"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setIbSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">State</Label>
-                  <div className="flex flex-wrap gap-xs">
-                    {[["default","Default"],["focus","Focus"],["hover","Hover"],["disabled","Disabled"]].map(([v,l]) => (
-                      <button key={v} onClick={() => setIbState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ibState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-xs max-w-[200px]">
-                  <Label className="text-xs text-muted-foreground">Icon</Label>
-                  <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
-                </div>
+            <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Skin" value={ibSkin} onChange={setIbSkin} options={[
+                { value: "outlined", label: "Outlined" },
+                { value: "ghost", label: "Ghost" },
+              ]} />
+              <PropertyTabs label="Size" value={ibSize} onChange={setIbSize} options={[
+                { value: "large", label: "Large" },
+                { value: "default", label: "Default" },
+                { value: "small", label: "Small" },
+              ]} />
+              <PropertyTabs label="State" value={ibState} onChange={setIbState} options={[
+                { value: "default", label: "Default" },
+                { value: "focus", label: "Focus" },
+                { value: "hover", label: "Hover" },
+                { value: "disabled", label: "Disabled" },
+              ]} />
+              <div className="space-y-xs max-w-[240px]">
+                <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+                <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
               </div>
             </div>
           </>
@@ -4216,6 +4156,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
             decorationRight={<DecorationInput type="text-muted">Optional</DecorationInput>}
           />
         </Example>
+
         </div>
       </section>
 
@@ -6510,7 +6451,7 @@ function CheckboxExploreBehavior() {
       {/* ---- Tab: Checkbox ---- */}
       {cbTab === "checkbox" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <Checkbox
               checked={cbChecked === "True" ? true : cbChecked === "Indeterminate" ? "indeterminate" as const : false}
               disabled={cbState === "Disabled"}
@@ -6521,25 +6462,19 @@ function CheckboxExploreBehavior() {
               ].filter(Boolean).join(" ")}
             />
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Checked?</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["False", "True", "Indeterminate"].map(v => (
-                    <button key={v} onClick={() => setCbChecked(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cbChecked === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default", "Focus", "Error", "Error Focus", "Disabled"].map(v => (
-                    <button key={v} onClick={() => setCbState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cbState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+            <PropertyTabs label="Checked?" value={cbChecked} onChange={setCbChecked} options={[
+              { value: "False", label: "False" },
+              { value: "True", label: "True" },
+              { value: "Indeterminate", label: "Indeterminate" },
+            ]} />
+            <PropertyTabs label="State" value={cbState} onChange={setCbState} options={[
+              { value: "Default", label: "Default" },
+              { value: "Focus", label: "Focus" },
+              { value: "Error", label: "Error" },
+              { value: "Error Focus", label: "Error Focus" },
+              { value: "Disabled", label: "Disabled" },
+            ]} />
           </div>
         </>
       )}
@@ -6547,7 +6482,7 @@ function CheckboxExploreBehavior() {
       {/* ---- Tab: Checkbox Group ---- */}
       {cbTab === "group" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <div className={[
               "flex items-center gap-xs",
               grpState === "Disable" ? "opacity-50" : "",
@@ -6560,25 +6495,17 @@ function CheckboxExploreBehavior() {
               <Label className="typo-paragraph-sm text-muted-foreground">Label</Label>
             </div>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Checked?</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["False", "True", "Indeterminate"].map(v => (
-                    <button key={v} onClick={() => setGrpChecked(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", grpChecked === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default", "Error", "Disable"].map(v => (
-                    <button key={v} onClick={() => setGrpState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", grpState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+            <PropertyTabs label="Checked?" value={grpChecked} onChange={setGrpChecked} options={[
+              { value: "False", label: "False" },
+              { value: "True", label: "True" },
+              { value: "Indeterminate", label: "Indeterminate" },
+            ]} />
+            <PropertyTabs label="State" value={grpState} onChange={setGrpState} options={[
+              { value: "Default", label: "Default" },
+              { value: "Error", label: "Error" },
+              { value: "Disable", label: "Disable" },
+            ]} />
           </div>
         </>
       )}
@@ -6586,7 +6513,7 @@ function CheckboxExploreBehavior() {
       {/* ---- Tab: Rich (Figma 19:6351) ---- */}
       {cbTab === "rich" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             {/* Figma 19:6351: 240w, HORIZONTAL, gap=8, pad=12h/8v
                 border=1px #e9e9e7 (--border), fill=#fff (--card), corner=10px
                 Aligner(16×18.5, center checkbox) + AL(vertical, grow=1, Label + Secondary text) */}
@@ -6605,20 +6532,11 @@ function CheckboxExploreBehavior() {
               </div>
             </div>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
             <div className="flex flex-wrap gap-lg">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Checked?</Label>
-                <div className="pt-1"><Switch checked={richChecked} onCheckedChange={setRichChecked} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Flipped</Label>
-                <div className="pt-1"><Switch checked={richFlipped} onCheckedChange={setRichFlipped} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Line 2</Label>
-                <div className="pt-1"><Switch checked={richShowLine2} onCheckedChange={setRichShowLine2} /></div>
-              </div>
+              <PropertyToggle label="Checked?" checked={richChecked} onChange={setRichChecked} />
+              <PropertyToggle label="Flipped" checked={richFlipped} onChange={setRichFlipped} />
+              <PropertyToggle label="Show Line 2" checked={richShowLine2} onChange={setRichShowLine2} />
             </div>
           </div>
         </>
@@ -6627,7 +6545,7 @@ function CheckboxExploreBehavior() {
       {/* ---- Tab: Rich Advanced (Figma 2748:542) ---- */}
       {cbTab === "richAdvanced" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             {/* Figma Regular: 720w, gap=12, pad=16, corner=12, stroke=1 */}
             {/* Figma Small: 720w, gap=8, pad=16h/12v, corner=12, stroke=1 */}
             {raIconSize === "Regular" ? (
@@ -6675,53 +6593,33 @@ function CheckboxExploreBehavior() {
               </div>
             )}
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["Default","Default"],["Active","Active"],["Hover","Hover"],["Disabale","Disable"],["Disabale Checked","Disable Checked"],["Selected","Selected"],["Selected - Hover","Selected - Hover"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setRaState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Icon Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Regular", "Small"].map(v => (
-                    <button key={v} onClick={() => setRaIconSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raIconSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs max-w-[200px]">
-                <Label className="text-xs text-muted-foreground">Icon</Label>
-                <IconPicker value={raIconName} onChange={setRaIconName} size="sm" />
-              </div>
-              {raIconSize === "Regular" && (
-                <div className="flex flex-wrap gap-lg">
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Recommended</Label>
-                    <div className="pt-1"><Switch checked={raRecommended} onCheckedChange={setRaRecommended} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Sub-Title</Label>
-                    <div className="pt-1"><Switch checked={raSubTitle} onCheckedChange={setRaSubTitle} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Sub-Title 2</Label>
-                    <div className="pt-1"><Switch checked={raSubTitle2} onCheckedChange={setRaSubTitle2} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Sub-Title 3</Label>
-                    <div className="pt-1"><Switch checked={raSubTitle3} onCheckedChange={setRaSubTitle3} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Description</Label>
-                    <div className="pt-1"><Switch checked={raDescription} onCheckedChange={setRaDescription} /></div>
-                  </div>
-                </div>
-              )}
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+            <PropertyTabs label="State" value={raState} onChange={setRaState} options={[
+              { value: "Default", label: "Default" },
+              { value: "Active", label: "Active" },
+              { value: "Hover", label: "Hover" },
+              { value: "Disabale", label: "Disable" },
+              { value: "Disabale Checked", label: "Disable Checked" },
+              { value: "Selected", label: "Selected" },
+              { value: "Selected - Hover", label: "Selected - Hover" },
+            ]} />
+            <PropertyTabs label="Icon Size" value={raIconSize} onChange={setRaIconSize} options={[
+              { value: "Regular", label: "Regular" },
+              { value: "Small", label: "Small" },
+            ]} />
+            <div className="space-y-xs max-w-[240px]">
+              <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+              <IconPicker value={raIconName} onChange={setRaIconName} size="sm" />
             </div>
+            {raIconSize === "Regular" && (
+              <div className="flex flex-wrap gap-lg">
+                <PropertyToggle label="Recommended" checked={raRecommended} onChange={setRaRecommended} />
+                <PropertyToggle label="Sub-Title" checked={raSubTitle} onChange={setRaSubTitle} />
+                <PropertyToggle label="Sub-Title 2" checked={raSubTitle2} onChange={setRaSubTitle2} />
+                <PropertyToggle label="Sub-Title 3" checked={raSubTitle3} onChange={setRaSubTitle3} />
+                <PropertyToggle label="Description" checked={raDescription} onChange={setRaDescription} />
+              </div>
+            )}
           </div>
         </>
       )}
@@ -8748,7 +8646,7 @@ const positionRadiusMiniMap: Record<string, string> = {
 }
 
 function ToggleIconButtonTab() {
-  const [skin, setSkin] = useState("default")
+  const [skin, setSkin] = useState("outlined")
   const [size, setSize] = useState("default")
   const [position, setPosition] = useState("Single")
   const [state, setState] = useState("Default")
@@ -8798,10 +8696,7 @@ function ToggleIconButtonTab() {
             { value: "Right", label: "Right" },
             { value: "Single", label: "Single" },
           ]} />
-          <PropertyTabs label="Active?" value={active ? "Yes" : "No"} onChange={(v) => setActive(v === "Yes")} options={[
-            { value: "Yes", label: "Yes" },
-            { value: "No", label: "No" },
-          ]} />
+          <PropertyToggle label="Active?" checked={active} onChange={setActive} />
           <PropertyTabs label="State" value={state} onChange={setState} options={[
             { value: "Default", label: "Default" },
             { value: "Disabled", label: "Disabled" },
@@ -8820,7 +8715,7 @@ function ToggleIconButtonTab() {
 }
 
 function ToggleButtonTab() {
-  const [skin, setSkin] = useState("default")
+  const [skin, setSkin] = useState("outlined")
   const [size, setSize] = useState("default")
   const [position, setPosition] = useState("Single")
   const [state, setState] = useState("Default")
@@ -8876,10 +8771,7 @@ function ToggleButtonTab() {
             { value: "Right", label: "Right" },
             { value: "Single", label: "Single" },
           ]} />
-          <PropertyTabs label="Active?" value={active ? "Yes" : "No"} onChange={(v) => setActive(v === "Yes")} options={[
-            { value: "Yes", label: "Yes" },
-            { value: "No", label: "No" },
-          ]} />
+          <PropertyToggle label="Active?" checked={active} onChange={setActive} />
           <PropertyTabs label="State" value={state} onChange={setState} options={[
             { value: "Default", label: "Default" },
             { value: "Disabled", label: "Disabled" },
@@ -8887,16 +8779,10 @@ function ToggleButtonTab() {
           ]} />
         </div>
         <div className="flex flex-wrap gap-lg">
-          <div className="space-y-xs">
-            <span className="text-xs font-medium text-muted-foreground">Show left icon</span>
-            <div><Switch checked={showLeftIcon} onCheckedChange={setShowLeftIcon} /></div>
-          </div>
-          {showLeftIcon && <div className="space-y-xs"><span className="text-xs font-medium text-muted-foreground">Left icon</span><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
-          <div className="space-y-xs">
-            <span className="text-xs font-medium text-muted-foreground">Show right icon</span>
-            <div><Switch checked={showRightIcon} onCheckedChange={setShowRightIcon} /></div>
-          </div>
-          {showRightIcon && <div className="space-y-xs"><span className="text-xs font-medium text-muted-foreground">Right icon</span><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
+          <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
+          {showLeftIcon && <div className="space-y-xs"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+          <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
+          {showRightIcon && <div className="space-y-xs"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
         </div>
       </div>
     </div>
@@ -8905,7 +8791,7 @@ function ToggleButtonTab() {
 
 function ToggleGroupTab() {
   const [type, setType] = useState("single")
-  const [skin, setSkin] = useState("default")
+  const [skin, setSkin] = useState("outlined")
   const [size, setSize] = useState("default")
 
   return (
@@ -8948,13 +8834,13 @@ function ToggleGroupTab() {
 }
 
 const toggleBehaviorTabs = [
+  { value: "group", label: "Toggle Group" },
   { value: "icon-button", label: "Toggle Icon Button" },
   { value: "button", label: "Toggle Button" },
-  { value: "group", label: "Toggle Group" },
 ]
 
 function ToggleExploreBehavior() {
-  const [activeTab, setActiveTab] = useState("icon-button")
+  const [activeTab, setActiveTab] = useState("group")
 
   return (
     <section id="explore-behavior" className="space-y-md">
@@ -9188,7 +9074,7 @@ function ToggleDocs() {
 
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
-        <h1 className="typo-heading-2">Toggle & Toggle Group</h1>
+        <h1 className="typo-heading-2">Toggle</h1>
         <p className="typo-paragraph text-muted-foreground max-w-3xl">
           Toggle: A two-state button that can be either on or off. Toggle Group: A set of two-state buttons that can be toggled on or off. A single Toggle can be created by using the "single" component variant.
         </p>
@@ -9447,7 +9333,7 @@ function ChipExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
         <div className={isHover ? "[&_[data-slot=chip]]:bg-accent [&_[data-slot=chip]]:text-foreground" : ""}>
           <Chip
             size={chipSize}
@@ -9460,33 +9346,22 @@ function ChipExploreBehavior() {
           </Chip>
         </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">States</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["Default", "Hover", "Selected"] as const).map(v => (
-                <button key={v} onClick={() => setChipState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", chipState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Sizes</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["md", "sm"] as const).map(v => (
-                <button key={v} onClick={() => setChipSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", chipSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v === "md" ? "md (32px)" : "sm (24px)"}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Styles</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["Default", "Closable", "Icon prefix", "Icon prefix - Closable"] as const).map(v => (
-                <button key={v} onClick={() => setChipStyle(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", chipStyle === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="State" value={chipState} onChange={(v) => setChipState(v as any)} options={[
+          { value: "Default", label: "Default" },
+          { value: "Hover", label: "Hover" },
+          { value: "Selected", label: "Selected" },
+        ]} />
+        <PropertyTabs label="Size" value={chipSize} onChange={(v) => setChipSize(v as any)} options={[
+          { value: "md", label: "md (32px)" },
+          { value: "sm", label: "sm (24px)" },
+        ]} />
+        <PropertyTabs label="Style" value={chipStyle} onChange={(v) => setChipStyle(v as any)} options={[
+          { value: "Default", label: "Default" },
+          { value: "Closable", label: "Closable" },
+          { value: "Icon prefix", label: "Icon prefix" },
+          { value: "Icon prefix - Closable", label: "Icon prefix - Closable" },
+        ]} />
       </div>
     </div>
   )
@@ -9702,21 +9577,12 @@ function CarouselExploreBehavior() {
         ))}
       </div>
 
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[240px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[240px]">
         {renderSlides(Number(slides), carouselTab === "carousel-image")}
       </div>
 
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">{carouselTab === "carousel" ? "Slides" : "Type"}</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["1", "2", "3"] as const).map(v => (
-                <button key={v} onClick={() => setSlides(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", slides === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v === "1" ? "1 Slide" : v === "2" ? "2 Slides" : "3 Slides"}</button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label={carouselTab === "carousel" ? "Slides" : "Type"} value={slides} onChange={(v) => setSlides(v as any)} options={[["1","1 Slide"],["2","2 Slides"],["3","3 Slides"]]} />
       </div>
     </div>
   )
@@ -9991,27 +9857,13 @@ function CardExploreBehavior() {
         ))}
       </div>
 
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
         {cardTab === "card" ? cardPreview(Card) : cardPreview(CardInner)}
       </div>
 
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="flex flex-wrap gap-lg">
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Title</Label>
-              <div className="pt-1"><Switch checked={showTitle} onCheckedChange={setShowTitle} /></div>
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Spacing</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["16px", "24px"] as const).map(v => (
-                <button key={v} onClick={() => setSpacing(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", spacing === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Spacing" value={spacing} onChange={(v) => setSpacing(v as any)} options={[["16px","16px"],["24px","24px"]]} />
+        <PropertyToggle label="Show Title" checked={showTitle} onChange={setShowTitle} />
       </div>
     </div>
   )
@@ -10311,36 +10163,25 @@ function AvatarExploreBehavior() {
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Value</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Picture", "Text", "Icon"].map(v => (
-                <button key={v} onClick={() => setValue(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", value === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Size</Label>
-            <div className="flex flex-wrap gap-xs">
-              {[["Regular","Regular (40px)"],["Small","Small (32px)"],["Tiny","Tiny (24px)"],["Extra Tiny","Extra Tiny (20px)"]].map(([v,l]) => (
-                <button key={v} onClick={() => setSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", size === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Roundness</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Round", "Roundrect"].map(v => (
-                <button key={v} onClick={() => setRoundness(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundness === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className={["text-xs text-muted-foreground", value !== "Icon" ? "opacity-50" : ""].join(" ")}>Icon</Label>
-            <IconPicker value={iconName} onChange={setIconName} disabled={value !== "Icon"} size="sm" />
-          </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Value" value={value} onChange={setValue} options={[
+          { value: "Picture", label: "Picture" },
+          { value: "Text", label: "Text" },
+          { value: "Icon", label: "Icon" },
+        ]} />
+        <PropertyTabs label="Size" value={size} onChange={setSize} options={[
+          { value: "Regular", label: "Regular (40px)" },
+          { value: "Small", label: "Small (32px)" },
+          { value: "Tiny", label: "Tiny (24px)" },
+          { value: "Extra Tiny", label: "Extra Tiny (20px)" },
+        ]} />
+        <PropertyTabs label="Roundness" value={roundness} onChange={setRoundness} options={[
+          { value: "Round", label: "Round" },
+          { value: "Roundrect", label: "Roundrect" },
+        ]} />
+        <div className="space-y-xs max-w-[240px]">
+          <p className={cn("typo-paragraph-mini text-muted-foreground", value !== "Icon" && "opacity-50")}>Icon</p>
+          <IconPicker value={iconName} onChange={setIconName} disabled={value !== "Icon"} size="sm" />
         </div>
       </div>
     </div>
@@ -11045,81 +10886,33 @@ function AlertExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-primary/5">
-        {inCard ? (
-          <div className="w-full max-w-lg rounded-xl border border-border bg-card p-lg shadow-sm">
-            <p className="typo-paragraph-sm-bold mb-sm">Card title</p>
-            <p className="typo-paragraph-sm text-ghost-foreground mb-md">Some card content that provides context for the alert below.</p>
-            <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard>
-              {alertContent}
-            </Alert>
-          </div>
-        ) : (
-          <div className="w-full max-w-lg">
-            <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"}>
-              {alertContent}
-            </Alert>
-          </div>
-        )}
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <div className="w-full max-w-lg">
+          <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard={inCard}>
+            {alertContent}
+          </Alert>
+        </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <div className="flex flex-wrap gap-xs">
-              {[["default","Neutral"],["destructive","Error"],["success","Success"],["warning","Warning"],["emphasis","Emphasis"]].map(([v,l]) => (
-                <button key={v} onClick={() => handleTypeChange(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", type === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-lg">
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Icon</Label>
-              <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Dismissable</Label>
-              <div className="pt-1">
-                <Switch checked={dismissable} onCheckedChange={setDismissable} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">In Card</Label>
-              <div className="pt-1">
-                <Switch checked={inCard} onCheckedChange={setInCard} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Title</Label>
-              <div className="pt-1">
-                <Switch checked={showTitle} onCheckedChange={(v) => { setShowTitle(v); if (!v && !showSubtitle) setShowSubtitle(true) }} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Subtitle</Label>
-              <div className="pt-1">
-                <Switch checked={showSubtitle} onCheckedChange={(v) => { setShowSubtitle(v); if (!v && !showTitle) setShowTitle(true) }} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Icon</Label>
-              <div className="pt-1">
-                <Switch checked={showIcon} onCheckedChange={setShowIcon} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Action</Label>
-              <div className="pt-1">
-                <Switch checked={showAction} onCheckedChange={handleShowActionChange} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground text-nowrap", !showAction ? "opacity-50" : ""].join(" ")}>2nd Action</Label>
-              <div className="pt-1">
-                <Switch checked={showSecondaryAction} onCheckedChange={setShowSecondaryAction} disabled={!showAction} />
-              </div>
-            </div>
-          </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={handleTypeChange} options={[
+          { value: "default", label: "Neutral" },
+          { value: "destructive", label: "Error" },
+          { value: "success", label: "Success" },
+          { value: "warning", label: "Warning" },
+          { value: "emphasis", label: "Emphasis" },
+        ]} />
+        <div className="space-y-xs max-w-[240px]">
+          <p className={cn("typo-paragraph-mini text-muted-foreground", type !== "default" && "opacity-50")}>Icon</p>
+          <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
+        </div>
+        <div className="flex flex-wrap gap-lg">
+          <PropertyToggle label="Dismissable" checked={dismissable} onChange={setDismissable} />
+          <PropertyToggle label="In Card" checked={inCard} onChange={setInCard} />
+          <PropertyToggle label="Show Title" checked={showTitle} onChange={(v) => { setShowTitle(v); if (!v && !showSubtitle) setShowSubtitle(true) }} />
+          <PropertyToggle label="Show Subtitle" checked={showSubtitle} onChange={(v) => { setShowSubtitle(v); if (!v && !showTitle) setShowTitle(true) }} />
+          <PropertyToggle label="Show Icon" checked={showIcon} onChange={setShowIcon} />
+          <PropertyToggle label="Show Action" checked={showAction} onChange={handleShowActionChange} />
+          <PropertyToggle label="2nd Action" checked={showSecondaryAction} onChange={setShowSecondaryAction} />
         </div>
       </div>
     </div>
@@ -11552,7 +11345,7 @@ function BadgeExploreBehavior() {
       {/* ── Badge/Label ── */}
       {badgeTab === "label" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <Badge variant={labelVariant as any} level={labelLevel as any} size={labelSize as any} className={labelState === "Focus" ? "ring-[3px] ring-ring" : ""}>
               {showIconLeft && <IconLeft />}
               {labelText}
@@ -11561,57 +11354,23 @@ function BadgeExploreBehavior() {
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
             <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Variant</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setLabelVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Level</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["primary","Primary"],["secondary","Secondary"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setLabelLevel(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelLevel === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setLabelSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default", "Focus"].map(v => (
-                    <button key={v} onClick={() => setLabelState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", labelState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
+              <PropertyTabs label="Variant" value={labelVariant} onChange={setLabelVariant} options={[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]]} />
+              <PropertyTabs label="Level" value={labelLevel} onChange={setLabelLevel} options={[["primary","Primary"],["secondary","Secondary"]]} />
+              <PropertyTabs label="Size" value={labelSize} onChange={setLabelSize} options={[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]]} />
+              <PropertyTabs label="State" value={labelState} onChange={setLabelState} options={[["Default","Default"],["Focus","Focus"]]} />
               <div className="flex flex-wrap gap-lg">
                 <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Label</Label>
+                  <p className="typo-paragraph-mini text-muted-foreground">Label</p>
                   <Input value={labelText} onChange={(e) => setLabelText(e.target.value)} className="h-8 text-xs" />
                 </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Icon Left</Label>
-                  <div className="pt-1"><Switch checked={showIconLeft} onCheckedChange={setShowIconLeft} /></div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className={["text-xs text-muted-foreground", !showIconLeft ? "opacity-50" : ""].join(" ")}>Icon Left</Label>
+                <PropertyToggle label="Show Icon Left" checked={showIconLeft} onChange={setShowIconLeft} />
+                <div className="space-y-xs max-w-[240px]">
+                  <p className={cn("typo-paragraph-mini text-muted-foreground", !showIconLeft && "opacity-50")}>Icon Left</p>
                   <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
                 </div>
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Icon Right</Label>
-                  <div className="pt-1"><Switch checked={showIconRight} onCheckedChange={setShowIconRight} /></div>
-                </div>
-                <div className="space-y-xs">
-                  <Label className={["text-xs text-muted-foreground", !showIconRight ? "opacity-50" : ""].join(" ")}>Icon Right</Label>
+                <PropertyToggle label="Show Icon Right" checked={showIconRight} onChange={setShowIconRight} />
+                <div className="space-y-xs max-w-[240px]">
+                  <p className={cn("typo-paragraph-mini text-muted-foreground", !showIconRight && "opacity-50")}>Icon Right</p>
                   <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
                 </div>
               </div>
@@ -11623,57 +11382,27 @@ function BadgeExploreBehavior() {
       {/* ── Badge/Round ── */}
       {badgeTab === "round" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <BadgeRound variant={roundVariant as any} size={roundSize as any} className={roundState === "Focus" ? "ring-[3px] ring-ring" : ""}>
               {roundType === "numeric" ? roundNumber : <RoundIcon />}
             </BadgeRound>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Variant</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setRoundVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setRoundSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default", "Focus"].map(v => (
-                    <button key={v} onClick={() => setRoundState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Type</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["numeric","Numeric"],["icon","Icon"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setRoundType(v as any)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", roundType === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Variant" value={roundVariant} onChange={setRoundVariant} options={[["default","Primary"],["secondary","Secondary"],["outline","Outline"],["ghost","Ghost"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]]} />
+              <PropertyTabs label="Size" value={roundSize} onChange={setRoundSize} options={[["sm","Small (20px)"],["default","Regular (24px)"],["lg","Large (28px)"]]} />
+              <PropertyTabs label="State" value={roundState} onChange={setRoundState} options={[["Default","Default"],["Focus","Focus"]]} />
+              <PropertyTabs label="Type" value={roundType} onChange={(v) => setRoundType(v as any)} options={[["numeric","Numeric"],["icon","Icon"]]} />
               {roundType === "numeric" ? (
                 <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Number</Label>
+                  <p className="typo-paragraph-mini text-muted-foreground">Number</p>
                   <Input value={roundNumber} onChange={(e) => setRoundNumber(e.target.value)} className="h-8 text-xs" />
                 </div>
               ) : (
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Icon</Label>
+                <div className="space-y-xs max-w-[240px]">
+                  <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
                   <IconPicker value={roundIconName} onChange={setRoundIconName} size="sm" />
                 </div>
               )}
-            </div>
           </div>
         </>
       )}
@@ -11681,28 +11410,12 @@ function BadgeExploreBehavior() {
       {/* ── Badge/Dot ── */}
       {badgeTab === "dot" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <BadgeDot variant={dotVariant as any} size={dotSize as any} />
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Variant</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Primary"],["secondary","Secondary"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setDotVariant(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", dotVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["sm","Small (4px)"],["default","Regular (8px)"],["lg","Large (12px)"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setDotSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", dotSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Variant" value={dotVariant} onChange={setDotVariant} options={[["default","Primary"],["secondary","Secondary"],["destructive","Destructive"],["emphasis","Emphasis"],["success","Success"],["warning","Warning"]]} />
+              <PropertyTabs label="Size" value={dotSize} onChange={setDotSize} options={[["sm","Small (4px)"],["default","Regular (8px)"],["lg","Large (12px)"]]} />
           </div>
         </>
       )}
@@ -12774,7 +12487,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Header tab — single cell preview ── */}
       {dtTab === "header" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", headerBg, hBorder && "border-b border-border", hAlign === "right" && "justify-end")}>
               {hContent === "text" && <span className={cn("font-semibold typo-paragraph-sm", hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>}
               {hContent === "sortable" && (
@@ -12787,45 +12500,16 @@ function DataTableExploreBehavior() {
               {hContent === "empty" && null}
             </div>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Content</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["text","Text"],["sortable","Sortable"],["checkbox","Checkbox"],["empty","Empty"]].map(([v,l]) => (
-                    <button key={v} onClick={() => { setHContent(v); if (v === "checkbox" || v === "empty") setHTooltip(false); }} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Alignment</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["left","Left"],["right","Right"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setHAlign(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Default"],["hover","Hover"],["active","Active"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setHState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", hState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Content" value={hContent} onChange={(v) => { setHContent(v); if (v === "checkbox" || v === "empty") setHTooltip(false); }} options={[["text","Text"],["sortable","Sortable"],["checkbox","Checkbox"],["empty","Empty"]]} />
+              <PropertyTabs label="Alignment" value={hAlign} onChange={setHAlign} options={[["left","Left"],["right","Right"]]} />
+              <PropertyTabs label="State" value={hState} onChange={setHState} options={[["default","Default"],["hover","Hover"],["active","Active"]]} />
               <div className="flex flex-wrap gap-lg">
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Show Border</Label>
-                  <div className="pt-1"><Switch checked={hBorder} onCheckedChange={setHBorder} /></div>
-                </div>
+                <PropertyToggle label="Show Border" checked={hBorder} onChange={setHBorder} />
                 {(hContent === "text" || hContent === "sortable") && (
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Show Tooltip</Label>
-                    <div className="pt-1"><Switch checked={hTooltip} onCheckedChange={setHTooltip} /></div>
-                  </div>
+                  <PropertyToggle label="Show Tooltip" checked={hTooltip} onChange={setHTooltip} />
                 )}
               </div>
-            </div>
           </div>
         </>
       )}
@@ -12833,7 +12517,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Cell tab — single cell preview ── */}
       {dtTab === "cell" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", cellBg, cBorder && "border-b border-border", cAlign === "right" && "justify-end")}>
               {cContent === "text-1" && <span className="typo-paragraph-sm">Table cell</span>}
               {cContent === "text-2" && (
@@ -12861,37 +12545,11 @@ function DataTableExploreBehavior() {
               {cContent === "blank" && null}
             </div>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Content</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["text-1","Text (1 Line)"],["text-2","Text (2 Lines)"],["text-label","Text (with Label)"],["text-thumb","Text with thumbnail"],["checkbox","Checkbox"],["badge","Badge"],["buttons","Buttons"],["avatar","Avatar"],["avatar-name","Avatar + Name"],["actions","Actions"],["input","Input"],["blank","Blank"]].map(([v,l]) => (
-                    <button key={v} onClick={() => { setCContent(v); if (v === "actions" || v === "buttons") setCAlign("right"); }} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cContent === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Alignment{cContent === "actions" && " (Actions = Right only)"}</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["left","Left"],["right","Right"]].map(([v,l]) => (
-                    <button key={v} onClick={() => { if (cContent === "actions" && v === "left") return; setCAlign(v); }} disabled={cContent === "actions" && v === "left"} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cAlign === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent", cContent === "actions" && v === "left" && "opacity-30 cursor-not-allowed")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["default","Default"],["hover","Hover"],["active","Active"],["selected","Selected"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setCState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", cState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Border</Label>
-                <div className="pt-1"><Switch checked={cBorder} onCheckedChange={setCBorder} /></div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Content" value={cContent} onChange={(v) => { setCContent(v); if (v === "actions" || v === "buttons") setCAlign("right"); }} options={[["text-1","Text (1 Line)"],["text-2","Text (2 Lines)"],["text-label","Text (with Label)"],["text-thumb","Text with thumbnail"],["checkbox","Checkbox"],["badge","Badge"],["buttons","Buttons"],["avatar","Avatar"],["avatar-name","Avatar + Name"],["actions","Actions"],["input","Input"],["blank","Blank"]]} />
+              <PropertyTabs label={`Alignment${cContent === "actions" ? " (Actions = Right only)" : ""}`} value={cAlign} onChange={(v) => { if (cContent === "actions" && v === "left") return; setCAlign(v); }} options={[["left","Left"],["right","Right"]]} />
+              <PropertyTabs label="State" value={cState} onChange={setCState} options={[["default","Default"],["hover","Hover"],["active","Active"],["selected","Selected"]]} />
+              <PropertyToggle label="Show Border" checked={cBorder} onChange={setCBorder} />
           </div>
         </>
       )}
@@ -13247,7 +12905,7 @@ function TableDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden">
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <Table className="w-[500px]">
               <TableHeader>
                 <TableRow>
@@ -13479,28 +13137,25 @@ function DialogExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Uses dialogClassNames from dialog.tsx — single source of truth */}
         <div className={cn(
-          "relative w-full bg-card border border-border shadow grid pointer-events-none",
-          isMobile && type === "Mobile Full Screen" ? "max-w-xs rounded-none" : isMobile ? "max-w-xs rounded-xl" : "max-w-lg rounded-xl",
-          isScrollable ? "gap-0" : "gap-xs p-md"
+          dialogClassNames.content, "relative pointer-events-none",
+          isMobile && type === "Mobile Full Screen" ? "max-w-xs rounded-none" : isMobile ? "max-w-xs" : "",
+          isScrollable ? "gap-0 p-0" : ""
         )}>
-          {/* Close button */}
           {showCloseButton && (
-            <div className={cn("absolute opacity-70", isScrollable ? "right-md top-md" : "right-md top-md")}>
+            <div className={dialogClassNames.close}>
               <X className="size-md" />
             </div>
           )}
 
-          {/* Scrollable layout = Header / Content / Footer as separate sections */}
           {isScrollable ? (
             <>
-              {/* Header */}
-              <div className="p-md flex flex-col gap-xs sm:text-left border-b border-border">
-                {showTitle && <h3 className="typo-heading-4 text-foreground">Edit profile</h3>}
-                {showDescription && <p className="typo-paragraph-sm text-muted-foreground">Make changes to your profile here.</p>}
+              <div className={cn("p-md border-b border-border", dialogClassNames.header)}>
+                {showTitle && <h3 className={dialogClassNames.title}>Edit profile</h3>}
+                {showDescription && <p className={dialogClassNames.description}>Make changes to your profile here.</p>}
               </div>
-              {/* Scrollable content */}
               <div className="p-md space-y-md max-h-[180px] overflow-y-auto">
                 <div className={cn("grid items-center gap-md", isMobile ? "grid-cols-1" : "grid-cols-4")}>
                   <Label className={isMobile ? "" : "text-right"}>Name</Label>
@@ -13515,9 +13170,8 @@ function DialogExploreBehavior() {
                   <Input defaultValue="pedro@example.com" className={isMobile ? "" : "col-span-3"} readOnly />
                 </div>
               </div>
-              {/* Footer */}
               {showFooter && (
-                <div className={cn("p-md border-t border-border flex gap-xs", isMobile ? "flex-col" : "justify-end")}>
+                <div className={cn("p-md border-t border-border", dialogClassNames.footer, isMobile && "flex-col")}>
                   <Button variant="outline" className={isMobile ? "w-full" : ""}>Cancel</Button>
                   <Button className={isMobile ? "w-full" : ""}>Save changes</Button>
                 </div>
@@ -13525,11 +13179,10 @@ function DialogExploreBehavior() {
             </>
           ) : (
             <>
-              {/* Standard layout */}
               {(showTitle || showDescription) && (
-                <div className="flex flex-col gap-xs sm:text-left">
-                  {showTitle && <h3 className="typo-heading-4 text-foreground">Edit profile</h3>}
-                  {showDescription && <p className="typo-paragraph-sm text-muted-foreground">Make changes to your profile here. Click save when you&apos;re done.</p>}
+                <div className={dialogClassNames.header}>
+                  {showTitle && <h3 className={dialogClassNames.title}>Edit profile</h3>}
+                  {showDescription && <p className={dialogClassNames.description}>Make changes to your profile here. Click save when you&apos;re done.</p>}
                 </div>
               )}
               <div className={cn("grid gap-md py-md", isMobile ? "grid-cols-1" : "grid-cols-4")}>
@@ -13537,7 +13190,7 @@ function DialogExploreBehavior() {
                 <Input defaultValue="Pedro Duarte" className={isMobile ? "" : "col-span-3"} readOnly />
               </div>
               {showFooter && (
-                <div className={cn("flex gap-xs", isMobile ? "flex-col" : "flex-col-reverse sm:flex-row sm:justify-end")}>
+                <div className={cn(dialogClassNames.footer, isMobile && "flex-col")}>
                   <Button variant="outline" className={isMobile ? "w-full" : ""}>Cancel</Button>
                   <Button className={isMobile ? "w-full" : ""}>Save changes</Button>
                 </div>
@@ -13547,34 +13200,18 @@ function DialogExploreBehavior() {
         </div>
       </div>
       {/* Controls panel */}
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["Desktop", "Desktop Scrollable", "Mobile", "Mobile Full Screen"] as const).map(v => (
-                <button key={v} onClick={() => setType(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", type === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-lg">
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Close Button</Label>
-              <div className="pt-1"><Switch checked={showCloseButton} onCheckedChange={setShowCloseButton} /></div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Title</Label>
-              <div className="pt-1"><Switch checked={showTitle} onCheckedChange={setShowTitle} /></div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Description</Label>
-              <div className="pt-1"><Switch checked={showDescription} onCheckedChange={setShowDescription} /></div>
-            </div>
-            <div className="space-y-xs">
-              <Label className="text-xs text-muted-foreground">Show Footer</Label>
-              <div className="pt-1"><Switch checked={showFooter} onCheckedChange={setShowFooter} /></div>
-            </div>
-          </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={(v) => setType(v as typeof type)} options={[
+          { value: "Desktop", label: "Desktop" },
+          { value: "Desktop Scrollable", label: "Desktop Scrollable" },
+          { value: "Mobile", label: "Mobile" },
+          { value: "Mobile Full Screen", label: "Mobile Full Screen" },
+        ]} />
+        <div className="flex flex-wrap gap-lg">
+          <PropertyToggle label="Show Close Button" checked={showCloseButton} onChange={setShowCloseButton} />
+          <PropertyToggle label="Show Title" checked={showTitle} onChange={setShowTitle} />
+          <PropertyToggle label="Show Description" checked={showDescription} onChange={setShowDescription} />
+          <PropertyToggle label="Show Footer" checked={showFooter} onChange={setShowFooter} />
         </div>
       </div>
     </div>
@@ -14009,7 +13646,7 @@ function AlertDialogExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
         <div className={["w-full bg-card border border-border rounded-xl p-xl shadow", isMobile ? "max-w-sm" : "max-w-lg"].join(" ")}>
           <div className="flex flex-col gap-lg">
             {/* Title area (Icon + Title text) */}
@@ -14050,60 +13687,27 @@ function AlertDialogExploreBehavior() {
           </div>
         </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <div className="flex flex-wrap gap-xs">
-              {(["Desktop", "Mobile"] as const).map(v => (
-                <button key={v} onClick={() => setType(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", type === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Type" value={type} onChange={(v) => setType(v as "Desktop" | "Mobile")} options={[
+          { value: "Desktop", label: "Desktop" },
+          { value: "Mobile", label: "Mobile" },
+        ]} />
+        <PropertyTabs label="Responsive to" value="Popup" onChange={() => {}} options={[
+          { value: "Popup", label: "Popup" },
+        ]} />
+        <PropertyTabs label="Slot" value={slotVariant} onChange={handleSlotChange} options={[
+          { value: "text", label: "Text" },
+          { value: "congratulation", label: "Congratulation" },
+        ]} />
+        <div className="flex flex-wrap gap-lg">
+          <PropertyToggle label="Show Icon" checked={showIcon} onChange={setShowIcon} />
+          <div className="space-y-xs max-w-[240px]">
+            <p className={cn("typo-paragraph-mini text-muted-foreground", (!showIcon || isSlotIllustration) && "opacity-50")}>Icon</p>
+            <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
           </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Responsive to</Label>
-            <div className="flex flex-wrap gap-xs">
-              <button className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors bg-primary text-primary-foreground border-primary opacity-50 cursor-not-allowed")}>Popup</button>
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Slot</Label>
-            <div className="flex flex-wrap gap-xs">
-              {[["text","Text"],["congratulation","Congratulation"]].map(([v,l]) => (
-                <button key={v} onClick={() => handleSlotChange(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", slotVariant === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-lg">
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Icon</Label>
-              <div className="pt-1">
-                <Switch checked={showIcon} onCheckedChange={setShowIcon} disabled={isSlotIllustration} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground", !showIcon || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Icon</Label>
-              <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
-            </div>
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Title</Label>
-              <div className="pt-1">
-                <Switch checked={showTitle} onCheckedChange={setShowTitle} disabled={isSlotIllustration} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground", isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action</Label>
-              <div className="pt-1">
-                <Switch checked={showAction} onCheckedChange={handleShowActionChange} disabled={isSlotIllustration} />
-              </div>
-            </div>
-            <div className="space-y-xs">
-              <Label className={["text-xs text-muted-foreground", !showAction || isSlotIllustration ? "opacity-50" : ""].join(" ")}>Show Action Secondary</Label>
-              <div className="pt-1">
-                <Switch checked={showActionSecondary} onCheckedChange={setShowActionSecondary} disabled={!showAction || isSlotIllustration} />
-              </div>
-            </div>
-          </div>
+          <PropertyToggle label="Show Title" checked={showTitle} onChange={setShowTitle} />
+          <PropertyToggle label="Show Action" checked={showAction} onChange={handleShowActionChange} />
+          <PropertyToggle label="2nd Action" checked={showActionSecondary} onChange={setShowActionSecondary} />
         </div>
       </div>
     </div>
@@ -14568,215 +14172,555 @@ const sheetSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function SheetExploreBehavior() {
+  const [side, setSide] = useState("right")
+  const [scrollable, setScrollable] = useState(false)
+  const [showTitle, setShowTitle] = useState(true)
+  const [showDescription, setShowDescription] = useState(true)
+  const [showFooter, setShowFooter] = useState(true)
+
+  const isHorizontal = side === "left" || side === "right"
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[320px]">
+        {/* Static sheet preview — show component directly without trigger */}
+        <div className={cn(
+          "relative pointer-events-none", sheetClassNames.base,
+          isHorizontal ? "w-[280px] h-[400px]" : "w-full max-w-md h-[220px]",
+          sheetClassNames.sideBorder[side as keyof typeof sheetClassNames.sideBorder],
+          scrollable && "p-0 gap-0",
+        )}>
+          {/* Close button */}
+          <div className={sheetClassNames.close}>
+            <X className="size-md" />
+          </div>
+
+          {scrollable ? (
+            <>
+              {/* Scrollable layout: Header / Content / Footer separated */}
+              {(showTitle || showDescription) && (
+                <div className={cn(sheetClassNames.header, "p-md border-b border-border shrink-0")}>
+                  {showTitle && <h3 className={sheetClassNames.title}>Edit profile</h3>}
+                  {showDescription && <p className={sheetClassNames.description}>Make changes to your profile here.</p>}
+                </div>
+              )}
+              <div className="p-md space-y-md flex-1 overflow-y-auto">
+                <div className="grid grid-cols-1 items-center gap-md">
+                  <Label>Name</Label>
+                  <Input defaultValue="Pedro Duarte" readOnly />
+                </div>
+                <div className="grid grid-cols-1 items-center gap-md">
+                  <Label>Username</Label>
+                  <Input defaultValue="@peduarte" readOnly />
+                </div>
+                <div className="grid grid-cols-1 items-center gap-md">
+                  <Label>Email</Label>
+                  <Input defaultValue="pedro@example.com" readOnly />
+                </div>
+              </div>
+              {showFooter && (
+                <div className={cn(sheetClassNames.footer, "p-md border-t border-border shrink-0")}>
+                  <Button variant="outline" size="sm">Cancel</Button>
+                  <Button size="sm">Save changes</Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Standard layout */}
+              <div className="p-md flex flex-col gap-md flex-1">
+                {(showTitle || showDescription) && (
+                  <div className={sheetClassNames.header}>
+                    {showTitle && <h3 className={sheetClassNames.title}>Edit profile</h3>}
+                    {showDescription && <p className={sheetClassNames.description}>Make changes to your profile here.</p>}
+                  </div>
+                )}
+                <div className="grid grid-cols-1 items-center gap-md">
+                  <Label>Name</Label>
+                  <Input defaultValue="Pedro Duarte" readOnly />
+                </div>
+                {showFooter && (
+                  <div className={sheetClassNames.footer}>
+                    <Button variant="outline" size="sm">Cancel</Button>
+                    <Button size="sm">Save changes</Button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      {/* Controls panel */}
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Side" value={side} options={[
+          { value: "right", label: "Right" },
+          { value: "left", label: "Left" },
+          { value: "top", label: "Top" },
+          { value: "bottom", label: "Bottom" },
+        ]} onChange={setSide} />
+        <PropertyTabs label="Scrollable" value={scrollable ? "true" : "false"} options={[
+          { value: "false", label: "False" },
+          { value: "true", label: "True" },
+        ]} onChange={(v) => setScrollable(v === "true")} />
+        <div className="flex flex-wrap gap-lg">
+          <PropertyToggle label="Show Title" checked={showTitle} onChange={setShowTitle} />
+          <PropertyToggle label="Show Description" checked={showDescription} onChange={setShowDescription} />
+          <PropertyToggle label="Show Footer" checked={showFooter} onChange={setShowFooter} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SheetPropsTable() {
+  const tables = [
+    {
+      component: "Sheet",
+      props: [
+        { name: "open", type: "boolean", default: "—", desc: "Controlled open state." },
+        { name: "onOpenChange", type: "(open: boolean) => void", default: "—", desc: "Callback when open state changes." },
+        { name: "defaultOpen", type: "boolean", default: "false", desc: "Uncontrolled default open state." },
+        { name: "modal", type: "boolean", default: "true", desc: "Whether to render overlay and trap focus." },
+      ],
+    },
+    {
+      component: "SheetContent",
+      props: [
+        { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"right"', desc: "The edge from which the sheet slides in." },
+        { name: "onInteractOutside", type: "(e) => void", default: "—", desc: "Callback when clicking outside." },
+        { name: "onEscapeKeyDown", type: "(e) => void", default: "—", desc: "Callback when pressing Escape." },
+      ],
+    },
+  ]
+
+  return (
+    <div className="space-y-md">
+      {tables.map(t => (
+        <div key={t.component}>
+          <h3 className="typo-paragraph-sm-bold text-foreground mb-xs">{t.component}</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left p-3 font-medium">Prop</th>
+                  <th className="text-left p-3 font-medium">Type</th>
+                  <th className="text-left p-3 font-medium">Default</th>
+                  <th className="text-left p-3 font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {t.props.map(p => (
+                  <tr key={p.name} className="border-b border-border">
+                    <td className="p-3 font-mono text-xs">{p.name}</td>
+                    <td className="p-3 font-mono text-xs">{p.type}</td>
+                    <td className="p-3 font-mono text-xs">{p.default}</td>
+                    <td className="p-3">{p.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function SheetTokensTable() {
+  const tokens = [
+    { token: "bg-card", value: "var(--card)", usage: "Sheet background" },
+    { token: "border-border", value: "var(--border)", usage: "Side border, header/footer dividers" },
+    { token: "shadow", value: "Figma shadow-sm", usage: "Sheet elevation (Figma shadow-sm → Tailwind shadow)" },
+    { token: "bg-black/50", value: "rgba(0,0,0,0.5)", usage: "Overlay backdrop" },
+    { token: "p-md", value: "16px", usage: "Content padding" },
+    { token: "gap-md", value: "16px", usage: "Content gap" },
+    { token: "gap-xs", value: "8px", usage: "Header gap, footer gap" },
+    { token: "typo-heading-4", value: "Geist 600 20/24", usage: "SheetTitle" },
+    { token: "typo-paragraph-sm", value: "Geist 400 14/20", usage: "SheetDescription" },
+    { token: "text-foreground", value: "var(--foreground)", usage: "Title color" },
+    { token: "text-muted-foreground", value: "var(--muted-foreground)", usage: "Description color" },
+    { token: "size-md", value: "16px", usage: "Close icon size" },
+    { token: "rounded-sm", value: "4px", usage: "Close button border radius" },
+    { token: "ring-ring", value: "var(--ring)", usage: "Close button focus ring" },
+    { token: "w-3/4 sm:max-w-sm", value: "responsive", usage: "Left/Right sheet width" },
+  ]
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left p-3 font-medium">Token</th>
+            <th className="text-left p-3 font-medium">Value</th>
+            <th className="text-left p-3 font-medium">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map(t => (
+            <tr key={t.token} className="border-b border-border">
+              <td className="p-3 font-mono text-xs">{t.token}</td>
+              <td className="p-3 font-mono text-xs">{t.value}</td>
+              <td className="p-3">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function SheetDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={sheetSections} />
 
+      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Sheet</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Slide-out panel from any edge of the screen. Great for navigation, filters, or detail views.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Slide-out panel from any edge of the screen. Great for navigation, filters,
+          settings, or detail views. Supports scrollable content and 4 side directions.
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground
-        controls={[
-          { type: "select", label: "Side", prop: "side", defaultValue: "right", options: [
-            { label: "Right", value: "right" },
-            { label: "Left", value: "left" },
-            { label: "Top", value: "top" },
-            { label: "Bottom", value: "bottom" },
-          ]},
-        ]}
-        render={(p) => (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Open {p.side} sheet</Button>
-            </SheetTrigger>
-            <SheetContent side={p.side as "right" | "left" | "top" | "bottom"}>
-              <SheetHeader>
-                <SheetTitle>Sheet ({p.side})</SheetTitle>
-                <SheetDescription>This sheet slides in from the {p.side}.</SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        )}
-      />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <SheetExploreBehavior />
+      </section>
 
-      
       {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add @radix-ui/react-dialog`}
-        importCode={`import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"`}
+        deps={`pnpm add @radix-ui/react-dialog class-variance-authority`}
+        importCode={`import {\n  Sheet, SheetTrigger, SheetContent, SheetHeader,\n  SheetFooter, SheetTitle, SheetDescription, SheetClose\n} from "@/components/ui/sheet"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Right (Default)" description="The most common side for supplementary content — settings, details, or edit forms." code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Open Sheet</Button>\n  </SheetTrigger>\n  <SheetContent>\n    <SheetHeader>\n      <SheetTitle>Edit profile</SheetTitle>\n      <SheetDescription>Make changes to your profile.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Right</Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Edit profile</SheetTitle>
-                <SheetDescription>Make changes to your profile here. Click save when you're done.</SheetDescription>
-              </SheetHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="sheet-name" className="text-right">Name</Label>
-                  <Input id="sheet-name" defaultValue="Pedro Duarte" className="col-span-3" />
+          {/* Right (Default) */}
+          <Example
+            title="Right (Default)"
+            description="The most common side for supplementary content — settings, details, or edit forms."
+            code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open Sheet</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Edit profile</SheetTitle>
+      <SheetDescription>Make changes to your profile.</SheetDescription>
+    </SheetHeader>
+    <div className="grid gap-md py-md">
+      <div className="grid grid-cols-4 items-center gap-md">
+        <Label className="text-right">Name</Label>
+        <Input defaultValue="Pedro Duarte" className="col-span-3" />
+      </div>
+    </div>
+    <SheetFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button>Save changes</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Right</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Edit profile</SheetTitle>
+                  <SheetDescription>Make changes to your profile here.</SheetDescription>
+                </SheetHeader>
+                <div className="grid gap-md py-md">
+                  <div className="grid grid-cols-4 items-center gap-md">
+                    <Label className="text-right">Name</Label>
+                    <Input defaultValue="Pedro Duarte" className="col-span-3" />
+                  </div>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </Example>
+                <SheetFooter>
+                  <Button variant="outline">Cancel</Button>
+                  <Button>Save changes</Button>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          </Example>
 
-        <Example title="Left Side" description="Ideal for navigation menus or sidebar-style content." code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Left</Button>\n  </SheetTrigger>\n  <SheetContent side="left">\n    <SheetHeader>\n      <SheetTitle>Navigation</SheetTitle>\n      <SheetDescription>Browse sections of the app.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Left</Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <SheetHeader>
-                <SheetTitle>Navigation</SheetTitle>
-                <SheetDescription>Browse sections of the app.</SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        </Example>
+          {/* Left Side — Navigation */}
+          <Example
+            title="Left Side — Navigation"
+            description="Ideal for navigation menus or sidebar-style content."
+            code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Left</Button>
+  </SheetTrigger>
+  <SheetContent side="left">
+    <SheetHeader>
+      <SheetTitle>Navigation</SheetTitle>
+      <SheetDescription>Browse sections of the app.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Left</Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <SheetHeader>
+                  <SheetTitle>Navigation</SheetTitle>
+                  <SheetDescription>Browse sections of the app.</SheetDescription>
+                </SheetHeader>
+                <div className="space-y-xs py-md">
+                  {["Dashboard", "Projects", "Settings", "Help"].map(item => (
+                    <div key={item} className="px-md py-xs rounded-md hover:bg-accent typo-paragraph-sm cursor-pointer">{item}</div>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </Example>
 
-        <Example title="Top Side" description="Useful for notification banners or search panels." code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Top</Button>\n  </SheetTrigger>\n  <SheetContent side="top">\n    <SheetHeader>\n      <SheetTitle>Notifications</SheetTitle>\n      <SheetDescription>Recent notifications panel.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Top</Button>
-            </SheetTrigger>
-            <SheetContent side="top">
-              <SheetHeader>
-                <SheetTitle>Notifications</SheetTitle>
-                <SheetDescription>Recent notifications panel.</SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        </Example>
+          {/* Top Side */}
+          <Example
+            title="Top Side"
+            description="Useful for notification banners or search panels."
+            code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Top</Button>
+  </SheetTrigger>
+  <SheetContent side="top">
+    <SheetHeader>
+      <SheetTitle>Notifications</SheetTitle>
+      <SheetDescription>Recent notifications panel.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Top</Button>
+              </SheetTrigger>
+              <SheetContent side="top">
+                <SheetHeader>
+                  <SheetTitle>Notifications</SheetTitle>
+                  <SheetDescription>Recent notifications panel.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </Example>
 
-        <Example title="Bottom Side" description="Great for quick actions or mobile-style bottom sheets." code={`<Sheet>\n  <SheetTrigger asChild>\n    <Button variant="outline">Bottom</Button>\n  </SheetTrigger>\n  <SheetContent side="bottom">\n    <SheetHeader>\n      <SheetTitle>Quick Actions</SheetTitle>\n      <SheetDescription>Common actions.</SheetDescription>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>`}>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Bottom</Button>
-            </SheetTrigger>
-            <SheetContent side="bottom">
-              <SheetHeader>
-                <SheetTitle>Quick Actions</SheetTitle>
-                <SheetDescription>Common actions.</SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        </Example>
+          {/* Bottom Side */}
+          <Example
+            title="Bottom Side"
+            description="Great for quick actions or mobile-style bottom sheets."
+            code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Bottom</Button>
+  </SheetTrigger>
+  <SheetContent side="bottom">
+    <SheetHeader>
+      <SheetTitle>Quick Actions</SheetTitle>
+      <SheetDescription>Common actions.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Bottom</Button>
+              </SheetTrigger>
+              <SheetContent side="bottom">
+                <SheetHeader>
+                  <SheetTitle>Quick Actions</SheetTitle>
+                  <SheetDescription>Common actions.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </Example>
+
+          {/* With Footer */}
+          <Example
+            title="With Footer"
+            description="Sheet with header, content, and footer action buttons."
+            code={`<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Edit Settings</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Settings</SheetTitle>
+      <SheetDescription>Manage your preferences.</SheetDescription>
+    </SheetHeader>
+    <div className="py-md space-y-md">
+      <Label>Theme</Label>
+      <Input defaultValue="System" readOnly />
+    </div>
+    <SheetFooter>
+      <SheetClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </SheetClose>
+      <Button>Save</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Edit Settings</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Settings</SheetTitle>
+                  <SheetDescription>Manage your preferences.</SheetDescription>
+                </SheetHeader>
+                <div className="py-md space-y-md">
+                  <Label>Theme</Label>
+                  <Input defaultValue="System" readOnly />
+                </div>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </SheetClose>
+                  <Button>Save</Button>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          </Example>
+
+          {/* Controlled */}
+          <Example
+            title="Controlled Open"
+            description="Use open + onOpenChange for controlled state management."
+            code={`const [open, setOpen] = useState(false)
+
+<Sheet open={open} onOpenChange={setOpen}>
+  <SheetTrigger asChild>
+    <Button variant="outline">Controlled</Button>
+  </SheetTrigger>
+  <SheetContent>
+    <SheetHeader>
+      <SheetTitle>Controlled Sheet</SheetTitle>
+      <SheetDescription>Managed via state.</SheetDescription>
+    </SheetHeader>
+    <Button onClick={() => setOpen(false)}>
+      Close programmatically
+    </Button>
+  </SheetContent>
+</Sheet>`}
+          >
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Controlled</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Controlled Sheet</SheetTitle>
+                  <SheetDescription>This sheet is managed via open/onOpenChange state.</SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+          </Example>
         </div>
       </section>
 
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <SheetPropsTable />
+      </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
+        <SheetTokensTable />
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Content</h3>
+        <DoItem>Use Sheet for supplementary content — settings, filters, details, navigation.</DoItem>
+        <DontItem>Don't use Sheet for primary workflows. Use a full page or Dialog instead.</DontItem>
+        <DoItem>Keep Sheet content focused on a single task or context.</DoItem>
+        <DontItem>Don't overload Sheet with too many form fields — consider a full page for complex forms.</DontItem>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Structure</h3>
+        <DoItem>Always include SheetTitle for accessibility — screen readers rely on it.</DoItem>
+        <DontItem>Don't make the sheet too wide — stick to sm:max-w-sm for left/right sides.</DontItem>
+        <DoItem>Use the scrollable variant for long content to keep header/footer visible.</DoItem>
+        <DontItem>Don't remove the close button — users must always have a clear way to dismiss.</DontItem>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Accessibility</h3>
+        <DoItem>Include SheetDescription for additional context — screen readers announce it.</DoItem>
+        <DontItem>Don't disable Escape key dismissal unless absolutely necessary.</DontItem>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="301:243831" rows={[
+        ["Scrollable", "True", "—", "Header/Content/Footer as separate scroll sections"],
+        ["Scrollable", "False", "—", "Standard single-section layout"],
+        ["Background", "var(--card)", "bg-card", "#ffffff (light)"],
+        ["Border", "var(--border)", "border-border", "#e9e9e7 (light)"],
+        ["Shadow", "shadow-sm (Figma)", "shadow", "Tailwind DEFAULT shadow"],
+        ["Overlay", "Black 50%", "bg-black/50", "SheetOverlay"],
+        ["Content padding", "16px", "p-md", "All sides"],
+        ["Header gap", "8px", "gap-xs", "Between title and description"],
+        ["Footer gap", "8px", "gap-xs", "Between action buttons"],
+        ["Close icon", "16px", "size-md", "X icon from lucide"],
+        ["Close radius", "4px", "rounded-sm", "Close button border radius"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <h3 className="font-heading font-semibold text-base">Keyboard Navigation</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
+              <tr className="border-b border-border">
+                <th className="text-left p-3 font-medium">Key</th>
+                <th className="text-left p-3 font-medium">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Sheet background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Sheet border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--shadow-lg</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation shadow</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Sheet elevation</td></tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Escape</td>
+                <td className="p-3">Close the sheet</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Tab</td>
+                <td className="p-3">Move focus within sheet (focus is trapped)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Shift+Tab</td>
+                <td className="p-3">Move focus backwards within sheet</td>
+              </tr>
             </tbody>
           </table>
         </div>
+        <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><code className="text-xs">role="dialog"</code> — Built on Radix Dialog, inherits dialog role.</li>
+          <li><code className="text-xs">aria-labelledby</code> — Automatically linked to SheetTitle.</li>
+          <li><code className="text-xs">aria-describedby</code> — Automatically linked to SheetDescription.</li>
+          <li>Focus trap — Focus is locked within the sheet when open.</li>
+          <li>Overlay click — Clicking outside the sheet closes it by default.</li>
+        </ul>
       </section>
 
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Sheet for supplementary content that doesn't warrant a full page — settings, filters, details.</p>
-              <p>Always include a clear title via <code className="bg-muted px-1 rounded font-mono text-xs">SheetTitle</code> for screen readers.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Sheet for primary workflows — use a full page or Dialog instead.</p>
-              <p>Don't overload Sheet content — keep it focused on a single task.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Escape</kbd> — Close the sheet.</li>
-              <li><kbd className="bg-muted px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold">Tab</kbd> — Move focus within sheet (trapped).</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix Dialog — traps focus, Escape to close.</li>
-              <li>Always include SheetTitle and SheetDescription for screen readers.</li>
-              <li>Overlay click closes the sheet by default.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Side", "Right (default)", "side", '"right" — inset-y-0 right-0'],
-        ["Side", "Left", "side", '"left" — inset-y-0 left-0'],
-        ["Side", "Top", "side", '"top" — inset-x-0 top-0'],
-        ["Side", "Bottom", "side", '"bottom" — inset-x-0 bottom-0'],
-        ["Width", "3/4 viewport", "—", "w-3/4 sm:max-w-sm (left/right)"],
-        ["Overlay", "Black 80%", "—", "bg-black/80"],
-        ["Animation", "Slide in/out", "—", "slide-in-from-{side}"],
-        ["Close Button", "X icon", "SheetClose", "focus-visible:ring-[3px]"],
-      ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      {/* ---- Related ---- */}
+      <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Dialog</p>
-              <p className="text-muted-foreground mt-0.5">Centered modal for focused interactions.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Drawer</p>
-              <p className="text-muted-foreground mt-0.5">Bottom sheet alternative for mobile.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><strong>Dialog</strong> — Centered modal for focused interactions requiring immediate attention.</li>
+          <li><strong>Drawer</strong> — Bottom sheet alternative, especially suited for mobile touch interactions.</li>
+          <li><strong>Alert Dialog</strong> — Blocking confirmation dialog for destructive or irreversible actions.</li>
+        </ul>
       </section>
     </div>
   )
@@ -14931,22 +14875,18 @@ function DrawerTokensTable() {
 function DrawerExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
-        {/* Static drawer face preview — matches DrawerContent structure */}
-        <div className="w-full max-w-sm bg-card border border-border rounded-t-lg shadow pointer-events-none">
-          {/* Handle bar — 50×3 r=2 (rounded-sm) bg-muted */}
-          <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
-          {/* Header */}
-          <div className="flex flex-col gap-xs p-md text-left">
-            <h3 className="typo-heading-4 text-foreground">Drawer Title</h3>
-            <p className="typo-paragraph-sm text-muted-foreground">Swipe down or click overlay to close.</p>
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Uses drawerClassNames from drawer.tsx — single source of truth */}
+        <div className={cn(drawerClassNames.content, "w-full max-w-sm pointer-events-none")}>
+          <div className={drawerClassNames.handle} />
+          <div className={cn(drawerClassNames.header, "text-left")}>
+            <h3 className={drawerClassNames.title}>Drawer Title</h3>
+            <p className={drawerClassNames.description}>Swipe down or click overlay to close.</p>
           </div>
-          {/* Body */}
           <div className="px-md pb-md">
             <p className="typo-paragraph-sm text-muted-foreground">Drawer body content goes here. Drag the handle bar to dismiss.</p>
           </div>
-          {/* Footer */}
-          <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
+          <div className={drawerClassNames.footer}>
             <Button variant="outline" className="pointer-events-none">Cancel</Button>
             <Button className="pointer-events-none">Submit</Button>
           </div>
@@ -15407,9 +15347,9 @@ function PopoverTokensTable() {
 function PopoverExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
-        {/* Static popover face preview — matches PopoverContent structure */}
-        <div className="w-80 rounded-lg border border-border bg-card p-md shadow pointer-events-none">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Uses popoverClassNames from popover.tsx — single source of truth */}
+        <div className={cn(popoverClassNames.content, "w-80 pointer-events-none")}>
           <div className="grid gap-4">
             <div className="space-y-2">
               <h4 className="font-medium leading-none">Dimensions</h4>
@@ -15712,40 +15652,193 @@ const tooltipSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function TooltipExploreBehavior() {
+  const [side, setSide] = useState("top")
+  const [text, setText] = useState("Tooltip text")
+
+  const arrowPositionClass: Record<string, string> = {
+    top: "bottom-0 left-1/2 -translate-x-1/2 translate-y-full border-l-transparent border-r-transparent border-b-transparent border-t-foreground",
+    bottom: "top-0 left-1/2 -translate-x-1/2 -translate-y-full border-l-transparent border-r-transparent border-t-transparent border-b-foreground",
+    left: "right-0 top-1/2 -translate-y-1/2 translate-x-full border-t-transparent border-b-transparent border-r-transparent border-l-foreground",
+    right: "left-0 top-1/2 -translate-y-1/2 -translate-x-full border-t-transparent border-b-transparent border-l-transparent border-r-foreground",
+  }
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Static tooltip preview — displayed directly */}
+        <div className="relative">
+          {/* Tooltip bubble */}
+          <div className="bg-foreground px-xs py-2xs rounded-lg typo-paragraph-mini text-background whitespace-nowrap">
+            {text}
+            {/* Arrow */}
+            <div className={cn(
+              "absolute w-0 h-0 border-[5px]",
+              arrowPositionClass[side]
+            )} />
+          </div>
+        </div>
+      </div>
+      {/* Controls panel */}
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Side" value={side} options={[
+          { value: "top", label: "Top" },
+          { value: "bottom", label: "Bottom" },
+          { value: "left", label: "Left" },
+          { value: "right", label: "Right" },
+        ]} onChange={setSide} />
+        <div className="space-y-xs">
+          <span className="typo-paragraph-mini text-muted-foreground">Text</span>
+          <Input value={text} onChange={(e) => setText(e.target.value)} className="max-w-xs" size="sm" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TooltipPropsTable() {
+  const tables = [
+    {
+      component: "TooltipContent",
+      props: [
+        { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"top"', desc: "Preferred side relative to trigger." },
+        { name: "sideOffset", type: "number", default: "4", desc: "Distance from trigger in pixels." },
+        { name: "align", type: '"start" | "center" | "end"', default: '"center"', desc: "Alignment along the side axis." },
+        { name: "className", type: "string", default: "—", desc: "Additional CSS classes." },
+      ],
+    },
+    {
+      component: "TooltipProvider",
+      props: [
+        { name: "delayDuration", type: "number", default: "700", desc: "Milliseconds before tooltip opens on hover." },
+        { name: "skipDelayDuration", type: "number", default: "300", desc: "Delay when moving between tooltips." },
+      ],
+    },
+    {
+      component: "Tooltip",
+      props: [
+        { name: "open", type: "boolean", default: "—", desc: "Controlled open state." },
+        { name: "onOpenChange", type: "(open: boolean) => void", default: "—", desc: "Callback when open state changes." },
+        { name: "defaultOpen", type: "boolean", default: "false", desc: "Uncontrolled default open state." },
+      ],
+    },
+  ]
+
+  return (
+    <div className="space-y-md">
+      {tables.map(t => (
+        <div key={t.component}>
+          <h3 className="typo-paragraph-sm-bold text-foreground mb-xs">{t.component}</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left p-3 font-medium">Prop</th>
+                  <th className="text-left p-3 font-medium">Type</th>
+                  <th className="text-left p-3 font-medium">Default</th>
+                  <th className="text-left p-3 font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {t.props.map(p => (
+                  <tr key={p.name} className="border-b border-border">
+                    <td className="p-3 font-mono text-xs">{p.name}</td>
+                    <td className="p-3 font-mono text-xs">{p.type}</td>
+                    <td className="p-3 font-mono text-xs">{p.default}</td>
+                    <td className="p-3">{p.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function TooltipTokensTable() {
+  const tokens = [
+    { token: "bg-foreground", value: "var(--foreground)", usage: "Tooltip background (inverted)" },
+    { token: "text-background", value: "var(--background)", usage: "Tooltip text color (inverted)" },
+    { token: "typo-paragraph-mini", value: "Geist 400 12/16 ls:0.18", usage: "Tooltip text style" },
+    { token: "px-xs", value: "8px", usage: "Horizontal padding" },
+    { token: "py-2xs", value: "6px", usage: "Vertical padding" },
+    { token: "rounded-lg", value: "8px", usage: "Border radius" },
+    { token: "sideOffset=4", value: "4px", usage: "Gap between trigger and tooltip" },
+  ]
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left p-3 font-medium">Token</th>
+            <th className="text-left p-3 font-medium">Value</th>
+            <th className="text-left p-3 font-medium">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map(t => (
+            <tr key={t.token} className="border-b border-border">
+              <td className="p-3 font-mono text-xs">{t.token}</td>
+              <td className="p-3 font-mono text-xs">{t.value}</td>
+              <td className="p-3">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function TooltipDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={tooltipSections} />
 
+      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Tooltip</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Informational popup shown on hover or focus. For brief, non-interactive hints.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Informational popup shown on hover or focus. For brief, non-interactive hints
+          that clarify the purpose of an element. Supports 4 side directions.
+        </p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild><Button variant="outline">Hover me</Button></TooltipTrigger>
-            <TooltipContent><p>Tooltip content</p></TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <TooltipExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add @radix-ui/react-tooltip`}
-        importCode={`import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"`}
+        importCode={`import {\n  Tooltip, TooltipTrigger, TooltipContent, TooltipProvider\n} from "@/components/ui/tooltip"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Tooltip with various trigger positions and icon-only buttons." code={`<TooltipProvider>\n  <Tooltip>\n    <TooltipTrigger asChild>\n      <Button variant="outline">Hover me</Button>\n    </TooltipTrigger>\n    <TooltipContent>\n      <p>Add to library</p>\n    </TooltipContent>\n  </Tooltip>\n</TooltipProvider>`}>
-          <TooltipProvider>
-            <div className="flex gap-4">
+          {/* Default */}
+          <Example
+            title="Default (Top)"
+            description="Tooltip appears above the trigger by default."
+            code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Hover me</Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>Add to library</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+          >
+            <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button variant="outline">Hover me</Button>
@@ -15754,158 +15847,249 @@ function TooltipDocs() {
                   <p>Add to library</p>
                 </TooltipContent>
               </Tooltip>
+            </TooltipProvider>
+          </Example>
+
+          {/* All Sides */}
+          <Example
+            title="All Sides"
+            description="Tooltip can appear on any side of the trigger."
+            code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline" size="icon">⬆</Button>
+    </TooltipTrigger>
+    <TooltipContent side="top">Top</TooltipContent>
+  </Tooltip>
+  {/* side="right" | "bottom" | "left" */}
+</TooltipProvider>`}
+          >
+            <TooltipProvider>
+              <div className="flex gap-xs items-center">
+                {(["top", "right", "bottom", "left"] as const).map(s => (
+                  <Tooltip key={s}>
+                    <TooltipTrigger asChild>
+                      <Button variant="outline" size="sm">{s}</Button>
+                    </TooltipTrigger>
+                    <TooltipContent side={s}>
+                      <p>Tooltip on {s}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+            </TooltipProvider>
+          </Example>
+
+          {/* Icon Button */}
+          <Example
+            title="Icon Button"
+            description="Common pattern — tooltip on icon-only buttons to provide text label."
+            code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline" size="icon">
+        <Bookmark className="size-md" />
+      </Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>Add to bookmarks</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+          >
+            <TooltipProvider>
+              <div className="flex gap-xs">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="icon"><Plus className="size-md" /></Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Add new item</p></TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" size="icon"><Settings className="size-md" /></Button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Settings</p></TooltipContent>
+                </Tooltip>
+              </div>
+            </TooltipProvider>
+          </Example>
+
+          {/* Multi-line */}
+          <Example
+            title="Multi-line"
+            description="Tooltip with longer text wraps naturally."
+            code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Long tooltip</Button>
+    </TooltipTrigger>
+    <TooltipContent className="max-w-xs">
+      <p>This tooltip has longer content that
+      wraps to multiple lines for detailed info.</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+          >
+            <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="icon"><Plus className="size-4" /></Button>
+                  <Button variant="outline">Long tooltip</Button>
                 </TooltipTrigger>
-                <TooltipContent side="right">
-                  <p>Add new item</p>
+                <TooltipContent className="max-w-xs">
+                  <p>This tooltip has longer content that wraps to multiple lines for detailed information.</p>
                 </TooltipContent>
               </Tooltip>
+            </TooltipProvider>
+          </Example>
+
+          {/* Instant (Zero Delay) */}
+          <Example
+            title="Instant (Zero Delay)"
+            description="Set delayDuration to 0 on TooltipProvider for instant tooltips."
+            code={`<TooltipProvider delayDuration={0}>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Instant</Button>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>No delay!</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+          >
+            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="outline" size="icon"><Settings className="size-4" /></Button>
+                  <Button variant="outline">Instant</Button>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  <p>Settings</p>
+                <TooltipContent>
+                  <p>No delay!</p>
                 </TooltipContent>
               </Tooltip>
-            </div>
-          </TooltipProvider>
-        </Example>
+            </TooltipProvider>
+          </Example>
+
+          {/* Disabled trigger */}
+          <Example
+            title="On Disabled Element"
+            description="Wrap disabled elements in a span for tooltip to work."
+            code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <span tabIndex={0}>
+        <Button variant="outline" disabled>
+          Disabled
+        </Button>
+      </span>
+    </TooltipTrigger>
+    <TooltipContent>
+      <p>This action is unavailable</p>
+    </TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span tabIndex={0}>
+                    <Button variant="outline" disabled>Disabled</Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>This action is unavailable</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Example>
         </div>
       </section>
 
       {/* ---- Props ---- */}
-      <section id="props" className="space-y-4 pt-3xl">
+      <section id="props" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          Built on{" "}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-tooltip</code>.
-          All Radix Tooltip props are forwarded.
-        </p>
-        <div>
-          <h3 className="font-body font-semibold text-sm mb-2">TooltipContent</h3>
-          <div className="overflow-x-auto rounded-xl border border-border">
-            <table className="w-full text-xs">
-              <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-              <tbody className="divide-y divide-border">
-                <tr><td className="px-4 py-3 font-mono text-primary">side</td><td className="px-4 py-3 font-mono text-muted-foreground">"top" | "right" | "bottom" | "left"</td><td className="px-4 py-3 font-mono text-muted-foreground">"top"</td><td className="px-4 py-3 text-muted-foreground">Preferred side of trigger.</td></tr>
-                <tr><td className="px-4 py-3 font-mono text-primary">sideOffset</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">4</td><td className="px-4 py-3 text-muted-foreground">Distance from trigger in pixels.</td></tr>
-                <tr><td className="px-4 py-3 font-mono text-primary">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div>
-          <h3 className="font-body font-semibold text-sm mb-2">TooltipProvider</h3>
-          <div className="overflow-x-auto rounded-xl border border-border">
-            <table className="w-full text-xs">
-              <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
-              <tbody className="divide-y divide-border">
-                <tr><td className="px-4 py-3 font-mono text-primary">delayDuration</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 font-mono text-muted-foreground">700</td><td className="px-4 py-3 text-muted-foreground">Milliseconds before tooltip opens on hover.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <TooltipPropsTable />
       </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Tooltip background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Tooltip text</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-md</td><td className="px-4 py-3 font-mono text-muted-foreground">6px</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Tooltip border radius</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <TooltipTokensTable />
       </section>
 
       {/* ---- Best Practices ---- */}
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      <section id="best-practices" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Content</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Tooltip for brief, supplementary information that clarifies an element's purpose.</p>
-              <p>Keep tooltip text concise — one sentence or a few words.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't put essential information only in Tooltips — some users can't hover (touch devices).</p>
-              <p>Don't use Tooltip for interactive content — use <strong>Popover</strong> instead.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
 
+        <h3 className="font-heading font-semibold text-base mt-md">Content</h3>
+        <DoItem>Use Tooltip for brief, supplementary information that clarifies an element's purpose.</DoItem>
+        <DontItem>Don't put essential information only in Tooltips — touch device users can't hover.</DontItem>
+        <DoItem>Keep tooltip text concise — one sentence or a few words maximum.</DoItem>
+        <DontItem>Don't use Tooltip for interactive content (links, buttons). Use Popover instead.</DontItem>
 
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><code className="bg-muted px-1 rounded font-mono">Focus</code> — Show tooltip on keyboard focus.</li>
-              <li><code className="bg-muted px-1 rounded font-mono">Escape</code> — Dismiss tooltip.</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Tooltip is hover/focus triggered — not for essential information.</li>
-              <li>Built on Radix Tooltip — manages <code className="bg-muted px-1 rounded font-mono">aria-describedby</code> automatically.</li>
-              <li>Content is announced to screen readers when trigger receives focus.</li>
-              <li>Wrap your app in <code className="bg-muted px-1 rounded font-mono">TooltipProvider</code> for shared delay configuration.</li>
-            </ul>
-          </div>
-        </div>
+        <h3 className="font-heading font-semibold text-base mt-md">Structure</h3>
+        <DoItem>Always pair icon-only buttons with a Tooltip for accessibility.</DoItem>
+        <DontItem>Don't add tooltips to elements that already have visible labels.</DontItem>
+        <DoItem>Wrap your app in a single TooltipProvider to share delay configuration.</DoItem>
+        <DontItem>Don't set delayDuration too low for non-critical tooltips — it can feel intrusive.</DontItem>
       </section>
 
       {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Background", "Primary", "—", "bg-primary text-primary-foreground"],
-        ["Padding", "px-sm py-2xs", "—", "px-sm py-2xs"],
-        ["Font", "Geist 12px", "—", "text-xs"],
-        ["Radius", "6px", "—", "rounded-md"],
-        ["Side Offset", "4px", "sideOffset", "4"],
-        ["Animation", "Fade + zoom", "—", "fade-in-0, zoom-in-95"],
+      <FigmaMapping id="figma-mapping" nodeId="274:57607" rows={[
+        ["Side", "Top", "side", '"top" (default)'],
+        ["Side", "Bottom", "side", '"bottom"'],
+        ["Side", "Left", "side", '"left"'],
+        ["Side", "Right", "side", '"right"'],
+        ["Background", "#000000 (var)", "bg-foreground", "Inverted foreground color"],
+        ["Text", "#ffffff (var)", "text-background", "Inverted background color"],
+        ["Text style", "Geist 12/16", "typo-paragraph-mini", "400 weight, 0.18 letter-spacing"],
+        ["Padding X", "8px", "px-xs", "Horizontal padding"],
+        ["Padding Y", "6px", "py-2xs", "Vertical padding"],
+        ["Radius", "8px", "rounded-lg", "Border radius"],
+        ["Arrow", "Same fill as bg", "—", "CSS border triangle"],
       ]} />
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Popover</p>
-              <p className="text-muted-foreground mt-0.5">Interactive floating content — use when content includes form controls.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">HoverCard</p>
-              <p className="text-muted-foreground mt-0.5">Rich preview card on hover.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <h3 className="font-heading font-semibold text-base">Keyboard Navigation</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left p-3 font-medium">Key</th>
+                <th className="text-left p-3 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Tab</td>
+                <td className="p-3">Focus trigger → show tooltip</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Escape</td>
+                <td className="p-3">Dismiss tooltip</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><code className="text-xs">aria-describedby</code> — Radix automatically links trigger to tooltip content.</li>
+          <li><code className="text-xs">role="tooltip"</code> — Applied to TooltipContent for screen readers.</li>
+          <li>Content is announced when trigger receives focus — no hover required for assistive tech.</li>
+          <li>Wrap app in <code className="text-xs">TooltipProvider</code> for shared delay and skip behavior.</li>
+        </ul>
+      </section>
+
+      {/* ---- Related ---- */}
+      <section id="related" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><strong>Popover</strong> — Interactive floating content. Use when content includes form controls or links.</li>
+          <li><strong>HoverCard</strong> — Rich preview card on hover with images and structured content.</li>
+          <li><strong>Dropdown Menu</strong> — Action menu triggered by click rather than hover.</li>
+        </ul>
       </section>
     </div>
   )
@@ -15927,25 +16111,177 @@ const toastSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function SonnerExploreBehavior() {
+  const [type, setType] = React.useState("default")
+  const [showDescription, setShowDescription] = React.useState(true)
+  const [showAction, setShowAction] = React.useState(true)
+  const [title, setTitle] = React.useState("Event has been created")
+
+  /* Render using the SAME classNames & icons exported from sonner.tsx */
+  const icon = type !== "default" ? (toastIcons as Record<string, React.ReactNode>)[type] : null
+
+  return (
+    <section id="explore-behavior" className="space-y-6">
+      <h2 className="typo-heading-3 font-heading">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden">
+        {/* Canvas — renders real component classes from sonner.tsx */}
+        <div className="flex items-center justify-center bg-background p-16 min-h-[200px]">
+          <div className="pointer-events-none">
+            <div className={toastClassNames.toast}>
+              {icon}
+              {type === "loading" ? (
+                <p className={toastClassNames.title}>Loading...</p>
+              ) : (
+                <div className="flex-1 min-w-0 space-y-3xs">
+                  <p className={toastClassNames.title}>{title}</p>
+                  {showDescription && (
+                    <p className={toastClassNames.description}>Sunday, December 03, 2023 at 9:00 AM</p>
+                  )}
+                </div>
+              )}
+              {type !== "loading" && showAction && (
+                <button className={toastClassNames.actionButton}>
+                  Undo
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="border-t border-border bg-muted/30 p-md flex flex-wrap gap-xl items-end">
+          <PropertyTabs
+            label="Variant"
+            value={type}
+            onChange={setType}
+            options={[
+              { value: "default", label: "Default" },
+              { value: "success", label: "Success" },
+              { value: "error", label: "Error" },
+              { value: "warning", label: "Warning" },
+              { value: "info", label: "Info" },
+              { value: "loading", label: "Loading" },
+            ]}
+          />
+          {type !== "loading" && (
+            <>
+              <PropertyToggle label="Description" checked={showDescription} onChange={setShowDescription} />
+              <PropertyToggle label="Action Button" checked={showAction} onChange={setShowAction} />
+              <div className="space-y-1">
+                <label className="typo-paragraph-mini text-muted-foreground">Title</label>
+                <Input className="h-2xl w-[200px]" value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SonnerPropsTable() {
+  return (
+    <section id="props" className="space-y-6 pt-xl border-t border-border">
+      <h2 className="typo-heading-3 font-heading">Props</h2>
+
+      {/* Toaster */}
+      <div className="space-y-2">
+        <h3 className="typo-paragraph-sm-bold text-foreground">Toaster</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th>
+            </tr></thead>
+            <tbody>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">position</td><td className="px-4 py-3 font-mono text-muted-foreground">"top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center"</td><td className="px-4 py-3 text-muted-foreground">"bottom-right"</td><td className="px-4 py-3 text-muted-foreground">Position on screen</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">expand</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Expand toasts by default</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">duration</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">4000</td><td className="px-4 py-3 text-muted-foreground">Default duration in ms</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">visibleToasts</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">3</td><td className="px-4 py-3 text-muted-foreground">Max visible toasts</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">closeButton</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Show close button on toasts</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">richColors</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Enable rich color variants</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* toast() options */}
+      <div className="space-y-2">
+        <h3 className="typo-paragraph-sm-bold text-foreground">toast() Options</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Option</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Description</th>
+            </tr></thead>
+            <tbody>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">description</td><td className="px-4 py-3 font-mono text-muted-foreground">string | ReactNode</td><td className="px-4 py-3 text-muted-foreground">Secondary description line</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">action</td><td className="px-4 py-3 font-mono text-muted-foreground">{`{ label: string, onClick: () => void }`}</td><td className="px-4 py-3 text-muted-foreground">Action button</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">cancel</td><td className="px-4 py-3 font-mono text-muted-foreground">{`{ label: string, onClick: () => void }`}</td><td className="px-4 py-3 text-muted-foreground">Cancel button</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">duration</td><td className="px-4 py-3 font-mono text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">Override default duration (ms)</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">icon</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 text-muted-foreground">Custom icon element</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">onDismiss</td><td className="px-4 py-3 font-mono text-muted-foreground">(toast) =&gt; void</td><td className="px-4 py-3 text-muted-foreground">Callback on dismiss</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function SonnerTokensTable() {
+  const tokens = [
+    { token: "--card", value: "#ffffff", dark: "#1c1c1a", usage: "Toast background" },
+    { token: "--foreground", value: "#252522", dark: "#fafaf8", usage: "Title text" },
+    { token: "--muted-foreground", value: "#6f6f6a", dark: "#a1a19c", usage: "Description text" },
+    { token: "--border", value: "#e9e9e7", dark: "#2e2e2b", usage: "Toast border" },
+    { token: "--secondary", value: "#e9e9e7", dark: "#2e2e2b", usage: "Action button background" },
+    { token: "--secondary-foreground", value: "#2f2f2b", dark: "#fafaf8", usage: "Action button text" },
+    { token: "--primary", value: "#0f766e", dark: "#14b8a6", usage: "Primary action background" },
+    { token: "--primary-foreground", value: "#ffffff", dark: "#042f2e", usage: "Primary action text" },
+    { token: "--radius-10", value: "10px", dark: "10px", usage: "Toast border radius" },
+    { token: "--spacing-md", value: "16px", dark: "16px", usage: "Toast padding" },
+    { token: "--spacing-sm", value: "12px", dark: "12px", usage: "Gap between icon and content" },
+    { token: "--spacing-3xs", value: "4px", dark: "4px", usage: "Gap between title and description" },
+    { token: "shadow (shadow-sm)", value: "0 1px 3px rgba(0,0,0,0.1)", dark: "same", usage: "Toast elevation" },
+    { token: "--spacing-xl", value: "24px", dark: "24px", usage: "Icon size" },
+  ]
+  return (
+    <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
+      <h2 className="typo-heading-3 font-heading">Design Tokens</h2>
+      <p className="typo-paragraph-sm text-muted-foreground">Sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong> — node 295:240815.</p>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead><tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Token</th><th className="px-4 py-3 font-semibold">Light</th><th className="px-4 py-3 font-semibold">Dark</th><th className="px-4 py-3 font-semibold">Swatch</th><th className="px-4 py-3 font-semibold">Usage</th>
+          </tr></thead>
+          <tbody>
+            {tokens.map((t) => (
+              <tr key={t.token} className="border-b border-border last:border-0">
+                <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.token}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{t.dark}</td>
+                <td className="px-4 py-3">{t.value.startsWith("#") && <ColorSwatch hex={t.value} label={t.token} />}</td>
+                <td className="px-4 py-3 text-muted-foreground">{t.usage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
 function ToastDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={toastSections} />
 
       <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
+        <p className="typo-paragraph-mini text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Toast (Sonner)</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Non-intrusive notification toasts. Uses the sonner library.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">An opinionated toast notification component for React. Uses the sonner library. Place {"<Toaster />"} at root, trigger with toast() function.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Button variant="outline" onClick={() => { import('sonner').then(m => m.toast("This is a toast notification")) }}>
-          Show Toast
-        </Button>
-      )} />
-
-      
+      <SonnerExploreBehavior />
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -15953,116 +16289,138 @@ function ToastDocs() {
         importCode={`import { Toaster } from "@/components/ui/sonner"\nimport { toast } from "sonner"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
+        <h2 className="typo-heading-3 font-heading">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Variants" description="5 built-in variants for different feedback types: default, success, error, warning, and info." code={`toast("Default notification")\ntoast.success("Success!")\ntoast.error("Something went wrong")\ntoast.warning("Careful!")\ntoast.info("FYI...")`}>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => toast("Event has been created")}>Default</Button>
-            <Button variant="outline" onClick={() => toast.success("Profile updated successfully")}>Success</Button>
-            <Button variant="outline" onClick={() => toast.error("Something went wrong")}>Error</Button>
-            <Button variant="outline" onClick={() => toast.warning("Please review your changes")}>Warning</Button>
-            <Button variant="outline" onClick={() => toast.info("New version available")}>Info</Button>
-          </div>
-        </Example>
+          <Example title="Variants" description="5 built-in variants for different feedback types." code={`toast("Default notification")\ntoast.success("Success!")\ntoast.error("Something went wrong")\ntoast.warning("Careful!")\ntoast.info("FYI...")`}>
+            <div className="flex flex-wrap gap-xs">
+              <Button variant="outline" onClick={() => toast("Event has been created")}>Default</Button>
+              <Button variant="outline" onClick={() => toast.success("Profile updated successfully")}>Success</Button>
+              <Button variant="outline" onClick={() => toast.error("Something went wrong")}>Error</Button>
+              <Button variant="outline" onClick={() => toast.warning("Please review your changes")}>Warning</Button>
+              <Button variant="outline" onClick={() => toast.info("New version available")}>Info</Button>
+            </div>
+          </Example>
 
-        <Example title="With Description" description="Add a secondary description line for extra context." code={`toast("Event Created", {\n  description: "Friday, February 10, 2024 at 5:57 PM",\n})`}>
-          <Button variant="outline" onClick={() => toast("Event Created", { description: "Friday, February 10, 2024 at 5:57 PM" })}>
-            With Description
-          </Button>
-        </Example>
+          <Example title="With Description" description="Add a secondary line for extra context." code={`toast("Event Created", {\n  description: "Friday, Feb 10, 2024 at 5:57 PM",\n})`}>
+            <Button variant="outline" onClick={() => toast("Event Created", { description: "Friday, February 10, 2024 at 5:57 PM" })}>
+              With Description
+            </Button>
+          </Example>
 
-        <Example title="With Action" description="Attach an action button for undo or follow-up operations." code={`toast("File deleted", {\n  action: { label: "Undo", onClick: () => console.log("Undo") },\n})`}>
-          <Button variant="outline" onClick={() => toast("File deleted", { action: { label: "Undo", onClick: () => console.log("Undo") } })}>
-            With Action
-          </Button>
-        </Example>
+          <Example title="With Action" description="Attach an action button for undo or follow-up." code={`toast("File deleted", {\n  action: {\n    label: "Undo",\n    onClick: () => console.log("Undo"),\n  },\n})`}>
+            <Button variant="outline" onClick={() => toast("File deleted", { action: { label: "Undo", onClick: () => console.log("Undo") } })}>
+              With Action
+            </Button>
+          </Example>
+
+          <Example title="Loading → Success" description="Show a loading toast that resolves to success." code={`const promise = () => new Promise((resolve) =>\n  setTimeout(resolve, 2000)\n)\ntoast.promise(promise(), {\n  loading: "Saving...",\n  success: "Saved successfully!",\n  error: "Failed to save",\n})`}>
+            <Button variant="outline" onClick={() => {
+              const promise = () => new Promise((resolve) => setTimeout(resolve, 2000))
+              toast.promise(promise(), { loading: "Saving...", success: "Saved successfully!", error: "Failed to save" })
+            }}>
+              Promise Toast
+            </Button>
+          </Example>
+
+          <Example title="Custom Duration" description="Override the default auto-dismiss duration." code={`toast("This stays for 10 seconds", {\n  duration: 10000,\n})`}>
+            <Button variant="outline" onClick={() => toast("This stays for 10 seconds", { duration: 10000 })}>
+              Long Duration
+            </Button>
+          </Example>
+
+          <Example title="With Cancel" description="Add a cancel button alongside the action." code={`toast("Confirm deletion?", {\n  action: { label: "Delete", onClick: () => {} },\n  cancel: { label: "Cancel", onClick: () => {} },\n})`}>
+            <Button variant="outline" onClick={() => toast("Confirm deletion?", { action: { label: "Delete", onClick: () => {} }, cancel: { label: "Cancel", onClick: () => {} } })}>
+              Action + Cancel
+            </Button>
+          </Example>
         </div>
       </section>
 
+      <SonnerPropsTable />
+      <SonnerTokensTable />
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Toast background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Toast text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Toast border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-lg</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation shadow</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Toast shadow</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="typo-heading-3 font-heading">Best Practices</h2>
 
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Notifications</h3>
+          <h3 className="typo-paragraph-sm-bold text-foreground">Content</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use toast for non-critical, temporary feedback: "Item saved", "Email sent".</p>
               <p>Keep messages concise — users should understand at a glance.</p>
+              <p>Use description for secondary context like timestamps or details.</p>
             </DoItem>
             <DontItem>
-              <p>Don't use toast for error messages that require user action — use <strong>Alert</strong> instead.</p>
-              <p>Don't show too many toasts simultaneously — queue them.</p>
+              <p>Don't use toast for errors that require user action — use Alert instead.</p>
+              <p>Don't show more than 3 toasts at once — queue them.</p>
+              <p>Don't put long paragraphs in toast — keep to 1-2 short lines.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="typo-paragraph-sm-bold text-foreground">Structure</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Use action buttons for reversible operations like "Undo".</p>
+              <p>Use promise toasts for async operations (loading → success/error).</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't use toast as a replacement for form validation messages.</p>
+              <p>Don't use cancel + action for complex decisions — use Dialog instead.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="295:240815" rows={[
+        ["Container", "bg-card", "toastOptions.classNames.toast", "bg-card border-border shadow rounded-[10px]"],
+        ["Title", "paragraph-sm-bold", "—", "typo-paragraph-sm-bold text-foreground"],
+        ["Description", "paragraph-sm", "description", "typo-paragraph-sm text-muted-foreground"],
+        ["Icon", "24px", "icons prop", "size-xl per variant"],
+        ["Action Button", "bg-secondary", "action", "bg-primary text-primary-foreground"],
+        ["Cancel Button", "bg-muted", "cancel", "bg-muted text-muted-foreground"],
+        ["Shadow", "shadow-sm", "—", "shadow (Tailwind DEFAULT)"],
+        ["Border Radius", "10px", "style --border-radius", "var(--radius-10)"],
+        ["Padding", "16px", "—", "p-md (sonner default)"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
+      <section id="accessibility" className="space-y-4 pt-xl border-t border-border">
+        <h2 className="typo-heading-3 font-heading">Accessibility</h2>
+        <div className="space-y-3">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><code className="bg-muted px-1 rounded font-mono">Escape</code> — dismisses the currently visible toast.</li>
-            </ul>
+            <h3 className="typo-paragraph-sm-bold text-foreground">Keyboard Support</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead><tr className="border-b border-border text-left">
+                  <th className="px-4 py-2 font-semibold">Key</th><th className="px-4 py-2 font-semibold">Action</th>
+                </tr></thead>
+                <tbody>
+                  <tr className="border-b border-border"><td className="px-4 py-2 font-mono">Escape</td><td className="px-4 py-2 text-muted-foreground">Dismisses the currently visible toast</td></tr>
+                  <tr className="border-b border-border last:border-0"><td className="px-4 py-2 font-mono">Tab</td><td className="px-4 py-2 text-muted-foreground">Moves focus to action/cancel buttons inside toast</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <h3 className="typo-paragraph-sm-bold text-foreground">ARIA & Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Uses <code className="bg-muted px-1 rounded font-mono">role="status"</code> — screen readers announce toast content.</li>
-              <li>Action buttons in toasts are keyboard-focusable.</li>
-              <li>Toasts auto-dismiss after a timeout — ensure content is not critical.</li>
+              <li>Uses <code className="bg-muted px-1 rounded font-mono">role="status"</code> with <code className="bg-muted px-1 rounded font-mono">aria-live="polite"</code> — screen readers announce toast content.</li>
+              <li>Action/cancel buttons are keyboard-focusable with visible focus ring.</li>
+              <li>Toasts auto-dismiss — ensure content is not critical. Use Alert for persistent messages.</li>
             </ul>
           </div>
         </div>
       </section>
 
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Style", "Background", "—", "bg-background text-foreground"],
-        ["Style", "Border", "—", "border-border"],
-        ["Style", "Shadow", "—", "shadow-lg"],
-        ["Variant", "Default", "toast()", "Neutral toast"],
-        ["Variant", "Success", "toast.success()", "Success with icon"],
-        ["Variant", "Error", "toast.error()", "Error with icon"],
-        ["Variant", "Warning", "toast.warning()", "Warning with icon"],
-        ["Action Button", "Primary", "action", "bg-primary text-primary-foreground"],
-        ["Cancel Button", "Muted", "cancel", "bg-muted text-muted-foreground"],
-      ]} />
-
       {/* ---- Related Components ---- */}
       <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <h2 className="typo-heading-3 font-heading">Related Components</h2>
         <div className="rounded-xl border border-border divide-y divide-border text-xs">
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
@@ -16075,6 +16433,13 @@ function ToastDocs() {
             <div>
               <p className="font-semibold text-foreground">Dialog</p>
               <p className="text-muted-foreground mt-0.5">Blocking modal — use when user confirmation is required.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Alert Dialog</p>
+              <p className="text-muted-foreground mt-0.5">Destructive confirmation — use for irreversible actions.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -16100,6 +16465,199 @@ const tabsSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+/* ---- Explore Behavior ---- */
+function TabsGroupTab() {
+  const [parts, setParts] = React.useState("3")
+  const [content, setContent] = React.useState("label")
+  const [disabled, setDisabled] = React.useState(false)
+
+  return (
+    <>
+      <div className="bg-background flex items-center justify-center p-3xl min-h-[200px]">
+        <Tabs defaultValue="tab1">
+          <TabsList>
+            {Array.from({ length: Number(parts) }, (_, i) => (
+              <TabsTrigger key={i} value={`tab${i + 1}`} disabled={disabled && i === Number(parts) - 1}>
+                {content === "icon" ? (
+                  <Settings className="size-lg" />
+                ) : content === "icon-label" ? (
+                  <><Settings className="size-lg" />Tab {i + 1}</>
+                ) : (
+                  `Tab ${i + 1}`
+                )}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          {Array.from({ length: Number(parts) }, (_, i) => (
+            <TabsContent key={i} value={`tab${i + 1}`}>
+              <p className="typo-paragraph-sm text-muted-foreground p-sm">Content for tab {i + 1}.</p>
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-md flex flex-wrap items-center gap-md">
+        <PropertyTabs label="Parts" value={parts} options={[{ label: "2", value: "2" }, { label: "3", value: "3" }, { label: "4", value: "4" }, { label: "5", value: "5" }, { label: "6", value: "6" }]} onChange={setParts} />
+        <PropertyTabs label="Content" value={content} options={[{ label: "Label", value: "label" }, { label: "Icon", value: "icon" }, { label: "Icon + Label", value: "icon-label" }]} onChange={setContent} />
+        <PropertyToggle label="Disabled" checked={disabled} onChange={setDisabled} />
+      </div>
+    </>
+  )
+}
+
+function TabsTriggerTab() {
+  const [content, setContent] = React.useState("label")
+  const [disabled, setDisabled] = React.useState(false)
+
+  return (
+    <>
+      <div className="bg-background flex items-center justify-center p-3xl min-h-[200px]">
+        <Tabs defaultValue="active">
+          <TabsList>
+            <TabsTrigger value="active">
+              {content === "icon" ? (
+                <Settings className="size-lg" />
+              ) : content === "icon-label" ? (
+                <><Settings className="size-lg" />Active</>
+              ) : (
+                "Active"
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="inactive" disabled={disabled}>
+              {content === "icon" ? (
+                <Settings className="size-lg" />
+              ) : content === "icon-label" ? (
+                <><Settings className="size-lg" />Inactive</>
+              ) : (
+                "Inactive"
+              )}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-md flex flex-wrap items-center gap-md">
+        <PropertyTabs label="Content" value={content} options={[{ label: "Label", value: "label" }, { label: "Icon", value: "icon" }, { label: "Icon + Label", value: "icon-label" }]} onChange={setContent} />
+        <PropertyToggle label="Disabled" checked={disabled} onChange={setDisabled} />
+      </div>
+    </>
+  )
+}
+
+const tabsBehaviorTabs = [
+  { label: "Tabs", value: "tabs" },
+  { label: "Tab Trigger", value: "trigger" },
+]
+
+function TabsExploreBehavior() {
+  const [activeTab, setActiveTab] = React.useState("tabs")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden bg-background">
+        <div className="flex border-b border-border bg-muted/50">
+          {tabsBehaviorTabs.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={cn(
+                "px-lg py-sm text-xs font-medium transition-colors",
+                activeTab === tab.value ? "text-foreground border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        {activeTab === "tabs" && <TabsGroupTab />}
+        {activeTab === "trigger" && <TabsTriggerTab />}
+      </div>
+    </section>
+  )
+}
+
+/* ---- Props Table ---- */
+function TabsPropsTable() {
+  return (
+    <section id="props" className="space-y-6 pt-xl border-t border-border">
+      <h2 className="font-heading font-semibold text-xl">Props</h2>
+
+      <div className="space-y-6">
+        <h3 className="typo-paragraph-sm-bold text-foreground">Tabs (Root)</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
+            <tbody>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">defaultValue</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Initially active tab value (uncontrolled)</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">value</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Controlled active tab value</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">onValueChange</td><td className="px-4 py-3 font-mono text-muted-foreground">(value: string) =&gt; void</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Called when active tab changes</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">orientation</td><td className="px-4 py-3 font-mono text-muted-foreground">&quot;horizontal&quot; | &quot;vertical&quot;</td><td className="px-4 py-3 text-muted-foreground">&quot;horizontal&quot;</td><td className="px-4 py-3 text-muted-foreground">Orientation of tab list</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="typo-paragraph-sm-bold text-foreground">TabsTrigger</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
+            <tbody>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">value</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">required</td><td className="px-4 py-3 text-muted-foreground">Unique value matching a TabsContent</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">disabled</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Prevents activation</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="typo-paragraph-sm-bold text-foreground">TabsContent</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
+            <tbody>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">value</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">required</td><td className="px-4 py-3 text-muted-foreground">Unique value matching a TabsTrigger</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">forceMount</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Keep content mounted when inactive</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ---- Tokens Table ---- */
+function TabsTokensTable() {
+  return (
+    <section id="design-tokens" className="space-y-4 pt-3xl">
+      <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+      <p className="typo-paragraph-sm text-muted-foreground">
+        Tokens sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong> — node 288:173625.
+      </p>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Token</th>
+              <th className="px-4 py-3 font-semibold">Value</th>
+              <th className="px-4 py-3 font-semibold">Swatch</th>
+              <th className="px-4 py-3 font-semibold">Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f3f3f2</td><td className="px-4 py-3"><ColorSwatch hex="#f3f3f2" label="muted" /></td><td className="px-4 py-3 text-muted-foreground">TabsList background (bg-muted)</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><ColorSwatch hex="#ffffff" label="card" /></td><td className="px-4 py-3 text-muted-foreground">Active tab background</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--accent</td><td className="px-4 py-3 font-mono text-muted-foreground">#f3f3f2</td><td className="px-4 py-3"><ColorSwatch hex="#f3f3f2" label="accent" /></td><td className="px-4 py-3 text-muted-foreground">Inactive tab hover background</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><ColorSwatch hex="#252522" label="foreground" /></td><td className="px-4 py-3 text-muted-foreground">Tab text color (all states)</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><ColorSwatch hex="#e9e9e7" label="ring" /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px spread)</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">shadow</td><td className="px-4 py-3 font-mono text-muted-foreground">shadow-sm</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">Active tab drop shadow</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-10</td><td className="px-4 py-3 font-mono text-muted-foreground">10px</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">Tab trigger border radius</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--radius-xl</td><td className="px-4 py-3 font-mono text-muted-foreground">12px</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">TabsList container border radius</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--spacing-3xs</td><td className="px-4 py-3 font-mono text-muted-foreground">4px</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">TabsList inner padding (p-3xs)</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--spacing-xs</td><td className="px-4 py-3 font-mono text-muted-foreground">8px</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">Tab trigger horizontal padding (px-xs)</td></tr>
+            <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">typo-paragraph-sm-bold</td><td className="px-4 py-3 font-mono text-muted-foreground">14px/20px 600</td><td className="px-4 py-3">—</td><td className="px-4 py-3 text-muted-foreground">Tab trigger text style</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
 function TabsDocs() {
   return (
     <div className="space-y-12">
@@ -16111,20 +16669,7 @@ function TabsDocs() {
         <p className="typo-paragraph text-muted-foreground max-w-3xl">Tabbed interface for switching between different views or content panels.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Tabs defaultValue="tab1" className="w-[300px]">
-          <TabsList>
-            <TabsTrigger value="tab1">Tab 1</TabsTrigger>
-            <TabsTrigger value="tab2">Tab 2</TabsTrigger>
-            <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>
-          </TabsList>
-          <TabsContent value="tab1"><p className="text-sm p-sm">Content for tab 1.</p></TabsContent>
-          <TabsContent value="tab2"><p className="text-sm p-sm">Content for tab 2.</p></TabsContent>
-        </Tabs>
-      )} />
-
-
+      <TabsExploreBehavior />
 
       {/* ---- Installation ---- */}
       <InstallationSection
@@ -16132,103 +16677,144 @@ function TabsDocs() {
         importCode={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Use defaultValue to set the initially active tab. Each tab panel renders independently." code={`<Tabs defaultValue="account" className="w-[400px]">\n  <TabsList>\n    <TabsTrigger value="account">Account</TabsTrigger>\n    <TabsTrigger value="password">Password</TabsTrigger>\n  </TabsList>\n  <TabsContent value="account">\n    <Card>\n      <CardHeader>\n        <CardTitle>Account</CardTitle>\n        <CardDescription>Make changes to your account.</CardDescription>\n      </CardHeader>\n      <CardContent className="space-y-2">\n        <div className="space-y-1">\n          <Label htmlFor="tab-name">Name</Label>\n          <Input id="tab-name" defaultValue="Pedro Duarte" />\n        </div>\n      </CardContent>\n    </Card>\n  </TabsContent>\n</Tabs>`}>
-          <Tabs defaultValue="account" className="w-[400px]">
-            <TabsList>
-              <TabsTrigger value="account">Account</TabsTrigger>
-              <TabsTrigger value="password">Password</TabsTrigger>
-            </TabsList>
-            <TabsContent value="account">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Account</CardTitle>
-                  <CardDescription>Make changes to your account here.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="tab-name">Name</Label>
-                    <Input id="tab-name" defaultValue="Pedro Duarte" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="tab-username">Username</Label>
-                    <Input id="tab-username" defaultValue="@peduarte" />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="password">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Password</CardTitle>
-                  <CardDescription>Change your password here.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="tab-current">Current password</Label>
-                    <Input id="tab-current" type="password" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="tab-new">New password</Label>
-                    <Input id="tab-new" type="password" />
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </Example>
+          <Example title="Default" description="Basic tabbed interface with two panels." code={`<Tabs defaultValue="account">\n  <TabsList>\n    <TabsTrigger value="account">Account</TabsTrigger>\n    <TabsTrigger value="password">Password</TabsTrigger>\n  </TabsList>\n  <TabsContent value="account">...</TabsContent>\n  <TabsContent value="password">...</TabsContent>\n</Tabs>`}>
+            <Tabs defaultValue="account">
+              <TabsList>
+                <TabsTrigger value="account">Account</TabsTrigger>
+                <TabsTrigger value="password">Password</TabsTrigger>
+              </TabsList>
+              <TabsContent value="account">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Account</CardTitle>
+                    <CardDescription>Make changes to your account here.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="tab-name">Name</Label>
+                      <Input id="tab-name" defaultValue="Pedro Duarte" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="tab-username">Username</Label>
+                      <Input id="tab-username" defaultValue="@peduarte" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="password">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Password</CardTitle>
+                    <CardDescription>Change your password here.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="tab-current">Current password</Label>
+                      <Input id="tab-current" type="password" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="tab-new">New password</Label>
+                      <Input id="tab-new" type="password" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </Example>
+
+          <Example title="With Disabled Tab" description="Disabled tab cannot be activated or focused." code={`<Tabs defaultValue="tab1">\n  <TabsList>\n    <TabsTrigger value="tab1">Active</TabsTrigger>\n    <TabsTrigger value="tab2">Normal</TabsTrigger>\n    <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>\n  </TabsList>\n</Tabs>`}>
+            <Tabs defaultValue="tab1">
+              <TabsList>
+                <TabsTrigger value="tab1">Active</TabsTrigger>
+                <TabsTrigger value="tab2">Normal</TabsTrigger>
+                <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1"><p className="typo-paragraph-sm text-muted-foreground p-sm">First tab content.</p></TabsContent>
+              <TabsContent value="tab2"><p className="typo-paragraph-sm text-muted-foreground p-sm">Second tab content.</p></TabsContent>
+            </Tabs>
+          </Example>
+
+          <Example title="With Icons" description="Tabs with icon-only or icon + label content." code={`<Tabs defaultValue="settings">\n  <TabsList>\n    <TabsTrigger value="settings">\n      <Settings className="size-lg" />\n      Settings\n    </TabsTrigger>\n    <TabsTrigger value="notifications">\n      <Bell className="size-lg" />\n      Notifications\n    </TabsTrigger>\n  </TabsList>\n</Tabs>`}>
+            <Tabs defaultValue="settings">
+              <TabsList>
+                <TabsTrigger value="settings"><Settings className="size-lg" />Settings</TabsTrigger>
+                <TabsTrigger value="notifications"><Bell className="size-lg" />Notifications</TabsTrigger>
+                <TabsTrigger value="profile"><User className="size-lg" />Profile</TabsTrigger>
+              </TabsList>
+              <TabsContent value="settings"><p className="typo-paragraph-sm text-muted-foreground p-sm">Settings content.</p></TabsContent>
+              <TabsContent value="notifications"><p className="typo-paragraph-sm text-muted-foreground p-sm">Notifications content.</p></TabsContent>
+              <TabsContent value="profile"><p className="typo-paragraph-sm text-muted-foreground p-sm">Profile content.</p></TabsContent>
+            </Tabs>
+          </Example>
+
+          <Example title="Many Tabs" description="Tabs scale to fit multiple items." code={`<Tabs defaultValue="tab1">\n  <TabsList>\n    <TabsTrigger value="tab1">Overview</TabsTrigger>\n    <TabsTrigger value="tab2">Analytics</TabsTrigger>\n    <TabsTrigger value="tab3">Reports</TabsTrigger>\n    <TabsTrigger value="tab4">Settings</TabsTrigger>\n    <TabsTrigger value="tab5">Export</TabsTrigger>\n  </TabsList>\n</Tabs>`}>
+            <Tabs defaultValue="tab1">
+              <TabsList>
+                <TabsTrigger value="tab1">Overview</TabsTrigger>
+                <TabsTrigger value="tab2">Analytics</TabsTrigger>
+                <TabsTrigger value="tab3">Reports</TabsTrigger>
+                <TabsTrigger value="tab4">Settings</TabsTrigger>
+                <TabsTrigger value="tab5">Export</TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1"><p className="typo-paragraph-sm text-muted-foreground p-sm">Overview content.</p></TabsContent>
+              <TabsContent value="tab2"><p className="typo-paragraph-sm text-muted-foreground p-sm">Analytics content.</p></TabsContent>
+              <TabsContent value="tab3"><p className="typo-paragraph-sm text-muted-foreground p-sm">Reports content.</p></TabsContent>
+              <TabsContent value="tab4"><p className="typo-paragraph-sm text-muted-foreground p-sm">Settings content.</p></TabsContent>
+              <TabsContent value="tab5"><p className="typo-paragraph-sm text-muted-foreground p-sm">Export content.</p></TabsContent>
+            </Tabs>
+          </Example>
         </div>
       </section>
 
+      <TabsPropsTable />
+      <TabsTokensTable />
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">TabsList background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--background</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Active tab background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Active tab text</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Inactive tab text</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Focus ring (3px)</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Organization</h3>
+          <h3 className="font-body font-semibold text-sm">Content</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Keep tab labels concise — 1-2 words for scannability.</p>
+              <p>Use nouns or short noun phrases (e.g., "Account", "Settings").</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't use full sentences as tab labels.</p>
+              <p>Don't mix verbs and nouns in the same tab group.</p>
+            </DontItem>
+          </div>
+          <h3 className="font-body font-semibold text-sm">Structure</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use Tabs to organize related content into separate panels.</p>
-              <p>Keep tab labels short — 1-2 words for scannability.</p>
-              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">defaultValue</code> to set the initially active tab.</p>
+              <p>Set <code className="bg-muted px-1 rounded font-mono text-xs">defaultValue</code> to the most commonly used tab.</p>
             </DoItem>
             <DontItem>
               <p>Don't use Tabs for sequential steps — use a Stepper pattern instead.</p>
-              <p>Don't use too many tabs ({">"}5) — consider a dropdown or different layout.</p>
+              <p>Don't exceed 5-6 tabs — consider navigation or dropdown alternatives.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="288:173625" rows={[
+        ["TabsList BG", "accent #f3f3f2", "bg-muted", "rounded-xl p-3xs"],
+        ["Tab Inactive", "transparent", "—", "typo-paragraph-sm-bold text-foreground"],
+        ["Tab Inactive Hover", "accent #f3f3f2", "hover:bg-accent", "rounded-[var(--radius-10)]"],
+        ["Tab Active", "card #ffffff", "data-[state=active]:bg-card", "shadow"],
+        ["Tab Active Focus", "ring #e9e9e7", "focus-visible:ring-[3px]", "ring-ring"],
+        ["Tab Disabled", "opacity 50%", "disabled:opacity-50", "pointer-events-none"],
+        ["Tab Padding", "px-xs py-[2px]", "8px / 2px", "—"],
+        ["Tab Radius", "rounded-lg-xl 10px", "rounded-[var(--radius-10)]", "—"],
+        ["Content Spacing", "mt-xs", "8px", "—"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
@@ -16236,33 +16822,29 @@ function TabsDocs() {
         <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><code className="bg-muted px-1 rounded font-mono">Tab</code> — moves focus to the active tab trigger in the tab list.</li>
-              <li><code className="bg-muted px-1 rounded font-mono">Arrow Left</code> / <code className="bg-muted px-1 rounded font-mono">Arrow Right</code> — switches between tabs.</li>
-              <li><code className="bg-muted px-1 rounded font-mono">Enter</code> / <code className="bg-muted px-1 rounded font-mono">Space</code> — activates the focused tab.</li>
-            </ul>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead><tr className="border-b border-border text-left"><th className="pb-2 font-semibold text-foreground">Key</th><th className="pb-2 font-semibold text-foreground">Action</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b border-border"><td className="py-2"><code className="bg-muted px-1 rounded font-mono">Tab</code></td><td className="py-2">Moves focus to active trigger in tab list</td></tr>
+                  <tr className="border-b border-border"><td className="py-2"><code className="bg-muted px-1 rounded font-mono">Arrow Left</code> / <code className="bg-muted px-1 rounded font-mono">Arrow Right</code></td><td className="py-2">Switches between tab triggers</td></tr>
+                  <tr className="border-b border-border"><td className="py-2"><code className="bg-muted px-1 rounded font-mono">Home</code> / <code className="bg-muted px-1 rounded font-mono">End</code></td><td className="py-2">Moves to first / last tab trigger</td></tr>
+                  <tr><td className="py-2"><code className="bg-muted px-1 rounded font-mono">Enter</code> / <code className="bg-muted px-1 rounded font-mono">Space</code></td><td className="py-2">Activates the focused tab</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <h3 className="font-body font-semibold text-sm text-foreground">ARIA Attributes</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix Tabs — full keyboard support with Arrow keys for tab navigation.</li>
-              <li>Tab panels are associated via <code className="bg-muted px-1 rounded font-mono">aria-controls</code> and <code className="bg-muted px-1 rounded font-mono">aria-labelledby</code>.</li>
-              <li>Only the active panel is in the tab order.</li>
+              <li><code className="bg-muted px-1 rounded font-mono">role="tablist"</code> on TabsList container.</li>
+              <li><code className="bg-muted px-1 rounded font-mono">role="tab"</code> with <code className="bg-muted px-1 rounded font-mono">aria-selected</code> on each trigger.</li>
+              <li><code className="bg-muted px-1 rounded font-mono">role="tabpanel"</code> with <code className="bg-muted px-1 rounded font-mono">aria-labelledby</code> on each content panel.</li>
+              <li>Only the active panel participates in the tab order.</li>
             </ul>
           </div>
         </div>
       </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["List Height", "36px", "—", "h-9"],
-        ["List Background", "Muted", "—", "bg-muted, rounded-lg"],
-        ["Trigger State", "Active", "—", "data-[state=active]:bg-background shadow"],
-        ["Trigger State", "Inactive", "—", "text-muted-foreground"],
-        ["Trigger State", "Focus", "—", "focus-visible:ring-[3px]"],
-        ["Trigger State", "Disabled", "disabled", "true (opacity-50)"],
-        ["Content Spacing", "Top margin", "—", "mt-xs"],
-      ]} />
 
       {/* ---- Related Components ---- */}
       <section id="related" className="space-y-4 pb-12">
@@ -16279,6 +16861,13 @@ function TabsDocs() {
             <div>
               <p className="font-semibold text-foreground">Accordion</p>
               <p className="text-muted-foreground mt-0.5">Vertically stacked collapsible sections.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Navigation Menu</p>
+              <p className="text-muted-foreground mt-0.5">For top-level site navigation with dropdowns.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -16342,29 +16931,10 @@ function BreadcrumbExploreBehavior() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Items</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["2", "3", "4", "5"].map(v => (
-                <button key={v} onClick={() => setItems(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", items === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Separator</Label>
-            <div className="flex flex-wrap gap-xs">
-              {[["chevron","ChevronRight"],["slash","Slash (/)"]].map(([v,l]) => (
-                <button key={v} onClick={() => setSeparator(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", separator === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Show Ellipsis</Label>
-            <div className="pt-1"><Switch checked={showEllipsis} onCheckedChange={setShowEllipsis} /></div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Items" value={items} onChange={setItems} options={[["2","2"],["3","3"],["4","4"],["5","5"]]} />
+        <PropertyTabs label="Separator" value={separator} onChange={setSeparator} options={[["chevron","ChevronRight"],["slash","Slash (/)"]]} />
+        <PropertyToggle label="Show Ellipsis" checked={showEllipsis} onChange={setShowEllipsis} />
       </div>
     </div>
   )
@@ -16663,172 +17233,353 @@ const paginationSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function PaginationExploreBehavior() {
+  const [component, setComponent] = React.useState("pagination")
+  const [disabled, setDisabled] = React.useState(false)
+  const [showEllipsis, setShowEllipsis] = React.useState(true)
+  const [activePage, setActivePage] = React.useState(1)
+  const [isActive, setIsActive] = React.useState(true)
+
+  return (
+    <section id="explore-behavior" className="space-y-6">
+      <h2 className="typo-heading-3 font-heading">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden">
+        {/* Canvas */}
+        <div className="flex items-center justify-center bg-background p-16 min-h-[120px]">
+          {component === "pagination" && (
+            <div onClick={(e) => e.preventDefault()}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" className={disabled ? "pointer-events-none opacity-50" : ""} />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive={activePage === 1} onClick={(e: React.MouseEvent) => { e.preventDefault(); setActivePage(1) }}>1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive={activePage === 2} onClick={(e: React.MouseEvent) => { e.preventDefault(); setActivePage(2) }}>2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive={activePage === 3} onClick={(e: React.MouseEvent) => { e.preventDefault(); setActivePage(3) }}>3</PaginationLink>
+                </PaginationItem>
+                {showEllipsis && (
+                  <>
+                    <PaginationItem><PaginationEllipsis /></PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive={activePage === 10} onClick={(e: React.MouseEvent) => { e.preventDefault(); setActivePage(10) }}>10</PaginationLink>
+                    </PaginationItem>
+                  </>
+                )}
+                <PaginationItem>
+                  <PaginationNext href="#" className={disabled ? "pointer-events-none opacity-50" : ""} />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            </div>
+          )}
+          {component === "pagination-button" && (
+            <PaginationLink href="#" isActive={isActive} onClick={(e: React.MouseEvent) => e.preventDefault()}>1</PaginationLink>
+          )}
+          {component === "pagination-ellipsis" && (
+            <PaginationEllipsis />
+          )}
+        </div>
+
+        {/* Controls */}
+        <div className="border-t border-border bg-muted/30 p-md flex flex-wrap gap-xl items-end">
+          <PropertyTabs
+            label="Component"
+            value={component}
+            onChange={setComponent}
+            options={[
+              { value: "pagination", label: "Pagination" },
+              { value: "pagination-button", label: "Pagination Button" },
+              { value: "pagination-ellipsis", label: "Ellipsis" },
+            ]}
+          />
+          {component === "pagination" && (
+            <>
+              <PropertyToggle label="Disabled" checked={disabled} onChange={setDisabled} />
+              <PropertyToggle label="Ellipsis" checked={showEllipsis} onChange={setShowEllipsis} />
+            </>
+          )}
+          {component === "pagination-button" && (
+            <PropertyToggle label="Active" checked={isActive} onChange={setIsActive} />
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PaginationPropsTable() {
+  return (
+    <section id="props" className="space-y-6 pt-xl border-t border-border">
+      <h2 className="typo-heading-3 font-heading">Props</h2>
+
+      {/* Pagination */}
+      <div className="space-y-2">
+        <h3 className="typo-paragraph-sm-bold text-foreground">Pagination</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th>
+            </tr></thead>
+            <tbody>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* PaginationLink */}
+      <div className="space-y-2">
+        <h3 className="typo-paragraph-sm-bold text-foreground">PaginationLink</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th>
+            </tr></thead>
+            <tbody>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">isActive</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Highlights as current page (outline variant)</td></tr>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">size</td><td className="px-4 py-3 font-mono text-muted-foreground">ButtonProps["size"]</td><td className="px-4 py-3 text-muted-foreground">"icon"</td><td className="px-4 py-3 text-muted-foreground">Button size variant</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">href</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Navigation URL</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* PaginationPrevious / PaginationNext */}
+      <div className="space-y-2">
+        <h3 className="typo-paragraph-sm-bold text-foreground">PaginationPrevious / PaginationNext</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left">
+              <th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th>
+            </tr></thead>
+            <tbody>
+              <tr className="border-b border-border"><td className="px-4 py-3 font-mono font-semibold">href</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Navigation URL</td></tr>
+              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold">className</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Additional CSS classes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PaginationTokensTable() {
+  const tokens = [
+    { token: "--ghost-foreground", value: "#6f6f6a", dark: "#a1a19c", usage: "Inactive page / Previous / Next text" },
+    { token: "--foreground", value: "#252522", dark: "#fafaf8", usage: "Active page text" },
+    { token: "--border", value: "#e9e9e7", dark: "#2e2e2b", usage: "Active page border" },
+    { token: "--accent", value: "#f7f7f6", dark: "#2e2e2b", usage: "Hover background" },
+    { token: "--ring", value: "#e9e9e7", dark: "#3e3e3b", usage: "Focus ring (3px)" },
+    { token: "--spacing-md", value: "16px", dark: "16px", usage: "Horizontal padding (px-md)" },
+    { token: "--spacing-xs", value: "8px", dark: "8px", usage: "Vertical padding + icon gap" },
+    { token: "--radius-lg", value: "8px", dark: "8px", usage: "Button border radius" },
+    { token: "size-md", value: "16px", dark: "16px", usage: "Chevron icon size" },
+    { token: "size-lg", value: "20px", dark: "20px", usage: "Ellipsis icon size" },
+  ]
+  return (
+    <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
+      <h2 className="typo-heading-3 font-heading">Design Tokens</h2>
+      <p className="typo-paragraph-sm text-muted-foreground">Sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong> — node 294:233630.</p>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead><tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Token</th><th className="px-4 py-3 font-semibold">Light</th><th className="px-4 py-3 font-semibold">Dark</th><th className="px-4 py-3 font-semibold">Swatch</th><th className="px-4 py-3 font-semibold">Usage</th>
+          </tr></thead>
+          <tbody>
+            {tokens.map((t) => (
+              <tr key={t.token} className="border-b border-border last:border-0">
+                <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.token}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{t.dark}</td>
+                <td className="px-4 py-3">{t.value.startsWith("#") && <ColorSwatch hex={t.value} label={t.token} />}</td>
+                <td className="px-4 py-3 text-muted-foreground">{t.usage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
 function PaginationDocs() {
   return (
     <div className="space-y-12">
       <TableOfContents sections={paginationSections} />
 
       <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
+        <p className="typo-paragraph-mini text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Pagination</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Page navigation with previous/next and numbered links.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">Pagination with page navigation, next and previous links.</p>
       </header>
 
-      {/* Interactive playground */}
-      <Playground controls={[]} render={() => (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
-            <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
-            <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
-            <PaginationItem><PaginationEllipsis /></PaginationItem>
-            <PaginationItem><PaginationNext href="#" /></PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )} />
+      <PaginationExploreBehavior />
 
       {/* ---- Installation ---- */}
       <InstallationSection
-        deps={`pnpm add clsx tailwind-merge lucide-react`}
-        importCode={`import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext, PaginationEllipsis } from "@/components/ui/pagination"`}
+        deps={`pnpm add lucide-react`}
+        importCode={`import {\n  Pagination,\n  PaginationContent,\n  PaginationItem,\n  PaginationLink,\n  PaginationPrevious,\n  PaginationNext,\n  PaginationEllipsis,\n} from "@/components/ui/pagination"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
+        <h2 className="typo-heading-3 font-heading">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Standard pagination with previous/next buttons, numbered pages, and ellipsis." code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem>\n      <PaginationPrevious href="#" />\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#">1</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#" isActive>2</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationLink href="#">3</PaginationLink>\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationEllipsis />\n    </PaginationItem>\n    <PaginationItem>\n      <PaginationNext href="#" />\n    </PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#" isActive>2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </Example>
+          <Example title="Full Pagination" description="Previous/next, numbered pages, ellipsis for large sets." code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem><PaginationPrevious href="#" /></PaginationItem>\n    <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">4</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationEllipsis /></PaginationItem>\n    <PaginationItem><PaginationLink href="#">10</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationNext href="#" /></PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
+            <div onClick={(e) => e.preventDefault()}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+                <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">4</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationEllipsis /></PaginationItem>
+                <PaginationItem><PaginationLink href="#">10</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationNext href="#" /></PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            </div>
+          </Example>
+
+          <Example title="Active Last Page" description="Active state on the last page with ellipsis." code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem><PaginationPrevious href="#" /></PaginationItem>\n    <PaginationItem><PaginationLink href="#">1</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationEllipsis /></PaginationItem>\n    <PaginationItem><PaginationLink href="#">9</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#" isActive>10</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationNext href="#" /></PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
+            <div onClick={(e) => e.preventDefault()}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+                <PaginationItem><PaginationLink href="#">1</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationEllipsis /></PaginationItem>
+                <PaginationItem><PaginationLink href="#">9</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#" isActive>10</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationNext href="#" /></PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            </div>
+          </Example>
+
+          <Example title="Simple (Few Pages)" description="When total pages are small, show all without ellipsis." code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem><PaginationPrevious href="#" /></PaginationItem>\n    <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>\n    <PaginationItem><PaginationNext href="#" /></PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
+            <div onClick={(e) => e.preventDefault()}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+                <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationNext href="#" /></PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            </div>
+          </Example>
+
+          <Example title="Disabled Navigation" description="Disable Previous/Next when at first/last page." code={`<Pagination>\n  <PaginationContent>\n    <PaginationItem>\n      <PaginationPrevious href="#" className="pointer-events-none opacity-50" />\n    </PaginationItem>\n    <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>\n    <PaginationItem>\n      <PaginationNext href="#" className="pointer-events-none opacity-50" />\n    </PaginationItem>\n  </PaginationContent>\n</Pagination>`}>
+            <div onClick={(e) => e.preventDefault()}>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" className="pointer-events-none opacity-50" />
+                </PaginationItem>
+                <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" className="pointer-events-none opacity-50" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+            </div>
+          </Example>
         </div>
       </section>
 
+      <PaginationPropsTable />
+      <PaginationTokensTable />
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Hover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Active page text</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Inactive page text</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
+        <h2 className="typo-heading-3 font-heading">Best Practices</h2>
 
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
         <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Usage</h3>
+          <h3 className="typo-paragraph-sm-bold text-foreground">Content</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use Pagination for large datasets that benefit from page-based browsing.</p>
               <p>Show ellipsis between distant page numbers for compact layouts.</p>
+              <p>Always indicate the current active page visually.</p>
             </DoItem>
             <DontItem>
               <p>Don't use Pagination for small lists — show all items or use "Load more".</p>
               <p>Don't use Pagination for real-time data streams — use infinite scroll instead.</p>
+              <p>Don't show more than 7 page numbers at once — use ellipsis.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="typo-paragraph-sm-bold text-foreground">Structure</h3>
+          <div className="flex gap-4">
+            <DoItem>
+              <p>Disable Previous on first page and Next on last page.</p>
+              <p>Place Pagination below the data list, centered.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't mix Pagination with infinite scroll on the same list.</p>
+              <p>Don't hide Previous/Next — disable instead to maintain layout stability.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="294:233630" rows={[
+        ["Pagination (Previous)", "type=Previous, state=Regular", "PaginationPrevious", "ghost button + ChevronLeft size-md"],
+        ["Pagination (Next)", "type=Next, state=Regular", "PaginationNext", "ghost button + ChevronRight size-md"],
+        ["Pagination (Disabled)", "state=Disabled", "className", "pointer-events-none opacity-50"],
+        ["Pagination Button (Active)", "active=On", "isActive={true}", "outline variant + border-border"],
+        ["Pagination Button (Inactive)", "active=Off", "isActive={false}", "ghost variant + ghost-foreground"],
+        ["Pagination Ellipsis", "—", "PaginationEllipsis", "MoreHorizontal size-lg"],
+        ["Container Gap", "8px", "—", "gap-xs (PaginationContent)"],
+        ["Radius", "rounded-lg (8px)", "—", "via buttonVariants"],
+      ]} />
 
       {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
+      <section id="accessibility" className="space-y-4 pt-xl border-t border-border">
+        <h2 className="typo-heading-3 font-heading">Accessibility</h2>
+        <div className="space-y-3">
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
+            <h3 className="typo-paragraph-sm-bold text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pr-6 py-2 font-semibold">Key</th>
-                    <th className="pr-6 py-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
+                <thead><tr className="border-b border-border text-left">
+                  <th className="px-4 py-2 font-semibold">Key</th><th className="px-4 py-2 font-semibold">Action</th>
+                </tr></thead>
                 <tbody>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2">
-                      <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd>
-                    </td>
-                    <td className="pr-6 py-2 text-muted-foreground">Move focus to the next pagination link</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2">
-                      <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Shift</kbd>{" + "}
-                      <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Tab</kbd>
-                    </td>
-                    <td className="pr-6 py-2 text-muted-foreground">Move focus to the previous pagination link</td>
-                  </tr>
-                  <tr>
-                    <td className="pr-6 py-2">
-                      <kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd>
-                    </td>
-                    <td className="pr-6 py-2 text-muted-foreground">Navigate to the focused page</td>
-                  </tr>
+                  <tr className="border-b border-border"><td className="px-4 py-2 font-mono">Tab</td><td className="px-4 py-2 text-muted-foreground">Move focus to the next pagination link</td></tr>
+                  <tr className="border-b border-border"><td className="px-4 py-2 font-mono">Shift + Tab</td><td className="px-4 py-2 text-muted-foreground">Move focus to the previous pagination link</td></tr>
+                  <tr className="border-b border-border last:border-0"><td className="px-4 py-2 font-mono">Enter</td><td className="px-4 py-2 text-muted-foreground">Navigate to the focused page</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
           <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+            <h3 className="typo-paragraph-sm-bold text-foreground">ARIA & Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Renders inside a <code className="bg-muted px-1 rounded font-mono">nav</code> element with <code className="bg-muted px-1 rounded font-mono">aria-label="pagination"</code>.</li>
-              <li>Current page link has <code className="bg-muted px-1 rounded font-mono">aria-current="page"</code>.</li>
-              <li>Previous/Next buttons include screen reader text.</li>
+              <li>Renders inside <code className="bg-muted px-1 rounded font-mono">nav</code> with <code className="bg-muted px-1 rounded font-mono">aria-label="pagination"</code>.</li>
+              <li>Active page link has <code className="bg-muted px-1 rounded font-mono">aria-current="page"</code>.</li>
+              <li>Previous/Next include descriptive <code className="bg-muted px-1 rounded font-mono">aria-label</code> text.</li>
+              <li>Ellipsis is hidden from screen readers via <code className="bg-muted px-1 rounded font-mono">aria-hidden</code>.</li>
             </ul>
           </div>
         </div>
       </section>
 
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Active Page", "Outline variant", "isActive", "true (outline button style)"],
-        ["Inactive Page", "Ghost variant", "isActive", "false (ghost button style)"],
-        ["Previous/Next", "With icon", "PaginationPrevious/Next", "ChevronLeft/Right icon"],
-        ["Ellipsis", "Overflow", "PaginationEllipsis", "MoreHorizontal icon"],
-        ["Icon Size", "16px", "—", "size-md"],
-      ]} />
-
       {/* ---- Related Components ---- */}
       <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <h2 className="typo-heading-3 font-heading">Related Components</h2>
         <div className="rounded-xl border border-border divide-y divide-border text-xs">
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
@@ -16840,7 +17591,14 @@ function PaginationDocs() {
           <div className="px-5 py-3.5 flex justify-between items-center">
             <div>
               <p className="font-semibold text-foreground">Breadcrumb</p>
-              <p className="text-muted-foreground mt-0.5">Hierarchical navigation.</p>
+              <p className="text-muted-foreground mt-0.5">Hierarchical navigation for page paths.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-5 py-3.5 flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Button</p>
+              <p className="text-muted-foreground mt-0.5">Page buttons use ghost/outline button variants.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -16866,65 +17624,329 @@ const dropdownMenuSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function DropdownMenuExploreBehavior() {
+  const [showIcons, setShowIcons] = useState(true)
+  const [showShortcuts, setShowShortcuts] = useState(true)
+  const [showSubMenu, setShowSubMenu] = useState(false)
+  const [itemType, setItemType] = useState("default")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[280px]">
+        {/* Static menu preview — shown directly without trigger */}
+        <div className={cn("w-[220px] pointer-events-none", menuClassNames.content)}>
+          {/* Label */}
+          <div className={menuClassNames.label}>My Account</div>
+          {/* Separator */}
+          <div className={menuClassNames.separator} />
+          {/* Items */}
+          <div className="flex flex-col">
+            <div className={cn(menuClassNames.item, menuClassNames.itemFocus)}>
+              {showIcons && <User className="size-md text-muted-foreground shrink-0" />}
+              <span>Profile</span>
+              {showShortcuts && <span className={menuClassNames.shortcut}>⇧⌘P</span>}
+            </div>
+            <div className={menuClassNames.item}>
+              {showIcons && <CreditCard className="size-md text-muted-foreground shrink-0" />}
+              <span>Billing</span>
+              {showShortcuts && <span className={menuClassNames.shortcut}>⌘B</span>}
+            </div>
+            <div className={menuClassNames.item}>
+              {showIcons && <Settings className="size-md text-muted-foreground shrink-0" />}
+              <span>Settings</span>
+              {showShortcuts && <span className={menuClassNames.shortcut}>⌘S</span>}
+            </div>
+          </div>
+          {/* Sub-menu indicator */}
+          {showSubMenu && (
+            <>
+              <div className={menuClassNames.separator} />
+              <div className={menuClassNames.item}>
+                {showIcons && <User className="size-md text-muted-foreground shrink-0" />}
+                <span>Invite users</span>
+                <ChevronRight className="ml-auto size-md text-muted-foreground" />
+              </div>
+            </>
+          )}
+          {/* Checkbox / Radio items */}
+          {itemType === "checkbox" && (
+            <>
+              <div className={menuClassNames.separator} />
+              <div className={menuClassNames.checkboxItem}>
+                <span className="absolute left-3 flex size-3.5 items-center justify-center">
+                  <Check className="size-md" />
+                </span>
+                <span>Show toolbar</span>
+              </div>
+              <div className={cn(menuClassNames.checkboxItem, "text-muted-foreground")}>
+                <span>Show sidebar</span>
+              </div>
+            </>
+          )}
+          {itemType === "radio" && (
+            <>
+              <div className={menuClassNames.separator} />
+              <div className={menuClassNames.label}>View</div>
+              <div className={menuClassNames.checkboxItem}>
+                <span className="absolute left-3 flex size-3.5 items-center justify-center">
+                  <Circle className="size-xs fill-current" />
+                </span>
+                <span>Grid</span>
+              </div>
+              <div className={cn(menuClassNames.checkboxItem, "text-muted-foreground")}>
+                <span>List</span>
+              </div>
+            </>
+          )}
+          {/* Footer */}
+          <div className={menuClassNames.separator} />
+          <div className={cn(menuClassNames.item, "text-destructive")}>
+            {showIcons && <LogOut className="size-md shrink-0" />}
+            <span>Log out</span>
+            {showShortcuts && <span className={menuClassNames.shortcut}>⇧⌘Q</span>}
+          </div>
+        </div>
+      </div>
+      {/* Controls panel */}
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Item Type" value={itemType} options={[
+          { value: "default", label: "Default" },
+          { value: "checkbox", label: "Checkbox" },
+          { value: "radio", label: "Radio" },
+        ]} onChange={setItemType} />
+        <div className="flex flex-wrap gap-lg">
+          <PropertyToggle label="Show Icons" checked={showIcons} onChange={setShowIcons} />
+          <PropertyToggle label="Show Shortcuts" checked={showShortcuts} onChange={setShowShortcuts} />
+          <PropertyToggle label="Show Sub-menu" checked={showSubMenu} onChange={setShowSubMenu} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function DropdownMenuPropsTable() {
+  const tables = [
+    {
+      component: "DropdownMenuContent",
+      props: [
+        { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"bottom"', desc: "Preferred side of trigger." },
+        { name: "sideOffset", type: "number", default: "4", desc: "Distance from trigger in pixels." },
+        { name: "align", type: '"start" | "center" | "end"', default: '"center"', desc: "Alignment along the side." },
+        { name: "className", type: "string", default: "—", desc: "Additional CSS classes." },
+      ],
+    },
+    {
+      component: "DropdownMenuItem",
+      props: [
+        { name: "inset", type: "boolean", default: "false", desc: "Add left padding to align with items that have icons/indicators." },
+        { name: "disabled", type: "boolean", default: "false", desc: "Disable the item (opacity-50, no interaction)." },
+      ],
+    },
+    {
+      component: "DropdownMenuCheckboxItem",
+      props: [
+        { name: "checked", type: "boolean", default: "false", desc: "Whether the checkbox item is checked." },
+        { name: "onCheckedChange", type: "(checked: boolean) => void", default: "—", desc: "Callback when checked state changes." },
+      ],
+    },
+    {
+      component: "DropdownMenuRadioGroup",
+      props: [
+        { name: "value", type: "string", default: "—", desc: "The selected radio item value." },
+        { name: "onValueChange", type: "(value: string) => void", default: "—", desc: "Callback when selection changes." },
+      ],
+    },
+  ]
+
+  return (
+    <div className="space-y-md">
+      {tables.map(t => (
+        <div key={t.component}>
+          <h3 className="typo-paragraph-sm-bold text-foreground mb-xs">{t.component}</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left p-3 font-medium">Prop</th>
+                  <th className="text-left p-3 font-medium">Type</th>
+                  <th className="text-left p-3 font-medium">Default</th>
+                  <th className="text-left p-3 font-medium">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {t.props.map(p => (
+                  <tr key={p.name} className="border-b border-border">
+                    <td className="p-3 font-mono text-xs">{p.name}</td>
+                    <td className="p-3 font-mono text-xs">{p.type}</td>
+                    <td className="p-3 font-mono text-xs">{p.default}</td>
+                    <td className="p-3">{p.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function DropdownMenuTokensTable() {
+  const tokens = [
+    { token: "bg-card", value: "var(--card)", usage: "Menu container background" },
+    { token: "border-border", value: "var(--border)", usage: "Menu border" },
+    { token: "rounded-lg", value: "8px", usage: "Menu container radius" },
+    { token: "shadow", value: "Figma shadow-sm", usage: "Menu elevation (Figma shadow-sm → Tailwind shadow)" },
+    { token: "p-1", value: "4px", usage: "Menu inner padding" },
+    { token: "px-xs", value: "8px", usage: "Item horizontal padding" },
+    { token: "py-2xs", value: "6px", usage: "Item vertical padding" },
+    { token: "rounded-md", value: "6px", usage: "Item border radius" },
+    { token: "gap-xs", value: "8px", usage: "Item icon-text gap" },
+    { token: "focus:bg-accent", value: "var(--accent)", usage: "Item hover/focus background" },
+    { token: "typo-paragraph-sm", value: "Geist 400 14/20", usage: "Item text" },
+    { token: "typo-paragraph-sm-bold", value: "Geist 600 14/20", usage: "Label text" },
+    { token: "typo-paragraph-mini", value: "Geist 400 12/16", usage: "Shortcut text" },
+    { token: "[&_svg]:size-md", value: "16px", usage: "Icon size" },
+    { token: "opacity-50", value: "0.5", usage: "Disabled item" },
+  ]
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left p-3 font-medium">Token</th>
+            <th className="text-left p-3 font-medium">Value</th>
+            <th className="text-left p-3 font-medium">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map(t => (
+            <tr key={t.token} className="border-b border-border">
+              <td className="p-3 font-mono text-xs">{t.token}</td>
+              <td className="p-3 font-mono text-xs">{t.value}</td>
+              <td className="p-3">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function DropdownMenuDocs() {
+  const [bookmarksChecked, setBookmarksChecked] = useState(true)
+  const [urlsChecked, setUrlsChecked] = useState(false)
+  const [person, setPerson] = useState("pedro")
+
   return (
     <div className="space-y-12">
       <TableOfContents sections={dropdownMenuSections} />
 
+      {/* ---- Header ---- */}
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Dropdown Menu</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Contextual menu triggered by a button. Supports labels, separators, checkbox items, sub-menus, and keyboard shortcuts.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Contextual menu triggered by a button. Supports labels, separators, checkbox items,
+          radio groups, sub-menus, keyboard shortcuts, and icons.
+        </p>
       </header>
 
-      <Playground controls={[]} render={() => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild><Button variant="outline">Open Menu</Button></DropdownMenuTrigger>
-          <DropdownMenuContent className="w-48">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><User className="mr-2 size-4" /> Profile</DropdownMenuItem>
-            <DropdownMenuItem><Settings className="mr-2 size-4" /> Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem><LogOut className="mr-2 size-4" /> Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )} />
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <DropdownMenuExploreBehavior />
+      </section>
 
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add @radix-ui/react-dropdown-menu`}
-        importCode={`import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"`}
+        importCode={`import {\n  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,\n  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,\n  DropdownMenuGroup, DropdownMenuShortcut, DropdownMenuSub,\n  DropdownMenuSubTrigger, DropdownMenuSubContent,\n  DropdownMenuCheckboxItem, DropdownMenuRadioGroup,\n  DropdownMenuRadioItem\n} from "@/components/ui/dropdown-menu"`}
       />
 
+      {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Default" description="Full-featured menu with labels, groups, sub-menus, shortcuts, and icons." code={`<DropdownMenu>\n  <DropdownMenuTrigger asChild>\n    <Button variant="outline">Open</Button>\n  </DropdownMenuTrigger>\n  <DropdownMenuContent className="w-56">\n    <DropdownMenuLabel>My Account</DropdownMenuLabel>\n    <DropdownMenuSeparator />\n    <DropdownMenuGroup>\n      <DropdownMenuItem>\n        <User className="mr-2 size-4" /> Profile\n        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>\n      </DropdownMenuItem>\n      <DropdownMenuItem>\n        <Settings className="mr-2 size-4" /> Settings\n        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>\n      </DropdownMenuItem>\n    </DropdownMenuGroup>\n    <DropdownMenuSeparator />\n    <DropdownMenuItem>\n      <LogOut className="mr-2 size-4" /> Log out\n    </DropdownMenuItem>\n  </DropdownMenuContent>\n</DropdownMenu>`}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Open Menu</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
+          {/* Full-featured */}
+          <Example
+            title="Full-featured"
+            description="Menu with labels, groups, sub-menus, shortcuts, and icons."
+            code={`<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent className="w-56">
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+      <DropdownMenuItem>
+        <User /> Profile
+        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Settings /> Settings
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>
+      <LogOut /> Log out
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Open Menu</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <User className="mr-2 size-4" /> Profile
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CreditCard className="mr-2 size-4" /> Billing
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 size-4" /> Settings
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <User className="mr-2 size-4" /> Profile
-                  <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  <LogOut className="mr-2 size-4" /> Log out
+                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard className="mr-2 size-4" /> Billing
-                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 size-4" /> Settings
-                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
+
+          {/* With Sub-menu */}
+          <Example
+            title="With Sub-menu"
+            description="Nested sub-menu for grouped actions."
+            code={`<DropdownMenuSub>
+  <DropdownMenuSubTrigger>
+    Invite users
+  </DropdownMenuSubTrigger>
+  <DropdownMenuSubContent>
+    <DropdownMenuItem>Email</DropdownMenuItem>
+    <DropdownMenuItem>Message</DropdownMenuItem>
+  </DropdownMenuSubContent>
+</DropdownMenuSub>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Invite</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuItem><User className="mr-2 size-4" /> Profile</DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
                     <User className="mr-2 size-4" /> Invite users
@@ -16934,141 +17956,225 @@ function DropdownMenuDocs() {
                     <DropdownMenuItem><Plus className="mr-2 size-4" /> More...</DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LifeBuoy className="mr-2 size-4" /> Support
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 size-4" /> Log out
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </Example>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
+
+          {/* Checkbox Items */}
+          <Example
+            title="Checkbox Items"
+            description="Toggle boolean options within the menu."
+            code={`<DropdownMenuCheckboxItem
+  checked={bookmarksChecked}
+  onCheckedChange={setBookmarksChecked}
+>
+  Show Bookmarks
+</DropdownMenuCheckboxItem>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">View Options</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuCheckboxItem checked={bookmarksChecked} onCheckedChange={setBookmarksChecked}>
+                  Show Bookmarks
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem checked={urlsChecked} onCheckedChange={setUrlsChecked}>
+                  Show Full URLs
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
+
+          {/* Radio Group */}
+          <Example
+            title="Radio Group"
+            description="Single-select option within the menu."
+            code={`<DropdownMenuRadioGroup
+  value={person}
+  onValueChange={setPerson}
+>
+  <DropdownMenuRadioItem value="pedro">
+    Pedro
+  </DropdownMenuRadioItem>
+  <DropdownMenuRadioItem value="colm">
+    Colm
+  </DropdownMenuRadioItem>
+</DropdownMenuRadioGroup>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Select Person</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>Team</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup value={person} onValueChange={setPerson}>
+                  <DropdownMenuRadioItem value="pedro">Pedro</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="colm">Colm</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="sarah">Sarah</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
+
+          {/* Simple */}
+          <Example
+            title="Simple (No Icons)"
+            description="Minimal menu without icons or shortcuts."
+            code={`<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Actions</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Actions</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
+
+          {/* Disabled Items */}
+          <Example
+            title="Disabled Items"
+            description="Items can be disabled to prevent interaction."
+            code={`<DropdownMenuItem disabled>
+  Can't touch this
+</DropdownMenuItem>`}
+          >
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">With Disabled</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuItem>Available</DropdownMenuItem>
+                <DropdownMenuItem disabled>Unavailable</DropdownMenuItem>
+                <DropdownMenuItem>Also available</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Example>
         </div>
       </section>
 
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <DropdownMenuPropsTable />
+      </section>
 
       {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
+      <section id="design-tokens" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
+        <DropdownMenuTokensTable />
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Content</h3>
+        <DoItem>Use clear, concise action labels — "Delete", "Rename", not "Click here to delete".</DoItem>
+        <DontItem>Don't use long descriptions as menu items. Keep to 1-3 words per item.</DontItem>
+        <DoItem>Use DropdownMenuShortcut to display keyboard shortcuts for power users.</DoItem>
+        <DontItem>Don't show shortcuts that don't actually work — verify before adding.</DontItem>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Structure</h3>
+        <DoItem>Group related actions with labels and separators for scannability.</DoItem>
+        <DontItem>Don't put more than 7-10 items in a single menu — use sub-menus or restructure.</DontItem>
+        <DoItem>Place destructive actions (Delete, Remove) at the bottom, separated.</DoItem>
+        <DontItem>Don't use DropdownMenu for navigation — use NavigationMenu instead.</DontItem>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="176:27848" rows={[
+        ["Container", "Menu", "DropdownMenuContent", "bg-card border-border rounded-lg shadow p-1"],
+        ["Spacing", "2px (default)", "p-1", "4px inner padding"],
+        ["Item Size", "Regular (32px)", "DropdownMenuItem", "px-xs py-2xs rounded-md"],
+        ["Item Size", "Large (36px)", "—", "px-sm py-xs rounded-md"],
+        ["Item State", "Hover/Focus", "focus:bg-accent", "#f3f3f2 (--accent)"],
+        ["Item State", "Selected", "—", "#dadad7 (--accent-foreground area)"],
+        ["Item State", "Disabled", "data-[disabled]", "opacity-50, no interaction"],
+        ["Item Type", "Destructive", "text-destructive", "Red text color"],
+        ["Sub-menu", "Trigger", "DropdownMenuSubTrigger", "ChevronRight ml-auto"],
+        ["Checkbox", "Checked", "DropdownMenuCheckboxItem", "Check icon indicator"],
+        ["Radio", "Selected", "DropdownMenuRadioItem", "Circle icon indicator"],
+        ["Icon Size", "16px", "[&_svg]:size-md", "All item icons"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <h3 className="font-heading font-semibold text-base">Keyboard Navigation</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
+              <tr className="border-b border-border">
+                <th className="text-left p-3 font-medium">Key</th>
+                <th className="text-left p-3 font-medium">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--card</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Menu border</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Item hover background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Item text color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--shadow-md</td><td className="px-4 py-3 font-mono text-muted-foreground">elevation</td><td className="px-4 py-3"></td><td className="px-4 py-3 text-muted-foreground">Menu shadow</td></tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Enter / Space</td>
+                <td className="p-3">Open menu (on trigger) or select item</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Arrow Down / Up</td>
+                <td className="p-3">Navigate between menu items</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Arrow Right</td>
+                <td className="p-3">Open sub-menu (on sub-trigger)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Arrow Left</td>
+                <td className="p-3">Close sub-menu (back to parent)</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Escape</td>
+                <td className="p-3">Close menu</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Type-ahead</td>
+                <td className="p-3">Jump to matching item by typing first letter</td>
+              </tr>
             </tbody>
           </table>
         </div>
+        <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><code className="text-xs">role="menu"</code> — Applied to DropdownMenuContent.</li>
+          <li><code className="text-xs">role="menuitem"</code> — Applied to each DropdownMenuItem.</li>
+          <li><code className="text-xs">role="menuitemcheckbox"</code> — Applied to DropdownMenuCheckboxItem with <code className="text-xs">aria-checked</code>.</li>
+          <li><code className="text-xs">role="menuitemradio"</code> — Applied to DropdownMenuRadioItem with <code className="text-xs">aria-checked</code>.</li>
+          <li>Focus trap within the menu while open.</li>
+        </ul>
       </section>
 
-      <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Structure</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Group related actions with labels and separators for scannability.</p>
-              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">DropdownMenuShortcut</code> to show keyboard shortcuts.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't put more than 7-10 items in a single menu — use sub-menus or restructure.</p>
-              <p>Don't use DropdownMenu for navigation — use <strong>NavigationMenu</strong> instead.</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pb-2 pr-4 font-semibold">Key</th>
-                    <th className="pb-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border"><td className="py-2 pr-4 font-mono">Arrow Up / Down</td><td className="py-2">Navigate between menu items</td></tr>
-                  <tr className="border-b border-border"><td className="py-2 pr-4 font-mono">Enter / Space</td><td className="py-2">Select the focused item</td></tr>
-                  <tr className="border-b border-border last:border-0"><td className="py-2 pr-4 font-mono">Escape</td><td className="py-2">Close the menu</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on Radix DropdownMenu — full keyboard navigation.</li>
-              <li>Arrow keys navigate items, Enter/Space activates, Escape closes.</li>
-              <li>Type-ahead: typing a letter jumps to matching items.</li>
-              <li>Checkbox and radio items communicate state via ARIA.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Content Min Width", "8rem", "—", "min-w-[8rem]"],
-        ["Item Padding", "px-xs py-2xs", "—", "px-xs py-2xs text-sm"],
-        ["Item State", "Focus", "—", "focus:bg-muted focus:text-foreground"],
-        ["Item State", "Disabled", "disabled", "data-[disabled]:opacity-50"],
-        ["Sub-menu", "Trigger", "DropdownMenuSubTrigger", "ChevronRight icon ml-auto"],
-        ["Checkbox Item", "Checked", "DropdownMenuCheckboxItem", "Check icon indicator"],
-        ["Radio Item", "Selected", "DropdownMenuRadioItem", "Circle icon indicator"],
-        ["Shortcut", "Right-aligned", "DropdownMenuShortcut", "ml-auto text-xs opacity-60"],
-        ["Icon Size", "16px", "—", "[&_svg]:size-md"],
-      ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      {/* ---- Related ---- */}
+      <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">ContextMenu</p>
-              <p className="text-muted-foreground mt-0.5">Right-click context menu — same item pattern.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Menubar</p>
-              <p className="text-muted-foreground mt-0.5">Horizontal menu bar with multiple dropdown menus.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">Command</p>
-              <p className="text-muted-foreground mt-0.5">Searchable command palette.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><strong>Context Menu</strong> — Right-click triggered menu with the same item pattern.</li>
+          <li><strong>Menubar</strong> — Horizontal menu bar with multiple dropdown menus.</li>
+          <li><strong>Command</strong> — Searchable command palette for keyboard-first users.</li>
+          <li><strong>Select</strong> — Single-value selection control (not an action menu).</li>
+        </ul>
       </section>
     </div>
   )
@@ -17118,7 +18224,7 @@ function CommandDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden">
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <Command className="w-[350px]">
               <CommandInput placeholder="Type a command..." />
               <CommandList>
@@ -17490,7 +18596,7 @@ function AccordionExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[160px]">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[160px]">
         {/* pointer-events-none: prevent interactive states; visual overrides for Figma states
             ring-focus is a custom CSS class (not Tailwind utility), so use shadow arbitrary for focus ring */}
         <div className={[
@@ -17518,31 +18624,10 @@ function AccordionExploreBehavior() {
           </Accordion>
         </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">State</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Default", "Hover", "Focus", "Disable"].map(v => (
-                <button key={v} onClick={() => setState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", state === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Type</Label>
-            <div className="flex flex-wrap gap-xs">
-              {["Open", "Closed"].map(v => (
-                <button key={v} onClick={() => { if (!isDisable) setType(v) }} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", (isDisable ? "Closed" : type) === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent", isDisable && "opacity-50 cursor-not-allowed")}>{v}</button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">End Item</Label>
-            <div className="pt-1">
-              <Switch checked={endItem} onCheckedChange={setEndItem} />
-            </div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="State" value={state} onChange={setState} options={[["Default","Default"],["Hover","Hover"],["Focus","Focus"],["Disable","Disable"]]} />
+        <PropertyTabs label="Type" value={isDisable ? "Closed" : type} onChange={(v) => { if (!isDisable) setType(v) }} options={[["Open","Open"],["Closed","Closed"]]} />
+        <PropertyToggle label="End Item" checked={endItem} onChange={setEndItem} />
       </div>
     </div>
   )
@@ -17886,7 +18971,7 @@ function CollapsibleDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden">
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[400px]">
               <p className="typo-paragraph-sm text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
               <CollapsibleContent>
@@ -18571,7 +19656,7 @@ function DatePickerInputTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px]">
         <div className="flex flex-col gap-[4px]">
-          {showLabel && <label className="typo-paragraph-sm font-medium text-foreground">Date</label>}
+          {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Date</label>}
           <div
             className={cn(
               "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm w-[197px] transition-colors",
@@ -18610,7 +19695,7 @@ function TimePickerInputTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px]">
         <div className="flex flex-col gap-[4px]">
-          {showLabel && <label className="typo-paragraph-sm font-medium text-foreground">Time</label>}
+          {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Time</label>}
           <div
             className={cn(
               "h-9 w-[100px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm transition-colors inline-flex items-center",
@@ -19138,7 +20223,7 @@ function RadioExploreBehavior() {
       {/* ---- Tab: Radio ---- */}
       {rdTab === "radio" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <RadioGroup value={rdChecked === "True" ? "item" : ""} disabled={rdState === "Disabled"}>
               <RadioGroupItem
                 value="item"
@@ -19150,25 +20235,9 @@ function RadioExploreBehavior() {
               />
             </RadioGroup>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Checked?</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["False", "True"].map(v => (
-                    <button key={v} onClick={() => setRdChecked(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rdChecked === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Default", "Focus", "Error", "Error Focus", "Disabled"].map(v => (
-                    <button key={v} onClick={() => setRdState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rdState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Checked?" value={rdChecked} onChange={setRdChecked} options={[["False","False"],["True","True"]]} />
+              <PropertyTabs label="State" value={rdState} onChange={setRdState} options={[["Default","Default"],["Focus","Focus"],["Error","Error"],["Error Focus","Error Focus"],["Disabled","Disabled"]]} />
           </div>
         </>
       )}
@@ -19176,7 +20245,7 @@ function RadioExploreBehavior() {
       {/* ---- Tab: Radio Group ---- */}
       {rdTab === "group" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <RadioGroup
               defaultValue="option-1"
               disabled={rgDisabled}
@@ -19196,23 +20265,9 @@ function RadioExploreBehavior() {
               </div>
             </RadioGroup>
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Layout</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Inline", "Block"].map(v => (
-                    <button key={v} onClick={() => setRgLayout(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", rgLayout === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-lg">
-                <div className="space-y-xs">
-                  <Label className="text-xs text-muted-foreground">Disabled</Label>
-                  <div className="pt-1"><Switch checked={rgDisabled} onCheckedChange={setRgDisabled} /></div>
-                </div>
-              </div>
-            </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="Layout" value={rgLayout} onChange={setRgLayout} options={[["Inline","Inline"],["Block","Block"]]} />
+              <PropertyToggle label="Disabled" checked={rgDisabled} onChange={setRgDisabled} />
           </div>
         </>
       )}
@@ -19220,7 +20275,7 @@ function RadioExploreBehavior() {
       {/* ---- Tab: Rich Radio Group (Figma 843:222230) ---- */}
       {rdTab === "rich" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             {/* Figma: 240w, gap=8, pad=12h/8v, border=1 #e9e9e7 (--border), fill=#fff (--card), corner=10px */}
             <div className={[
               "flex gap-xs px-sm py-xs w-[240px] rounded-[10px] border border-border bg-card",
@@ -19263,26 +20318,11 @@ function RadioExploreBehavior() {
           </div>
           <div className="border-t border-border bg-muted/50 p-lg">
             <div className="flex flex-wrap gap-lg">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Checked?</Label>
-                <div className="pt-1"><Switch checked={richChecked} onCheckedChange={setRichChecked} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Flipped</Label>
-                <div className="pt-1"><Switch checked={richFlipped} onCheckedChange={setRichFlipped} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Line 2</Label>
-                <div className="pt-1"><Switch checked={richShowLine2} onCheckedChange={setRichShowLine2} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Badge</Label>
-                <div className="pt-1"><Switch checked={richShowBadge} onCheckedChange={setRichShowBadge} /></div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Show Icon</Label>
-                <div className="pt-1"><Switch checked={richShowIcon} onCheckedChange={setRichShowIcon} /></div>
-              </div>
+              <PropertyToggle label="Checked?" checked={richChecked} onChange={setRichChecked} />
+              <PropertyToggle label="Flipped" checked={richFlipped} onChange={setRichFlipped} />
+              <PropertyToggle label="Show Line 2" checked={richShowLine2} onChange={setRichShowLine2} />
+              <PropertyToggle label="Show Badge" checked={richShowBadge} onChange={setRichShowBadge} />
+              <PropertyToggle label="Show Icon" checked={richShowIcon} onChange={setRichShowIcon} />
             </div>
           </div>
         </>
@@ -19291,7 +20331,7 @@ function RadioExploreBehavior() {
       {/* ---- Tab: Rich Radio Group/Advanced (Figma 2667:185) ---- */}
       {rdTab === "richAdvanced" && (
         <>
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             {raSize === "Regular" ? (
               /* Figma Regular: 720w, flex-col, gap=12, pad=16, corner=12, stroke=1 */
               <div className={[
@@ -19342,41 +20382,16 @@ function RadioExploreBehavior() {
               </div>
             )}
           </div>
-          <div className="border-t border-border bg-muted/50 p-lg">
-            <div className="flex flex-col gap-md">
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">State</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {[["Default","Default"],["Active","Active"],["Hover","Hover"],["Disable","Disable"],["Disable Selected","Disable Selected"],["Selected","Selected"],["Selected - Hover","Selected - Hover"]].map(([v,l]) => (
-                    <button key={v} onClick={() => setRaState(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raState === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{l}</button>
-                  ))}
-                </div>
-              </div>
-              <div className="space-y-xs">
-                <Label className="text-xs text-muted-foreground">Size</Label>
-                <div className="flex flex-wrap gap-xs">
-                  {["Regular", "Small"].map(v => (
-                    <button key={v} onClick={() => setRaSize(v)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", raSize === v ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{v}</button>
-                  ))}
-                </div>
-              </div>
+          <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+              <PropertyTabs label="State" value={raState} onChange={setRaState} options={[["Default","Default"],["Active","Active"],["Hover","Hover"],["Disable","Disable"],["Disable Selected","Disable Selected"],["Selected","Selected"],["Selected - Hover","Selected - Hover"]]} />
+              <PropertyTabs label="Size" value={raSize} onChange={setRaSize} options={[["Regular","Regular"],["Small","Small"]]} />
               {raSize === "Regular" && (
                 <div className="flex flex-wrap gap-lg">
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Recommended</Label>
-                    <div className="pt-1"><Switch checked={raRecommended} onCheckedChange={setRaRecommended} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Description</Label>
-                    <div className="pt-1"><Switch checked={raDescription} onCheckedChange={setRaDescription} /></div>
-                  </div>
-                  <div className="space-y-xs">
-                    <Label className="text-xs text-muted-foreground">Show Body</Label>
-                    <div className="pt-1"><Switch checked={raShowBody} onCheckedChange={setRaShowBody} /></div>
-                  </div>
+                  <PropertyToggle label="Recommended" checked={raRecommended} onChange={setRaRecommended} />
+                  <PropertyToggle label="Description" checked={raDescription} onChange={setRaDescription} />
+                  <PropertyToggle label="Show Body" checked={raShowBody} onChange={setRaShowBody} />
                 </div>
               )}
-            </div>
           </div>
         </>
       )}
@@ -19682,94 +20697,6 @@ function RadioDocs() {
   )
 }
 
-/* ================================================================
-   Input OTP
-   ================================================================ */
-
-function InputOTPDocs() {
-  return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
-        <h1 className="typo-heading-2">Input OTP</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
-          Multi-cell one-time-password input. Built on <code className="text-xs bg-muted px-1 py-0.5 rounded">input-otp</code>.
-        </p>
-      </header>
-
-      <Playground controls={[]} render={() => (
-        <InputOTP maxLength={6}>
-          <InputOTPGroup>
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-          </InputOTPGroup>
-          <InputOTPSeparator />
-          <InputOTPGroup>
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
-      )} />
-
-      <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="typo-paragraph-bold">Import</h2>
-        <CodeBlock code={`import {\n  InputOTP,\n  InputOTPGroup,\n  InputOTPSlot,\n  InputOTPSeparator,\n} from "@/components/ui/input-otp"`} />
-      </section>
-
-      <section className="space-y-4 pt-3xl">
-        <h2 className="typo-paragraph-bold">Examples</h2>
-
-        <Example
-          title="Basic 6-digit OTP"
-          description="Standard 6-cell OTP input with separator."
-          code={`<InputOTP maxLength={6}>\n  <InputOTPGroup>\n    <InputOTPSlot index={0} />\n    <InputOTPSlot index={1} />\n    <InputOTPSlot index={2} />\n  </InputOTPGroup>\n  <InputOTPSeparator />\n  <InputOTPGroup>\n    <InputOTPSlot index={3} />\n    <InputOTPSlot index={4} />\n    <InputOTPSlot index={5} />\n  </InputOTPGroup>\n</InputOTP>`}
-        >
-          <InputOTP maxLength={6}>
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-            </InputOTPGroup>
-            <InputOTPSeparator />
-            <InputOTPGroup>
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
-        </Example>
-
-        <Example
-          title="4-digit OTP"
-          description="Compact 4-cell variant."
-          code={`<InputOTP maxLength={4}>\n  <InputOTPGroup>\n    <InputOTPSlot index={0} />\n    <InputOTPSlot index={1} />\n    <InputOTPSlot index={2} />\n    <InputOTPSlot index={3} />\n  </InputOTPGroup>\n</InputOTP>`}
-        >
-          <InputOTP maxLength={4}>
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-            </InputOTPGroup>
-          </InputOTP>
-        </Example>
-      </section>
-
-      {/* ---- Figma Mapping ---- */}
-      <FigmaMapping rows={[
-        ["Cell Size", "32×32px", "—", "size-3xl"],
-        ["Cell Border", "Shared borders", "—", "border-y border-r, first:border-l"],
-        ["Cell Radius", "First/Last rounded", "—", "first:rounded-l-md last:rounded-r-md"],
-        ["Active State", "Ring", "—", "ring-[3px] ring-ring"],
-        ["Caret", "Blinking", "—", "animate-caret-blink duration-1000"],
-        ["Separator", "Minus icon", "InputOTPSeparator", "Minus icon between groups"],
-        ["Gap", "Between cells", "—", "gap-xs"],
-      ]} />
-    </div>
-  )
-}
 
 /* ================================================================
    Spinner
@@ -19881,6 +20808,596 @@ function SpinnerTokensTable() {
           </tr>
         </tbody>
       </table>
+    </div>
+  )
+}
+
+/* =====================================================================
+   INPUT OTP — Docs Page
+   ===================================================================== */
+
+const inputOtpSections: TocSection[] = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related Components" },
+]
+
+type InputOtpTabId = "input-otp" | "input-otp-slot"
+const inputOtpBehaviorTabs: { value: InputOtpTabId; label: string }[] = [
+  { value: "input-otp", label: "Input OTP" },
+  { value: "input-otp-slot", label: "Input OTP Slot" },
+]
+
+function InputOtpTab() {
+  const [size, setSize] = useState("default")
+  const [digits, setDigits] = useState("6")
+  const [state, setState] = useState("default")
+  const [otpValue, setOtpValue] = useState("")
+
+  const isDisabled = state === "disabled"
+  const isError = state === "error" || state === "error-focus"
+  const digitCount = parseInt(digits)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
+        <InputOTP
+          maxLength={digitCount}
+          inputSize={size as any}
+          disabled={isDisabled}
+          aria-invalid={isError || undefined}
+          value={otpValue}
+          onChange={setOtpValue}
+        >
+          <InputOTPGroup>
+            {Array.from({ length: Math.min(digitCount, 3) }, (_, i) => (
+              <InputOTPSlot key={i} index={i} />
+            ))}
+          </InputOTPGroup>
+          {digitCount > 3 && (
+            <>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                {Array.from({ length: digitCount - 3 }, (_, i) => (
+                  <InputOTPSlot key={i + 3} index={i + 3} />
+                ))}
+              </InputOTPGroup>
+            </>
+          )}
+        </InputOTP>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Size" value={size} options={[
+          { value: "lg", label: "Large" },
+          { value: "default", label: "Default" },
+          { value: "sm", label: "Small" },
+          { value: "xs", label: "Mini" },
+        ]} onChange={(v) => { setSize(v); setOtpValue("") }} />
+        <PropertyTabs label="Digits" value={digits} options={[
+          { value: "4", label: "4 digits" },
+          { value: "6", label: "6 digits" },
+        ]} onChange={(v) => { setDigits(v); setOtpValue("") }} />
+        <PropertyTabs label="State" value={state} options={[
+          { value: "default", label: "Default" },
+          { value: "error", label: "Error" },
+          { value: "disabled", label: "Disabled" },
+        ]} onChange={setState} />
+      </div>
+    </>
+  )
+}
+
+function InputOtpSlotTab() {
+  const [size, setSize] = useState("default")
+  const [position, setPosition] = useState("left")
+  const [state, setState] = useState("empty")
+
+  const sizeMap: Record<string, string> = {
+    lg: "size-3xl",
+    default: "size-9",
+    sm: "size-2xl",
+    xs: "size-xl",
+  }
+  const radiusMap: Record<string, Record<string, string>> = {
+    lg: { left: "rounded-l-lg", right: "rounded-r-lg", middle: "" },
+    default: { left: "rounded-l-lg", right: "rounded-r-lg", middle: "" },
+    sm: { left: "rounded-l-md", right: "rounded-r-md", middle: "" },
+    xs: { left: "rounded-l-sm", right: "rounded-r-sm", middle: "" },
+  }
+  const textMap: Record<string, string> = {
+    lg: "typo-paragraph-sm",
+    default: "typo-paragraph-sm",
+    sm: "typo-paragraph-sm",
+    xs: "typo-paragraph-mini",
+  }
+  const caretMap: Record<string, string> = {
+    lg: "h-md",
+    default: "h-md",
+    sm: "h-sm",
+    xs: "h-xs",
+  }
+
+  const isError = state === "error" || state === "error-focus"
+  const isFocus = state === "focus" || state === "error-focus"
+  const isDisabled = state === "disabled"
+  const hasValue = state === "value"
+  const hasPlaceholder = state === "placeholder"
+  const showCaret = isFocus && !hasValue
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
+        <div
+          className={cn(
+            "relative flex items-center justify-center border border-border bg-input text-foreground transition-all",
+            sizeMap[size],
+            textMap[size],
+            radiusMap[size]?.[position],
+            isFocus && "z-10 border-border-strong ring-[3px] ring-ring",
+            isError && "border-destructive-border",
+            isError && isFocus && "ring-ring-error",
+            isDisabled && "opacity-50 cursor-not-allowed",
+          )}
+        >
+          {hasValue && <span>5</span>}
+          {hasPlaceholder && <span className="text-muted-foreground">0</span>}
+          {showCaret && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className={cn("w-px animate-caret-blink bg-foreground duration-1000", caretMap[size])} />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Size" value={size} options={[
+          { value: "lg", label: "Large" },
+          { value: "default", label: "Default" },
+          { value: "sm", label: "Small" },
+          { value: "xs", label: "Mini" },
+        ]} onChange={setSize} />
+        <PropertyTabs label="Position" value={position} options={[
+          { value: "left", label: "Left" },
+          { value: "middle", label: "Middle" },
+          { value: "right", label: "Right" },
+        ]} onChange={setPosition} />
+        <PropertyTabs label="State" value={state} options={[
+          { value: "empty", label: "Empty" },
+          { value: "placeholder", label: "Placeholder" },
+          { value: "value", label: "Value" },
+          { value: "focus", label: "Focus" },
+          { value: "error", label: "Error" },
+          { value: "error-focus", label: "Error Focus" },
+          { value: "disabled", label: "Disabled" },
+        ]} onChange={setState} />
+      </div>
+    </>
+  )
+}
+
+function InputOtpExploreBehavior() {
+  const [activeTab, setActiveTab] = useState<InputOtpTabId>("input-otp")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      <div className="border-b border-border px-lg overflow-x-auto">
+        <div className="flex">
+          {inputOtpBehaviorTabs.map(tab => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={cn(
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
+                activeTab === tab.value
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {activeTab === "input-otp" && <InputOtpTab />}
+      {activeTab === "input-otp-slot" && <InputOtpSlotTab />}
+    </div>
+  )
+}
+
+function InputOtpPropsTable() {
+  const props = [
+    { name: "maxLength", type: "number", default: "—", description: "Maximum number of characters (digits) the OTP input accepts." },
+    { name: "inputSize", type: '"lg" | "default" | "sm" | "xs"', default: '"default"', description: "Size of OTP slots. lg=40px, default=36px, sm=32px, xs=24px." },
+    { name: "value", type: "string", default: "—", description: "Controlled value of the OTP input." },
+    { name: "onChange", type: "(value: string) => void", default: "—", description: "Callback fired when the OTP value changes." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables all OTP slots." },
+    { name: "aria-invalid", type: "boolean", default: "false", description: "Marks the input as invalid, showing error styling." },
+    { name: "containerClassName", type: "string", default: "—", description: "Additional class for the outer container." },
+    { name: "pattern", type: "string", default: "—", description: "Regex pattern for input validation (e.g. REGEXP_ONLY_DIGITS)." },
+  ]
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left p-3 font-medium">Prop</th>
+            <th className="text-left p-3 font-medium">Type</th>
+            <th className="text-left p-3 font-medium">Default</th>
+            <th className="text-left p-3 font-medium">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.map(p => (
+            <tr key={p.name} className="border-b border-border">
+              <td className="p-3 font-mono text-xs">{p.name}</td>
+              <td className="p-3 font-mono text-xs">{p.type}</td>
+              <td className="p-3 font-mono text-xs">{p.default}</td>
+              <td className="p-3">{p.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function InputOtpTokensTable() {
+  const tokens = [
+    { token: "size-3xl", value: "40px", usage: "Slot size — Large" },
+    { token: "size-9 (36px)", value: "36px", usage: "Slot size — Default" },
+    { token: "size-2xl", value: "32px", usage: "Slot size — Small" },
+    { token: "size-xl", value: "24px", usage: "Slot size — Mini" },
+    { token: "rounded-lg", value: "8px", usage: "Border radius — Large/Default" },
+    { token: "rounded-md", value: "6px", usage: "Border radius — Small" },
+    { token: "rounded-sm", value: "4px", usage: "Border radius — Mini" },
+    { token: "gap-xs", value: "8px", usage: "Gap between groups" },
+    { token: "bg-input", value: "var(--input)", usage: "Slot background" },
+    { token: "border-border", value: "var(--border)", usage: "Default border" },
+    { token: "border-border-strong", value: "var(--border-strong)", usage: "Focus border" },
+    { token: "ring-ring", value: "var(--ring)", usage: "Focus ring (3px)" },
+    { token: "ring-ring-error", value: "var(--ring-error)", usage: "Error focus ring" },
+    { token: "border-destructive-border", value: "var(--destructive-border)", usage: "Error border" },
+    { token: "typo-paragraph-sm", value: "14px", usage: "Text — Large/Default/Small" },
+    { token: "typo-paragraph-mini", value: "12px", usage: "Text — Mini" },
+    { token: "h-md", value: "16px", usage: "Caret height — Large/Default" },
+    { token: "h-sm", value: "12px", usage: "Caret height — Small" },
+    { token: "h-xs", value: "8px", usage: "Caret height — Mini" },
+  ]
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="border-b border-border">
+            <th className="text-left p-3 font-medium">Token</th>
+            <th className="text-left p-3 font-medium">Value</th>
+            <th className="text-left p-3 font-medium">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map(t => (
+            <tr key={t.token} className="border-b border-border">
+              <td className="p-3 font-mono text-xs">{t.token}</td>
+              <td className="p-3 font-mono text-xs">{t.value}</td>
+              <td className="p-3">{t.usage}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function InputOTPDocs() {
+  const [otpValue, setOtpValue] = useState("")
+
+  return (
+    <div className="space-y-12">
+      <TableOfContents sections={inputOtpSections} />
+
+      {/* ---- Header ---- */}
+      <header className="space-y-md pb-3xl">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
+          Components / Forms
+        </p>
+        <h1 className="typo-heading-2">Input OTP</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Multi-cell one-time-password input built on input-otp. Supports 4 sizes
+          (Large, Default, Small, Mini), error states via aria-invalid, and automatic
+          focus management between cells.
+        </p>
+      </header>
+
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <InputOtpExploreBehavior />
+      </section>
+
+      {/* ---- Installation ---- */}
+      <InstallationSection
+        deps={`pnpm add input-otp`}
+        importCode={`import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"`}
+      />
+
+      {/* ---- Examples ---- */}
+      <section className="space-y-6 pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* 6-digit with separator */}
+          <Example
+            title="6-digit with separator"
+            description="Standard 6-digit OTP with a separator between groups of 3."
+            code={`<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>`}
+          >
+            <InputOTP maxLength={6}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+          </Example>
+
+          {/* 4-digit compact */}
+          <Example
+            title="4-digit compact"
+            description="Compact 4-digit OTP without separator."
+            code={`<InputOTP maxLength={4}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>`}
+          >
+            <InputOTP maxLength={4}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </Example>
+
+          {/* Sizes */}
+          <Example
+            title="Sizes"
+            description="All 4 sizes: Large (40px), Default (36px), Small (32px), Mini (24px)."
+            code={`<InputOTP maxLength={4} inputSize="lg">...</InputOTP>
+<InputOTP maxLength={4} inputSize="default">...</InputOTP>
+<InputOTP maxLength={4} inputSize="sm">...</InputOTP>
+<InputOTP maxLength={4} inputSize="xs">...</InputOTP>`}
+          >
+            <div className="space-y-md">
+              {(["lg", "default", "sm", "xs"] as const).map(s => (
+                <InputOTP key={s} maxLength={4} inputSize={s}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                </InputOTP>
+              ))}
+            </div>
+          </Example>
+
+          {/* Error state */}
+          <Example
+            title="Error state"
+            description="Use aria-invalid to show error borders and focus ring."
+            code={`<InputOTP maxLength={6} aria-invalid>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+<p className="text-xs text-destructive">
+  Invalid verification code.
+</p>`}
+          >
+            <div className="space-y-xs">
+              <InputOTP maxLength={6} aria-invalid>
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+              <p className="text-xs text-destructive">Invalid verification code.</p>
+            </div>
+          </Example>
+
+          {/* Controlled */}
+          <Example
+            title="Controlled"
+            description="Use value + onChange for controlled input. Shows real-time value below."
+            code={`const [value, setValue] = useState("")
+
+<InputOTP maxLength={6} value={value} onChange={setValue}>
+  ...
+</InputOTP>
+<p>Value: {value}</p>`}
+          >
+            <div className="space-y-xs">
+              <InputOTP maxLength={6} value={otpValue} onChange={setOtpValue}>
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+              <p className="typo-paragraph-mini text-muted-foreground">
+                Value: "{otpValue}" ({otpValue.length}/6)
+              </p>
+            </div>
+          </Example>
+
+          {/* Disabled */}
+          <Example
+            title="Disabled"
+            description="Disabled state with 50% opacity and not-allowed cursor."
+            code={`<InputOTP maxLength={4} disabled>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+    <InputOTPSlot index={3} />
+  </InputOTPGroup>
+</InputOTP>`}
+          >
+            <InputOTP maxLength={4} disabled>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+            </InputOTP>
+          </Example>
+        </div>
+      </section>
+
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <InputOtpPropsTable />
+      </section>
+
+      {/* ---- Design Tokens ---- */}
+      <section id="design-tokens" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+        <InputOtpTokensTable />
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <h3 className="font-heading font-semibold text-base mt-md">Content</h3>
+        <DoItem>Use clear labels like "Enter the 6-digit code sent to your phone".</DoItem>
+        <DontItem>Don't use vague labels like "Enter code" without context on where the code was sent.</DontItem>
+        <DoItem>Show a countdown timer if the code has an expiration.</DoItem>
+        <DontItem>Don't auto-submit without giving the user a chance to review their input.</DontItem>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Structure</h3>
+        <DoItem>Group digits logically (e.g., 3-3 for 6-digit, 4 for 4-digit).</DoItem>
+        <DontItem>Don't use more than 8 digits — consider a regular text input for longer codes.</DontItem>
+        <DoItem>Use the separator component between groups for visual clarity.</DoItem>
+        <DontItem>Don't mix different sizes within the same OTP input.</DontItem>
+
+        <h3 className="font-heading font-semibold text-base mt-md">Accessibility</h3>
+        <DoItem>Set aria-invalid when the code is incorrect to trigger error styling.</DoItem>
+        <DontItem>Don't remove focus management — the library handles tab between cells automatically.</DontItem>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="140:11468" rows={[
+        ["Size", "Large", "inputSize", '"lg"'],
+        ["Size", "Default", "inputSize", '"default"'],
+        ["Size", "Small", "inputSize", '"sm"'],
+        ["Size", "Mini", "inputSize", '"xs"'],
+        ["Position", "Left", "CSS", "first:rounded-l-*"],
+        ["Position", "Middle", "CSS", "(no radius)"],
+        ["Position", "Right", "CSS", "last:rounded-r-*"],
+        ["State", "Focus", "isActive", "border-strong + ring-ring"],
+        ["State", "Error", "aria-invalid", "destructive-border"],
+        ["State", "Error Focus", "aria-invalid + isActive", "ring-ring-error"],
+        ["State", "Disabled", "disabled", "opacity-50"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <h3 className="font-heading font-semibold text-base">Keyboard Navigation</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="text-left p-3 font-medium">Key</th>
+                <th className="text-left p-3 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">0-9</td>
+                <td className="p-3">Enter digit and advance to next slot</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Backspace</td>
+                <td className="p-3">Delete current digit and move to previous slot</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">←/→</td>
+                <td className="p-3">Move between slots</td>
+              </tr>
+              <tr className="border-b border-border">
+                <td className="p-3 font-mono text-xs">Ctrl+V / ⌘V</td>
+                <td className="p-3">Paste full code from clipboard</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><code className="text-xs">aria-invalid</code> — Set on the root InputOTP to indicate validation error. Propagates to all slots via CSS.</li>
+          <li><code className="text-xs">role="separator"</code> — InputOTPSeparator uses separator role for screen readers.</li>
+          <li><code className="text-xs">data-active</code> — Applied to the currently focused slot.</li>
+        </ul>
+      </section>
+
+      {/* ---- Related ---- */}
+      <section id="related" className="space-y-md pt-xl border-t border-border">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
+          <li><strong>Input</strong> — Standard single-line text input for general text entry.</li>
+          <li><strong>Label</strong> — Pair with InputOTP for accessible form labeling.</li>
+          <li><strong>Button</strong> — Submit/verify button after OTP entry.</li>
+        </ul>
+      </section>
     </div>
   )
 }
@@ -20144,9 +21661,9 @@ function HoverCardTokensTable() {
 function HoverCardExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
-        {/* Static hover card face preview — matches HoverCardContent structure */}
-        <div className="w-72 rounded-lg border border-border bg-card p-xs shadow pointer-events-none">
+      <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
+        {/* Uses hoverCardClassNames from hover-card.tsx — single source of truth */}
+        <div className={cn(hoverCardClassNames.content, "pointer-events-none")}>
           <div className="flex gap-md">
             <div className="size-10 shrink-0 rounded-full bg-muted border border-border flex items-center justify-center">
               <span className="typo-paragraph-sm-bold text-muted-foreground">N</span>
@@ -20497,17 +22014,8 @@ function AspectRatioExploreBehavior() {
           </AspectRatio>
         </div>
       </div>
-      <div className="border-t border-border bg-muted/50 p-lg">
-        <div className="flex flex-col gap-md">
-          <div className="space-y-xs">
-            <Label className="text-xs text-muted-foreground">Ratio</Label>
-            <div className="flex flex-wrap gap-xs">
-              {Object.keys(ratioMap).map((r) => (
-                <button key={r} onClick={() => setRatio(r)} className={cn("px-sm py-[5px] rounded-md text-xs border transition-colors", ratio === r ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:bg-accent")}>{ratioLabel[r]} ({r})</button>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <PropertyTabs label="Ratio" value={ratio} onChange={setRatio} options={Object.keys(ratioMap).map(r => [r, `${ratioLabel[r]} (${r})`])} />
       </div>
     </div>
   )
@@ -20787,7 +22295,7 @@ function ContextMenuDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden">
-          <div className="bg-primary/5 p-4xl flex items-center justify-center min-h-[200px]">
+          <div className="bg-background p-4xl flex items-center justify-center min-h-[200px]">
             <ContextMenu>
               <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
                 Right click here
@@ -21666,6 +23174,157 @@ const resizableSections: TocSection[] = [
   { id: "related", label: "Related Components" },
 ]
 
+function ResizableExploreBehavior() {
+  const [orientation, setOrientation] = React.useState<"horizontal" | "vertical">("horizontal")
+  const [withHandle, setWithHandle] = React.useState(true)
+  const [panels, setPanels] = React.useState("2")
+
+  return (
+    <section id="explore-behavior" className="space-y-md">
+      <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+      <div className="rounded-xl border border-border overflow-hidden">
+        <div className="bg-background flex items-center justify-center p-3xl min-h-[280px]">
+          <div className="w-full max-w-md">
+            <ResizablePanelGroup
+              orientation={orientation}
+              className={cn("rounded-lg border border-border", orientation === "vertical" && "min-h-[240px]")}
+            >
+              <ResizablePanel defaultSize={panels === "3" ? 25 : 50}>
+                <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
+                  <span className="typo-paragraph-sm-bold">{panels === "3" ? "Sidebar" : "One"}</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle={withHandle} />
+              <ResizablePanel defaultSize={50}>
+                <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
+                  <span className="typo-paragraph-sm-bold">{panels === "3" ? "Content" : "Two"}</span>
+                </div>
+              </ResizablePanel>
+              {panels === "3" && (
+                <>
+                  <ResizableHandle withHandle={withHandle} />
+                  <ResizablePanel defaultSize={25}>
+                    <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
+                      <span className="typo-paragraph-sm-bold">Details</span>
+                    </div>
+                  </ResizablePanel>
+                </>
+              )}
+            </ResizablePanelGroup>
+          </div>
+        </div>
+        <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+          <PropertyTabs label="Orientation" value={orientation} options={[
+            { value: "horizontal", label: "Horizontal" },
+            { value: "vertical", label: "Vertical" },
+          ]} onChange={(v) => setOrientation(v as "horizontal" | "vertical")} />
+          <PropertyTabs label="Panels" value={panels} options={[
+            { value: "2", label: "2" },
+            { value: "3", label: "3" },
+          ]} onChange={setPanels} />
+          <div className="flex flex-wrap gap-lg">
+            <PropertyToggle label="With Handle" checked={withHandle} onChange={setWithHandle} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ResizablePropsTable() {
+  const tables = [
+    {
+      component: "ResizablePanelGroup",
+      props: [
+        { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', desc: "Layout direction of the panel group." },
+        { name: "autoSaveId", type: "string", default: "—", desc: "Persist layout to localStorage with this key." },
+        { name: "className", type: "string", default: "—", desc: "Additional CSS classes." },
+      ],
+    },
+    {
+      component: "ResizablePanel",
+      props: [
+        { name: "defaultSize", type: "number", default: "—", desc: "Initial size as percentage (0–100)." },
+        { name: "minSize", type: "number", default: "10", desc: "Minimum panel size as percentage." },
+        { name: "maxSize", type: "number", default: "—", desc: "Maximum panel size as percentage." },
+        { name: "collapsible", type: "boolean", default: "false", desc: "Allow panel to collapse fully." },
+        { name: "collapsedSize", type: "number", default: "0", desc: "Size when collapsed (percentage)." },
+        { name: "onResize", type: "(size: number) => void", default: "—", desc: "Called when panel is resized." },
+      ],
+    },
+    {
+      component: "ResizableHandle",
+      props: [
+        { name: "withHandle", type: "boolean", default: "false", desc: "Show visible grip indicator on the handle." },
+        { name: "disabled", type: "boolean", default: "false", desc: "Prevent dragging this handle." },
+        { name: "className", type: "string", default: "—", desc: "Additional CSS classes." },
+      ],
+    },
+  ]
+
+  return (
+    <section id="props" className="space-y-6 pt-xl border-t border-border">
+      <h2 className="font-heading font-semibold text-xl">Props</h2>
+      <p className="typo-paragraph-sm text-muted-foreground">
+        Built on <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">react-resizable-panels</code>. All native props are forwarded.
+      </p>
+      <div className="space-y-md">
+        {tables.map((t) => (
+          <div key={t.component}>
+            <h3 className="typo-paragraph-sm-bold text-foreground mb-xs">{t.component}</h3>
+            <div className="overflow-x-auto rounded-xl border border-border">
+              <table className="w-full text-xs">
+                <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Prop</th><th className="px-4 py-3 font-semibold">Type</th><th className="px-4 py-3 font-semibold">Default</th><th className="px-4 py-3 font-semibold">Description</th></tr></thead>
+                <tbody>
+                  {t.props.map((p) => (
+                    <tr key={p.name} className="border-b border-border last:border-0">
+                      <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{p.name}</td>
+                      <td className="px-4 py-3 font-mono text-muted-foreground">{p.type}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{p.default}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{p.desc}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ResizableTokensTable() {
+  const tokens = [
+    { token: "--border", value: "#e9e9e7", hex: "#e9e9e7", usage: "Handle line & grip border color" },
+    { token: "--ring", value: "#e9e9e7", hex: "#e9e9e7", usage: "Handle focus ring" },
+    { token: "--radius-sm", value: "4px", hex: "", usage: "Grip indicator border radius" },
+    { token: "--spacing-md", value: "16px", hex: "", usage: "Grip height (h-md)" },
+    { token: "--spacing-sm", value: "12px", hex: "", usage: "Grip width (w-sm)" },
+  ]
+
+  return (
+    <section id="design-tokens" className="space-y-6 pt-xl border-t border-border">
+      <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full text-xs">
+          <thead><tr className="bg-muted border-b border-border text-left"><th className="px-4 py-3 font-semibold">Token</th><th className="px-4 py-3 font-semibold">Value</th><th className="px-4 py-3 font-semibold">Swatch</th><th className="px-4 py-3 font-semibold">Usage</th></tr></thead>
+          <tbody>
+            {tokens.map((t) => (
+              <tr key={t.token} className="border-b border-border last:border-0">
+                <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.token}</td>
+                <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+                <td className="px-4 py-3">{t.hex ? <div className="size-5 rounded border border-border" style={{ backgroundColor: t.hex }} /> : <span className="text-muted-foreground">—</span>}</td>
+                <td className="px-4 py-3 text-muted-foreground">{t.usage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
 function ResizableDocs() {
   return (
     <div className="space-y-12">
@@ -21680,37 +23339,8 @@ function ResizableDocs() {
         </p>
       </header>
 
-      <Playground
-        controls={[
-          { type: "select", label: "Orientation", prop: "orientation", defaultValue: "horizontal", options: [
-            { label: "Horizontal", value: "horizontal" },
-            { label: "Vertical", value: "vertical" },
-          ]},
-          { type: "switch", label: "With handle", prop: "withHandle", defaultValue: true },
-        ]}
-        render={(p) => (
-          <div className="w-full max-w-md">
-            <ResizablePanelGroup
-              orientation={p.orientation as "horizontal" | "vertical"}
-              className={`rounded-lg border border-border ${p.orientation === "vertical" ? "min-h-[200px]" : ""}`}
-            >
-              <ResizablePanel defaultSize={50}>
-                <div className="flex h-[200px] items-center justify-center p-6">
-                  <span className="typo-paragraph-sm-bold">One</span>
-                </div>
-              </ResizablePanel>
-              <ResizableHandle withHandle={p.withHandle as boolean} />
-              <ResizablePanel defaultSize={50}>
-                <div className="flex h-[200px] items-center justify-center p-6">
-                  <span className="typo-paragraph-sm-bold">Two</span>
-                </div>
-              </ResizablePanel>
-            </ResizablePanelGroup>
-          </div>
-        )}
-      />
+      <ResizableExploreBehavior />
 
-      {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add react-resizable-panels`}
         importCode={`import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"`}
@@ -21720,161 +23350,141 @@ function ResizableDocs() {
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example
-          title="Horizontal"
-          description="Two resizable panels side by side with a drag handle."
-          code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border">\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-6">\n      <span className="font-semibold">One</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-6">\n      <span className="font-semibold">Two</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
-        >
-          <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
-            <ResizablePanel defaultSize={50}>
-              <div className="flex h-[200px] items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">One</span>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={50}>
-              <div className="flex h-[200px] items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Two</span>
-              </div>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </Example>
+          <Example
+            title="Horizontal"
+            description="Two resizable panels side by side with a drag handle."
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">One</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Two</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+          >
+            <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
+              <ResizablePanel defaultSize={50}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">One</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={50}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Two</span>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </Example>
 
-        <Example
-          title="Vertical"
-          description="Stacked panels with vertical resizing."
-          code={`<ResizablePanelGroup orientation="vertical" className="min-h-[200px] rounded-lg border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-full items-center justify-center p-6">\n      <span className="font-semibold">Header</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-full items-center justify-center p-6">\n      <span className="font-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
-        >
-          <ResizablePanelGroup orientation="vertical" className="max-w-md min-h-[200px] rounded-lg border border-border">
-            <ResizablePanel defaultSize={25}>
-              <div className="flex h-full items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Header</span>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={75}>
-              <div className="flex h-full items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Content</span>
-              </div>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </Example>
+          <Example
+            title="Vertical"
+            description="Stacked panels with vertical resizing."
+            code={`<ResizablePanelGroup orientation="vertical" className="min-h-[200px] rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Header</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+          >
+            <ResizablePanelGroup orientation="vertical" className="max-w-md min-h-[200px] rounded-lg border border-border">
+              <ResizablePanel defaultSize={25}>
+                <div className="flex h-full items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Header</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={75}>
+                <div className="flex h-full items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Content</span>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </Example>
 
-        <Example
-          title="Three panels"
-          description="Three panels with handles between each."
-          code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-6">\n      <span className="font-semibold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-6">\n      <span className="font-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-6">\n      <span className="font-semibold">Details</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
-        >
-          <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
-            <ResizablePanel defaultSize={25}>
-              <div className="flex h-[200px] items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Sidebar</span>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={50}>
-              <div className="flex h-[200px] items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Content</span>
-              </div>
-            </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={25}>
-              <div className="flex h-[200px] items-center justify-center p-6">
-                <span className="typo-paragraph-sm-bold">Details</span>
-              </div>
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </Example>
+          <Example
+            title="Three panels"
+            description="Three panels with handles — sidebar + content + details."
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Content</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Details</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+          >
+            <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
+              <ResizablePanel defaultSize={25}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Sidebar</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={50}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Content</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle />
+              <ResizablePanel defaultSize={25}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Details</span>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </Example>
+
+          <Example
+            title="Collapsible sidebar"
+            description="Left panel collapses to 0% on double-click or keyboard."
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25} minSize={15} collapsible collapsedSize={0}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-bold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+          >
+            <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
+              <ResizablePanel defaultSize={25} minSize={15} collapsible collapsedSize={0}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Sidebar</span>
+                </div>
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={75}>
+                <div className="flex h-[200px] items-center justify-center p-xl">
+                  <span className="typo-paragraph-sm-bold">Content</span>
+                </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </Example>
         </div>
       </section>
 
-      {/* ---- Props ---- */}
-      <section id="props" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          Built on{" "}
-          <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">react-resizable-panels</code>.
-          Supports all react-resizable-panels props.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Component</th>
-                <th className="px-4 py-3 font-semibold">Prop</th>
-                <th className="px-4 py-3 font-semibold">Type</th>
-                <th className="px-4 py-3 font-semibold">Default</th>
-                <th className="px-4 py-3 font-semibold">Description</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizablePanelGroup</td><td className="px-4 py-3 font-mono">orientation</td><td className="px-4 py-3 text-muted-foreground">"horizontal" | "vertical"</td><td className="px-4 py-3 text-muted-foreground">"horizontal"</td><td className="px-4 py-3 text-muted-foreground">Layout direction of the panel group</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizablePanel</td><td className="px-4 py-3 font-mono">defaultSize</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Initial size as percentage (0-100)</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizablePanel</td><td className="px-4 py-3 font-mono">minSize</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">10</td><td className="px-4 py-3 text-muted-foreground">Minimum panel size as percentage</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizablePanel</td><td className="px-4 py-3 font-mono">maxSize</td><td className="px-4 py-3 text-muted-foreground">number</td><td className="px-4 py-3 text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Maximum panel size as percentage</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizablePanel</td><td className="px-4 py-3 font-mono">collapsible</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Allow panel to collapse fully</td></tr>
-              <tr><td className="px-4 py-3 font-mono text-primary font-semibold whitespace-nowrap">ResizableHandle</td><td className="px-4 py-3 font-mono">withHandle</td><td className="px-4 py-3 text-muted-foreground">boolean</td><td className="px-4 py-3 text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Show visible grip indicator on handle</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <ResizablePropsTable />
+      <ResizableTokensTable />
 
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--border</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Handle line color</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--ring</td><td className="px-4 py-3 font-mono text-muted-foreground">#e9e9e7</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#e9e9e7" }} /></td><td className="px-4 py-3 text-muted-foreground">Handle focus ring</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* ---- Best Practices ---- */}
       <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
 
-        <div className="space-y-4">
+        <div className="space-y-md">
           <h3 className="font-body font-semibold text-sm">Layout</h3>
-          <div className="flex gap-4">
+          <div className="flex gap-md">
             <DoItem>
-              <p>Use Resizable for split-pane layouts where users need to adjust panel sizes.</p>
-              <p>Set <code className="bg-muted px-1 rounded font-mono text-xs">minSize</code> / <code className="bg-muted px-1 rounded font-mono text-xs">maxSize</code> to prevent panels from collapsing completely.</p>
+              <p>Use Resizable for split-pane layouts where users need to adjust panel sizes (IDE, email clients, dashboards).</p>
+              <p>Set <code className="bg-muted px-1 rounded font-mono text-xs">minSize</code> / <code className="bg-muted px-1 rounded font-mono text-xs">maxSize</code> to prevent panels from collapsing or expanding unreasonably.</p>
             </DoItem>
             <DontItem>
-              <p>Don't use Resizable for simple responsive layouts — use CSS Grid or Flexbox.</p>
-              <p>Don't use more than 3-4 panels — it becomes hard to manage on smaller screens.</p>
+              <p>Don't use Resizable for simple responsive layouts — use CSS Grid or Flexbox instead.</p>
+              <p>Don't use more than 3–4 panels — it becomes hard to manage on smaller screens.</p>
+            </DontItem>
+          </div>
+        </div>
+
+        <div className="space-y-md">
+          <h3 className="font-body font-semibold text-sm">Interaction</h3>
+          <div className="flex gap-md">
+            <DoItem>
+              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">withHandle</code> for a visible drag affordance — especially on touch devices.</p>
+              <p>Use <code className="bg-muted px-1 rounded font-mono text-xs">collapsible</code> panels for sidebar navigation that can be hidden.</p>
+            </DoItem>
+            <DontItem>
+              <p>Don't hide all handles — users need a visible cue that panels are resizable.</p>
+              <p>Don't set <code className="bg-muted px-1 rounded font-mono text-xs">minSize</code> too large — it limits user control.</p>
             </DontItem>
           </div>
         </div>
       </section>
 
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Orientation", "Vertical", "direction", '"vertical"'],
-        ["Orientation", "Horizontal", "direction", '"horizontal"'],
+      <FigmaMapping id="figma-mapping" nodeId="222:27733" rows={[
+        ["Orientation", "Vertical", "orientation", '"vertical"'],
+        ["Orientation", "Horizontal", "orientation", '"horizontal"'],
         ["Handle", "Divider line", "ResizableHandle", "bg-border, 1px"],
         ["Handle", "Grip dots", "withHandle", "true — shows GripVertical icon"],
         ["Panel", "Content area", "ResizablePanel", "defaultSize (percentage)"],
       ]} />
 
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
+      <section id="accessibility" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
+        <div className="space-y-xs">
+          <div className="rounded-xl border border-border p-lg space-y-xs text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -21885,32 +23495,40 @@ function ResizableDocs() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-border"><td className="py-2 pr-4 font-mono">Tab</td><td className="py-2">Focus the resize handle</td></tr>
-                  <tr className="border-b border-border"><td className="py-2 pr-4 font-mono">Arrow Left / Right</td><td className="py-2">Resize horizontal panels</td></tr>
-                  <tr className="border-b border-border"><td className="py-2 pr-4 font-mono">Arrow Up / Down</td><td className="py-2">Resize vertical panels</td></tr>
-                  <tr className="border-b border-border last:border-0"><td className="py-2 pr-4 font-mono">Home / End</td><td className="py-2">Collapse or expand panel to min/max</td></tr>
+                  <tr className="border-b border-border"><td className="py-2 pr-4"><kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">Tab</kbd></td><td className="py-2">Focus the resize handle</td></tr>
+                  <tr className="border-b border-border"><td className="py-2 pr-4"><kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">← →</kbd></td><td className="py-2">Resize horizontal panels</td></tr>
+                  <tr className="border-b border-border"><td className="py-2 pr-4"><kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">↑ ↓</kbd></td><td className="py-2">Resize vertical panels</td></tr>
+                  <tr className="border-b border-border"><td className="py-2 pr-4"><kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">Home</kbd></td><td className="py-2">Collapse panel to minimum size</td></tr>
+                  <tr className="border-b border-border last:border-0"><td className="py-2 pr-4"><kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">End</kbd></td><td className="py-2">Expand panel to maximum size</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
+          <div className="rounded-xl border border-border p-lg space-y-xs text-xs">
+            <h3 className="font-body font-semibold text-sm text-foreground">ARIA</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Handles are keyboard focusable — Tab to focus, Arrow keys to resize.</li>
-              <li>Use <code className="bg-muted px-1 rounded font-mono">withHandle</code> prop for a visible drag indicator.</li>
+              <li>Handles use <code className="bg-muted px-1 rounded font-mono">role="separator"</code> with <code className="bg-muted px-1 rounded font-mono">aria-orientation</code>.</li>
+              <li>Focus ring (3px <code className="bg-muted px-1 rounded font-mono">--ring</code>) appears on keyboard focus via <code className="bg-muted px-1 rounded font-mono">focus-visible</code>.</li>
+              <li>Use <code className="bg-muted px-1 rounded font-mono">withHandle</code> for a visible drag affordance — improves discoverability for all users.</li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
+      <section id="related" className="space-y-md pb-12">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
         <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
+          <div className="px-lg py-sm flex justify-between items-center">
             <div>
               <p className="font-semibold text-foreground">Separator</p>
               <p className="text-muted-foreground mt-0.5">Static divider when resize is not needed.</p>
+            </div>
+            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
+          </div>
+          <div className="px-lg py-sm flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-foreground">Scroll Area</p>
+              <p className="text-muted-foreground mt-0.5">Custom scrollbar for panels with overflow content.</p>
             </div>
             <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
           </div>
@@ -23092,13 +24710,6 @@ function App() {
           </button>
         </div>
 
-        <nav className="flex items-center gap-xs">
-          <button onClick={() => setActive(null)}
-            className="px-lg py-xs rounded-full text-sm font-medium transition-colors bg-primary/10 text-primary">
-            Components
-          </button>
-        </nav>
-
         <div className="flex items-center gap-xs">
           <button onClick={() => setSearchOpen(true)}
             className="flex items-center gap-sm px-lg py-xs rounded-full border border-border text-muted-foreground hover:text-foreground text-sm transition-colors">
@@ -23245,7 +24856,7 @@ function App() {
         </CommandList>
       </CommandDialog>
 
-      <Toaster />
+      <Toaster theme={dark ? "dark" : "light"} />
 
       {/* Scroll to top */}
       {showScrollTop && (

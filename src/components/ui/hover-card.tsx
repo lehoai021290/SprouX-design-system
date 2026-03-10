@@ -53,4 +53,9 @@ function HoverCardContent({
   )
 }
 
-export { HoverCard, HoverCardTrigger, HoverCardContent }
+/** Shared class config — single source of truth for component + docs preview */
+const hoverCardClassNames = {
+  content: "w-64 rounded-lg border border-border bg-card p-xs text-foreground shadow",
+}
+
+export { HoverCard, HoverCardTrigger, HoverCardContent, hoverCardClassNames }

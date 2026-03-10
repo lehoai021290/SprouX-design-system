@@ -76,7 +76,7 @@ function PaginationPrevious({
       data-slot="pagination-previous"
       aria-label="Go to previous page"
       size="default"
-      className={cn("gap-1 pl-2.5", className)}
+      className={cn("gap-xs", className)}
       {...props}
     >
       <ChevronLeft className="size-md" />
@@ -94,7 +94,7 @@ function PaginationNext({
       data-slot="pagination-next"
       aria-label="Go to next page"
       size="default"
-      className={cn("gap-1 pr-2.5", className)}
+      className={cn("gap-xs", className)}
       {...props}
     >
       <span>Next</span>
@@ -114,7 +114,7 @@ function PaginationEllipsis({
       className={cn("flex size-9 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontal className="size-md" />
+      <MoreHorizontal className="size-lg" />
       <span className="sr-only">More pages</span>
     </span>
   )

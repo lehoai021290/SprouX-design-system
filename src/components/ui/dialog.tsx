@@ -144,6 +144,16 @@ function DialogDescription({
   )
 }
 
+/** Shared class config — single source of truth for component + docs preview */
+const dialogClassNames = {
+  content: "grid w-full gap-xs border border-border bg-card p-md shadow sm:max-w-lg sm:rounded-xl",
+  close: "absolute right-md top-md rounded-md opacity-70",
+  header: "flex flex-col gap-xs text-center sm:text-left",
+  footer: "flex flex-col-reverse gap-xs sm:flex-row sm:justify-end",
+  title: "typo-heading-4 text-foreground",
+  description: "typo-paragraph-sm text-muted-foreground",
+}
+
 export {
   Dialog,
   DialogPortal,
@@ -155,4 +165,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  dialogClassNames,
 }

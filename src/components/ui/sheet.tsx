@@ -52,7 +52,7 @@ function SheetOverlay({
 }
 
 const sheetVariants = cva(
-  "fixed z-50 gap-md bg-card p-md shadow transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
+  "fixed z-50 flex flex-col gap-md bg-card p-md shadow transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
   {
     variants: {
       side: {
@@ -110,7 +110,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sheet-footer"
       className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-xs",
+        "mt-auto flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-xs",
         className
       )}
       {...props}
@@ -144,6 +144,22 @@ function SheetDescription({
   )
 }
 
+/** Shared class config — single source of truth for component + docs preview */
+const sheetClassNames = {
+  base: "flex flex-col gap-md bg-card p-md shadow",
+  sideBorder: {
+    top: "border-b border-border",
+    bottom: "border-t border-border",
+    left: "border-r border-border",
+    right: "border-l border-border",
+  },
+  close: "absolute right-md top-md rounded-sm opacity-70",
+  header: "flex flex-col gap-xs text-center sm:text-left",
+  footer: "mt-auto flex flex-col-reverse sm:flex-row sm:justify-end sm:gap-xs",
+  title: "typo-heading-4 text-foreground",
+  description: "typo-paragraph-sm text-muted-foreground",
+}
+
 export {
   Sheet,
   SheetPortal,
@@ -155,4 +171,5 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
+  sheetClassNames,
 }

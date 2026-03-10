@@ -138,6 +138,16 @@ function DrawerDescription({
   )
 }
 
+/** Shared class config — single source of truth for component + docs preview */
+const drawerClassNames = {
+  content: "flex h-auto flex-col rounded-t-lg border border-border bg-card shadow",
+  handle: "mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted",
+  header: "flex flex-col gap-xs p-md text-center sm:text-left",
+  footer: "flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end",
+  title: "typo-heading-4 text-foreground",
+  description: "typo-paragraph-sm text-muted-foreground",
+}
+
 export {
   Drawer,
   DrawerPortal,
@@ -149,4 +159,5 @@ export {
   DrawerFooter,
   DrawerTitle,
   DrawerDescription,
+  drawerClassNames,
 }

@@ -56,4 +56,9 @@ function PopoverContent({
   )
 }
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
+/** Shared class config — single source of truth for component + docs preview */
+const popoverClassNames = {
+  content: "w-72 rounded-lg border border-border bg-card p-md text-foreground shadow",
+}
+
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, popoverClassNames }
