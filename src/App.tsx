@@ -203,6 +203,17 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable"
 import { Switch } from "@/components/ui/switch"
+import {
+  TitlePage,
+  TitleSection,
+  TitleCard,
+  TitleInput,
+  TitleInformation,
+  InformationText,
+  TextValue,
+  RightDecoration,
+} from "@/components/ui/title"
+import { TextButton } from "@/components/ui/text-button"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import {
@@ -252,6 +263,7 @@ import {
   MoreHorizontal,
   ChevronLeft,
   ArrowUpDown,
+  CircleAlert,
 } from "lucide-react"
 import { icons as lucideIcons } from "lucide-react"
 
@@ -546,6 +558,36 @@ function Playground({
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/** PropertyTabs — Figma-style enum selector for Explore Behavior controls */
+function PropertyTabs({ label, value, options, onChange }: {
+  label: string
+  value: string
+  options: { value: string; label: string }[]
+  onChange: (value: string) => void
+}) {
+  return (
+    <div className="flex items-center gap-sm">
+      <span className="typo-paragraph-sm font-medium text-foreground min-w-[80px]">{label}</span>
+      <div className="flex gap-3xs">
+        {options.map(opt => (
+          <button
+            key={opt.value}
+            onClick={() => onChange(opt.value)}
+            className={cn(
+              "px-sm py-3xs rounded-md typo-paragraph-sm transition-colors",
+              value === opt.value
+                ? "bg-foreground text-background font-medium"
+                : "bg-muted text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -17485,176 +17527,10 @@ function ScrollAreaDocs() {
 }
 
 /* ================================================================
-   Calendar Docs
+   Date Picker Docs (merged: Calendar + Date Picker + Day + Inputs)
+   Figma page: Date Picker (node 288:117149)
    ================================================================ */
 
-const calendarSections: TocSection[] = [
-  { id: "explore-behavior", label: "Explore Behavior" },
-  { id: "installation", label: "Installation" },
-  { id: "examples", label: "Examples" },
-  { id: "props", label: "Props" },
-  { id: "design-tokens", label: "Design Tokens" },
-  { id: "best-practices", label: "Best Practices" },
-  { id: "figma-mapping", label: "Figma Mapping" },
-  { id: "accessibility", label: "Accessibility" },
-  { id: "related", label: "Related Components" },
-]
-
-function CalendarDocs() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
-
-  return (
-    <div className="space-y-12">
-      <TableOfContents sections={calendarSections} />
-
-      <header className="space-y-md pb-3xl">
-        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
-        <h1 className="typo-heading-2">Calendar</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Date picker calendar component built on react-day-picker v9.</p>
-      </header>
-
-      <Playground controls={[]} render={() => <Calendar className="rounded-md border" />} />
-
-      {/* ---- Installation ---- */}
-      <InstallationSection
-        deps={`pnpm add react-day-picker`}
-        importCode={`import { Calendar } from "@/components/ui/calendar"`}
-      />
-
-      <section id="examples" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Examples</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Single Date" description="Select a single date with visual month layout and day-of-week headers." code={`<Calendar\n  mode="single"\n  selected={date}\n  onSelect={setDate}\n  className="rounded-md border"\n/>`}>
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border border-border"
-          />
-        </Example>
-        </div>
-      </section>
-
-
-      {/* ---- Design Tokens ---- */}
-      <section id="design-tokens" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
-        </p>
-        <div className="overflow-x-auto rounded-xl border border-border">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Token</th>
-                <th className="px-4 py-3 font-semibold">Value</th>
-                <th className="px-4 py-3 font-semibold">Swatch</th>
-                <th className="px-4 py-3 font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary</td><td className="px-4 py-3 font-mono text-muted-foreground">#252522</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#252522" }} /></td><td className="px-4 py-3 text-muted-foreground">Selected day background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--primary-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#ffffff</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#ffffff" }} /></td><td className="px-4 py-3 text-muted-foreground">Selected day text</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted</td><td className="px-4 py-3 font-mono text-muted-foreground">#f7f7f6</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#f7f7f6" }} /></td><td className="px-4 py-3 text-muted-foreground">Today highlight background</td></tr>
-              <tr className="border-b border-border last:border-0"><td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">--muted-foreground</td><td className="px-4 py-3 font-mono text-muted-foreground">#afafab</td><td className="px-4 py-3"><div className="size-5 rounded border border-border" style={{ backgroundColor: "#afafab" }} /></td><td className="px-4 py-3 text-muted-foreground">Outside month days text</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-            <section id="best-practices" className="space-y-6 pt-xl border-t border-border">
-        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <div className="space-y-4">
-          <h3 className="font-body font-semibold text-sm">Date Selection</h3>
-          <div className="flex gap-4">
-            <DoItem>
-              <p>Use Calendar for date selection with visual context (day of week, month layout).</p>
-              <p>Show today's date visually distinguished from other dates.</p>
-            </DoItem>
-            <DontItem>
-              <p>Don't use Calendar for date ranges spanning years — use a date input instead.</p>
-              <p>Don't disable dates without explaining why (add a tooltip or message).</p>
-            </DontItem>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ---- Accessibility ---- */}
-      <section id="accessibility" className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-border text-left">
-                    <th className="pr-6 py-2 font-semibold">Key</th>
-                    <th className="pr-6 py-2 font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Arrow Keys</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Navigate between days in the calendar grid</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Enter</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Select the focused date</td>
-                  </tr>
-                  <tr className="border-b border-border">
-                    <td className="pr-6 py-2"><kbd className="bg-muted border border-border rounded px-1.5 py-0.5 text-[10px] font-mono">Page Up / Down</kbd></td>
-                    <td className="pr-6 py-2 text-muted-foreground">Navigate to previous / next month</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="rounded-xl border border-border p-5 space-y-3 text-xs">
-            <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li>Built on react-day-picker — full keyboard navigation.</li>
-              <li>Arrow keys move between days, Page Up/Down changes months.</li>
-              <li>Selected dates are announced via screen readers.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-            {/* ---- Figma Mapping ---- */}
-      <FigmaMapping id="figma-mapping" rows={[
-        ["Mode", "Single", "mode", '"single" — pick one date'],
-        ["Mode", "Range", "mode", '"range" — pick start/end'],
-        ["Day Cell Size", "32px", "—", "size-2xl square"],
-        ["State", "Selected", "—", "bg-primary text-primary-foreground"],
-        ["State", "Today", "—", "bg-muted text-foreground"],
-        ["State", "Outside Month", "—", "text-muted-foreground opacity-50"],
-        ["State", "Disabled", "disabled", "opacity-50"],
-        ["State", "Range Middle", "—", "bg-muted rounded-none"],
-        ["Navigation", "Prev/Next", "—", "ChevronLeft/Right buttons"],
-      ]} />
-
-      {/* ---- Related Components ---- */}
-      <section id="related" className="space-y-4 pb-12">
-        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <div className="rounded-xl border border-border divide-y divide-border text-xs">
-          <div className="px-5 py-3.5 flex justify-between items-center">
-            <div>
-              <p className="font-semibold text-foreground">DatePicker</p>
-              <p className="text-muted-foreground mt-0.5">Calendar inside a popover with input trigger.</p>
-            </div>
-            <span className="text-muted-foreground text-[10px] font-mono bg-muted px-2 py-0.5 rounded">Available</span>
-          </div>
-        </div>
-      </section>
-    </div>
-  )
-}
-
-/* ================================================================
-   Date Picker Docs
-   ================================================================ */
 
 const datePickerSections: TocSection[] = [
   { id: "explore-behavior", label: "Explore Behavior" },
@@ -17883,7 +17759,9 @@ function DatePickerDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Date Picker</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Date selection using a Calendar in a Popover. Compact input pattern.</p>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Date and time selection components. Includes Calendar, Date Picker (popover), Day cells, and input triggers for date/time fields.
+        </p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -17901,7 +17779,6 @@ function DatePickerDocs() {
       {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Example title="Default" description="Click the input to open a calendar popover." code={`<DatePicker />`}>
             <DatePicker />
@@ -21146,6 +21023,755 @@ function SidebarDocs() {
 }
 
 /* ================================================================
+   Title System
+   ================================================================ */
+
+const titleSections = [
+  { id: "explore-behavior", label: "Explore Behavior" },
+  { id: "installation", label: "Installation" },
+  { id: "examples", label: "Examples" },
+  { id: "props", label: "Props" },
+  { id: "design-tokens", label: "Design Tokens" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "figma-mapping", label: "Figma Mapping" },
+  { id: "accessibility", label: "Accessibility" },
+  { id: "related", label: "Related" },
+]
+
+type TitleTabId = "title-page" | "title-section" | "title-card" | "title-input" | "title-information" | "information-text" | "text-value" | "right-decoration"
+
+const titleBehaviorTabs: { value: TitleTabId; label: string }[] = [
+  { value: "title-page", label: "Title/Page" },
+  { value: "title-section", label: "Title/Section" },
+  { value: "title-card", label: "Title/Card" },
+  { value: "title-input", label: "Title/Input" },
+  { value: "title-information", label: "Title/Information" },
+  { value: "information-text", label: "Information Text" },
+  { value: "text-value", label: "Text Value" },
+  { value: "right-decoration", label: "Right Decoration" },
+]
+
+function TitlePageTab() {
+  const [showBack, setShowBack] = useState(true)
+  const [showBadge, setShowBadge] = useState(true)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [showDecoration, setShowDecoration] = useState(true)
+  const [showSubtitle, setShowSubtitle] = useState(true)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[200px] bg-background">
+        <TitlePage
+          title="Page Title"
+          showBack={showBack}
+          backLabel="Back to Dashboard"
+          onBack={() => {}}
+          subtitle={showSubtitle ? "A brief description of this page and its purpose." : undefined}
+          badge={showBadge ? <Badge>New</Badge> : undefined}
+          tooltip={showTooltip ? <Info className="size-md text-muted-foreground" /> : undefined}
+          decoration={showDecoration ? <Button variant="outline" size="sm"><Plus className="size-md" /> Add</Button> : undefined}
+          className="w-full max-w-lg"
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Back</span>
+            <div><Switch checked={showBack} onCheckedChange={setShowBack} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Badge</span>
+            <div><Switch checked={showBadge} onCheckedChange={setShowBadge} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Tooltip</span>
+            <div><Switch checked={showTooltip} onCheckedChange={setShowTooltip} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Decoration</span>
+            <div><Switch checked={showDecoration} onCheckedChange={setShowDecoration} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Subtitle</span>
+            <div><Switch checked={showSubtitle} onCheckedChange={setShowSubtitle} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TitleSectionTab() {
+  const [showTitle, setShowTitle] = useState(true)
+  const [showDescription, setShowDescription] = useState(true)
+  const [showBadge, setShowBadge] = useState(true)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [showDecoration, setShowDecoration] = useState(true)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <TitleSection
+          title={showTitle ? "Section Title" : undefined}
+          description={showDescription ? "Optional description for this section." : undefined}
+          badge={showBadge ? <Badge variant="secondary">3</Badge> : undefined}
+          tooltip={showTooltip ? <Info className="size-md text-muted-foreground" /> : undefined}
+          decoration={showDecoration ? <TextButton variant="primary" size="default">View all</TextButton> : undefined}
+          className="w-full max-w-lg"
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Title</span>
+            <div><Switch checked={showTitle} onCheckedChange={setShowTitle} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Description</span>
+            <div><Switch checked={showDescription} onCheckedChange={setShowDescription} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Badge</span>
+            <div><Switch checked={showBadge} onCheckedChange={setShowBadge} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Tooltip</span>
+            <div><Switch checked={showTooltip} onCheckedChange={setShowTooltip} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Decoration</span>
+            <div><Switch checked={showDecoration} onCheckedChange={setShowDecoration} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TitleCardTab() {
+  const [showBack, setShowBack] = useState(true)
+  const [showBadge, setShowBadge] = useState(true)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [showDescription, setShowDescription] = useState(true)
+  const [showDecoration, setShowDecoration] = useState(true)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <TitleCard
+          title="Card Title"
+          showBack={showBack}
+          onBack={() => {}}
+          description={showDescription ? "Card description text here." : undefined}
+          badge={showBadge ? <Badge variant="outline">Draft</Badge> : undefined}
+          showTooltip={showTooltip}
+          decoration={showDecoration ? <Button variant="ghost" size="icon"><Settings className="size-md" /></Button> : undefined}
+          className="w-full max-w-lg"
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Back</span>
+            <div><Switch checked={showBack} onCheckedChange={setShowBack} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Badge</span>
+            <div><Switch checked={showBadge} onCheckedChange={setShowBadge} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Tooltip</span>
+            <div><Switch checked={showTooltip} onCheckedChange={setShowTooltip} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Description</span>
+            <div><Switch checked={showDescription} onCheckedChange={setShowDescription} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Decoration</span>
+            <div><Switch checked={showDecoration} onCheckedChange={setShowDecoration} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TitleInputTab() {
+  const [type, setType] = useState<"required" | "optional">("required")
+  const [size, setSize] = useState<"normal" | "small">("normal")
+  const [showDecoration, setShowDecoration] = useState(true)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <TitleInput
+          label="Field Label"
+          type={type}
+          size={size}
+          decoration={showDecoration ? "0/100 characters" : undefined}
+          className="w-full max-w-lg"
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Type" value={type} options={[{ value: "required", label: "Required" }, { value: "optional", label: "Optional" }]} onChange={v => setType(v as "required" | "optional")} />
+          <PropertyTabs label="Size" value={size} options={[{ value: "normal", label: "Normal" }, { value: "small", label: "Small" }]} onChange={v => setSize(v as "normal" | "small")} />
+        </div>
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Decoration</span>
+            <div><Switch checked={showDecoration} onCheckedChange={setShowDecoration} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TitleInformationTab() {
+  const [level, setLevel] = useState<"default" | "large">("default")
+  const [showIcon, setShowIcon] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [showDecoration, setShowDecoration] = useState(true)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <TitleInformation
+          label="Information Label"
+          level={level}
+          icon={showIcon ? <CircleAlert className="size-md" /> : undefined}
+          showTooltip={showTooltip}
+          decoration={showDecoration ? "Detail" : undefined}
+          className="w-full max-w-lg"
+        />
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Level" value={level} options={[{ value: "default", label: "Default" }, { value: "large", label: "Large" }]} onChange={v => setLevel(v as "default" | "large")} />
+        </div>
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Icon</span>
+            <div><Switch checked={showIcon} onCheckedChange={setShowIcon} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Tooltip</span>
+            <div><Switch checked={showTooltip} onCheckedChange={setShowTooltip} /></div>
+          </div>
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Decoration</span>
+            <div><Switch checked={showDecoration} onCheckedChange={setShowDecoration} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function InformationTextTab() {
+  const [highlight, setHighlight] = useState<"default" | "medium" | "high">("default")
+  const [align, setAlign] = useState<"left" | "right">("left")
+  const [showMoreInfo, setShowMoreInfo] = useState(false)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <InformationText
+          highlight={highlight}
+          align={align}
+          moreInfo={showMoreInfo ? <Info className="size-md text-muted-foreground" /> : undefined}
+          className="max-w-lg"
+        >
+          $12,450.00
+        </InformationText>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Highlight" value={highlight} options={[{ value: "default", label: "Default" }, { value: "medium", label: "Medium" }, { value: "high", label: "High" }]} onChange={v => setHighlight(v as "default" | "medium" | "high")} />
+          <PropertyTabs label="Align" value={align} options={[{ value: "left", label: "Left" }, { value: "right", label: "Right" }]} onChange={v => setAlign(v as "left" | "right")} />
+        </div>
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">More Info</span>
+            <div><Switch checked={showMoreInfo} onCheckedChange={setShowMoreInfo} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TextValueTab() {
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <TextValue showTooltip={showTooltip}>nhan@evol.vn</TextValue>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="flex flex-wrap items-center gap-lg">
+          <div className="space-y-xs">
+            <span className="text-xs font-medium text-muted-foreground">Show Tooltip</span>
+            <div><Switch checked={showTooltip} onCheckedChange={setShowTooltip} /></div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+function RightDecorationTab() {
+  const [type, setType] = useState<string>("icon")
+
+  const renderContent = () => {
+    switch (type) {
+      case "icon": return <Settings className="size-md" />
+      case "text": return <>Action</>
+      case "text-muted": return <>Optional</>
+      case "icon-muted": return <Settings className="size-md" />
+      case "badge": return <Badge>New</Badge>
+      case "switch": return <><Label className="typo-paragraph-sm text-muted-foreground">Toggle</Label><Switch /></>
+      case "button": return <Button size="sm">Save</Button>
+      default: return <Settings className="size-md" />
+    }
+  }
+
+  return (
+    <>
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-background">
+        <RightDecoration type={type as any}>{renderContent()}</RightDecoration>
+      </div>
+      <div className="border-t border-border bg-muted/50 p-lg space-y-md">
+        <div className="space-y-sm">
+          <PropertyTabs label="Type" value={type} options={[
+            { value: "icon", label: "Icon" },
+            { value: "text", label: "Text" },
+            { value: "text-muted", label: "Text Muted" },
+            { value: "icon-muted", label: "Icon Muted" },
+            { value: "deco-icon-primary", label: "Deco Primary" },
+            { value: "deco-icon-outline", label: "Deco Outline" },
+            { value: "badge", label: "Badge" },
+            { value: "switch", label: "Switch" },
+            { value: "button", label: "Button" },
+            { value: "button-group", label: "Button Group" },
+          ]} onChange={setType} />
+        </div>
+      </div>
+    </>
+  )
+}
+
+function TitleExploreBehavior() {
+  const [activeTab, setActiveTab] = useState<TitleTabId>("title-page")
+
+  return (
+    <div className="rounded-xl border border-border overflow-hidden bg-background">
+      {/* Tab bar */}
+      <div className="border-b border-border px-lg overflow-x-auto">
+        <div className="flex">
+          {titleBehaviorTabs.map(tab => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveTab(tab.value)}
+              className={cn(
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
+                activeTab === tab.value
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* Tab content */}
+      {activeTab === "title-page" && <TitlePageTab />}
+      {activeTab === "title-section" && <TitleSectionTab />}
+      {activeTab === "title-card" && <TitleCardTab />}
+      {activeTab === "title-input" && <TitleInputTab />}
+      {activeTab === "title-information" && <TitleInformationTab />}
+      {activeTab === "information-text" && <InformationTextTab />}
+      {activeTab === "text-value" && <TextValueTab />}
+      {activeTab === "right-decoration" && <RightDecorationTab />}
+    </div>
+  )
+}
+
+function TitlePropsTable() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TitlePage</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">title</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Page heading text</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">subtitle</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Description below title</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">badge</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Badge slot inline with title</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">tooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Info icon slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">decoration</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Right decoration slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">showBack</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Show back navigation link</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">backLabel</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">"Page Back Title"</td><td className="px-4 py-3 text-muted-foreground">Back link text</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">onBack</td><td className="px-4 py-3 font-mono text-muted-foreground">() =&gt; void</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Back link click handler</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TitleSection</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">title</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Section heading</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">description</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Description below title</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">badge</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Badge slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">tooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Info icon slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">decoration</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Right decoration slot</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TitleCard</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">title</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Card heading</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">showBack</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Show back chevron</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">showTooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Dashed underline on title</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">badge</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Badge slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">decoration</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Right decoration slot</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">description</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Description below title</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TitleInput</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">label</td><td className="px-4 py-3 font-mono text-muted-foreground">string (required)</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Input label text</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">type</td><td className="px-4 py-3 font-mono text-muted-foreground">"required" | "optional"</td><td className="px-4 py-3 font-mono text-muted-foreground">"required"</td><td className="px-4 py-3 text-muted-foreground">Shows (Optional) suffix</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">size</td><td className="px-4 py-3 font-mono text-muted-foreground">"normal" | "small"</td><td className="px-4 py-3 font-mono text-muted-foreground">"normal"</td><td className="px-4 py-3 text-muted-foreground">Label text size</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">decoration</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Right decoration (e.g. character count)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TitleInformation</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">label</td><td className="px-4 py-3 font-mono text-muted-foreground">string</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Information label</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">level</td><td className="px-4 py-3 font-mono text-muted-foreground">"default" | "large"</td><td className="px-4 py-3 font-mono text-muted-foreground">"default"</td><td className="px-4 py-3 text-muted-foreground">Font size level</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">icon</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Prefix icon in bordered circle</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">showTooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Dashed underline on label</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">decoration</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Right decoration slot</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">InformationText</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">highlight</td><td className="px-4 py-3 font-mono text-muted-foreground">"default" | "medium" | "high"</td><td className="px-4 py-3 font-mono text-muted-foreground">"default"</td><td className="px-4 py-3 text-muted-foreground">Visual emphasis level</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">align</td><td className="px-4 py-3 font-mono text-muted-foreground">"left" | "right"</td><td className="px-4 py-3 font-mono text-muted-foreground">"left"</td><td className="px-4 py-3 text-muted-foreground">Text alignment</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">moreInfo</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Info icon slot</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">TextValue</h3>
+        <div className="overflow-x-auto rounded-xl border border-border">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-4 py-3 font-semibold">Prop</th>
+                <th className="px-4 py-3 font-semibold">Type</th>
+                <th className="px-4 py-3 font-semibold">Default</th>
+                <th className="px-4 py-3 font-semibold">Description</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-4 py-3 font-mono text-primary">showTooltip</td><td className="px-4 py-3 font-mono text-muted-foreground">boolean</td><td className="px-4 py-3 font-mono text-muted-foreground">false</td><td className="px-4 py-3 text-muted-foreground">Dashed underline on text</td></tr>
+              <tr><td className="px-4 py-3 font-mono text-primary">children</td><td className="px-4 py-3 font-mono text-muted-foreground">ReactNode</td><td className="px-4 py-3 font-mono text-muted-foreground">—</td><td className="px-4 py-3 text-muted-foreground">Text content</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TitleTokensTable() {
+  const tokens = [
+    { component: "TitlePage", property: "Title font", token: "typo-heading-2", value: "Fraunces 600 30/32 -1px" },
+    { component: "TitlePage", property: "Subtitle font", token: "typo-paragraph", value: "Geist 400 16/24" },
+    { component: "TitlePage", property: "Gap", token: "gap-sm", value: "12px" },
+    { component: "TitleSection", property: "Title font", token: "typo-paragraph-bold", value: "Geist 600 16/24" },
+    { component: "TitleSection", property: "Description font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
+    { component: "TitleSection", property: "Gap", token: "gap-3xs", value: "4px" },
+    { component: "TitleSection", property: "Min height", token: "min-h-2xl", value: "32px" },
+    { component: "TitleCard", property: "Title font", token: "typo-paragraph-sm-bold", value: "Geist 600 14/20" },
+    { component: "TitleCard", property: "Title color", token: "text-foreground-subtle", value: "#6f6f6a / slate-700" },
+    { component: "TitleCard", property: "Back icon", token: "size-md", value: "16px" },
+    { component: "TitleInput", property: "Label (Normal)", token: "typo-paragraph-sm-medium", value: "Geist 500 14/20" },
+    { component: "TitleInput", property: "Label (Small)", token: "typo-paragraph-mini-medium", value: "Geist 500 12/16" },
+    { component: "TitleInput", property: "Label color", token: "text-foreground", value: "#252522" },
+    { component: "TitleInformation", property: "Large font", token: "typo-paragraph-bold", value: "Geist 600 16/24" },
+    { component: "TitleInformation", property: "Default font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
+    { component: "TitleInformation", property: "Icon circle", token: "size-xl, border-border", value: "24px, rounded-full" },
+    { component: "InformationText", property: "Default", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
+    { component: "InformationText", property: "Medium", token: "typo-paragraph-bold", value: "Geist 600 16/24" },
+    { component: "InformationText", property: "High", token: "typo-paragraph-xl-bold", value: "Geist 600 30/32 -1px" },
+    { component: "TextValue", property: "Font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
+    { component: "TextValue", property: "Color", token: "text-foreground-subtle", value: "slate-700 / slate-400" },
+  ]
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-border">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-4 py-3 font-semibold">Component</th>
+            <th className="px-4 py-3 font-semibold">Property</th>
+            <th className="px-4 py-3 font-semibold">Token</th>
+            <th className="px-4 py-3 font-semibold">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((t, i) => (
+            <tr key={i} className="border-b border-border last:border-0">
+              <td className="px-4 py-3 font-mono font-semibold whitespace-nowrap">{t.component}</td>
+              <td className="px-4 py-3 text-muted-foreground">{t.property}</td>
+              <td className="px-4 py-3 font-mono text-muted-foreground">{t.token}</td>
+              <td className="px-4 py-3 font-mono text-muted-foreground">{t.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function TitleSystemDocs() {
+  return (
+    <div className="space-y-12">
+      <TableOfContents sections={titleSections} />
+
+      {/* ---- Header ---- */}
+      <header className="space-y-md pb-3xl">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
+        <h1 className="typo-heading-2">Title System</h1>
+        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+          Composable title components for page headers, section headings, card titles, input labels, information displays, and value text. Each component maps to a specific Figma component set with full variant support.
+        </p>
+      </header>
+
+      {/* ---- Explore Behavior ---- */}
+      <section id="explore-behavior" className="space-y-md">
+        <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
+        <TitleExploreBehavior />
+      </section>
+
+      {/* ---- Installation ---- */}
+      <section id="installation" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Installation</h2>
+        <div className="space-y-sm">
+          <CodeBlock code={`import {
+  TitlePage,
+  TitleSection,
+  TitleCard,
+  TitleInput,
+  TitleInformation,
+  InformationText,
+  TextValue,
+  RightDecoration,
+} from "@/components/ui/title"`} />
+        </div>
+      </section>
+
+      {/* ---- Examples ---- */}
+      <section id="examples" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Examples</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Example title="Page Title with Back" code={`<TitlePage
+  title="Dashboard"
+  showBack
+  backLabel="Back"
+  onBack={() => router.back()}
+  subtitle="Overview of your account"
+/>`}>
+            <TitlePage title="Dashboard" showBack backLabel="Back" onBack={() => {}} subtitle="Overview of your account" />
+          </Example>
+
+          <Example title="Section with Badge & Decoration" code={`<TitleSection
+  title="Recent Orders"
+  badge={<Badge>12</Badge>}
+  decoration={<TextButton>View all</TextButton>}
+/>`}>
+            <TitleSection title="Recent Orders" badge={<Badge variant="secondary">12</Badge>} decoration={<TextButton variant="primary" size="default">View all</TextButton>} />
+          </Example>
+
+          <Example title="Card Title" code={`<TitleCard
+  title="Payment Method"
+  showBack
+  badge={<Badge variant="outline">Default</Badge>}
+/>`}>
+            <TitleCard title="Payment Method" showBack onBack={() => {}} badge={<Badge variant="outline">Default</Badge>} />
+          </Example>
+
+          <Example title="Input Label" code={`<TitleInput label="Email" type="optional" decoration="0/100 characters" />`}>
+            <TitleInput label="Email" type="optional" decoration="0/100 characters" className="w-full" />
+          </Example>
+
+          <Example title="Information with Icon" code={`<TitleInformation
+  label="Account Status"
+  level="large"
+  icon={<CircleAlert className="size-md" />}
+  decoration="Active"
+/>`}>
+            <TitleInformation label="Account Status" level="large" icon={<CircleAlert className="size-md" />} decoration="Active" />
+          </Example>
+
+          <Example title="Information Text Highlight Levels" code={`<InformationText highlight="high">$12,450.00</InformationText>`}>
+            <div className="space-y-xs">
+              <InformationText highlight="default">$12,450.00 (default)</InformationText>
+              <InformationText highlight="medium">$12,450.00 (medium)</InformationText>
+              <InformationText highlight="high">$12,450.00 (high)</InformationText>
+            </div>
+          </Example>
+        </div>
+      </section>
+
+      {/* ---- Props ---- */}
+      <section id="props" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Props</h2>
+        <TitlePropsTable />
+      </section>
+
+      {/* ---- Design Tokens ---- */}
+      <section id="design-tokens" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
+        <TitleTokensTable />
+      </section>
+
+      {/* ---- Best Practices ---- */}
+      <section id="best-practices" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
+        <h3 className="font-body font-semibold text-sm">Content</h3>
+        <DoItem>Use TitlePage for the main page heading — one per page.</DoItem>
+        <DoItem>Use TitleSection to group related content within a page.</DoItem>
+        <DontItem>Don't nest TitlePage inside cards or sections.</DontItem>
+        <DontItem>Don't use TitleCard for page-level headings.</DontItem>
+        <h3 className="font-body font-semibold text-sm mt-md">Structure</h3>
+        <DoItem>Use TitleInput as the label for form fields — pairs with Input, Select, Textarea.</DoItem>
+        <DoItem>Use RightDecoration for consistent right-side actions across all title variants.</DoItem>
+        <DontItem>Don't create custom label markup when TitleInput exists.</DontItem>
+        <DontItem>Don't mix highlight levels of InformationText arbitrarily — use hierarchy (high for hero KPIs, medium for secondary, default for detail).</DontItem>
+      </section>
+
+      {/* ---- Figma Mapping ---- */}
+      <FigmaMapping id="figma-mapping" nodeId="2094:4361" rows={[
+        ["Title/Page", "4290:3438", "TitlePage", "Page-level heading with back, badge, tooltip, decoration, subtitle"],
+        ["Title/Section", "2715:8384", "TitleSection", "Section heading with badge, tooltip, decoration, description"],
+        ["Title/Card", "2575:5379", "TitleCard", "Card heading with back, badge, tooltip, decoration, description"],
+        ["Title/Input", "2071:30664", "TitleInput", "Input/form label with type (required/optional), size, decoration"],
+        ["Title/Information", "2718:9628", "TitleInformation", "Key-value label with level, icon, tooltip, decoration"],
+        ["Information Text", "3489:962", "InformationText", "Value display with highlight (default/medium/high), align"],
+        ["Text value", "4491:3770", "TextValue", "Subtle text value with optional tooltip underline"],
+        ["Right Decoration", "18:1373", "RightDecoration", "Polymorphic decoration slot — 18+ type variants"],
+      ]} />
+
+      {/* ---- Accessibility ---- */}
+      <section id="accessibility" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
+        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+          <li>TitlePage renders an <code className="font-mono">&lt;h1&gt;</code> — ensure one per page</li>
+          <li>TitleCard back button includes keyboard focus and click handler</li>
+          <li>TitleInput is semantic — use as label alongside form inputs</li>
+          <li>TextValue with tooltip underline provides visual hint for hoverable content</li>
+        </ul>
+      </section>
+
+      {/* ---- Related ---- */}
+      <section id="related" className="space-y-md pt-3xl">
+        <h2 className="font-heading font-semibold text-xl">Related Components</h2>
+        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+          <li>Label — Simple form label component</li>
+          <li>Badge — Status indicators used inline with titles</li>
+          <li>TextButton — Text-only button used in TitlePage back navigation</li>
+          <li>Card — Often pairs with TitleCard as card header</li>
+        </ul>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
    Navigation & Layout
    ================================================================ */
 
@@ -21189,6 +21815,7 @@ const componentGroups = [
     { id: "skeleton", label: "Skeleton" },
     { id: "spinner", label: "Spinner" },
     { id: "table", label: "Table" },
+    { id: "title", label: "Title" },
   ]},
   { group: "Feedback", items: [
     { id: "alert", label: "Alert" },
@@ -21463,7 +22090,6 @@ function App() {
           {active === "accordion" && <AccordionDocs />}
           {active === "collapsible" && <CollapsibleDocs />}
           {active === "scroll-area" && <ScrollAreaDocs />}
-          {active === "calendar" && <CalendarDocs />}
           {active === "date-picker" && <DatePickerDocs />}
           {active === "combobox" && <ComboboxDocs />}
           {active === "input-otp" && <InputOTPDocs />}
@@ -21475,6 +22101,7 @@ function App() {
           {active === "menubar" && <MenubarDocs />}
           {active === "resizable" && <ResizableDocs />}
           {active === "sidebar" && <SidebarDocs />}
+          {active === "title" && <TitleSystemDocs />}
         </div>
       </main>
 
