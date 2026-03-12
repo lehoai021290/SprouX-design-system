@@ -24,7 +24,7 @@ const selectTriggerVariants = cva(
     variants: {
       size: {
         lg: "h-3xl pl-md pr-xs gap-sm",
-        default: "h-9 pl-sm pr-xs gap-xs",
+        default: "h-[36px] pl-sm pr-xs gap-xs",
         sm: "h-2xl px-xs gap-2xs",
         xs: "h-2xl px-2xs gap-3xs",
       },
@@ -79,7 +79,7 @@ function SelectContent({
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
           className={cn(
-            "p-1",
+            "p-3xs",
             position === "popper" &&
               "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
           )}
@@ -153,7 +153,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1",
+        "flex cursor-default items-center justify-center py-3xs",
         className
       )}
       {...props}
@@ -171,7 +171,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1",
+        "flex cursor-default items-center justify-center py-3xs",
         className
       )}
       {...props}

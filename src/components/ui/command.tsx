@@ -51,7 +51,7 @@ function CommandDialog({
     <Dialog {...props}>
       <DialogContent className="overflow-hidden p-0">
         <DialogTitle className="sr-only">Command</DialogTitle>
-        <Command className="[&_[cmdk-group-heading]]:px-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-xs [&_[cmdk-input-wrapper]_svg]:size-lg [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-xs [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:size-lg">
+        <Command className="border-none [&_[cmdk-group-heading]]:px-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-xs [&_[cmdk-input-wrapper]_svg]:size-lg [&_[cmdk-input]]:h-3xl [&_[cmdk-item]]:px-xs [&_[cmdk-item]]:py-[6px] [&_[cmdk-item]_svg]:size-lg">
           {children}
         </Command>
       </DialogContent>

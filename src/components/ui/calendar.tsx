@@ -75,8 +75,8 @@ function DayCell({
   let stateClass: string
   if (disabled) {
     stateClass = isMiddle
-      ? "bg-accent text-foreground opacity-50 pointer-events-none"
-      : "bg-card text-muted-foreground opacity-50 pointer-events-none"
+      ? "bg-accent text-foreground opacity-50"
+      : "bg-card text-muted-foreground opacity-50"
   } else if (outside) {
     stateClass = "bg-background text-foreground opacity-40"
   } else if (selected || isRangeEndpoint) {
@@ -101,6 +101,9 @@ function DayCell({
         stateClass,
         className
       )}
+      disabled={disabled || outside}
+      aria-disabled={disabled || outside || undefined}
+      tabIndex={disabled || outside ? -1 : 0}
       {...props}
     />
   )
@@ -152,7 +155,7 @@ function Calendar({
               visible in "dropdown" mode as display text inside dropdown_root.
               In dropdown_root context: styled as Select trigger (r=8 h=32 px=8 border) ── */
         caption_label:
-          "typo-paragraph-sm font-semibold inline-flex items-center gap-[6px]",
+          "typo-paragraph-sm-bold inline-flex items-center gap-[6px]",
 
         /* ── Dropdowns container ── */
         dropdowns: "flex items-center gap-xs",

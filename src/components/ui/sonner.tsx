@@ -27,9 +27,9 @@ const toastClassNames = {
   title: "typo-paragraph-sm-bold text-foreground",
   description: "typo-paragraph-sm text-muted-foreground mt-3xs",
   actionButton:
-    "shrink-0 bg-primary text-primary-foreground typo-paragraph-mini font-semibold rounded-lg px-xs py-3xs min-h-[24px] cursor-pointer",
+    "shrink-0 bg-primary text-primary-foreground typo-paragraph-mini-bold rounded-lg px-xs py-3xs min-h-[24px] cursor-pointer",
   cancelButton:
-    "shrink-0 bg-muted text-muted-foreground typo-paragraph-mini font-semibold rounded-lg px-xs py-3xs min-h-[24px] border border-border cursor-pointer",
+    "shrink-0 bg-muted text-muted-foreground typo-paragraph-mini-bold rounded-lg px-xs py-3xs min-h-[24px] border border-border cursor-pointer",
 }
 
 /** Shared icon map — single source of truth */

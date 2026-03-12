@@ -24,9 +24,9 @@ const toggleVariants = cva(
           "border border-border bg-transparent hover:bg-outline-hover data-[state=on]:bg-outline-hover",
       },
       size: {
-        default: "h-9 px-xs min-w-9 gap-xs",
-        sm: "h-2xl px-2xs min-w-8 gap-2xs",
-        lg: "h-3xl px-sm min-w-10 gap-xs",
+        default: "h-[36px] px-xs min-w-[36px] gap-xs",
+        sm: "h-2xl px-2xs min-w-2xl gap-2xs",
+        lg: "h-3xl px-sm min-w-3xl gap-xs",
         mini: "h-xl px-3xs min-w-xl rounded-sm gap-3xs typo-paragraph-mini-bold",
       },
     },

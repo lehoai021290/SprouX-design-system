@@ -51,6 +51,7 @@ function Chip({
     <button
       data-slot="chip"
       data-selected={selected || undefined}
+      aria-pressed={selected}
       type="button"
       className={cn(
         "inline-flex items-center gap-[4px] rounded-full border typo-paragraph-sm-bold transition-colors",
@@ -67,9 +68,9 @@ function Chip({
       {icon && <span className="text-muted-foreground">{icon}</span>}
       <span>{children}</span>
       {closable && (
-        <span
-          role="button"
-          tabIndex={-1}
+        <button
+          type="button"
+          tabIndex={0}
           className="text-muted-foreground hover:text-foreground cursor-pointer"
           onClick={(e) => {
             e.stopPropagation()
@@ -78,7 +79,7 @@ function Chip({
           aria-label="Remove"
         >
           <X className="size-md" />
-        </span>
+        </button>
       )}
     </button>
   )

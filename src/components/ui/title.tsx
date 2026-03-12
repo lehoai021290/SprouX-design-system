@@ -211,6 +211,7 @@ function TitleCard({
           data-slot="title-back"
           type="button"
           onClick={onBack}
+          aria-label="Go back"
           className="flex items-center justify-center size-2xl shrink-0 text-foreground hover:text-foreground/80 transition-colors"
         >
           <ChevronLeft className="size-md" />

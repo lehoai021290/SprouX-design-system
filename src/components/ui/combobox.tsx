@@ -49,6 +49,11 @@ function Combobox({
   const [open, setOpen] = React.useState(false)
   const [selected, setSelected] = React.useState(value ?? "")
 
+  // Sync with controlled value prop
+  React.useEffect(() => {
+    if (value !== undefined) setSelected(value)
+  }, [value])
+
   const handleSelect = (currentValue: string) => {
     const newValue = currentValue === selected ? "" : currentValue
     setSelected(newValue)
@@ -72,7 +77,7 @@ function Combobox({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command className="border-none">
           <CommandInput placeholder={searchPlaceholder} />
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>

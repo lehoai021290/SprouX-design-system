@@ -76,7 +76,7 @@ function DropdownMenuSubTrigger({
     <DropdownMenuPrimitive.SubTrigger
       data-slot="dropdown-menu-sub-trigger"
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-md px-xs py-2xs typo-paragraph-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none focus:bg-accent data-[state=open]:bg-accent [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         inset && "pl-2xl",
         className
       )}
@@ -96,7 +96,7 @@ function DropdownMenuSubContent({
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-1 text-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-3xs text-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
       {...props}
@@ -115,7 +115,7 @@ function DropdownMenuContent({
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-1 text-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+          "z-50 min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-3xs text-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
         {...props}
@@ -242,7 +242,7 @@ function DropdownMenuShortcut({
 
 /** Shared class config — single source of truth for component + docs preview */
 const menuClassNames = {
-  content: "min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-1 text-foreground shadow",
+  content: "min-w-[8rem] overflow-hidden rounded-lg border border-border bg-card p-3xs text-foreground shadow",
   item: "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none",
   itemFocus: "bg-accent text-foreground",
   checkboxItem: "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-sm outline-none",
