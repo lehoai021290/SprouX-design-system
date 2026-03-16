@@ -25,6 +25,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-canvas: var(--canvas);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-card-subtle: var(--card-subtle);
@@ -593,6 +594,7 @@
 
     --muted: #f3f3f2;                          /* slate/100 */
     --muted-foreground: #6f6f6a;               /* slate/700 */
+    --canvas: #f0f0ee;                         /* preview canvas — slightly darker than muted */
 
     --accent: #f3f3f2;                         /* slate/100 */
     --accent-foreground: #2f2f2b;              /* slate/900 */
@@ -779,6 +781,7 @@
 
     --muted: #4f4f4a;                          /* slate/800 */
     --muted-foreground: #c6c6c2;               /* slate/400 */
+    --canvas: #363633;                         /* preview canvas — between card-subtle and muted */
 
     --accent: #4f4f4a;                         /* slate/800 */
     --accent-foreground: #f7f7f6;              /* slate/50 */
@@ -992,39 +995,38 @@
 /* ============================================================
    Utility Classes (single-property — correct layer for Tailwind v4)
    ============================================================ */
-@layer utilities {
-  /* ---- Focus Ring Utilities (Figma Effect Styles) ----
-   * All focus rings: DROP_SHADOW 0 0 0 3px <color>
-   * Light mode uses 200-shade, dark mode uses 800-shade
-   */
+/* ---- Focus Ring Utilities (Figma Effect Styles) ----
+ * All focus rings: DROP_SHADOW 0 0 0 3px <color>
+ * Light mode uses 200-shade, dark mode uses 800-shade
+ * @utility enables Tailwind v4 variant support (focus-visible:ring-focus)
+ */
 
-  /* focus ring — #e9e9e7 (slate200) / #4f4f4a (slate800) */
-  .ring-focus {
-    box-shadow: 0 0 0 3px var(--ring);
-  }
+/* focus ring — #e9e9e7 (slate200) / #4f4f4a (slate800) */
+@utility ring-focus {
+  box-shadow: 0 0 0 3px var(--ring);
+}
 
-  /* focus ring error — #fecaca (red200) / #7f1d1d (red900) */
-  .ring-focus-error {
-    box-shadow: 0 0 0 3px var(--ring-error);
-  }
+/* focus ring error — #fecaca (red200) / #7f1d1d (red900) */
+@utility ring-focus-error {
+  box-shadow: 0 0 0 3px var(--ring-error);
+}
 
-  /* focus ring brand — #99f6e4 (teal200) / #115e59 (teal800) */
-  .ring-focus-brand {
-    box-shadow: 0 0 0 3px var(--ring-brand);
-  }
+/* focus ring brand — #99f6e4 (teal200) / #115e59 (teal800) */
+@utility ring-focus-brand {
+  box-shadow: 0 0 0 3px var(--ring-brand);
+}
 
-  /* focus ring success — #bbf7d0 (green200) / #166534 (green800) */
-  .ring-focus-success {
-    box-shadow: 0 0 0 3px var(--ring-success);
-  }
+/* focus ring success — #bbf7d0 (green200) / #166534 (green800) */
+@utility ring-focus-success {
+  box-shadow: 0 0 0 3px var(--ring-success);
+}
 
-  /* focus ring warning — #fed7aa (orange200) / #92400e (amber800) */
-  .ring-focus-warning {
-    box-shadow: 0 0 0 3px var(--ring-warning);
-  }
+/* focus ring warning — #fed7aa (orange200) / #92400e (amber800) */
+@utility ring-focus-warning {
+  box-shadow: 0 0 0 3px var(--ring-warning);
+}
 
-  /* focus ring emphasis — #bfdbfe (blue200) / #1e40af (blue800) */
-  .ring-focus-emphasis {
-    box-shadow: 0 0 0 3px var(--ring-emphasis);
-  }
+/* focus ring emphasis — #bfdbfe (blue200) / #1e40af (blue800) */
+@utility ring-focus-emphasis {
+  box-shadow: 0 0 0 3px var(--ring-emphasis);
 }

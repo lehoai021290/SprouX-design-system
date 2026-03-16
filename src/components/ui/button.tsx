@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils"
  *   Size:       Large (40px) | Regular (36px) | Small (32px) | Mini (24px)
  *   State:      Default | Hover & Active | Focus | Disabled
  *   Show left icon / Show right icon: Boolean (instance swap)
- *   Roundness:  Default
  *
  * Code Variant Mapping:
  *   default → Primary, secondary → Secondary, outline → Outline,
@@ -34,37 +33,37 @@ import { cn } from "@/lib/utils"
  *   Disabled:  opacity-50
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:ring-ring",
+          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:ring-focus",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:ring-ring",
+          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:ring-focus",
         outline:
-          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:ring-ring focus-visible:border-border-strong",
+          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:ring-focus focus-visible:border-border-strong",
         ghost:
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-ring",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-focus",
         "ghost-muted":
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-ring",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-focus",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:ring-ring-error",
+          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:ring-focus-error",
         "destructive-secondary":
-          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:ring-ring-error",
+          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:ring-focus-error",
       },
       size: {
         lg: "h-3xl px-xl gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
-        default: "h-9 px-md gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
+        default: "h-[36px] px-md gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
         sm: "h-2xl px-sm gap-2xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
         xs: "h-xl px-xs gap-2xs typo-paragraph-mini-bold [&_svg:not([class*='size-'])]:size-md",
         /* ── Icon Button sizes (Figma: 4838:17100)
               Regular=36×36 pad=8 icon=20, Large=40×40 pad=10 icon=20,
               Small=32×32 pad=7 icon=18, Mini=24×24 pad=4 r=4 icon=16 ── */
-        icon: "size-9 p-[8px] [&_svg:not([class*='size-'])]:size-[20px]",
-        "icon-lg": "size-3xl p-[10px] [&_svg:not([class*='size-'])]:size-[20px]",
+        icon: "size-[36px] p-xs [&_svg:not([class*='size-'])]:size-lg",
+        "icon-lg": "size-3xl p-[10px] [&_svg:not([class*='size-'])]:size-lg",
         "icon-sm": "size-2xl p-[7px] [&_svg:not([class*='size-'])]:size-[18px]",
-        "icon-xs": "size-xl p-[4px] !rounded-sm [&_svg:not([class*='size-'])]:size-md",
+        "icon-xs": "size-xl p-3xs !rounded-sm [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {
@@ -105,7 +104,7 @@ function Button({
  * Figma Variant Properties:
  *   Variant:    Primary | Secondary | Outline | Ghost | Ghost Muted | Destructive
  *   Size:       Large (40×40) | Regular (36×36) | Small (32×32) | Mini (24×24)
- *   Roundness:  Default (r=8, r=4 for Mini) | Round (r=9999)
+ *   Roundness:  Default (r=8, r=4 for Mini)
  *   State:      Default | Hover & Active | Focus | Disabled
  *   Icon:       Instance swap (⮑ Left icon)
  *
@@ -116,7 +115,7 @@ function Button({
  *   Mini:    24×24, pad=4,  icon=16×16, r=4
  *
  * Usage: <IconButton variant="outline" size="sm"><ChevronLeft /></IconButton>
- *        <IconButton variant="ghost" round><X /></IconButton>
+ *        <IconButton variant="ghost"><X /></IconButton>
  */
 type IconButtonSize = "lg" | "default" | "sm" | "xs"
 
@@ -129,18 +128,16 @@ const iconSizeMap: Record<IconButtonSize, ButtonProps["size"]> = {
 
 function IconButton({
   size = "default",
-  round = false,
   className,
   ...props
 }: Omit<ButtonProps, "size" | "asChild"> & {
   size?: IconButtonSize
-  round?: boolean
 }) {
   return (
     <Button
       data-slot="icon-button"
       size={iconSizeMap[size]}
-      className={cn(round && "!rounded-full", className)}
+      className={className}
       {...props}
     />
   )

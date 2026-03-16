@@ -267,8 +267,6 @@ import {
   ArrowUp,
   X,
   Bug,
-  Heart,
-  Share2,
   MoreHorizontal,
   ChevronLeft,
   ArrowUpDown,
@@ -404,7 +402,7 @@ function Example({
           </p>
         )}
       </div>
-      <div className="px-xl py-lg flex flex-wrap items-center gap-sm flex-1 bg-muted rounded-none">
+      <div className="px-xl py-lg flex flex-wrap items-center gap-sm flex-1 bg-canvas rounded-none">
         {children}
       </div>
       <div className="border-t border-border mt-auto rounded-b-xl overflow-hidden">
@@ -523,7 +521,7 @@ function Playground({
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         {render(values)}
       </div>
       {controls.length > 0 && (
@@ -1898,7 +1896,6 @@ function ButtonExploreBehavior() {
   const [ibVariant, setIbVariant] = useState("default")
   const [ibSize, setIbSize] = useState<"lg" | "default" | "sm" | "xs">("default")
   const [ibState, setIbState] = useState("Default")
-  const [ibRound, setIbRound] = useState(false)
   const [ibIcon, setIbIcon] = useState("Plus")
 
   const isDisabled = state === "Disabled"
@@ -1925,7 +1922,7 @@ function ButtonExploreBehavior() {
       {tab === "button" ? (
         <>
           {/* ── Button preview ── */}
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
             <div className={[
               "pointer-events-none",
               isHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -1986,7 +1983,7 @@ function ButtonExploreBehavior() {
       ) : (
         <>
           {/* ── Icon Button preview ── */}
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
             <div className={[
               "pointer-events-none",
               ibIsHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -1995,7 +1992,7 @@ function ButtonExploreBehavior() {
               <IconButton
                 variant={ibVariant as "default"}
                 size={ibSize}
-                round={ibRound}
+
                 disabled={ibIsDisabled}
                 className={[
                   ibIsHover && (ibVariant === "default" ? "bg-primary-hover" : ""),
@@ -2025,10 +2022,6 @@ function ButtonExploreBehavior() {
               { value: "default", label: "Regular (36px)" },
               { value: "sm", label: "Small (32px)" },
               { value: "xs", label: "Mini (24px)" },
-            ]} />
-            <PropertyTabs label="Roundness" value={String(ibRound)} onChange={(v) => setIbRound(v === "true")} options={[
-              { value: "false", label: "Default (r=8)" },
-              { value: "true", label: "Round (full)" },
             ]} />
             <PropertyTabs label="State" value={ibState} onChange={setIbState} options={[
               { value: "Default", label: "Default" },
@@ -2417,19 +2410,6 @@ function ButtonDocs() {
           <IconButton size="xs" aria-label="Add"><Plus /></IconButton>
         </Example>
 
-        <Example
-          title="Icon Button — Round"
-          description="Roundness=Round (r=9999). Useful for floating actions or circular UI patterns."
-          code={`<IconButton round><Plus /></IconButton>
-<IconButton variant="secondary" round><Heart /></IconButton>
-<IconButton variant="outline" round><Share2 /></IconButton>
-<IconButton variant="ghost" round size="sm"><X /></IconButton>`}
-        >
-          <IconButton round aria-label="Add"><Plus /></IconButton>
-          <IconButton variant="secondary" round aria-label="Favorite"><Heart /></IconButton>
-          <IconButton variant="outline" round aria-label="Share"><Share2 /></IconButton>
-          <IconButton variant="ghost" round size="sm" aria-label="Close"><X /></IconButton>
-        </Example>
 
         <Example
           title="Icon Button — Disabled"
@@ -7149,7 +7129,7 @@ function SwitchTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <Switch
           checked={isChecked}
           onCheckedChange={(v) => setChecked(v ? "true" : "false")}
@@ -7181,7 +7161,7 @@ function SwitchGroupTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className={layout === "inline" ? "flex items-center gap-xs" : "space-y-sm"}>
           <div className="flex items-center gap-xs">
             <Switch
@@ -7570,7 +7550,7 @@ function LabelExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
       {/* Preview */}
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         {layout === "block" ? (
           <div className="w-[280px] space-y-xs">
             <Label size={size} htmlFor="explore-input">Email address</Label>
@@ -8187,7 +8167,7 @@ function ToggleIconButtonTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
           <Toggle
             variant={skin === "outlined" ? "outline" : "default"}
@@ -8260,7 +8240,7 @@ function ToggleButtonTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
           <Toggle
             variant={skin === "outlined" ? "outline" : "default"}
@@ -8323,7 +8303,7 @@ function ToggleGroupTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         {type === "single" ? (
           <ToggleGroup type="single" variant={skin === "outlined" ? "outline" : "default"} size={size as "default" | "sm" | "lg" | "mini"} defaultValue="center">
             <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-md" /></ToggleGroupItem>
@@ -8819,7 +8799,7 @@ function ChipExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className={isHover ? "[&_[data-slot=chip]]:bg-accent [&_[data-slot=chip]]:text-foreground" : ""}>
           <Chip
             size={chipSize}
@@ -9925,7 +9905,7 @@ function ProgressExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
           <Progress value={value} size={size as any} variant={variant as any} className="w-80" />
         </div>
         <div className="border-t border-border p-lg space-y-md">
@@ -10267,7 +10247,7 @@ function AlertExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className="w-full max-w-lg">
           <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard={inCard}>
             {alertContent}
@@ -11220,7 +11200,7 @@ function SeparatorDividerTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         {isVertical ? (
           <div className="flex items-center gap-md h-xl">
             <span className="typo-paragraph-sm text-muted-foreground">Left</span>
@@ -11250,7 +11230,7 @@ function SeparatorDividerTab() {
 function SeparatorDotTab() {
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className="flex items-center gap-xs">
           <span className="typo-paragraph-sm text-muted-foreground">Item 1</span>
           <div className="size-[3px] rounded-full bg-muted-foreground" />
@@ -11518,7 +11498,7 @@ function SkeletonExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
           {shape === "card" && (
             <div className="flex items-start gap-sm">
               <Skeleton className="size-[48px] rounded-full shrink-0" />
@@ -11777,7 +11757,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Header tab — single cell preview ── */}
       {dtTab === "header" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", headerBg, hBorder && "border-b border-border", hAlign === "right" && "justify-end")}>
               {hContent === "text" && <span className={cn("font-semibold typo-paragraph-sm", hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>}
               {hContent === "sortable" && (
@@ -11807,7 +11787,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Cell tab — single cell preview ── */}
       {dtTab === "cell" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", cellBg, cBorder && "border-b border-border", cAlign === "right" && "justify-end")}>
               {cContent === "text-1" && <span className="typo-paragraph-sm">Table cell</span>}
               {cContent === "text-2" && (
@@ -17571,7 +17551,7 @@ function AccordionExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         {/* pointer-events-none: prevent interactive states; visual overrides for Figma states
             ring-focus is a custom CSS class (not Tailwind utility), so use shadow arbitrary for focus ring */}
         <div className={[
@@ -18697,7 +18677,7 @@ function DatePickerDayTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className={cn(
           "inline-flex flex-col items-center justify-center typo-paragraph-sm font-normal transition-colors cursor-default overflow-clip",
           daySize, posClass, stateClass
@@ -18761,7 +18741,7 @@ function DatePickerHeaderTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted overflow-x-auto">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas overflow-x-auto">
         <div className={headerWidth}>
           <Calendar
             mode="single"
@@ -18802,7 +18782,7 @@ function DatePickerInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className="flex flex-col gap-[4px]">
           {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Date</label>}
           <div
@@ -18841,7 +18821,7 @@ function TimePickerInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className="flex flex-col gap-[4px]">
           {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Time</label>}
           <div
@@ -19829,7 +19809,7 @@ function SpinnerExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
           <Spinner size={size as "sm" | "default" | "lg"} />
         </div>
         <div className="border-t border-border p-lg space-y-md">
@@ -21881,7 +21861,7 @@ function MenubarDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden bg-card">
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
             <Menubar>
               <MenubarMenu>
                 <MenubarTrigger>File</MenubarTrigger>
@@ -22785,7 +22765,7 @@ function TitleSectionTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <TitleSection
           title={showTitle ? "Section Title" : undefined}
           description={showDescription ? "Optional description for this section." : undefined}
@@ -22832,7 +22812,7 @@ function TitleCardTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <TitleCard
           title="Card Title"
           showBack={showBack}
@@ -22879,7 +22859,7 @@ function TitleInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <TitleInput
           label="Field Label"
           type={type}
@@ -22912,7 +22892,7 @@ function TitleInformationTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <TitleInformation
           label="Information Label"
           level={level}
@@ -22952,7 +22932,7 @@ function InformationTextTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <InformationText
           highlight={highlight}
           align={align}
@@ -22983,7 +22963,7 @@ function TextValueTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-muted">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <TextValue showTooltip={showTooltip}>nhan@evol.vn</TextValue>
       </div>
       <div className="border-t border-border p-lg space-y-md">
