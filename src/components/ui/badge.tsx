@@ -41,9 +41,9 @@ const badgeVariants = cva(
         secondary: "",
       },
       size: {
-        sm: "h-lg px-2xs gap-3xs typo-paragraph-mini-bold [&>svg]:size-sm",
-        default: "h-xl px-xs gap-3xs typo-paragraph-mini-bold [&>svg]:size-sm",
-        lg: "h-[28px] px-sm gap-2xs py-3xs typo-paragraph-sm-medium [&>svg]:size-md",
+        sm: "h-lg px-2xs gap-3xs typo-paragraph-mini-semibold [&>svg]:size-sm",
+        default: "h-xl px-xs gap-3xs typo-paragraph-mini-semibold [&>svg]:size-sm",
+        lg: "h-[28px] px-sm gap-2xs py-3xs typo-paragraph-small-medium [&>svg]:size-md",
       },
     },
     compoundVariants: [
@@ -61,7 +61,7 @@ const badgeVariants = cva(
       /* --- Level=Secondary: all sizes use regular weight (400) --- */
       { level: "secondary", size: "sm", className: "typo-paragraph-mini" },
       { level: "secondary", size: "default", className: "typo-paragraph-mini" },
-      { level: "secondary", size: "lg", className: "typo-paragraph-sm" },
+      { level: "secondary", size: "lg", className: "typo-paragraph-small" },
     ],
     defaultVariants: {
       variant: "default",
@@ -120,9 +120,9 @@ const badgeRoundVariants = cva(
           "bg-warning text-warning-foreground",
       },
       size: {
-        sm: "size-lg typo-paragraph-mini-bold [&>svg]:size-sm",
-        default: "size-xl typo-paragraph-mini-bold [&>svg]:size-sm",
-        lg: "size-[28px] typo-paragraph-sm-medium [&>svg]:size-md",
+        sm: "size-lg typo-paragraph-mini-semibold [&>svg]:size-sm",
+        default: "size-xl typo-paragraph-mini-semibold [&>svg]:size-sm",
+        lg: "size-[28px] typo-paragraph-small-medium [&>svg]:size-md",
       },
     },
     defaultVariants: {

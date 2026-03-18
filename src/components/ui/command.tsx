@@ -69,7 +69,7 @@ function CommandInput({
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
-          "flex h-2xl w-full rounded-lg bg-transparent typo-paragraph-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-size-sm w-full rounded-lg bg-transparent typo-paragraph-small outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
@@ -97,7 +97,7 @@ function CommandEmpty(
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className="py-xl text-center typo-paragraph-sm"
+      className="py-xl text-center typo-paragraph-small"
       {...props}
     />
   )
@@ -140,7 +140,7 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-[6px] typo-paragraph-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-[6px] typo-paragraph-small outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         className
       )}
       {...props}

@@ -95,7 +95,7 @@ function DayCell({
     <button
       data-slot="day-cell"
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap size-[32px] typo-paragraph-sm font-normal transition-colors",
+        "inline-flex items-center justify-center whitespace-nowrap size-size-sm typo-paragraph-small font-normal transition-colors",
         "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring",
         posClass,
         stateClass,
@@ -141,21 +141,21 @@ function Calendar({
         /* ── Header (Figma: 264:29273)
               NavButtons = Icon Button Outline 32×32 r=8 p=7 ── */
         month_caption:
-          "col-start-2 row-start-1 flex items-center justify-center h-[32px]",
+          "col-start-2 row-start-1 flex items-center justify-center h-size-sm",
         button_previous: cn(
           buttonVariants({ variant: "outline" }),
-          "!size-[32px] rounded-lg p-[7px] col-start-1 row-start-1 self-center"
+          "!size-size-sm rounded-lg p-[7px] col-start-1 row-start-1 self-center"
         ),
         button_next: cn(
           buttonVariants({ variant: "outline" }),
-          "!size-[32px] rounded-lg p-[7px] col-start-3 row-start-1 self-center"
+          "!size-size-sm rounded-lg p-[7px] col-start-3 row-start-1 self-center"
         ),
 
         /* ── Caption label: visible in "label" mode as title,
               visible in "dropdown" mode as display text inside dropdown_root.
               In dropdown_root context: styled as Select trigger (r=8 h=32 px=8 border) ── */
         caption_label:
-          "typo-paragraph-sm-bold inline-flex items-center gap-[6px]",
+          "typo-paragraph-small-semibold inline-flex items-center gap-[6px]",
 
         /* ── Dropdowns container ── */
         dropdowns: "flex items-center gap-xs",
@@ -164,7 +164,7 @@ function Calendar({
               Select is hidden (opacity-0 absolute), caption_label is the visible trigger
               styled as Figma Select & Combobox (r=8 h=32 px=8 gap=6 border) ── */
         dropdown_root:
-          "relative inline-flex items-center bg-input border border-border rounded-lg h-[32px] px-xs",
+          "relative inline-flex items-center bg-input border border-border rounded-lg h-size-sm px-xs",
         dropdown: "absolute inset-0 w-full opacity-0 cursor-pointer",
         months_dropdown: "absolute inset-0 w-full opacity-0 cursor-pointer",
         years_dropdown: "absolute inset-0 w-full opacity-0 cursor-pointer",
@@ -174,7 +174,7 @@ function Calendar({
 
         /* ── Weekday Name (Figma: 32×32, 12px/400) ── */
         weekday:
-          "text-muted-foreground w-[32px] h-[32px] font-normal text-[12px] leading-[16px] flex items-center justify-center",
+          "text-muted-foreground w-size-sm h-size-sm font-normal text-[12px] leading-[16px] flex items-center justify-center",
 
         /* ── Day cell wrapper ── */
         day: cn(

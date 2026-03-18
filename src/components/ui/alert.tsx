@@ -23,8 +23,8 @@ import { cn } from "@/lib/utils"
  *   Container:  py-sm (12px) px-md (16px), gap-md (16px) outer
  *               rounded-lg (8px), border 1px
  *   Icon:       size-md (16px), absolute left-md top-[14px] (center-aligned to 20px text line)
- *   Title:      typo-paragraph-sm-bold (Geist 600 14/20 ls:0.07px)
- *   Description:typo-paragraph-sm (Geist 400 14/20 ls:0.07px)
+ *   Title:      typo-paragraph-small-semibold (Geist 600 14/20 ls:0.07px)
+ *   Description:typo-paragraph-small (Geist 400 14/20 ls:0.07px)
  *   Gap:        icon-to-text gap-sm (12px), title-to-desc gap-xs (8px)
  *
  *   Neutral:        bg-card, border-border, text-foreground, desc: text-ghost-foreground
@@ -89,7 +89,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-title"
-      className={cn("typo-paragraph-sm-bold", className)}
+      className={cn("typo-paragraph-small-semibold", className)}
       {...props}
     />
   )
@@ -102,7 +102,7 @@ function AlertDescription({
   return (
     <div
       data-slot="alert-description"
-      className={cn("typo-paragraph-sm [&_p]:leading-relaxed", className)}
+      className={cn("typo-paragraph-small [&_p]:leading-relaxed", className)}
       {...props}
     />
   )

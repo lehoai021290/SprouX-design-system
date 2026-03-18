@@ -68,7 +68,7 @@ function MenubarTrigger({
     <MenubarPrimitive.Trigger
       data-slot="menubar-trigger"
       className={cn(
-        "flex items-center rounded-md px-xs py-2xs typo-paragraph-sm-bold outline-none select-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground",
+        "flex items-center rounded-md px-xs py-2xs typo-paragraph-small-semibold outline-none select-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground",
         className
       )}
       {...props}
@@ -111,7 +111,7 @@ function MenubarItem({
     <MenubarPrimitive.Item
       data-slot="menubar-item"
       className={cn(
-        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         inset && "pl-2xl",
         className
       )}
@@ -130,7 +130,7 @@ function MenubarCheckboxItem({
     <MenubarPrimitive.CheckboxItem
       data-slot="menubar-checkbox-item"
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       checked={checked}
@@ -155,7 +155,7 @@ function MenubarRadioItem({
     <MenubarPrimitive.RadioItem
       data-slot="menubar-radio-item"
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       {...props}
@@ -181,7 +181,7 @@ function MenubarLabel({
     <MenubarPrimitive.Label
       data-slot="menubar-label"
       className={cn(
-        "px-xs py-2xs typo-paragraph-sm-bold",
+        "px-xs py-2xs typo-paragraph-small-semibold",
         inset && "pl-2xl",
         className
       )}
@@ -231,7 +231,7 @@ function MenubarSubTrigger({
     <MenubarPrimitive.SubTrigger
       data-slot="menubar-sub-trigger"
       className={cn(
-        "flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-small outline-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         inset && "pl-2xl",
         className
       )}

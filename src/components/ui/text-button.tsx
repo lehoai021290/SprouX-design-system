@@ -29,7 +29,7 @@ const textButtonVariants = cva(
       },
       size: {
         lg: "gap-2xs typo-paragraph [&_svg:not([class*='size-'])]:size-md",
-        default: "gap-3xs typo-paragraph-sm [&_svg:not([class*='size-'])]:size-md",
+        default: "gap-3xs typo-paragraph-small [&_svg:not([class*='size-'])]:size-md",
         mini: "gap-3xs typo-paragraph-mini [&_svg:not([class*='size-'])]:size-md",
       },
     },

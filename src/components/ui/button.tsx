@@ -27,8 +27,8 @@ import { cn } from "@/lib/utils"
  *
  * Merged specs (Shadcn structure + Figma tokens):
  *   Container: rounded-lg (8px), gap-xs (8px) or gap-2xs (6px)
- *   Text:      typo-paragraph-sm-bold (14/20 ls:0.07) for lg/default/sm
- *              typo-paragraph-mini-bold (12/16 ls:0.18) for xs
+ *   Text:      typo-paragraph-small-semibold (14/20 ls:0.07) for lg/default/sm
+ *              typo-paragraph-mini-semibold (12/16 ls:0.18) for xs
  *   Icon:      size-md (16px) all sizes
  *   Disabled:  opacity-50
  */
@@ -38,32 +38,33 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:ring-focus",
+          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:focus-ring",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:ring-focus",
+          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:focus-ring",
         outline:
-          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:ring-focus focus-visible:border-border-strong",
+          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:focus-ring focus-visible:border-border-strong",
         ghost:
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-focus",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:focus-ring",
         "ghost-muted":
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:ring-focus",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:focus-ring",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:ring-focus-error",
+          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:focus-ring-error",
         "destructive-secondary":
-          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:ring-focus-error",
+          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:focus-ring-error",
       },
       size: {
-        lg: "h-size-lg px-xl gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
-        default: "h-size-md px-md gap-xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
-        sm: "h-size-sm px-sm gap-2xs typo-paragraph-sm-bold [&_svg:not([class*='size-'])]:size-md",
-        xs: "h-size-xs px-xs gap-2xs typo-paragraph-mini-bold [&_svg:not([class*='size-'])]:size-md",
+        lg: "h-size-lg px-xl py-0 gap-xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
+        default: "h-size-md px-md py-0 gap-xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
+        sm: "h-size-sm px-sm py-0 gap-2xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
+        xs: "h-size-xs px-xs py-0 gap-2xs typo-paragraph-mini-semibold [&_svg:not([class*='size-'])]:size-md",
         /* ── Icon Button sizes (Figma: 4838:17100)
-              Regular=36×36 pad=8 icon=20, Large=40×40 pad=10 icon=20,
-              Small=32×32 pad=7 icon=18, Mini=24×24 pad=4 r=4 icon=16 ── */
-        icon: "size-size-md p-xs [&_svg:not([class*='size-'])]:size-lg",
-        "icon-lg": "size-size-lg p-[10px] [&_svg:not([class*='size-'])]:size-lg",
-        "icon-sm": "size-size-sm p-[7px] [&_svg:not([class*='size-'])]:size-[18px]",
-        "icon-xs": "size-size-xs p-3xs !rounded-sm [&_svg:not([class*='size-'])]:size-md",
+              Regular=36×36 icon=20, Large=40×40 icon=20,
+              Small=32×32 icon=18, Mini=24×24 r=4 icon=16
+              All: p=0 gap=0 (icon centered by flexbox) ── */
+        icon: "size-size-md p-0 gap-0 [&_svg:not([class*='size-'])]:size-lg",
+        "icon-lg": "size-size-lg p-0 gap-0 [&_svg:not([class*='size-'])]:size-lg",
+        "icon-sm": "size-size-sm p-0 gap-0 [&_svg:not([class*='size-'])]:size-[18px]",
+        "icon-xs": "size-size-xs p-0 gap-0 !rounded-sm [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {
@@ -104,7 +105,7 @@ function Button({
  * Figma Variant Properties:
  *   Variant:    Primary | Secondary | Outline | Ghost | Ghost Muted | Destructive
  *   Size:       Large (40×40) | Regular (36×36) | Small (32×32) | Mini (24×24)
- *   Roundness:  Default (r=8, r=4 for Mini)
+ *   Roundness:  Default (r=8, r=4 for Mini) | Round (rounded-full)
  *   State:      Default | Hover & Active | Focus | Disabled
  *   Icon:       Instance swap (⮑ Left icon)
  *
@@ -116,6 +117,7 @@ function Button({
  *
  * Usage: <IconButton variant="outline" size="sm"><ChevronLeft /></IconButton>
  *        <IconButton variant="ghost"><X /></IconButton>
+ *        <IconButton variant="secondary" round><Search /></IconButton>
  */
 type IconButtonSize = "lg" | "default" | "sm" | "xs"
 
@@ -128,16 +130,18 @@ const iconSizeMap: Record<IconButtonSize, ButtonProps["size"]> = {
 
 function IconButton({
   size = "default",
+  round = false,
   className,
   ...props
 }: Omit<ButtonProps, "size" | "asChild"> & {
   size?: IconButtonSize
+  round?: boolean
 }) {
   return (
     <Button
       data-slot="icon-button"
       size={iconSizeMap[size]}
-      className={className}
+      className={cn(round && "!rounded-full", className)}
       {...props}
     />
   )

@@ -47,9 +47,9 @@ const radiusRightClass = {
 
 /** Text style per size */
 const textClass = {
-  lg: "typo-paragraph-sm",     // 14px
-  default: "typo-paragraph-sm",
-  sm: "typo-paragraph-sm",
+  lg: "typo-paragraph-small",     // 14px
+  default: "typo-paragraph-small",
+  sm: "typo-paragraph-small",
   xs: "typo-paragraph-mini",   // 12px
 } as const
 

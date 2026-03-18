@@ -129,7 +129,7 @@ function AlertDialogDescription({
   return (
     <AlertDialogPrimitive.Description
       data-slot="alert-dialog-description"
-      className={cn("typo-paragraph-sm text-muted-foreground", className)}
+      className={cn("typo-paragraph-small text-muted-foreground", className)}
       {...props}
     />
   )

@@ -13,8 +13,8 @@ import { cn } from "@/lib/utils"
  *
  * Type variants:
  *   icon         — Single icon (16px) in p-[2px] wrapper
- *   text         — Text in foreground color (typo-paragraph-sm)
- *   text-muted   — Text in muted-foreground color (typo-paragraph-sm)
+ *   text         — Text in foreground color (typo-paragraph-small)
+ *   text-muted   — Text in muted-foreground color (typo-paragraph-small)
  *   icon-muted   — Icon in muted-foreground, size-lg padded
  *   avatar       — Pass <Avatar> component
  *   text-button  — Pass <TextButton> component
@@ -27,8 +27,8 @@ const decorationInputVariants = cva(
     variants: {
       type: {
         "icon": "justify-center size-lg p-0",
-        "text": "flex-col h-lg justify-center typo-paragraph-sm text-foreground",
-        "text-muted": "flex-col h-lg justify-center typo-paragraph-sm text-muted-foreground",
+        "text": "flex-col h-lg justify-center typo-paragraph-small text-foreground",
+        "text-muted": "flex-col h-lg justify-center typo-paragraph-small text-muted-foreground",
         "icon-muted": "justify-center size-lg p-0 text-muted-foreground",
         "avatar": "",
         "text-button": "flex-col h-lg justify-center",

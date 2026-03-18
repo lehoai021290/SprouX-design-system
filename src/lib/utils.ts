@@ -18,12 +18,12 @@ const twMerge = extendTailwindMerge({
         {
           typo: [
             "heading-1", "heading-2", "heading-3", "heading-4",
-            "paragraph-xl", "paragraph-xl-medium", "paragraph-xl-bold",
-            "paragraph-lg", "paragraph-lg-medium", "paragraph-lg-bold",
-            "paragraph", "paragraph-medium", "paragraph-bold",
-            "paragraph-sm", "paragraph-sm-medium", "paragraph-sm-bold",
-            "paragraph-mini", "paragraph-mini-medium", "paragraph-mini-bold",
-            "paragraph-tiny", "paragraph-tiny-medium", "paragraph-tiny-bold",
+            "paragraph-xl", "paragraph-xl-medium", "paragraph-xl-semibold",
+            "paragraph-lg", "paragraph-lg-medium", "paragraph-lg-semibold",
+            "paragraph", "paragraph-medium", "paragraph-semibold",
+            "paragraph-small", "paragraph-small-medium", "paragraph-small-semibold",
+            "paragraph-mini", "paragraph-mini-medium", "paragraph-mini-semibold",
+            "paragraph-tiny", "paragraph-tiny-medium", "paragraph-tiny-semibold",
             "monospaced",
           ],
         },

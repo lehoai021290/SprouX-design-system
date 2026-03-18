@@ -54,7 +54,7 @@ function Chip({
       aria-pressed={selected}
       type="button"
       className={cn(
-        "inline-flex items-center gap-[4px] rounded-full border typo-paragraph-sm-bold transition-colors",
+        "inline-flex items-center gap-[4px] rounded-full border typo-paragraph-small-semibold transition-colors",
         size === "sm" ? "h-size-xs" : "h-size-sm",
         selected
           ? "border-primary text-foreground"

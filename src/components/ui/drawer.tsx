@@ -132,7 +132,7 @@ function DrawerDescription({
   return (
     <DrawerPrimitive.Description
       data-slot="drawer-description"
-      className={cn("typo-paragraph-sm text-muted-foreground", className)}
+      className={cn("typo-paragraph-small text-muted-foreground", className)}
       {...props}
     />
   )
@@ -145,7 +145,7 @@ const drawerClassNames = {
   header: "flex flex-col gap-xs p-md text-center sm:text-left",
   footer: "flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end",
   title: "typo-heading-4 text-foreground",
-  description: "typo-paragraph-sm text-muted-foreground",
+  description: "typo-paragraph-small text-muted-foreground",
 }
 
 export {

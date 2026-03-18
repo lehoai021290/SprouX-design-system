@@ -33,7 +33,7 @@ function FeatureItem({
           }`}
         />
       </div>
-      <p className="typo-paragraph-sm text-foreground">{children}</p>
+      <p className="typo-paragraph-small text-foreground">{children}</p>
     </div>
   )
 }
@@ -93,7 +93,7 @@ function OptionCard({
           }`}
         >
           <p
-            className={`typo-paragraph-sm-bold ${
+            className={`typo-paragraph-small-semibold ${
               isPrimary
                 ? "text-success-subtle-foreground"
                 : "text-foreground"

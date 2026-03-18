@@ -21,7 +21,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     <div data-slot="table-container" className="relative w-full overflow-auto">
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom typo-paragraph-sm", className)}
+        className={cn("w-full caption-bottom typo-paragraph-small", className)}
         {...props}
       />
     </div>
@@ -53,7 +53,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "border-t bg-muted/50 typo-paragraph-sm [&>tr]:last:border-b-0",
+        "border-t bg-muted/50 typo-paragraph-small [&>tr]:last:border-b-0",
         className
       )}
       {...props}
@@ -80,7 +80,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       data-slot="table-head"
       scope="col"
       className={cn(
-        "h-[48px] p-xs text-left align-middle typo-paragraph-sm-bold text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "h-size-xl p-xs text-left align-middle typo-paragraph-small-semibold text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}
       {...props}

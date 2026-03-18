@@ -18,13 +18,14 @@ import { cn } from "@/lib/utils"
  *   End Item: False | True
  *
  * Merged specs (Shadcn structure + Figma tokens):
- *   Trigger:  py-sm (12px), gap-xs (8px), items-center
- *             Default: no border-radius (Figma root cornerRadius=0)
+ *   Item:     w-full, p-0, gap-0, border-b border-border, last:border-b-0
+ *   Trigger:  w-full (flex-1), px-0, py-sm (12px), gap-xs (8px), rounded-none, items-center
+ *             Default: rounded-none (Figma root cornerRadius=0, token: rounded-none)
  *             Hover: hover:underline (Figma characterStyleOverride UNDERLINE)
- *             Focus: rounded-lg + ring-focus (Figma cornerRadius=8, DROP_SHADOW 3px --ring)
- *   Label:    typo-paragraph-sm-bold (Geist 600 14/20 ls:0.07px), text-foreground
- *   Icon:     size-md (16px), text-ghost-foreground (#6f6f6a), rotates 180° on open
- *   Content:  pb-sm (12px), typo-paragraph-sm (Geist 400 14/20 ls:0.07px), text-foreground
+ *             Focus: rounded-lg + focus-ring (Figma cornerRadius=8, DROP_SHADOW 3px --ring)
+ *   Label:    typo-paragraph-small-semibold (Geist 600 14/20 ls:0.07px), text-foreground
+ *   Icon:     size-md (16px), text-muted-foreground (#6f6f6a), rotates 180° on open
+ *   Content:  w-full, px-0, pt-0, pb-sm (12px), gap-0, rounded-none, typo-paragraph-small (Geist 400 14/20 ls:0.07px), text-foreground
  *   Border:   1px border-border, last:border-b-0 (End Item=True)
  *   Disabled: pointer-events-none opacity-50 (Shadcn convention)
  */
@@ -41,7 +42,7 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-b border-border last:border-b-0", className)}
+      className={cn("w-full p-0 gap-0 border-b border-border last:border-b-0", className)}
       {...props}
     />
   )
@@ -57,13 +58,13 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-center justify-between gap-xs py-sm typo-paragraph-sm-bold text-foreground text-left transition-all outline-none hover:underline focus-visible:rounded-lg focus-visible:ring-focus disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "flex flex-1 items-center justify-between gap-xs px-0 py-sm rounded-none typo-paragraph-small-semibold text-foreground text-left transition-all outline-none hover:underline focus-visible:rounded-lg focus-visible:focus-ring disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}
       >
         {children}
-        <ChevronDown aria-hidden="true" className="size-md shrink-0 text-ghost-foreground transition-transform duration-200" />
+        <ChevronDown aria-hidden="true" className="size-md shrink-0 text-muted-foreground transition-transform duration-200" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -77,10 +78,10 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden typo-paragraph-sm text-foreground"
+      className="w-full data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden typo-paragraph-small text-foreground"
       {...props}
     >
-      <div className={cn("pt-0 pb-sm", className)}>{children}</div>
+      <div className={cn("px-0 pt-0 pb-sm gap-0 rounded-none", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )
 }
