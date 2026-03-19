@@ -19,7 +19,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { Alert, AlertTitle, AlertDescription, AlertAction, AlertDismiss } from "@/components/ui/alert"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Badge, BadgeRound, BadgeDot } from "@/components/ui/badge"
 import { Card, CardInner, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
@@ -10164,7 +10164,8 @@ function AlertPropsTable() {
             <tbody className="divide-y divide-border">
               <tr><td className="px-md py-sm font-mono text-primary">variant</td><td className="px-md py-sm font-mono text-muted-foreground">{'"default" | "destructive" | "success" | "warning" | "emphasis"'}</td><td className="px-md py-sm font-mono text-muted-foreground">"default"</td><td className="px-md py-sm text-muted-foreground">Visual style matching the alert type.</td></tr>
               <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes.</td></tr>
-              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Icon, AlertTitle, AlertDescription.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">inCard</td><td className="px-md py-sm font-mono text-muted-foreground">boolean</td><td className="px-md py-sm font-mono text-muted-foreground">false</td><td className="px-md py-sm text-muted-foreground">Use when Alert sits inside a Card — removes border, tightens padding.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Icon, AlertTitle, AlertDescription, AlertAction, AlertDismiss.</td></tr>
             </tbody>
           </table>
         </div>
@@ -10189,6 +10190,34 @@ function AlertPropsTable() {
             <tbody className="divide-y divide-border">
               <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Description text. Renders as div with typo-paragraph-small.</td></tr>
               <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">AlertAction</h3>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-md py-sm font-mono text-primary">actionLabel</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Label for the primary action button (Button secondary sm).</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">secondaryLabel</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Label for the secondary action button (Button outline sm). Optional.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">actionVariant</td><td className="px-md py-sm font-mono text-muted-foreground">{'"secondary" | "destructive"'}</td><td className="px-md py-sm font-mono text-muted-foreground">"secondary"</td><td className="px-md py-sm text-muted-foreground">Variant for primary action. Use "destructive" for error alerts.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">onAction</td><td className="px-md py-sm font-mono text-muted-foreground">() =&gt; void</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Handler for primary action button click.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">onSecondaryAction</td><td className="px-md py-sm font-mono text-muted-foreground">() =&gt; void</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Handler for secondary action button click.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3 className="font-body font-semibold text-sm mb-2">AlertDismiss</h3>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
+            <tbody className="divide-y divide-border">
+              <tr><td className="px-md py-sm font-mono text-primary">onClick</td><td className="px-md py-sm font-mono text-muted-foreground">() =&gt; void</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Handler called when dismiss button is clicked.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes. Renders as IconButton ghost xs with X icon.</td></tr>
             </tbody>
           </table>
         </div>
@@ -10219,6 +10248,10 @@ function AlertTokensTable() {
     { token: "py-sm", cssVar: "--spacing-sm", value: "12px", usage: "Padding top/bottom" },
     { token: "px-md", cssVar: "--spacing-md", value: "16px", usage: "Padding left/right" },
     { token: "size-md", cssVar: "--spacing-md", value: "16px", usage: "Icon size" },
+    { token: "gap-xs", cssVar: "--spacing-xs", value: "8px", usage: "Action buttons gap / text-to-action gap" },
+    { token: "pt-xs", cssVar: "--spacing-xs", value: "8px", usage: "AlertAction top spacing" },
+    { token: "size-size-xs", cssVar: "--spacing-size-xs", value: "24px", usage: "Dismiss button size (IconButton xs)" },
+    { token: "rounded-sm", cssVar: "--radius-sm", value: "4px", usage: "Dismiss button border radius" },
   ]} />
 }
 
@@ -10272,17 +10305,14 @@ function AlertExploreBehavior() {
       {showIcon && activeIcon}
       {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
       {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
-      {(showAction || showSecondaryAction) && (
-        <div className="flex gap-xs mt-xs [&]:pl-7">
-          {showAction && <Button size="sm" variant="secondary">Action</Button>}
-          {showSecondaryAction && <Button size="sm" variant="outline">Cancel</Button>}
-        </div>
+      {showAction && (
+        <AlertAction
+          actionLabel="Action"
+          secondaryLabel={showSecondaryAction ? "Cancel" : undefined}
+          actionVariant={type === "destructive" ? "destructive" : "secondary"}
+        />
       )}
-      {dismissable && (
-        <button className={["absolute text-current opacity-70 hover:opacity-100 transition-opacity", inCard ? "right-sm top-xs" : "right-md top-sm"].join(" ")} aria-label="Dismiss">
-          <X className="size-md" />
-        </button>
-      )}
+      {dismissable && <AlertDismiss />}
     </>
   )
 
@@ -10314,7 +10344,7 @@ function AlertExploreBehavior() {
           <PropertyToggle label="Show Subtitle" checked={showSubtitle} onChange={(v) => { setShowSubtitle(v); if (!v && !showTitle) setShowTitle(true) }} />
           <PropertyToggle label="Show Icon" checked={showIcon} onChange={setShowIcon} />
           <PropertyToggle label="Show Action" checked={showAction} onChange={handleShowActionChange} />
-          <PropertyToggle label="2nd Action" checked={showSecondaryAction} onChange={setShowSecondaryAction} />
+          <PropertyToggle label="Show Secondary Action" checked={showSecondaryAction} onChange={setShowSecondaryAction} />
         </div>
       </div>
     </div>
@@ -10354,7 +10384,7 @@ function AlertDocs() {
       {/* ---- Installation ---- */}
       <InstallationSection
         deps={`pnpm add class-variance-authority clsx tailwind-merge lucide-react`}
-        importCode={`import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"`}
+        importCode={`import { Alert, AlertTitle, AlertDescription, AlertAction, AlertDismiss } from "@/components/ui/alert"`}
       />
 
       {/* ---- Examples ---- */}
@@ -10423,14 +10453,12 @@ function AlertDocs() {
           </Alert>
         </Example>
 
-        <Example title="Dismissable" description="Alert with a dismiss button for user-closable messages." code={`<Alert className="pr-10">\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can dismiss this notification.</AlertDescription>\n  <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
-          <Alert className="pr-10">
+        <Example title="Dismissable" description="Alert with a dismiss button for user-closable messages." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can dismiss this notification.</AlertDescription>\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
+          <Alert>
             <Info className="size-md" />
             <AlertTitle>Heads up!</AlertTitle>
             <AlertDescription>You can dismiss this notification.</AlertDescription>
-            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-              <X className="size-md" />
-            </button>
+            <AlertDismiss />
           </Alert>
         </Example>
 
@@ -10468,44 +10496,34 @@ function AlertDocs() {
           </Alert>
         </Example>
 
-        <Example title="With Actions" description="Alert with action buttons for user response. Matches Figma Action frame (sm buttons, gap-xs)." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Confirm your email</AlertTitle>\n  <AlertDescription>We sent a verification link to your inbox.</AlertDescription>\n  <div className="flex gap-xs mt-xs [&]:pl-7">\n    <Button size="sm">Resend email</Button>\n    <Button size="sm" variant="outline">Change email</Button>\n  </div>\n</Alert>`}>
+        <Example title="With Actions" description="Alert with action buttons for user response. Matches Figma Action frame (sm buttons, gap-xs)." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Confirm your email</AlertTitle>\n  <AlertDescription>We sent a verification link to your inbox.</AlertDescription>\n  <AlertAction actionLabel="Resend email" secondaryLabel="Change email" />\n</Alert>`}>
           <Alert>
             <Info className="size-md" />
             <AlertTitle>Confirm your email</AlertTitle>
             <AlertDescription>We sent a verification link to your inbox.</AlertDescription>
-            <div className="flex gap-xs mt-xs [&]:pl-7">
-              <Button size="sm">Resend email</Button>
-              <Button size="sm" variant="outline">Change email</Button>
-            </div>
+            <AlertAction actionLabel="Resend email" secondaryLabel="Change email" />
           </Alert>
         </Example>
 
-        <Example title="Error with Actions" description="Destructive alert with retry and dismiss actions." code={`<Alert variant="destructive" className="pr-10">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Payment failed</AlertTitle>\n  <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>\n  <div className="flex gap-xs mt-xs [&]:pl-7">\n    <Button size="sm" variant="destructive">Retry payment</Button>\n    <Button size="sm" variant="outline">Cancel order</Button>\n  </div>\n  <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
-          <Alert variant="destructive" className="pr-10">
+        <Example title="Error with Actions" description="Destructive alert with retry and dismiss actions." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Payment failed</AlertTitle>\n  <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>\n  <AlertAction actionLabel="Retry payment" secondaryLabel="Cancel order" actionVariant="destructive" />\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
+          <Alert variant="destructive">
             <AlertCircle className="size-md" />
             <AlertTitle>Payment failed</AlertTitle>
             <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>
-            <div className="flex gap-xs mt-xs [&]:pl-7">
-              <Button size="sm" variant="destructive">Retry payment</Button>
-              <Button size="sm" variant="outline">Cancel order</Button>
-            </div>
-            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-              <X className="size-md" />
-            </button>
+            <AlertAction actionLabel="Retry payment" secondaryLabel="Cancel order" actionVariant="destructive" />
+            <AlertDismiss />
           </Alert>
         </Example>
 
-        <Example title="Success Dismissable" description="Dismissable success alert for confirmation messages." code={`<Alert variant="success" className="pr-10">\n  <CircleCheck className="size-md" />\n  <AlertTitle>Order confirmed!</AlertTitle>\n  <AlertDescription>\n    Your order #12345 has been placed.{" "}\n    <a href="#" className="underline font-medium">Track shipment</a>\n  </AlertDescription>\n  <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">\n    <X className="size-md" />\n  </button>\n</Alert>`}>
-          <Alert variant="success" className="pr-10">
+        <Example title="Success Dismissable" description="Dismissable success alert for confirmation messages." code={`<Alert variant="success">\n  <CircleCheck className="size-md" />\n  <AlertTitle>Order confirmed!</AlertTitle>\n  <AlertDescription>\n    Your order #12345 has been placed.{" "}\n    <a href="#" className="underline font-medium">Track shipment</a>\n  </AlertDescription>\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
+          <Alert variant="success">
             <CircleCheck className="size-md" />
             <AlertTitle>Order confirmed!</AlertTitle>
             <AlertDescription>
               Your order #12345 has been placed.{" "}
               <a href="#" className="underline font-medium">Track shipment</a>
             </AlertDescription>
-            <button className="absolute right-md top-sm text-current opacity-70 hover:opacity-100 transition-opacity" aria-label="Dismiss">
-              <X className="size-md" />
-            </button>
+            <AlertDismiss />
           </Alert>
         </Example>
 
@@ -10597,6 +10615,11 @@ function AlertDocs() {
         ["Type", "Emphasis", "variant", '"emphasis"'],
         ["Sub-component", "Title", "AlertTitle", "typo-paragraph-small-semibold"],
         ["Sub-component", "Description", "AlertDescription", "typo-paragraph-small"],
+        ["Sub-component", "Action", "AlertAction", "flex gap-xs pt-xs"],
+        ["Sub-component", "Dismiss", "AlertDismiss", "IconButton ghost xs + X icon"],
+        ["Show Action", "True/False", "AlertAction", "Button secondary sm (primary action)"],
+        ["Show Secondary Action", "True/False", "AlertAction", "Button outline sm (secondary action)"],
+        ["Dismissable", "True/False", "AlertDismiss", "IconButton ghost xs, absolute right-[7px] top-[9px]"],
         ["Show Icon", "true/false", "children", "<Icon /> before AlertTitle"],
         ["Icon Size", "16×16px", "—", "[&>svg]:size-md"],
         ["Padding", "py:12px px:16px", "—", "py-sm px-md"],
