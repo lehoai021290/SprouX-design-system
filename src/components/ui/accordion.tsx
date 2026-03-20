@@ -21,8 +21,8 @@ import { cn } from "@/lib/utils"
  *   Item:     w-full, p-0, gap-0, border-b border-border, last:border-b-0
  *   Trigger:  w-full (flex-1), px-0, py-sm (12px), gap-xs (8px), rounded-none, items-center
  *             Default: rounded-none (Figma root cornerRadius=0, token: rounded-none)
- *             Hover: hover:underline (Figma characterStyleOverride UNDERLINE)
- *             Focus: rounded-lg + focus-ring (Figma cornerRadius=8, DROP_SHADOW 3px --ring)
+ *             Hover: hover:underline + hover:data-[state=closed]:rounded-xl (Closed→xl, Open→none, last→none)
+ *             Focus: rounded-none + bg-ghost + focus-ring (Figma cornerRadius=0, bg=ghost, DROP_SHADOW 3px --ring)
  *   Label:    typo-paragraph-small-semibold (Geist 600 14/20 ls:0.07px), text-foreground
  *   Icon:     size-md (16px), text-muted-foreground (#6f6f6a), rotates 180° on open
  *   Content:  w-full, px-0, pt-0, pb-sm (12px), gap-0, rounded-none, typo-paragraph-small (Geist 400 14/20 ls:0.07px), text-foreground
@@ -58,7 +58,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-center justify-between gap-xs px-0 py-sm rounded-none typo-paragraph-small-semibold text-foreground text-left transition-all outline-none hover:underline focus-visible:rounded-lg focus-visible:focus-ring disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "flex flex-1 items-center justify-between gap-xs px-0 py-sm rounded-none typo-paragraph-small-semibold text-foreground text-left transition-all outline-none hover:underline hover:data-[state=closed]:rounded-xl last:hover:data-[state=closed]:rounded-none focus-visible:focus-ring data-[state=closed]:focus-visible:bg-ghost disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}

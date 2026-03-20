@@ -131,6 +131,7 @@ const iconSizeMap: Record<IconButtonSize, ButtonProps["size"]> = {
 function IconButton({
   size = "default",
   round = false,
+  variant,
   className,
   ...props
 }: Omit<ButtonProps, "size" | "asChild"> & {
@@ -140,8 +141,14 @@ function IconButton({
   return (
     <Button
       data-slot="icon-button"
+      variant={variant}
       size={iconSizeMap[size]}
-      className={cn(round && "!rounded-full", className)}
+      className={cn(
+        // IconButton Secondary Focus: Figma uses base bg (no hover bg), unlike Button
+        variant === "secondary" && "focus-visible:!bg-secondary",
+        round && "!rounded-full",
+        className
+      )}
       {...props}
     />
   )
