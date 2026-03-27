@@ -10280,7 +10280,7 @@ function AlertExploreBehavior() {
   }
   const activeIconName = icon || defaultIconName[type] || "Info"
   const ActiveIconComp = allLucideIcons.find((i) => i.name === activeIconName)?.icon
-  const activeIcon = ActiveIconComp ? <ActiveIconComp className="size-md" /> : <Info className="size-md" />
+  // activeIcon removed — now using icon prop on Alert directly
 
   const titles: Record<string, string> = {
     default: "Heads up!",
@@ -10302,7 +10302,6 @@ function AlertExploreBehavior() {
 
   const alertContent = (
     <>
-      {showIcon && activeIcon}
       {showTitle && <AlertTitle>{titles[type]}</AlertTitle>}
       {showSubtitle && <AlertDescription>{descs[type]}</AlertDescription>}
       {showAction && (
@@ -10320,7 +10319,7 @@ function AlertExploreBehavior() {
     <div className="rounded-xl border border-border overflow-hidden bg-card">
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
         <div className="w-full max-w-lg">
-          <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard={inCard}>
+          <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard={inCard} icon={showIcon ? ActiveIconComp || Info : undefined}>
             {alertContent}
           </Alert>
         </div>
@@ -10392,56 +10391,49 @@ function AlertDocs() {
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Example title="Neutral" description="General-purpose notification with a neutral appearance." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can add components to your app using the CLI.</AlertDescription>\n</Alert>`}>
-          <Alert>
-            <Info className="size-md" />
+        <Example title="Neutral" description="General-purpose notification with a neutral appearance." code={`<Alert icon={Info}>\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can add components to your app using the CLI.</AlertDescription>\n</Alert>`}>
+          <Alert icon={Info}>
             <AlertTitle>Heads up!</AlertTitle>
             <AlertDescription>You can add components to your app using the CLI.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Error" description="Use for error messages that require user attention." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Error</AlertTitle>\n  <AlertDescription>Your session has expired. Please log in again.</AlertDescription>\n</Alert>`}>
-          <Alert variant="destructive">
-            <AlertCircle className="size-md" />
+        <Example title="Error" description="Use for error messages that require user attention." code={`<Alert variant="destructive" icon={AlertCircle}>\n  <AlertTitle>Error</AlertTitle>\n  <AlertDescription>Your session has expired. Please log in again.</AlertDescription>\n</Alert>`}>
+          <Alert variant="destructive" icon={AlertCircle}>
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Success" description="Confirm successful actions or operations." code={`<Alert variant="success">\n  <CircleCheck className="size-md" />\n  <AlertTitle>Success</AlertTitle>\n  <AlertDescription>Your changes have been saved successfully.</AlertDescription>\n</Alert>`}>
-          <Alert variant="success">
-            <CircleCheck className="size-md" />
+        <Example title="Success" description="Confirm successful actions or operations." code={`<Alert variant="success" icon={CircleCheck}>\n  <AlertTitle>Success</AlertTitle>\n  <AlertDescription>Your changes have been saved successfully.</AlertDescription>\n</Alert>`}>
+          <Alert variant="success" icon={CircleCheck}>
             <AlertTitle>Success</AlertTitle>
             <AlertDescription>Your changes have been saved successfully.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Warning" description="Warn users about potential issues or expiring resources." code={`<Alert variant="warning">\n  <TriangleAlert className="size-md" />\n  <AlertTitle>Warning</AlertTitle>\n  <AlertDescription>Your trial expires in 3 days. Upgrade to continue.</AlertDescription>\n</Alert>`}>
-          <Alert variant="warning">
-            <TriangleAlert className="size-md" />
+        <Example title="Warning" description="Warn users about potential issues or expiring resources." code={`<Alert variant="warning" icon={TriangleAlert}>\n  <AlertTitle>Warning</AlertTitle>\n  <AlertDescription>Your trial expires in 3 days. Upgrade to continue.</AlertDescription>\n</Alert>`}>
+          <Alert variant="warning" icon={TriangleAlert}>
             <AlertTitle>Warning</AlertTitle>
             <AlertDescription>Your trial expires in 3 days. Upgrade to continue.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Emphasis" description="Highlight important information or announcements." code={`<Alert variant="emphasis">\n  <Info className="size-md" />\n  <AlertTitle>Information</AlertTitle>\n  <AlertDescription>A new version is available. Update to get the latest features.</AlertDescription>\n</Alert>`}>
-          <Alert variant="emphasis">
-            <Info className="size-md" />
+        <Example title="Emphasis" description="Highlight important information or announcements." code={`<Alert variant="emphasis" icon={Info}>\n  <AlertTitle>Information</AlertTitle>\n  <AlertDescription>A new version is available. Update to get the latest features.</AlertDescription>\n</Alert>`}>
+          <Alert variant="emphasis" icon={Info}>
             <AlertTitle>Information</AlertTitle>
             <AlertDescription>A new version is available. Update to get the latest features.</AlertDescription>
           </Alert>
         </Example>
 
-        <Example title="Title Only" description="Alert with only a title, no description." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>New update available</AlertTitle>\n</Alert>`}>
-          <Alert>
-            <Info className="size-md" />
+        <Example title="Title Only" description="Alert with only a title, no description." code={`<Alert icon={Info}>\n  <AlertTitle>New update available</AlertTitle>\n</Alert>`}>
+          <Alert icon={Info}>
             <AlertTitle>New update available</AlertTitle>
           </Alert>
         </Example>
 
-        <Example title="Description Only" description="Alert with only a description, no title." code={`<Alert variant="success">\n  <CircleCheck className="size-md" />\n  <AlertDescription>Your profile has been updated.</AlertDescription>\n</Alert>`}>
-          <Alert variant="success">
-            <CircleCheck className="size-md" />
+        <Example title="Description Only" description="Alert with only a description, no title." code={`<Alert variant="success" icon={CircleCheck}>\n  <AlertDescription>Your profile has been updated.</AlertDescription>\n</Alert>`}>
+          <Alert variant="success" icon={CircleCheck}>
             <AlertDescription>Your profile has been updated.</AlertDescription>
           </Alert>
         </Example>
@@ -10454,8 +10446,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="Dismissable" description="Alert with a dismiss button for user-closable messages." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Heads up!</AlertTitle>\n  <AlertDescription>You can dismiss this notification.</AlertDescription>\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
-          <Alert>
-            <Info className="size-md" />
+          <Alert icon={Info}>
             <AlertTitle>Heads up!</AlertTitle>
             <AlertDescription>You can dismiss this notification.</AlertDescription>
             <AlertDismiss />
@@ -10465,16 +10456,14 @@ function AlertDocs() {
         <Example title="In Card" description="Alert embedded inside a card — no border, card-subtle background, compact padding." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm">\n  <p className="typo-paragraph-small-semibold mb-sm">Payment details</p>\n  <Alert inCard>\n    <Info className="size-md" />\n    <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>\n  </Alert>\n</div>`}>
           <div className="rounded-xl border border-border bg-card p-lg shadow-sm">
             <p className="typo-paragraph-small-semibold mb-sm">Payment details</p>
-            <Alert inCard>
-              <Info className="size-md" />
+            <Alert inCard icon={Info}>
               <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>
             </Alert>
           </div>
         </Example>
 
         <Example title="Form Validation" description="Error alert summarizing multiple form validation issues." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>There were 2 errors with your submission</AlertTitle>\n  <AlertDescription>\n    <ul className="list-disc pl-4 mt-xs space-y-1">\n      <li>Email address is required</li>\n      <li>Password must be at least 8 characters</li>\n    </ul>\n  </AlertDescription>\n</Alert>`}>
-          <Alert variant="destructive">
-            <AlertCircle className="size-md" />
+          <Alert variant="destructive" icon={AlertCircle}>
             <AlertTitle>There were 2 errors with your submission</AlertTitle>
             <AlertDescription>
               <ul className="list-disc pl-4 mt-xs space-y-1">
@@ -10486,8 +10475,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="With Link" description="Alert description containing an inline link for user action." code={`<Alert variant="emphasis">\n  <Info className="size-md" />\n  <AlertTitle>New version available</AlertTitle>\n  <AlertDescription>\n    Version 2.0 is now available.{" "}\n    <a href="#" className="underline font-medium">View release notes</a>\n  </AlertDescription>\n</Alert>`}>
-          <Alert variant="emphasis">
-            <Info className="size-md" />
+          <Alert variant="emphasis" icon={Info}>
             <AlertTitle>New version available</AlertTitle>
             <AlertDescription>
               Version 2.0 is now available.{" "}
@@ -10497,8 +10485,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="With Actions" description="Alert with action buttons for user response. Matches Figma Action frame (sm buttons, gap-xs)." code={`<Alert>\n  <Info className="size-md" />\n  <AlertTitle>Confirm your email</AlertTitle>\n  <AlertDescription>We sent a verification link to your inbox.</AlertDescription>\n  <AlertAction actionLabel="Resend email" secondaryLabel="Change email" />\n</Alert>`}>
-          <Alert>
-            <Info className="size-md" />
+          <Alert icon={Info}>
             <AlertTitle>Confirm your email</AlertTitle>
             <AlertDescription>We sent a verification link to your inbox.</AlertDescription>
             <AlertAction actionLabel="Resend email" secondaryLabel="Change email" />
@@ -10506,8 +10493,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="Error with Actions" description="Destructive alert with retry and dismiss actions." code={`<Alert variant="destructive">\n  <AlertCircle className="size-md" />\n  <AlertTitle>Payment failed</AlertTitle>\n  <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>\n  <AlertAction actionLabel="Retry payment" secondaryLabel="Cancel order" actionVariant="destructive" />\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
-          <Alert variant="destructive">
-            <AlertCircle className="size-md" />
+          <Alert variant="destructive" icon={AlertCircle}>
             <AlertTitle>Payment failed</AlertTitle>
             <AlertDescription>Your card was declined. Please try another payment method.</AlertDescription>
             <AlertAction actionLabel="Retry payment" secondaryLabel="Cancel order" actionVariant="destructive" />
@@ -10516,8 +10502,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="Success Dismissable" description="Dismissable success alert for confirmation messages." code={`<Alert variant="success">\n  <CircleCheck className="size-md" />\n  <AlertTitle>Order confirmed!</AlertTitle>\n  <AlertDescription>\n    Your order #12345 has been placed.{" "}\n    <a href="#" className="underline font-medium">Track shipment</a>\n  </AlertDescription>\n  <AlertDismiss onClick={() => setVisible(false)} />\n</Alert>`}>
-          <Alert variant="success">
-            <CircleCheck className="size-md" />
+          <Alert variant="success" icon={CircleCheck}>
             <AlertTitle>Order confirmed!</AlertTitle>
             <AlertDescription>
               Your order #12345 has been placed.{" "}
@@ -10528,8 +10513,7 @@ function AlertDocs() {
         </Example>
 
         <Example title="Warning with Link" description="Warning alert with inline link for immediate user action." code={`<Alert variant="warning">\n  <TriangleAlert className="size-md" />\n  <AlertTitle>Storage almost full</AlertTitle>\n  <AlertDescription>\n    You've used 90% of your storage.{" "}\n    <a href="#" className="underline font-medium">Upgrade plan</a>\n  </AlertDescription>\n</Alert>`}>
-          <Alert variant="warning">
-            <TriangleAlert className="size-md" />
+          <Alert variant="warning" icon={TriangleAlert}>
             <AlertTitle>Storage almost full</AlertTitle>
             <AlertDescription>
               You've used 90% of your storage.{" "}
@@ -10541,12 +10525,10 @@ function AlertDocs() {
         <Example title="In Card Variants" description="Multiple alert types inside a card context using the inCard prop." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">\n  <p className="typo-paragraph-small-semibold">Account settings</p>\n  <Alert variant="warning" inCard>\n    <TriangleAlert className="size-md" />\n    <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>\n  </Alert>\n  <Alert variant="success" inCard>\n    <CircleCheck className="size-md" />\n    <AlertDescription>Email verified successfully.</AlertDescription>\n  </Alert>\n</div>`}>
           <div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">
             <p className="typo-paragraph-small-semibold">Account settings</p>
-            <Alert variant="warning" inCard>
-              <TriangleAlert className="size-md" />
+            <Alert variant="warning" inCard icon={TriangleAlert}>
               <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>
             </Alert>
-            <Alert variant="success" inCard>
-              <CircleCheck className="size-md" />
+            <Alert variant="success" inCard icon={CircleCheck}>
               <AlertDescription>Email verified successfully.</AlertDescription>
             </Alert>
           </div>

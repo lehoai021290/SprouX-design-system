@@ -965,39 +965,45 @@
 
 /* ---- Paragraph Extra Large (Figma "paragraph extra large/*") — Geist 30/32 ls:-1.0 ---- */
 
-@utility typo-paragraph-xl        { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
-@utility typo-paragraph-xl-medium { font-family: var(--font-body); font-weight: 500; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
-@utility typo-paragraph-xl-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility typo-paragraph-xl         { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility typo-paragraph-xl-regular { font-family: var(--font-body); font-weight: 400; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility typo-paragraph-xl-medium  { font-family: var(--font-body); font-weight: 500; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
+@utility typo-paragraph-xl-semibold { font-family: var(--font-body); font-weight: 600; font-size: 30px; line-height: 32px; letter-spacing: -1px; }
 
-/* ---- Paragraph Large (Figma "pharagrap large/*") — Geist 20/24 ls:-1.0 ---- */
+/* ---- Paragraph Large (Figma "paragraph large/*") — Geist 20/24 ls:-1.0 ---- */
 
-@utility typo-paragraph-lg        { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
-@utility typo-paragraph-lg-medium { font-family: var(--font-body); font-weight: 500; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
-@utility typo-paragraph-lg-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility typo-paragraph-lg         { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility typo-paragraph-lg-regular { font-family: var(--font-body); font-weight: 400; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility typo-paragraph-lg-medium  { font-family: var(--font-body); font-weight: 500; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
+@utility typo-paragraph-lg-semibold { font-family: var(--font-body); font-weight: 600; font-size: 20px; line-height: 24px; letter-spacing: -1px; }
 
 /* ---- Paragraph Regular (Figma "paragraph regular/*") — Geist 16/24 ls:0 ---- */
 
-@utility typo-paragraph        { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
-@utility typo-paragraph-medium { font-family: var(--font-body); font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0; }
-@utility typo-paragraph-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility typo-paragraph         { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility typo-paragraph-regular { font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility typo-paragraph-medium  { font-family: var(--font-body); font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: 0; }
+@utility typo-paragraph-semibold { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 24px; letter-spacing: 0; }
 
 /* ---- Paragraph Small (Figma "paragraph small/*") — Geist 14/20 ls:0.07px ---- */
 
-@utility typo-paragraph-small        { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
-@utility typo-paragraph-small-medium { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
-@utility typo-paragraph-small-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility typo-paragraph-small         { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility typo-paragraph-small-regular { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility typo-paragraph-small-medium  { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
+@utility typo-paragraph-small-semibold { font-family: var(--font-body); font-weight: 600; font-size: 14px; line-height: 20px; letter-spacing: 0.07px; }
 
 /* ---- Paragraph Mini (Figma "paragraph mini/*") — Geist 12/16 ls:0.18px ---- */
 
-@utility typo-paragraph-mini        { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
-@utility typo-paragraph-mini-medium { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
-@utility typo-paragraph-mini-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility typo-paragraph-mini         { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility typo-paragraph-mini-regular { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility typo-paragraph-mini-medium  { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
+@utility typo-paragraph-mini-semibold { font-family: var(--font-body); font-weight: 600; font-size: 12px; line-height: 16px; letter-spacing: 0.18px; }
 
 /* ---- Paragraph Tiny (Figma "paragraph tiny/*") — Geist 10/12 ls:0.15px ---- */
 
-@utility typo-paragraph-tiny        { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
-@utility typo-paragraph-tiny-medium { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
-@utility typo-paragraph-tiny-semibold   { font-family: var(--font-body); font-weight: 600; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility typo-paragraph-tiny         { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility typo-paragraph-tiny-regular { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility typo-paragraph-tiny-medium  { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
+@utility typo-paragraph-tiny-semibold { font-family: var(--font-body); font-weight: 600; font-size: 10px; line-height: 12px; letter-spacing: 0.15px; }
 
 /* ---- Monospaced (Figma "monospaced") — Geist Mono 400 16/24 ls:0 ---- */
 

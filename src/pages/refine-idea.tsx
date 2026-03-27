@@ -150,8 +150,7 @@ export default function RefineIdeaPage() {
         {/* Body */}
         <div className="w-full max-w-[800px] px-2xl flex flex-col gap-md">
           {/* Emphasis Alert */}
-          <Alert variant="emphasis">
-            <CircleCheck className="size-md" />
+          <Alert variant="emphasis" icon={CircleCheck}>
             <AlertTitle>Most creators prefer the AI Assistant</AlertTitle>
             <AlertDescription>
               The conversational approach helps you think through aspects of your

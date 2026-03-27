@@ -9,55 +9,41 @@ import { Button } from "@/components/ui/button"
  * SprouX Alert
  *
  * Figma: [SprouX - DS] Foundation & Component (node 58:5416)
- * Shadcn: @shadcn/alert (native div)
  *
- * Inline feedback message for neutral, error, success, warning, emphasis.
+ * Structure (matches Figma element tree):
+ *   Alert (root)        — relative, rounded-lg, border, py-sm, px-md
+ *     └─ flex row       — gap-sm (12px), w-full  [Figma: AL depth 1]
+ *          ├─ icon div  — shrink-0, mt-[2px]     [Figma: Aligner]
+ *          └─ flex col  — gap-0, flex-1           [Figma: AL depth 2 + Text merged]
+ *               ├─ AlertTitle       — typo-paragraph-small-semibold
+ *               ├─ AlertDescription — typo-paragraph-small (gap-0 from title)
+ *               └─ AlertAction      — mt-xs (8px gap from text) via data-slot
+ *     └─ AlertDismiss   — absolute right-[7px] top-[9px]
  *
- * Variants (Figma):
- *   Type:         Neutral | Error | Success | Warning | Emphasis
- *   Dismissable:  False | True
- *   In Card:      False | True
- *   Show Title:   True | False
- *   Show Subtitle:True | False
- *   Show Icon:    true | false
- *   Show Action:  True | False   → AlertAction with Button secondary sm
- *   Show Secondary Action: True | False → Button outline sm inside AlertAction
- *
- * Merged specs (Shadcn structure + Figma tokens):
- *   Container:  py-sm (12px) px-md (16px), gap-md (16px) outer
- *               rounded-lg (8px), border 1px
- *   Icon:       size-md (16px), absolute left-md top-[14px] (center-aligned to 20px text line)
- *   Title:      typo-paragraph-small-semibold (Geist 600 14/20 ls:0.07px)
- *   Description:typo-paragraph-small (Geist 400 14/20 ls:0.07px)
- *   Gap:        icon-to-text gap-sm (12px), title-to-desc gap-0, text-to-action gap-xs (8px)
- *   Action:     flex row, gap-xs (8px), items-center
- *     Button Primary:   Button secondary sm (neutral) / destructive sm (error)
- *     Button Secondary: Button outline sm
- *   Dismiss:    IconButton ghost xs (24×24), absolute right-[7px] top-[9px], Icon X 16px
- *
- *   Neutral:        bg-card, border-border, text-foreground, desc: text-foreground-subtle
- *   Neutral inCard: bg-card-subtle, border-transparent, py-xs px-sm (same text)
- *   Other inCard:   border-transparent, py-xs px-sm (keep variant bg)
- *   Error:    bg-destructive-subtle, border-destructive-border, text-destructive-subtle-foreground
- *   Success:  bg-success-subtle, border-success-border, text-success-subtle-foreground
- *   Warning:  bg-warning-subtle, border-warning-border, text-warning-subtle-foreground
- *   Emphasis: bg-emphasis-subtle, border-emphasis-border, text-emphasis-subtle-foreground
+ * Color mapping:
+ *   default:     bg-card, border-border, text-foreground, desc: text-foreground-subtle
+ *   default inCard: bg-card-subtle, border-transparent, py-xs px-sm
+ *   other inCard:   border-transparent, py-xs px-sm (keep variant bg)
+ *   destructive: bg-destructive-subtle, border-destructive-border, text-destructive-subtle-foreground
+ *   success:     bg-success-subtle, border-success-border, text-success-subtle-foreground
+ *   warning:     bg-warning-subtle, border-warning-border, text-warning-subtle-foreground
+ *   emphasis:    bg-emphasis-subtle, border-emphasis-border, text-emphasis-subtle-foreground
  */
 const alertVariants = cva(
-  "relative w-full rounded-lg border py-sm px-md [&>svg~*]:pl-7 [&>svg]:absolute [&>svg]:left-md [&>svg]:top-[14px] [&>svg]:size-md",
+  "relative w-full rounded-lg border py-sm px-md gap-md",
   {
     variants: {
       variant: {
         default:
-          "bg-card border-border text-foreground [&>svg]:text-foreground *:data-[slot=alert-description]:text-foreground-subtle",
+          "bg-card border-border text-foreground",
         destructive:
-          "bg-destructive-subtle border-destructive-border text-destructive-subtle-foreground [&>svg]:text-destructive-subtle-foreground",
+          "bg-destructive-subtle border-destructive-border text-destructive-subtle-foreground",
         success:
-          "bg-success-subtle border-success-border text-success-subtle-foreground [&>svg]:text-success-subtle-foreground",
+          "bg-success-subtle border-success-border text-success-subtle-foreground",
         warning:
-          "bg-warning-subtle border-warning-border text-warning-subtle-foreground [&>svg]:text-warning-subtle-foreground",
+          "bg-warning-subtle border-warning-border text-warning-subtle-foreground",
         emphasis:
-          "bg-emphasis-subtle border-emphasis-border text-emphasis-subtle-foreground [&>svg]:text-emphasis-subtle-foreground",
+          "bg-emphasis-subtle border-emphasis-border text-emphasis-subtle-foreground",
       },
     },
     defaultVariants: {
@@ -70,12 +56,18 @@ function Alert({
   className,
   variant,
   inCard,
+  icon: Icon,
+  children,
   ...props
 }: React.ComponentProps<"div"> &
   VariantProps<typeof alertVariants> & {
-    /** Use when Alert sits inside a Card — removes border, tightens padding, neutral uses card-subtle bg */
+    /** Use when Alert sits inside a Card — removes border, tightens padding */
     inCard?: boolean
+    /** Lucide icon component (e.g., CircleAlert, Info). Renders in left icon slot. */
+    icon?: React.ComponentType<{ className?: string }>
   }) {
+  const isDefault = !variant || variant === "default"
+
   return (
     <div
       data-slot="alert"
@@ -83,13 +75,30 @@ function Alert({
       className={cn(
         alertVariants({ variant }),
         inCard && [
-          "border-transparent py-xs px-sm [&>svg]:left-sm [&>svg]:top-[10px]",
-          (!variant || variant === "default") && "bg-card-subtle",
+          "border-transparent py-xs px-sm",
+          isDefault && "bg-card-subtle",
         ],
         className
       )}
       {...props}
-    />
+    >
+      {/* Flex row: icon + content — matches Figma AL depth 1 */}
+      <div className="flex gap-sm w-full">
+        {Icon && (
+          <div className="shrink-0 mt-[2px]">
+            <Icon className="size-md" />
+          </div>
+        )}
+        {/* Content column — gap-0 between title/desc, mt-xs on action via data-slot */}
+        <div className={cn(
+          "flex flex-1 flex-col gap-0 min-w-0",
+          "*:data-[slot=alert-action]:mt-xs",
+          isDefault && "*:data-[slot=alert-description]:text-foreground-subtle"
+        )}>
+          {children}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -117,15 +126,8 @@ function AlertDescription({
 }
 
 /**
- * AlertAction — action buttons inside Alert (real Button instances).
- *
+ * AlertAction — action buttons row.
  * Figma: Action frame (flex row, gap-xs 8px, items-center)
- *   Button Primary → Button secondary sm (neutral) / destructive sm (error)
- *   Button Secondary → Button outline sm
- *
- * Usage:
- *   <AlertAction actionLabel="Resend email" />
- *   <AlertAction actionLabel="Retry" secondaryLabel="Cancel" actionVariant="destructive" />
  */
 function AlertAction({
   className,
@@ -136,21 +138,16 @@ function AlertAction({
   onSecondaryAction,
   ...props
 }: Omit<React.ComponentProps<"div">, "children"> & {
-  /** Label for the primary action button */
   actionLabel: string
-  /** Label for the secondary action button (optional) */
   secondaryLabel?: string
-  /** Variant for the primary action: "secondary" (neutral) or "destructive" (error) */
   actionVariant?: "secondary" | "destructive"
-  /** Handler for primary action button click */
   onAction?: () => void
-  /** Handler for secondary action button click */
   onSecondaryAction?: () => void
 }) {
   return (
     <div
       data-slot="alert-action"
-      className={cn("flex items-center gap-xs pt-xs", className)}
+      className={cn("flex items-center gap-xs px-0 py-0 rounded-none", className)}
       {...props}
     >
       <Button variant={actionVariant} size="sm" onClick={onAction}>
@@ -166,19 +163,8 @@ function AlertAction({
 }
 
 /**
- * AlertDismiss — close/dismiss button for Alert.
- *
- * Figma: .Button Icon close (node 3039:13813)
- *   Size: 24×24 (min-h + min-w), p-3xs (4px), rounded-sm (4px)
- *   Icon: X 16×16, color inherits from Alert variant (text-current)
- *   Background: transparent (no bg), hover: opacity-100
- *   Position: absolute right-[7px] top-[9px]
- *
- * Usage:
- *   <Alert>
- *     ...
- *     <AlertDismiss onClick={() => setVisible(false)} />
- *   </Alert>
+ * AlertDismiss — close button (absolute positioned).
+ * Figma: .Button Icon close — 24×24, p-3xs, rounded-sm, absolute right-[7px] top-[9px]
  */
 function AlertDismiss({
   className,
@@ -189,7 +175,7 @@ function AlertDismiss({
       type="button"
       data-slot="alert-dismiss"
       className={cn(
-        "absolute right-[7px] top-[9px] inline-flex items-center justify-center min-h-size-xs min-w-size-xs size-size-xs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:focus-ring transition-opacity cursor-pointer",
+        "absolute right-[7px] top-[9px] inline-flex items-center justify-center size-size-xs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:focus-ring transition-opacity cursor-pointer",
         className
       )}
       aria-label="Dismiss"
