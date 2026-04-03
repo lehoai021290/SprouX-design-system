@@ -182,6 +182,47 @@
   --spacing-4xl: 48px;
   --spacing-5xl: 64px;
 
+  /* --- Absolute Spacing (from Figma "Spacing/Absolute Basic" collection) ---
+   * 1:1 with Tailwind's default spacing scale in px units.
+   * Semantic tokens (--spacing-xs..5xl) are preferred for component styling.
+   * Absolute tokens exist for Figma alignment and layout composition.
+   */
+  --spacing-abs-0: 0px;
+  --spacing-abs-0_5: 2px;
+  --spacing-abs-1: 4px;
+  --spacing-abs-1_5: 6px;
+  --spacing-abs-2: 8px;
+  --spacing-abs-2_5: 10px;
+  --spacing-abs-3: 12px;
+  --spacing-abs-3_5: 14px;
+  --spacing-abs-4: 16px;
+  --spacing-abs-5: 20px;
+  --spacing-abs-6: 24px;
+  --spacing-abs-7: 28px;
+  --spacing-abs-8: 32px;
+  --spacing-abs-9: 36px;
+  --spacing-abs-10: 40px;
+  --spacing-abs-11: 44px;
+  --spacing-abs-12: 48px;
+  --spacing-abs-14: 56px;
+  --spacing-abs-16: 64px;
+  --spacing-abs-20: 80px;
+  --spacing-abs-24: 96px;
+  --spacing-abs-28: 112px;
+  --spacing-abs-32: 128px;
+  --spacing-abs-36: 144px;
+  --spacing-abs-40: 160px;
+  --spacing-abs-44: 176px;
+  --spacing-abs-48: 192px;
+  --spacing-abs-52: 208px;
+  --spacing-abs-56: 224px;
+  --spacing-abs-60: 240px;
+  --spacing-abs-64: 256px;
+  --spacing-abs-72: 288px;
+  --spacing-abs-80: 320px;
+  --spacing-abs-96: 384px;
+  --spacing-abs-infinite: 9999px;
+
   /* --- Component Size (height/width tokens for consistent component sizing) ---
    * Figma collection: "Size" — ensures components align when placed side by side.
    * size-xs=24 (Mini), size-sm=32 (Small), size-md=36 (Default),
@@ -941,6 +982,123 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* ============================================================
+   Compound Layout Tokens (from Figma "Spacing/Compound" collection)
+   Responsive: Desktop (default) → Tablet (≤1024px) → Mobile (≤640px)
+   ============================================================ */
+:root {
+  /* --- Card 16px (non-responsive) --- */
+  --layout-card-16-p: 16px;
+  --layout-card-16-title-pb: 0px;
+  --layout-card-title-gap: 4px;
+
+  /* --- Card 24px (responsive) --- */
+  --layout-card-24-p: 24px;
+  --layout-card-24-title-pb: 0px;
+
+  /* --- Dialog 16px (non-responsive) --- */
+  --layout-dialog-16-p: 16px;
+
+  /* --- Dialog 24px (responsive) --- */
+  --layout-dialog-24-p: 24px;
+
+  /* --- Dialog Fullscreen Margin (responsive) --- */
+  --layout-dialog-fullscreen-m: 24px;
+
+  /* --- Dialog Popup Margin (non-responsive) --- */
+  --layout-dialog-popup-m: 24px;
+
+  /* --- Screen Title (responsive) --- */
+  --layout-screen-title-px: 32px;
+  --layout-screen-title-pt: 32px;
+  --layout-screen-title-pb: 16px;
+  --layout-screen-title-gap: 12px;
+
+  /* --- Screen Action (responsive px) --- */
+  --layout-screen-action-px: 32px;
+  --layout-screen-action-py: 16px;
+  --layout-screen-action-gap: 8px;
+
+  /* --- Screen Max Widths (non-responsive) --- */
+  --layout-screen-maxwidth-authorize: 552px;
+  --layout-screen-maxwidth-setup: 800px;
+  --layout-screen-maxwidth-main: 1200px;
+  --layout-screen-maxwidth-discovery: 1384px;
+  --layout-screen-page-mb: 24px;
+
+  /* --- Sidebar Left (responsive px) --- */
+  --layout-sidebar-left-px: 20px;
+  --layout-sidebar-left-py: 16px;
+  --layout-sidebar-left-width-expand: 240px;
+  --layout-sidebar-left-width-collapse: 60px;
+
+  /* --- Sidebar Top (responsive) --- */
+  --layout-sidebar-top-px: 32px;
+  --layout-sidebar-top-gap: 32px;
+  --layout-sidebar-top-height: 60px;
+
+  /* --- Section Title (responsive px) --- */
+  --layout-section-title-px: 32px;
+  --layout-section-title-pt: 16px;
+  --layout-section-title-pb: 4px;
+  --layout-section-title-gap: 4px;
+
+  /* --- Section Slot: Creator (responsive mx) --- */
+  --layout-section-creator-mx: 32px;
+  --layout-section-creator-my: 16px;
+  --layout-section-creator-gap: 16px;
+
+  /* --- Section Slot: Authorization (responsive mx/mb) --- */
+  --layout-section-auth-mx: 32px;
+  --layout-section-auth-mt: 64px;
+  --layout-section-auth-mb: 64px;
+
+  /* --- Section Slot: Discovery (responsive mx/gap) --- */
+  --layout-section-discovery-mx: 32px;
+  --layout-section-discovery-my: 16px;
+  --layout-section-discovery-gap: 24px;
+}
+
+/* Tablet overrides (≤1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --layout-card-24-p: 20px;
+    --layout-dialog-24-p: 20px;
+    --layout-screen-title-px: 24px;
+    --layout-screen-title-pt: 24px;
+    --layout-screen-title-pb: 8px;
+    --layout-screen-action-px: 24px;
+    --layout-sidebar-left-px: 12px;
+    --layout-sidebar-top-px: 24px;
+    --layout-sidebar-top-gap: 24px;
+    --layout-section-title-px: 24px;
+    --layout-section-creator-mx: 24px;
+    --layout-section-auth-mx: 24px;
+    --layout-section-discovery-mx: 24px;
+  }
+}
+
+/* Mobile overrides (≤640px) */
+@media (max-width: 640px) {
+  :root {
+    --layout-card-24-p: 16px;
+    --layout-dialog-24-p: 16px;
+    --layout-dialog-fullscreen-m: 0px;
+    --layout-screen-title-px: 16px;
+    --layout-screen-title-pt: 24px;
+    --layout-screen-title-pb: 8px;
+    --layout-screen-action-px: 16px;
+    --layout-sidebar-top-px: 16px;
+    --layout-sidebar-top-gap: 16px;
+    --layout-section-title-px: 16px;
+    --layout-section-creator-mx: 16px;
+    --layout-section-auth-mx: 0px;
+    --layout-section-auth-mb: 0px;
+    --layout-section-discovery-mx: 16px;
+    --layout-section-discovery-gap: 16px;
+  }
+}
 
 /* ============================================================
    Typography — Figma Text Styles (synced 1:1)
