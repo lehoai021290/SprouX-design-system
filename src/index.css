@@ -478,10 +478,6 @@
   --spacing-size-xl: 48px;
 
 
-  /* --- Letter Spacing (from Figma typography tokens) --- */
-  --tracking-sm: 0.07px;     /* Paragraph Small: 14px text, ls 0.5% */
-  --tracking-xs: 0.18px;     /* Paragraph Mini: 12px text, ls 1.5% */
-
   /* --- Border Radius (from Figma "border radius" collection) ---
    * Figma architecture: absolute (giá trị gốc) → semantic (var reference)
    * Figma collection: Border Radius
@@ -491,6 +487,7 @@
    */
 
   /* --- Border Radius: Absolute (Figma absolute/Radius *) --- */
+  --radius-abs-0: 0px;
   --radius-abs-2: 2px;
   --radius-abs-4: 4px;
   --radius-abs-6: 6px;
@@ -503,7 +500,7 @@
   --radius-abs-infinite: 9999px;
 
   /* --- Border Radius: Semantic (Figma semantic/Rounded * → var absolute) --- */
-  --radius-none: 0px;
+  --radius-none: var(--radius-abs-0);          /* semantic/Rounded none → absolute/Radius 0 */
   --radius-xs: var(--radius-abs-2);            /* semantic/Rounded xs → absolute/Radius 2 */
   --radius-sm: var(--radius-abs-4);            /* semantic/Rounded sm → absolute/Radius 4 */
   --radius-md: var(--radius-abs-6);            /* semantic/Rounded md → absolute/Radius 6 */
@@ -539,10 +536,10 @@
   --typo-paragraph-lg-line-height: 24px;
   --typo-paragraph-lg-letter-spacing: -1px;
   --typo-paragraph-lg-spacing: 20px;
-  --typo-paragraph-font-size: 16px;
-  --typo-paragraph-line-height: 24px;
-  --typo-paragraph-letter-spacing: 0px;
-  --typo-paragraph-spacing: 2px;
+  --typo-paragraph-regular-font-size: 16px;
+  --typo-paragraph-regular-line-height: 24px;
+  --typo-paragraph-regular-letter-spacing: 0px;
+  --typo-paragraph-regular-spacing: 2px;
   --typo-paragraph-small-font-size: 14px;
   --typo-paragraph-small-line-height: 20px;
   --typo-paragraph-small-letter-spacing: 0.07px;
@@ -559,12 +556,20 @@
   --typo-monospaced-line-height: 24px;
   --typo-monospaced-letter-spacing: 0px;
   --typo-monospaced-spacing: 16px;
+  --typo-monospaced-weight: 400;
 
 
-  /* --- Typography Weight Variables (from Figma) --- */
-  --typo-weight-regular: 400;
-  --typo-weight-medium: 500;
-  --typo-weight-semibold: 600;
+  /* --- Paragraph Weight Variables (from Figma 'paragraph/weight/*' group) --- */
+  --typo-paragraph-weight-regular: 400;
+  --typo-paragraph-weight-medium: 500;
+  --typo-paragraph-weight-semibold: 600;
+  --typo-paragraph-weight-italic: italic;
+
+  /* --- Global Weight Aliases (for heading + shared usage) --- */
+  --typo-weight-regular: var(--typo-paragraph-weight-regular);
+  --typo-weight-medium: var(--typo-paragraph-weight-medium);
+  --typo-weight-semibold: var(--typo-paragraph-weight-semibold);
+  --typo-weight-italic: var(--typo-paragraph-weight-italic);
 
   /* --- Shadows (from Figma collection 'Shadows' — 7 levels, light mode) --- */
   /* Each level = color + x + y + blur + spread. Some levels have 2 shadow layers. */
@@ -1418,10 +1423,10 @@
 
 /* ---- Paragraph Regular (Figma "paragraph regular/*") — Geist 16/24 ls:0 ---- */
 
-@utility typo-paragraph { font-family: var(--font-body); font-weight: var(--typo-weight-regular); font-size: var(--typo-paragraph-font-size); line-height: var(--typo-paragraph-line-height); letter-spacing: var(--typo-paragraph-letter-spacing); margin-bottom: var(--typo-paragraph-spacing); }
-@utility typo-paragraph-regular { font-family: var(--font-body); font-weight: var(--typo-weight-regular); font-size: var(--typo-paragraph-font-size); line-height: var(--typo-paragraph-line-height); letter-spacing: var(--typo-paragraph-letter-spacing); }
-@utility typo-paragraph-medium { font-family: var(--font-body); font-weight: var(--typo-weight-medium); font-size: var(--typo-paragraph-font-size); line-height: var(--typo-paragraph-line-height); letter-spacing: var(--typo-paragraph-letter-spacing); }
-@utility typo-paragraph-semibold { font-family: var(--font-body); font-weight: var(--typo-weight-semibold); font-size: var(--typo-paragraph-font-size); line-height: var(--typo-paragraph-line-height); letter-spacing: var(--typo-paragraph-letter-spacing); }
+@utility typo-paragraph { font-family: var(--font-body); font-weight: var(--typo-weight-regular); font-size: var(--typo-paragraph-regular-font-size); line-height: var(--typo-paragraph-regular-line-height); letter-spacing: var(--typo-paragraph-regular-letter-spacing); margin-bottom: var(--typo-paragraph-regular-spacing); }
+@utility typo-paragraph-regular { font-family: var(--font-body); font-weight: var(--typo-weight-regular); font-size: var(--typo-paragraph-regular-font-size); line-height: var(--typo-paragraph-regular-line-height); letter-spacing: var(--typo-paragraph-regular-letter-spacing); }
+@utility typo-paragraph-medium { font-family: var(--font-body); font-weight: var(--typo-weight-medium); font-size: var(--typo-paragraph-regular-font-size); line-height: var(--typo-paragraph-regular-line-height); letter-spacing: var(--typo-paragraph-regular-letter-spacing); }
+@utility typo-paragraph-semibold { font-family: var(--font-body); font-weight: var(--typo-weight-semibold); font-size: var(--typo-paragraph-regular-font-size); line-height: var(--typo-paragraph-regular-line-height); letter-spacing: var(--typo-paragraph-regular-letter-spacing); }
 
 /* ---- Paragraph Small (Figma "paragraph small/*") — Geist 14/20 ls:0.07px ---- */
 
