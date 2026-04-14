@@ -402,7 +402,7 @@ function Example({
           </p>
         )}
       </div>
-      <div className="px-xl py-lg flex flex-wrap items-center gap-sm flex-1 bg-canvas rounded-none">
+      <div className="px-xl py-lg flex flex-wrap items-center gap-sm flex-1 bg-card-subtle rounded-none">
         {children}
       </div>
       <div className="border-t border-border mt-auto rounded-b-xl overflow-hidden">
@@ -521,7 +521,7 @@ function Playground({
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         {render(values)}
       </div>
       {controls.length > 0 && (
@@ -693,7 +693,7 @@ function TableOfContents({ sections }: { sections: TocSection[] }) {
   )
 }
 
-function ColorSwatch({ hex, label }: { hex: string; label: string }) {
+function ColorSwatch({ hex, label, vertical }: { hex: string; label: string; vertical?: boolean }) {
   const [copied, setCopied] = useState(false)
   const handleCopy = () => {
     navigator.clipboard.writeText(hex)
@@ -706,6 +706,28 @@ function ColorSwatch({ hex, label }: { hex: string; label: string }) {
     const g = parseInt(c.substring(2, 4), 16)
     const b = parseInt(c.substring(4, 6), 16)
     return (r * 299 + g * 587 + b * 114) / 1000 < 128
+  }
+  if (vertical) {
+    return (
+      <button
+        onClick={handleCopy}
+        className="flex flex-col items-center gap-1 group"
+        title={`Copy ${hex}`}
+      >
+        <div
+          className="w-full aspect-square rounded border border-border relative overflow-hidden transition-transform group-hover:scale-105"
+          style={{ backgroundColor: hex }}
+        >
+          {copied && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+              <Check className={`size-3 ${isDark(hex) ? "text-white" : "text-black"}`} />
+            </div>
+          )}
+        </div>
+        <span className="text-[10px] font-mono text-muted-foreground">{label}</span>
+        <span className="text-[10px] font-mono text-muted-foreground/60 break-all text-center leading-tight">{hex}</span>
+      </button>
+    )
   }
   return (
     <button
@@ -837,9 +859,9 @@ function ColorsDocs() {
             return (
               <div key={paletteName} className="space-y-2">
                 <h3 className="font-body font-semibold text-sm">{paletteName}</h3>
-                <div className="grid grid-cols-11 gap-2">
+                <div className="grid grid-cols-11 gap-3">
                   {palette.shades.map((hex, i) => (
-                    <ColorSwatch key={i} hex={hex} label={shadeLabels[i]} />
+                    <ColorSwatch key={i} hex={hex} label={shadeLabels[i]} vertical />
                   ))}
                 </div>
               </div>
@@ -1930,7 +1952,7 @@ function ButtonExploreBehavior() {
       {tab === "button" ? (
         <>
           {/* ── Button preview ── */}
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={[
               "pointer-events-none",
               isHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -1991,7 +2013,7 @@ function ButtonExploreBehavior() {
       ) : (
         <>
           {/* ── Icon Button preview ── */}
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={[
               "pointer-events-none",
               ibIsHover ? "[&_[data-slot=button]]:ring-0" : "",
@@ -7170,7 +7192,7 @@ function SwitchTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <Switch
           checked={isChecked}
           onCheckedChange={(v) => setChecked(v ? "true" : "false")}
@@ -7202,7 +7224,7 @@ function SwitchGroupTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={layout === "inline" ? "flex items-center gap-xs" : "space-y-sm"}>
           <div className="flex items-center gap-xs">
             <Switch
@@ -7591,7 +7613,7 @@ function LabelExploreBehavior() {
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
       {/* Preview */}
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         {layout === "block" ? (
           <div className="w-[280px] space-y-xs">
             <Label size={size} htmlFor="explore-input">Email address</Label>
@@ -8208,7 +8230,7 @@ function ToggleIconButtonTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
           <Toggle
             variant={skin === "outlined" ? "outline" : "default"}
@@ -8281,7 +8303,7 @@ function ToggleButtonTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={isFocus ? "[&_[data-slot=toggle]]:ring-[3px] [&_[data-slot=toggle]]:ring-ring" : ""}>
           <Toggle
             variant={skin === "outlined" ? "outline" : "default"}
@@ -8344,7 +8366,7 @@ function ToggleGroupTab() {
 
   return (
     <div className="space-y-md">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         {type === "single" ? (
           <ToggleGroup type="single" variant={skin === "outlined" ? "outline" : "default"} size={size as "default" | "sm" | "lg" | "mini"} defaultValue="center">
             <ToggleGroupItem value="left" aria-label="Align left"><AlignLeft className="size-md" /></ToggleGroupItem>
@@ -8840,7 +8862,7 @@ function ChipExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={isHover ? "[&_[data-slot=chip]]:bg-accent [&_[data-slot=chip]]:text-foreground" : ""}>
           <Chip
             size={chipSize}
@@ -9946,7 +9968,7 @@ function ProgressExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
           <Progress value={value} size={size as any} variant={variant as any} className="w-80" />
         </div>
         <div className="border-t border-border p-lg space-y-md">
@@ -10317,7 +10339,7 @@ function AlertExploreBehavior() {
 
   return (
     <div className="rounded-xl border border-border overflow-hidden bg-card">
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="w-full max-w-lg">
           <Alert variant={type as "default" | "destructive" | "success" | "warning" | "emphasis"} inCard={inCard} icon={showIcon ? ActiveIconComp || Info : undefined}>
             {alertContent}
@@ -10883,7 +10905,7 @@ function BadgePropsTable() {
 function BadgeTokensTable() {
   return <DesignTokensTable tokens={[
     { token: "bg-primary", cssVar: "--primary", value: "#0f766e", label: "primary", usage: "Default variant (primary level)" },
-    { token: "bg-primary-subtle", cssVar: "--primary-subtle", value: "#f0fdfa", label: "primary-subtle", usage: "Default variant (secondary level)" },
+    { token: "bg-brand-subtle", cssVar: "--brand-subtle", value: "#f0fdfa", label: "brand-subtle", usage: "Default variant (secondary level)" },
     { token: "bg-secondary", cssVar: "--secondary", value: "#e9e9e7", label: "secondary", usage: "Secondary variant" },
     { token: "bg-destructive", cssVar: "--destructive", value: "#dc2626", label: "destructive", usage: "Destructive variant (primary level)" },
     { token: "bg-destructive-subtle", cssVar: "--destructive-subtle", value: "#fef2f2", label: "destructive-subtle", usage: "Destructive variant (secondary level)" },
@@ -11246,7 +11268,7 @@ function SeparatorDividerTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         {isVertical ? (
           <div className="flex items-center gap-md h-xl">
             <span className="typo-paragraph-small text-muted-foreground">Left</span>
@@ -11276,7 +11298,7 @@ function SeparatorDividerTab() {
 function SeparatorDotTab() {
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex items-center gap-xs">
           <span className="typo-paragraph-small text-muted-foreground">Item 1</span>
           <div className="size-[3px] rounded-full bg-muted-foreground" />
@@ -11544,7 +11566,7 @@ function SkeletonExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
           {shape === "card" && (
             <div className="flex items-start gap-sm">
               <Skeleton className="size-[48px] rounded-full shrink-0" />
@@ -11803,7 +11825,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Header tab — single cell preview ── */}
       {dtTab === "header" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", headerBg, hBorder && "border-b border-border", hAlign === "right" && "justify-end")}>
               {hContent === "text" && <span className={cn("font-semibold typo-paragraph-small", hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>}
               {hContent === "sortable" && (
@@ -11833,7 +11855,7 @@ function DataTableExploreBehavior() {
       {/* ── Table Cell tab — single cell preview ── */}
       {dtTab === "cell" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", cellBg, cBorder && "border-b border-border", cAlign === "right" && "justify-end")}>
               {cContent === "text-1" && <span className="typo-paragraph-small">Table cell</span>}
               {cContent === "text-2" && (
@@ -15397,7 +15419,7 @@ function SonnerTokensTable() {
     { token: "bg-secondary", cssVar: "--secondary", value: "#e9e9e7", label: "secondary", usage: "Action button background" },
     { token: "text-secondary-foreground", cssVar: "--secondary-foreground", value: "#2f2f2b", label: "secondary-fg", usage: "Action button text" },
     { token: "bg-primary", cssVar: "--primary", value: "#0f766e", label: "primary", usage: "Primary action background" },
-    { token: "rounded-[10px]", cssVar: "--radius-10", value: "10px", usage: "Toast border radius" },
+    { token: "rounded-[10px]", cssVar: "--radius-abs-10", value: "10px", usage: "Toast border radius" },
     { token: "p-md", cssVar: "--spacing-md", value: "16px", usage: "Toast padding" },
     { token: "gap-sm", cssVar: "--spacing-sm", value: "12px", usage: "Icon/content gap" },
     { token: "gap-3xs", cssVar: "--spacing-3xs", value: "4px", usage: "Title/description gap" },
@@ -15521,7 +15543,7 @@ function ToastDocs() {
         ["Action Button", "bg-secondary", "action", "bg-primary text-primary-foreground"],
         ["Cancel Button", "bg-muted", "cancel", "bg-muted text-muted-foreground"],
         ["Shadow", "shadow-sm", "—", "shadow (Tailwind DEFAULT)"],
-        ["Border Radius", "10px", "style --border-radius", "var(--radius-10)"],
+        ["Border Radius", "10px", "style --border-radius", "var(--radius-abs-10)"],
         ["Padding", "16px", "—", "p-md (sonner default)"],
       ]} />
 
@@ -15766,7 +15788,7 @@ function TabsTokensTable() {
     { token: "text-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Tab text color (all states)" },
     { token: "ring-ring", cssVar: "--ring", value: "#e9e9e7", label: "ring", usage: "Focus ring (3px)" },
     { token: "shadow", cssVar: "—", value: "shadow-sm", usage: "Active tab drop shadow" },
-    { token: "rounded-[10px]", cssVar: "--radius-10", value: "10px", usage: "Tab trigger border radius" },
+    { token: "rounded-[10px]", cssVar: "--radius-abs-10", value: "10px", usage: "Tab trigger border radius" },
     { token: "rounded-xl", cssVar: "--radius-xl", value: "12px", usage: "TabsList container border radius" },
     { token: "p-3xs", cssVar: "--spacing-3xs", value: "4px", usage: "TabsList inner padding" },
     { token: "px-xs", cssVar: "--spacing-xs", value: "8px", usage: "Tab trigger horizontal padding" },
@@ -15923,12 +15945,12 @@ function TabsDocs() {
       <FigmaMapping id="figma-mapping" nodeId="288:173625" rows={[
         ["TabsList BG", "accent #f3f3f2", "bg-muted", "rounded-xl p-3xs"],
         ["Tab Inactive", "transparent", "—", "typo-paragraph-small-semibold text-foreground"],
-        ["Tab Inactive Hover", "accent #f3f3f2", "hover:bg-accent", "rounded-[var(--radius-10)]"],
+        ["Tab Inactive Hover", "accent #f3f3f2", "hover:bg-accent", "rounded-[var(--radius-abs-10)]"],
         ["Tab Active", "card #ffffff", "data-[state=active]:bg-card", "shadow"],
         ["Tab Active Focus", "ring #e9e9e7", "focus-visible:ring-[3px]", "ring-ring"],
         ["Tab Disabled", "opacity 50%", "disabled:opacity-50", "pointer-events-none"],
         ["Tab Padding", "px-xs py-[2px]", "8px / 2px", "—"],
-        ["Tab Radius", "rounded-lg-xl 10px", "rounded-[var(--radius-10)]", "—"],
+        ["Tab Radius", "rounded-lg-xl 10px", "rounded-[var(--radius-abs-10)]", "—"],
         ["Content Spacing", "mt-xs", "8px", "—"],
       ]} />
 
@@ -17611,7 +17633,7 @@ function AccordionExploreBehavior() {
       {/* ---- Tab: Accordion Trigger ---- */}
       {activeTab === "trigger" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[200px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[200px] bg-card-subtle">
             <div className={[
               "w-full max-w-md pointer-events-none",
               "[&_[data-slot=accordion-trigger]]:hover:no-underline",
@@ -17648,7 +17670,7 @@ function AccordionExploreBehavior() {
       {/* ---- Tab: Accordion Content ---- */}
       {activeTab === "content" && (
         <>
-          <div className="p-4xl flex items-center justify-center min-h-[200px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[200px] bg-card-subtle">
             <div className="w-full max-w-md">
               <p className="typo-paragraph-small text-foreground">
                 This is the content shown when opening an accordion.
@@ -18753,7 +18775,7 @@ function DatePickerDayTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={cn(
           "inline-flex flex-col items-center justify-center typo-paragraph-small font-normal transition-colors cursor-default overflow-clip",
           daySize, posClass, stateClass
@@ -18817,7 +18839,7 @@ function DatePickerHeaderTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas overflow-x-auto">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle overflow-x-auto">
         <div className={headerWidth}>
           <Calendar
             mode="single"
@@ -18858,7 +18880,7 @@ function DatePickerInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex flex-col gap-[4px]">
           {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Date</label>}
           <div
@@ -18897,7 +18919,7 @@ function TimePickerInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex flex-col gap-[4px]">
           {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Time</label>}
           <div
@@ -19885,7 +19907,7 @@ function SpinnerExploreBehavior() {
     <section id="explore-behavior" className="space-y-md">
       <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
       <div className="rounded-xl border border-border overflow-hidden bg-card">
-        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+        <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
           <Spinner size={size as "sm" | "default" | "lg"} />
         </div>
         <div className="border-t border-border p-lg space-y-md">
@@ -21937,7 +21959,7 @@ function MenubarDocs() {
       <section id="explore-behavior" className="space-y-4">
         <h2 className="font-heading font-semibold text-xl">Explore Behavior</h2>
         <div className="rounded-xl border border-border overflow-hidden bg-card">
-          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+          <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <Menubar>
               <MenubarMenu>
                 <MenubarTrigger>File</MenubarTrigger>
@@ -22841,7 +22863,7 @@ function TitleSectionTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <TitleSection
           title={showTitle ? "Section Title" : undefined}
           description={showDescription ? "Optional description for this section." : undefined}
@@ -22888,7 +22910,7 @@ function TitleCardTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <TitleCard
           title="Card Title"
           showBack={showBack}
@@ -22935,7 +22957,7 @@ function TitleInputTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <TitleInput
           label="Field Label"
           type={type}
@@ -22968,7 +22990,7 @@ function TitleInformationTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <TitleInformation
           label="Information Label"
           level={level}
@@ -23008,7 +23030,7 @@ function InformationTextTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <InformationText
           highlight={highlight}
           align={align}
@@ -23039,7 +23061,7 @@ function TextValueTab() {
 
   return (
     <>
-      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-canvas">
+      <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <TextValue showTooltip={showTooltip}>nhan@evol.vn</TextValue>
       </div>
       <div className="border-t border-border p-lg space-y-md">
