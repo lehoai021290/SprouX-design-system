@@ -23,7 +23,7 @@ import {
 /** Shared class config — single source of truth for both Toaster and docs preview */
 const toastClassNames = {
   toast:
-    "group toast flex items-center gap-sm bg-card border border-border rounded-[var(--radius-10)] p-md shadow w-[356px]",
+    "group toast flex items-center gap-sm bg-card border border-border rounded-[var(--radius-abs-10)] p-md shadow w-[356px]",
   title: "typo-paragraph-small-semibold text-foreground",
   description: "typo-paragraph-small text-muted-foreground mt-3xs",
   actionButton:

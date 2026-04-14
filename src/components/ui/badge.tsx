@@ -48,7 +48,7 @@ const badgeVariants = cva(
     },
     compoundVariants: [
       /* --- Level=Secondary overrides --- */
-      { level: "secondary", variant: "default", className: "bg-primary-subtle text-primary-subtle-foreground" },
+      { level: "secondary", variant: "default", className: "bg-brand-subtle text-brand-subtle-foreground" },
       { level: "secondary", variant: "secondary", className: "bg-secondary text-secondary-foreground" },
       { level: "secondary", variant: "outline", className: "bg-background border-border text-ghost-foreground" },
       { level: "secondary", variant: "ghost", className: "bg-background text-ghost-foreground" },
