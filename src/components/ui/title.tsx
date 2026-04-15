@@ -93,7 +93,7 @@ function TitlePage({
           )}
         </div>
         {subtitle && (
-          <div data-slot="title-subtitle" className="typo-paragraph text-foreground-subtle">
+          <div data-slot="title-subtitle" className="typo-paragraph-base text-foreground-subtle">
             {subtitle}
           </div>
         )}
@@ -107,11 +107,11 @@ function TitlePage({
    Title/Section
    Figma: 2715:8384
    Properties: Show Title, Show Bage, Show decoration right, Show Description, Show Tooltip, Size
-   Title:       Geist SemiBold 16/24 → typo-paragraph-semibold, text-foreground
+   Title:       Geist SemiBold 16/24 → typo-paragraph-base-semibold, text-foreground
    Tooltip:     Info icon 16px, muted-foreground — slot (ReactNode)
    Badge:       inline after tooltip, slot (ReactNode)
    Decoration:  Right decoration slot (ReactNode) — maps to Right Decoration (Figma 18:1373)
-   Description: Geist Regular 14/20 → typo-paragraph-small, text-foreground-subtle
+   Description: Geist Regular 14/20 → typo-paragraph-sm, text-foreground-subtle
    Gap:         4px (3xs) between title row and description
    Min-height:  32px (2xl) for title row
    RULE:        When title is absent, the entire title row hides (only description remains)
@@ -144,7 +144,7 @@ function TitleSection({
       {title && (
         <div className="flex items-center gap-xs min-h-size-sm">
           <div className="flex flex-1 items-center gap-xs min-w-0">
-            <span className="typo-paragraph-semibold text-foreground">
+            <span className="typo-paragraph-base-semibold text-foreground">
               {title}
             </span>
             {tooltip}
@@ -156,7 +156,7 @@ function TitleSection({
         </div>
       )}
       {description && (
-        <p className="typo-paragraph-small text-foreground-subtle">{description}</p>
+        <p className="typo-paragraph-sm text-foreground-subtle">{description}</p>
       )}
       {children}
     </div>
@@ -167,8 +167,8 @@ function TitleSection({
    Title/Card
    Figma: 2575:5379
    Properties: Show Back, Show Badge, Show decoration right, Show Description, Show Tooltip, Spacing
-   Title:       Geist SemiBold 14/20 → typo-paragraph-small-semibold, text-foreground-subtle
-   Description: Geist Regular 14/20 → typo-paragraph-small, text-foreground-subtle
+   Title:       Geist SemiBold 14/20 → typo-paragraph-sm-semibold, text-foreground-subtle
+   Description: Geist Regular 14/20 → typo-paragraph-sm, text-foreground-subtle
    Back:        chevron-left 16px, foreground color
    Badge:       inline after title, slot (ReactNode)
    Decoration:  Right decoration slot (ReactNode) — maps to Right Decoration (Figma 18:1373)
@@ -222,7 +222,7 @@ function TitleCard({
           <div className="flex flex-1 items-center gap-xs min-w-0">
             {title && (
               <span className={cn(
-                "typo-paragraph-small-semibold text-foreground-subtle",
+                "typo-paragraph-sm-semibold text-foreground-subtle",
                 showTooltip && "underline decoration-dashed underline-offset-4"
               )}>
                 {title}
@@ -235,7 +235,7 @@ function TitleCard({
           )}
         </div>
         {description && (
-          <p className="typo-paragraph-small text-foreground-subtle">{description}</p>
+          <p className="typo-paragraph-sm text-foreground-subtle">{description}</p>
         )}
         {children}
       </div>
@@ -247,10 +247,10 @@ function TitleCard({
    Title/Input
    Figma: 2071:30664
    Properties: Type (Required/Optional), Size (Normal/Small), Show decoration right
-   Label:      Geist Medium 14/20 (Normal) → typo-paragraph-small-medium
-               Geist Medium 12/16 (Small) → typo-paragraph-mini-medium
+   Label:      Geist Medium 14/20 (Normal) → typo-paragraph-sm-medium
+               Geist Medium 12/16 (Small) → typo-paragraph-xs-medium
    Color:      text-foreground
-   Decoration: Geist Regular 14/20 → typo-paragraph-small, text-muted-foreground
+   Decoration: Geist Regular 14/20 → typo-paragraph-sm, text-muted-foreground
    Layout:     flex items-baseline justify-between
    ---------------------------------------------------------------- */
 
@@ -277,21 +277,21 @@ function TitleInput({
       <div className="flex items-center gap-3xs">
         <span className={cn(
           "text-foreground",
-          size === "normal" ? "typo-paragraph-small-medium" : "typo-paragraph-mini-medium"
+          size === "normal" ? "typo-paragraph-sm-medium" : "typo-paragraph-xs-medium"
         )}>
           {label}
         </span>
         {type === "optional" && (
           <span className={cn(
             "text-foreground",
-            size === "normal" ? "typo-paragraph-small-medium" : "typo-paragraph-mini-medium"
+            size === "normal" ? "typo-paragraph-sm-medium" : "typo-paragraph-xs-medium"
           )}>
             (Optional)
           </span>
         )}
       </div>
       {decoration && (
-        <div data-slot="title-decoration" className="typo-paragraph-small text-muted-foreground">
+        <div data-slot="title-decoration" className="typo-paragraph-sm text-muted-foreground">
           {decoration}
         </div>
       )}
@@ -303,11 +303,11 @@ function TitleInput({
    Title/Information
    Figma: 2718:9628
    Properties: Level (Large/Default), Show decoration right, Show Icon Prefix, Show Tooltip
-   Large:      Geist SemiBold 16/24 → typo-paragraph-semibold, text-foreground
-   Default:    Geist Regular 14/20 → typo-paragraph-small, text-foreground
+   Large:      Geist SemiBold 16/24 → typo-paragraph-base-semibold, text-foreground
+   Default:    Geist Regular 14/20 → typo-paragraph-sm, text-foreground
    Icon:       prefix icon in bordered circle (24px, border-border, rounded-full)
    Tooltip:    Dashed underline on label text (boolean, NOT info icon)
-   Decoration: Geist Regular 14/20 → typo-paragraph-small, text-muted-foreground
+   Decoration: Geist Regular 14/20 → typo-paragraph-sm, text-muted-foreground
    Gap:        16px (md) between label and decoration
    ---------------------------------------------------------------- */
 
@@ -341,14 +341,14 @@ function TitleInformation({
         )}
         <span className={cn(
           "text-foreground",
-          level === "large" ? "typo-paragraph-semibold" : "typo-paragraph-small",
+          level === "large" ? "typo-paragraph-base-semibold" : "typo-paragraph-sm",
           showTooltip && "underline decoration-dashed underline-offset-4"
         )}>
           {label}
         </span>
       </div>
       {decoration && (
-        <div data-slot="title-decoration" className="shrink-0 typo-paragraph-small text-muted-foreground">
+        <div data-slot="title-decoration" className="shrink-0 typo-paragraph-sm text-muted-foreground">
           {decoration}
         </div>
       )}
@@ -360,8 +360,8 @@ function TitleInformation({
    Information Text
    Figma: 3489:962
    Properties: Highlight Value (Default/Medium/High), Align Text (Left/Right)
-   Default:    Geist Regular 14/20 → typo-paragraph-small, text-foreground
-   Medium:     Geist SemiBold 16/24 → typo-paragraph-semibold, text-foreground
+   Default:    Geist Regular 14/20 → typo-paragraph-sm, text-foreground
+   Medium:     Geist SemiBold 16/24 → typo-paragraph-base-semibold, text-foreground
    High:       Geist SemiBold 30/32 -1px → typo-paragraph-xl-semibold, text-foreground
    Align:      text-left or text-right
    ---------------------------------------------------------------- */
@@ -371,8 +371,8 @@ const informationTextVariants = cva(
   {
     variants: {
       highlight: {
-        default: "typo-paragraph-small",
-        medium: "typo-paragraph-semibold",
+        default: "typo-paragraph-sm",
+        medium: "typo-paragraph-base-semibold",
         high: "typo-paragraph-xl-semibold",
       },
       align: {
@@ -423,7 +423,7 @@ function InformationText({
    Text Value
    Figma: 4491:3770
    Properties: Show Tooltip (True/False)
-   Text:       Geist Regular 14/20 → typo-paragraph-small, text-foreground-subtle
+   Text:       Geist Regular 14/20 → typo-paragraph-sm, text-foreground-subtle
    Tooltip:    Dashed underline on text (boolean)
    ---------------------------------------------------------------- */
 
@@ -442,7 +442,7 @@ function TextValue({
     <span
       data-slot="text-value"
       className={cn(
-        "typo-paragraph-small text-foreground-subtle",
+        "typo-paragraph-sm text-foreground-subtle",
         showTooltip && "underline decoration-dashed underline-offset-4",
         className
       )}
@@ -460,8 +460,8 @@ function TextValue({
 
    Type variants:
      icon             — Single icon (16px) in p-4xs wrapper
-     text             — Text in foreground color (typo-paragraph-small)
-     text-muted       — Text in muted-foreground color (typo-paragraph-small)
+     text             — Text in foreground color (typo-paragraph-sm)
+     text-muted       — Text in muted-foreground color (typo-paragraph-sm)
      icon-muted       — Icon in muted-foreground, size-lg padded
      deco-icon-primary — Icon in primary bg, rounded-sm, size-lg
      deco-icon-outline — Icon in bordered box, rounded-sm, size-lg
@@ -487,8 +487,8 @@ const rightDecorationVariants = cva(
     variants: {
       type: {
         "icon": "p-[2px]",
-        "text": "flex-col h-lg justify-center typo-paragraph-small text-foreground",
-        "text-muted": "flex-col h-lg justify-center typo-paragraph-small text-muted-foreground",
+        "text": "flex-col h-lg justify-center typo-paragraph-sm text-foreground",
+        "text-muted": "flex-col h-lg justify-center typo-paragraph-sm text-muted-foreground",
         "icon-muted": "justify-center p-xs size-lg text-muted-foreground",
         "deco-icon-primary": "justify-center p-xs rounded-sm size-lg bg-primary text-primary-foreground overflow-clip",
         "deco-icon-outline": "justify-center p-xs rounded-sm size-lg border border-border",
@@ -500,8 +500,8 @@ const rightDecorationVariants = cva(
         "tabs": "items-start",
         "select": "",
         "text-select": "gap-md",
-        "count-character": "gap-[2px] h-lg justify-center typo-paragraph-small text-muted-foreground",
-        "count-word": "gap-[2px] h-lg justify-center typo-paragraph-small text-muted-foreground",
+        "count-character": "gap-[2px] h-lg justify-center typo-paragraph-sm text-muted-foreground",
+        "count-word": "gap-[2px] h-lg justify-center typo-paragraph-sm text-muted-foreground",
         "badge": "items-start",
         "payment-card": "gap-3xs",
         "icon-button": "items-start",

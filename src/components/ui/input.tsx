@@ -25,10 +25,10 @@ const inputVariants = cva(
   {
     variants: {
       size: {
-        lg: "h-size-lg rounded-lg typo-paragraph-small",
-        default: "h-size-md rounded-lg typo-paragraph-small",
-        sm: "h-size-sm rounded-lg typo-paragraph-small",
-        xs: "h-size-xs rounded-sm typo-paragraph-mini",
+        lg: "h-size-lg rounded-lg typo-paragraph-sm",
+        default: "h-size-md rounded-lg typo-paragraph-sm",
+        sm: "h-size-sm rounded-lg typo-paragraph-sm",
+        xs: "h-size-xs rounded-sm typo-paragraph-xs",
       },
     },
     defaultVariants: {

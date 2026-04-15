@@ -28,9 +28,9 @@ const textButtonVariants = cva(
           "text-ghost-foreground [&_svg]:text-ghost-foreground hover:text-foreground hover:[&_svg]:text-foreground",
       },
       size: {
-        lg: "gap-2xs typo-paragraph [&_svg:not([class*='size-'])]:size-md",
-        default: "gap-3xs typo-paragraph-small [&_svg:not([class*='size-'])]:size-md",
-        mini: "gap-3xs typo-paragraph-mini [&_svg:not([class*='size-'])]:size-md",
+        lg: "gap-2xs typo-paragraph-base [&_svg:not([class*='size-'])]:size-md",
+        default: "gap-3xs typo-paragraph-sm [&_svg:not([class*='size-'])]:size-md",
+        mini: "gap-3xs typo-paragraph-xs [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {

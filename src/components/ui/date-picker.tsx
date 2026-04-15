@@ -12,11 +12,11 @@ import {
 
 /* ── Shared input trigger class (Figma: Input Size=Regular, r=8, h=36) ── */
 const triggerClass =
-  "flex h-9 items-center gap-xs rounded-lg border border-border bg-input px-sm typo-paragraph-small text-foreground transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+  "flex h-9 items-center gap-xs rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
 
 /* ── Shared time input class (Figma: Time Picker Input 4838:14965, 90×36, r=8, no icons, px=12) ── */
 const timeInputClass =
-  "h-9 w-[90px] rounded-lg border border-border bg-input px-sm typo-paragraph-small text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+  "h-9 w-[90px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
 
 /**
  * SprouX Date Picker Input
@@ -54,7 +54,7 @@ function DatePicker({
   return (
     <div className={cn("flex flex-col gap-[4px]", className)}>
       {label && (
-        <label className="typo-paragraph-small font-medium text-foreground">
+        <label className="typo-paragraph-sm font-medium text-foreground">
           {label}
         </label>
       )}
@@ -122,7 +122,7 @@ function DateRangePicker({
   return (
     <div className={cn("flex flex-col gap-[4px]", className)}>
       {label && (
-        <label className="typo-paragraph-small font-medium text-foreground">
+        <label className="typo-paragraph-sm font-medium text-foreground">
           {label}
         </label>
       )}
@@ -219,7 +219,7 @@ function DateTimePicker({
   return (
     <div className={cn("flex flex-col gap-[4px]", className)}>
       {label && (
-        <label className="typo-paragraph-small font-medium text-foreground">
+        <label className="typo-paragraph-sm font-medium text-foreground">
           {label}
         </label>
       )}
@@ -251,7 +251,7 @@ function DateTimePicker({
           <div className="border-t border-border px-sm py-xs">
             <div className="flex flex-col gap-[4px]">
               {timeLabel && (
-                <label className="typo-paragraph-small font-medium text-foreground">
+                <label className="typo-paragraph-sm font-medium text-foreground">
                   {timeLabel}
                 </label>
               )}
@@ -340,7 +340,7 @@ function DateRangeTimePicker({
   return (
     <div className={cn("flex flex-col gap-[4px]", className)}>
       {label && (
-        <label className="typo-paragraph-small font-medium text-foreground">
+        <label className="typo-paragraph-sm font-medium text-foreground">
           {label}
         </label>
       )}
@@ -375,7 +375,7 @@ function DateRangeTimePicker({
           />
           <div className="border-t border-border px-sm py-xs flex items-center gap-md">
             <div className="flex flex-col gap-[4px]">
-              <label className="typo-paragraph-small font-medium text-foreground">From</label>
+              <label className="typo-paragraph-sm font-medium text-foreground">From</label>
               <input
                 type="time"
                 value={fromTime}
@@ -385,7 +385,7 @@ function DateRangeTimePicker({
               />
             </div>
             <div className="flex flex-col gap-[4px]">
-              <label className="typo-paragraph-small font-medium text-foreground">To</label>
+              <label className="typo-paragraph-sm font-medium text-foreground">To</label>
               <input
                 type="time"
                 value={toTime}

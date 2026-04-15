@@ -95,7 +95,7 @@ function DayCell({
     <button
       data-slot="day-cell"
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap size-size-sm typo-paragraph-small font-normal transition-colors",
+        "inline-flex items-center justify-center whitespace-nowrap size-size-sm typo-paragraph-sm font-normal transition-colors",
         "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring",
         posClass,
         stateClass,
@@ -155,7 +155,7 @@ function Calendar({
               visible in "dropdown" mode as display text inside dropdown_root.
               In dropdown_root context: styled as Select trigger (r=8 h=32 px=8 border) ── */
         caption_label:
-          "typo-paragraph-small-semibold inline-flex items-center gap-[6px]",
+          "typo-paragraph-sm-semibold inline-flex items-center gap-[6px]",
 
         /* ── Dropdowns container ── */
         dropdowns: "flex items-center gap-xs",

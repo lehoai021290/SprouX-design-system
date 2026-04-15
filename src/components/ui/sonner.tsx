@@ -24,12 +24,12 @@ import {
 const toastClassNames = {
   toast:
     "group toast flex items-center gap-sm bg-card border border-border rounded-[var(--radius-abs-10)] p-md shadow w-[356px]",
-  title: "typo-paragraph-small-semibold text-foreground",
-  description: "typo-paragraph-small text-muted-foreground mt-3xs",
+  title: "typo-paragraph-sm-semibold text-foreground",
+  description: "typo-paragraph-sm text-muted-foreground mt-3xs",
   actionButton:
-    "shrink-0 bg-primary text-primary-foreground typo-paragraph-mini-semibold rounded-lg px-xs py-3xs min-h-size-xs cursor-pointer",
+    "shrink-0 bg-primary text-primary-foreground typo-paragraph-xs-semibold rounded-lg px-xs py-3xs min-h-size-xs cursor-pointer",
   cancelButton:
-    "shrink-0 bg-muted text-muted-foreground typo-paragraph-mini-semibold rounded-lg px-xs py-3xs min-h-size-xs border border-border cursor-pointer",
+    "shrink-0 bg-muted text-muted-foreground typo-paragraph-xs-semibold rounded-lg px-xs py-3xs min-h-size-xs border border-border cursor-pointer",
 }
 
 /** Shared icon map — single source of truth */

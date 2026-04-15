@@ -33,7 +33,7 @@ function FeatureItem({
           }`}
         />
       </div>
-      <p className="typo-paragraph-small text-foreground">{children}</p>
+      <p className="typo-paragraph-sm text-foreground">{children}</p>
     </div>
   )
 }
@@ -66,12 +66,12 @@ function OptionCard({
       {/* Header */}
       <div className="flex flex-col gap-xs items-center text-center p-lg">
         <h3 className="typo-heading-3 text-foreground">{title}</h3>
-        <p className="typo-paragraph text-muted-foreground">{subtitle}</p>
+        <p className="typo-paragraph-base text-muted-foreground">{subtitle}</p>
       </div>
 
       {/* Features */}
       <div className="flex flex-col gap-xl border-y border-border px-lg py-lg">
-        <p className="typo-paragraph-medium text-foreground">{description}</p>
+        <p className="typo-paragraph-base-medium text-foreground">{description}</p>
 
         <div className="flex flex-col gap-sm">
           {features.map((feature) => (
@@ -93,7 +93,7 @@ function OptionCard({
           }`}
         >
           <p
-            className={`typo-paragraph-small-semibold ${
+            className={`typo-paragraph-sm-semibold ${
               isPrimary
                 ? "text-success-subtle-foreground"
                 : "text-foreground"

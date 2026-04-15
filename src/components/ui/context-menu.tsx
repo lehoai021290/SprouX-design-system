@@ -77,7 +77,7 @@ function ContextMenuSubTrigger({
     <ContextMenuPrimitive.SubTrigger
       data-slot="context-menu-sub-trigger"
       className={cn(
-        "flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-small outline-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none focus:bg-accent focus:text-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         inset && "pl-2xl",
         className
       )}
@@ -134,7 +134,7 @@ function ContextMenuItem({
     <ContextMenuPrimitive.Item
       data-slot="context-menu-item"
       className={cn(
-        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
+        "relative flex cursor-default select-none items-center gap-xs rounded-md px-xs py-2xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-md [&_svg]:shrink-0",
         inset && "pl-2xl",
         className
       )}
@@ -153,7 +153,7 @@ function ContextMenuCheckboxItem({
     <ContextMenuPrimitive.CheckboxItem
       data-slot="context-menu-checkbox-item"
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       checked={checked}
@@ -178,7 +178,7 @@ function ContextMenuRadioItem({
     <ContextMenuPrimitive.RadioItem
       data-slot="context-menu-radio-item"
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-small outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex cursor-default select-none items-center rounded-md py-2xs pl-2xl pr-xs typo-paragraph-sm outline-none transition-colors focus:bg-accent focus:text-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       {...props}
@@ -204,7 +204,7 @@ function ContextMenuLabel({
     <ContextMenuPrimitive.Label
       data-slot="context-menu-label"
       className={cn(
-        "px-xs py-2xs typo-paragraph-small-semibold text-foreground",
+        "px-xs py-2xs typo-paragraph-sm-semibold text-foreground",
         inset && "pl-2xl",
         className
       )}
@@ -234,7 +234,7 @@ function ContextMenuShortcut({
     <span
       data-slot="context-menu-shortcut"
       className={cn(
-        "ml-auto typo-paragraph-mini tracking-widest text-muted-foreground",
+        "ml-auto typo-paragraph-xs tracking-widest text-muted-foreground",
         className
       )}
       {...props}

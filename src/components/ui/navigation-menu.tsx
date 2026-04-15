@@ -67,7 +67,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-size-md w-max items-center justify-center rounded-lg bg-background px-md py-xs typo-paragraph-small-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent data-[state=open]:text-foreground"
+  "group inline-flex h-size-md w-max items-center justify-center rounded-lg bg-background px-md py-xs typo-paragraph-sm-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent data-[state=open]:text-foreground"
 )
 
 function NavigationMenuTrigger({
@@ -115,7 +115,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex flex-col gap-3xs rounded-md p-xs typo-paragraph-small transition-all outline-none hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:ring-[3px] focus:ring-ring data-[active=true]:bg-accent data-[active=true]:text-foreground [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-md",
+        "flex flex-col gap-3xs rounded-md p-xs typo-paragraph-sm transition-all outline-none hover:bg-accent hover:text-foreground focus:bg-accent focus:text-foreground focus:ring-[3px] focus:ring-ring data-[active=true]:bg-accent data-[active=true]:text-foreground [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-md",
         className
       )}
       {...props}
