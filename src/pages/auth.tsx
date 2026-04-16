@@ -55,7 +55,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3xs text-muted-foreground typo-paragraph-small hover:text-foreground transition-colors cursor-pointer"
+      className="flex items-center gap-3xs text-muted-foreground typo-paragraph-sm hover:text-foreground transition-colors cursor-pointer"
     >
       <ArrowLeft className="size-md" />
       Back
@@ -87,7 +87,7 @@ function PasswordStrength({ password }: { password: string }) {
           <Progress key={i} value={i <= score ? 100 : 0} className="h-3xs flex-1" />
         ))}
       </div>
-      <span className="typo-paragraph-mini text-muted-foreground">
+      <span className="typo-paragraph-xs text-muted-foreground">
         Password strength: {label}
       </span>
     </div>
@@ -165,7 +165,7 @@ function SignInScreen({
       <div className="mb-xl flex flex-col items-center gap-xs">
         <Logo />
         <h1 className="typo-heading-3 text-foreground">Welcome back</h1>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Sign in to your account to continue
         </p>
       </div>
@@ -193,7 +193,7 @@ function SignInScreen({
                 aria-invalid={!!errors.email || undefined}
               />
               {errors.email && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.email}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.email}</span>
               )}
             </div>
 
@@ -221,7 +221,7 @@ function SignInScreen({
                 }
               />
               {errors.password && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.password}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.password}</span>
               )}
             </div>
 
@@ -244,7 +244,7 @@ function SignInScreen({
             {/* Divider */}
             <div className="flex items-center gap-sm">
               <Separator className="flex-1" />
-              <span className="typo-paragraph-mini text-muted-foreground">or</span>
+              <span className="typo-paragraph-xs text-muted-foreground">or</span>
               <Separator className="flex-1" />
             </div>
 
@@ -255,7 +255,7 @@ function SignInScreen({
             </Button>
 
             {/* Sign up */}
-            <p className="typo-paragraph-small text-muted-foreground text-center">
+            <p className="typo-paragraph-sm text-muted-foreground text-center">
               Don&apos;t have an account?{" "}
               <TextButton variant="primary" size="default" onClick={() => onNavigate("signup")}>
                 Sign up
@@ -318,7 +318,7 @@ function SignUpScreen({
       <div className="mb-xl flex flex-col items-center gap-xs">
         <Logo />
         <h1 className="typo-heading-3 text-foreground">Create account</h1>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Get started with your free account
         </p>
       </div>
@@ -345,7 +345,7 @@ function SignUpScreen({
                 aria-invalid={!!errors.name || undefined}
               />
               {errors.name && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.name}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.name}</span>
               )}
             </div>
 
@@ -361,7 +361,7 @@ function SignUpScreen({
                 aria-invalid={!!errors.email || undefined}
               />
               {errors.email && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.email}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.email}</span>
               )}
             </div>
 
@@ -389,7 +389,7 @@ function SignUpScreen({
                 }
               />
               {errors.password && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.password}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.password}</span>
               )}
               <PasswordStrength password={password} />
             </div>
@@ -402,7 +402,7 @@ function SignUpScreen({
                 onCheckedChange={(v) => setAgreed(v === true)}
                 aria-invalid={!!errors.agree || undefined}
               />
-              <Label htmlFor="su-agree" className="cursor-pointer typo-paragraph-small text-muted-foreground">
+              <Label htmlFor="su-agree" className="cursor-pointer typo-paragraph-sm text-muted-foreground">
                 I agree to the{" "}
                 <TextButton variant="primary" size="default">Terms of Service</TextButton>
                 {" "}and{" "}
@@ -410,7 +410,7 @@ function SignUpScreen({
               </Label>
             </div>
             {errors.agree && (
-              <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.agree}</span>
+              <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.agree}</span>
             )}
 
             {/* Submit */}
@@ -421,7 +421,7 @@ function SignUpScreen({
             {/* Divider */}
             <div className="flex items-center gap-sm">
               <Separator className="flex-1" />
-              <span className="typo-paragraph-mini text-muted-foreground">or</span>
+              <span className="typo-paragraph-xs text-muted-foreground">or</span>
               <Separator className="flex-1" />
             </div>
 
@@ -432,7 +432,7 @@ function SignUpScreen({
             </Button>
 
             {/* Sign in link */}
-            <p className="typo-paragraph-small text-muted-foreground text-center">
+            <p className="typo-paragraph-sm text-muted-foreground text-center">
               Already have an account?{" "}
               <TextButton variant="primary" size="default" onClick={() => onNavigate("signin")}>
                 Sign in
@@ -481,7 +481,7 @@ function ForgotPasswordScreen({
         <h1 className="typo-heading-3 text-foreground">
           {sent ? "Check your email" : "Forgot password?"}
         </h1>
-        <p className="typo-paragraph-small text-muted-foreground text-center">
+        <p className="typo-paragraph-sm text-muted-foreground text-center">
           {sent
             ? `We sent a reset link to ${email}`
             : "No worries, we'll send you reset instructions"}
@@ -504,7 +504,7 @@ function ForgotPasswordScreen({
                 Open email app
               </Button>
 
-              <p className="typo-paragraph-small text-muted-foreground text-center">
+              <p className="typo-paragraph-sm text-muted-foreground text-center">
                 Didn&apos;t receive the email?{" "}
                 <TextButton
                   variant="primary"
@@ -533,7 +533,7 @@ function ForgotPasswordScreen({
                   aria-invalid={!!error || undefined}
                 />
                 {error && (
-                  <span className="typo-paragraph-mini text-destructive-subtle-foreground">{error}</span>
+                  <span className="typo-paragraph-xs text-destructive-subtle-foreground">{error}</span>
                 )}
               </div>
 
@@ -596,7 +596,7 @@ function ResetPasswordScreen({
             <CheckCircle2 className="size-xl text-success-foreground" />
           </div>
           <h1 className="typo-heading-3 text-foreground">Password reset</h1>
-          <p className="typo-paragraph-small text-muted-foreground text-center">
+          <p className="typo-paragraph-sm text-muted-foreground text-center">
             Your password has been successfully reset. You can now sign in with your new password.
           </p>
         </div>
@@ -616,7 +616,7 @@ function ResetPasswordScreen({
       <div className="mb-xl flex flex-col items-center gap-xs">
         <Logo />
         <h1 className="typo-heading-3 text-foreground">Set new password</h1>
-        <p className="typo-paragraph-small text-muted-foreground text-center">
+        <p className="typo-paragraph-sm text-muted-foreground text-center">
           Must be at least 8 characters with uppercase, number, and symbol
         </p>
       </div>
@@ -643,7 +643,7 @@ function ResetPasswordScreen({
                 }
               />
               {errors.password && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.password}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.password}</span>
               )}
               <PasswordStrength password={password} />
             </div>
@@ -667,7 +667,7 @@ function ResetPasswordScreen({
                 }
               />
               {errors.confirm && (
-                <span className="typo-paragraph-mini text-destructive-subtle-foreground">{errors.confirm}</span>
+                <span className="typo-paragraph-xs text-destructive-subtle-foreground">{errors.confirm}</span>
               )}
             </div>
 
@@ -736,7 +736,7 @@ function VerifyEmailScreen({
       <div className="mb-xl flex flex-col items-center gap-xs">
         <Logo />
         <h1 className="typo-heading-3 text-foreground">Verify your email</h1>
-        <p className="typo-paragraph-small text-muted-foreground text-center">
+        <p className="typo-paragraph-sm text-muted-foreground text-center">
           We sent a 6-digit code to your email. Enter it below to verify your account.
         </p>
       </div>
@@ -782,10 +782,10 @@ function VerifyEmailScreen({
             </Button>
 
             {/* Resend */}
-            <p className="typo-paragraph-small text-muted-foreground text-center">
+            <p className="typo-paragraph-sm text-muted-foreground text-center">
               Didn&apos;t receive a code?{" "}
               {resendCooldown > 0 ? (
-                <span className="typo-paragraph-small-medium text-foreground">
+                <span className="typo-paragraph-sm-medium text-foreground">
                   Resend in {resendCooldown}s
                 </span>
               ) : (
@@ -816,7 +816,7 @@ function SuccessScreen({ onNavigate }: { onNavigate: (screen: Screen) => void })
           <CheckCircle2 className="size-xl text-success-foreground" />
         </div>
         <h1 className="typo-heading-3 text-foreground">You&apos;re in!</h1>
-        <p className="typo-paragraph-small text-muted-foreground text-center">
+        <p className="typo-paragraph-sm text-muted-foreground text-center">
           Your account is ready. Welcome to SprouX.
         </p>
       </div>

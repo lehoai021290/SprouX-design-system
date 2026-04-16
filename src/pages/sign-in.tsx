@@ -23,7 +23,7 @@ function SignInPage() {
             </div>
           </div>
           <h1 className="typo-heading-3 text-foreground">Welcome back</h1>
-          <p className="typo-paragraph-small text-muted-foreground">
+          <p className="typo-paragraph-sm text-muted-foreground">
             Sign in to your account to continue
           </p>
         </div>
@@ -92,7 +92,7 @@ function SignInPage() {
             {/* Divider */}
             <div className="flex items-center gap-sm">
               <Separator className="flex-1" />
-              <span className="typo-paragraph-mini text-muted-foreground">or</span>
+              <span className="typo-paragraph-xs text-muted-foreground">or</span>
               <Separator className="flex-1" />
             </div>
 
@@ -108,7 +108,7 @@ function SignInPage() {
             </Button>
 
             {/* Sign up link */}
-            <p className="typo-paragraph-small text-muted-foreground text-center">
+            <p className="typo-paragraph-sm text-muted-foreground text-center">
               Don't have an account?{" "}
               <TextButton variant="primary" size="default">
                 Sign up

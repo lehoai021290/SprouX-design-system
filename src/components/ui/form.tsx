@@ -157,7 +157,7 @@ function FormMessage({
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("typo-paragraph-mini-medium text-destructive", className)}
+      className={cn("typo-paragraph-xs-medium text-destructive", className)}
       {...props}
     >
       {body}

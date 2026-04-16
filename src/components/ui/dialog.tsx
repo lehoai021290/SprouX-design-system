@@ -138,7 +138,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("typo-paragraph-small text-muted-foreground", className)}
+      className={cn("typo-paragraph-sm text-muted-foreground", className)}
       {...props}
     />
   )
@@ -151,7 +151,7 @@ const dialogClassNames = {
   header: "flex flex-col gap-xs text-center sm:text-left",
   footer: "flex flex-col-reverse gap-xs sm:flex-row sm:justify-end",
   title: "typo-heading-4 text-foreground",
-  description: "typo-paragraph-small text-muted-foreground",
+  description: "typo-paragraph-sm text-muted-foreground",
 }
 
 export {

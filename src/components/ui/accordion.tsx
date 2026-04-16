@@ -23,9 +23,9 @@ import { cn } from "@/lib/utils"
  *             Default: rounded-lg (Figma Content frame cornerRadius=8, token: rounded-lg)
  *             Hover: hover:underline (radius stays lg for all states)
  *             Focus: rounded-lg + focus-ring (DROP_SHADOW 3px --ring) + bg-ghost
- *   Label:    typo-paragraph-small-semibold (Geist 600 14/20 ls:0.07px), text-foreground
+ *   Label:    typo-paragraph-sm-semibold (Geist 600 14/20 ls:0.07px), text-foreground
  *   Icon:     size-md (16px), text-muted-foreground (#6f6f6a), rotates 180° on open
- *   Content:  w-full, px-0, pt-0, pb-sm (12px), gap-0, rounded-none, typo-paragraph-small (Geist 400 14/20 ls:0.07px), text-foreground
+ *   Content:  w-full, px-0, pt-0, pb-sm (12px), gap-0, rounded-none, typo-paragraph-sm (Geist 400 14/20 ls:0.07px), text-foreground
  *   Border:   1px border-border, last:border-b-0 (End Item=True)
  *   Disabled: pointer-events-none opacity-50 (Shadcn convention)
  */
@@ -58,7 +58,7 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-center justify-between gap-xs px-0 py-sm rounded-lg typo-paragraph-small-semibold text-foreground text-left transition-all outline-none hover:underline focus-visible:bg-ghost focus-visible:focus-ring disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "flex flex-1 items-center justify-between gap-xs px-0 py-sm rounded-lg typo-paragraph-sm-semibold text-foreground text-left transition-all outline-none hover:underline focus-visible:bg-ghost focus-visible:shadow-focus-ring disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
         {...props}
@@ -78,7 +78,7 @@ function AccordionContent({
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="w-full data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden typo-paragraph-small text-foreground"
+      className="w-full data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden typo-paragraph-sm text-foreground"
       {...props}
     >
       <div className={cn("w-full px-0 pt-0 pb-sm gap-xs rounded-none", className)}>{children}</div>

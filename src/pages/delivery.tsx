@@ -69,9 +69,9 @@ function AppSidebar() {
       {/* Logo */}
       <div className="flex items-center gap-xs px-md h-[60px] border-b border-border">
         <div className="flex items-center justify-center size-xl rounded-lg bg-primary">
-          <span className="typo-paragraph-small-bold text-primary-foreground">S</span>
+          <span className="typo-paragraph-sm-bold text-primary-foreground">S</span>
         </div>
-        <span className="typo-paragraph-small-bold text-foreground">SprouX</span>
+        <span className="typo-paragraph-sm-bold text-foreground">SprouX</span>
       </div>
 
       {/* Nav */}
@@ -79,9 +79,9 @@ function AppSidebar() {
         {navItems.map((item) => (
           <button
             key={item.label}
-            className={`flex items-center gap-xs px-sm py-xs rounded-lg cursor-pointer transition-colors typo-paragraph-small ${
+            className={`flex items-center gap-xs px-sm py-xs rounded-lg cursor-pointer transition-colors typo-paragraph-sm ${
               item.active
-                ? "bg-accent text-accent-foreground typo-paragraph-small-medium"
+                ? "bg-accent text-accent-foreground typo-paragraph-sm-medium"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
             }`}
           >
@@ -105,7 +105,7 @@ function TopBar() {
         <HelpCircle className="size-md" />
       </button>
       <Avatar className="size-xl">
-        <AvatarFallback className="typo-paragraph-mini-bold bg-foreground text-background">CN</AvatarFallback>
+        <AvatarFallback className="typo-paragraph-xs-bold bg-foreground text-background">CN</AvatarFallback>
       </Avatar>
     </header>
   )
@@ -118,7 +118,7 @@ function KpiCard({ title, value, action }: { title: string; value: string; actio
   return (
     <Card className="flex-1">
       <CardContent className="flex flex-col gap-xs p-lg">
-        <span className="typo-paragraph-small text-muted-foreground">{title}</span>
+        <span className="typo-paragraph-sm text-muted-foreground">{title}</span>
         <div className="flex items-center justify-between">
           <span className="typo-heading-3 text-foreground">{value}</span>
           {action}
@@ -238,7 +238,7 @@ function DeliveryPage() {
                 <TableBody>
                   {filtered.map((campaign) => (
                     <TableRow key={campaign.id} className="cursor-pointer">
-                      <TableCell className="typo-paragraph-small-medium text-foreground max-w-[220px] truncate">
+                      <TableCell className="typo-paragraph-sm-medium text-foreground max-w-[220px] truncate">
                         {campaign.name}
                       </TableCell>
                       <TableCell>{campaign.deliveryStart}</TableCell>
@@ -259,7 +259,7 @@ function DeliveryPage() {
 
             {/* Pagination */}
             <div className="flex items-center justify-between">
-              <span className="typo-paragraph-small text-muted-foreground">Showing 1-10 of 100</span>
+              <span className="typo-paragraph-sm text-muted-foreground">Showing 1-10 of 100</span>
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>

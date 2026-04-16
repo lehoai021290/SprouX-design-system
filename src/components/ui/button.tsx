@@ -27,8 +27,8 @@ import { cn } from "@/lib/utils"
  *
  * Merged specs (Shadcn structure + Figma tokens):
  *   Container: rounded-lg (8px), gap-xs (8px) or gap-2xs (6px)
- *   Text:      typo-paragraph-small-semibold (14/20 ls:0.07) for lg/default/sm
- *              typo-paragraph-mini-semibold (12/16 ls:0.18) for xs
+ *   Text:      typo-paragraph-sm-semibold (14/20 ls:0.07) for lg/default/sm
+ *              typo-paragraph-xs-semibold (12/16 ls:0.18) for xs
  *   Icon:      size-md (16px) all sizes
  *   Disabled:  opacity-50
  */
@@ -38,25 +38,25 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:focus-ring",
+          "bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-hover focus-visible:shadow-focus-ring",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:focus-ring",
+          "bg-secondary text-secondary-foreground hover:bg-secondary-hover active:bg-secondary-hover focus-visible:bg-secondary-hover focus-visible:shadow-focus-ring",
         outline:
-          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:focus-ring focus-visible:border-border-strong",
+          "border border-border bg-outline text-foreground hover:bg-outline-hover active:bg-outline-hover focus-visible:shadow-focus-ring focus-visible:border-border-strong",
         ghost:
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:focus-ring",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:shadow-focus-ring",
         "ghost-muted":
-          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:focus-ring",
+          "bg-ghost text-ghost-foreground hover:bg-ghost-hover hover:text-foreground active:bg-ghost-hover active:text-foreground focus-visible:shadow-focus-ring",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:focus-ring-error",
+          "bg-destructive text-destructive-foreground hover:bg-destructive active:bg-destructive focus-visible:shadow-focus-ring-error",
         "destructive-secondary":
-          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:focus-ring-error",
+          "bg-destructive-subtle text-destructive-subtle-foreground border border-destructive-border hover:bg-destructive-subtle active:bg-destructive-subtle focus-visible:shadow-focus-ring-error",
       },
       size: {
-        lg: "h-size-lg px-xl py-0 gap-xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
-        default: "h-size-md px-md py-0 gap-xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
-        sm: "h-size-sm px-sm py-0 gap-2xs typo-paragraph-small-semibold [&_svg:not([class*='size-'])]:size-md",
-        xs: "h-size-xs px-xs py-0 gap-2xs typo-paragraph-mini-semibold [&_svg:not([class*='size-'])]:size-md",
+        lg: "h-size-lg px-xl py-0 gap-xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
+        default: "h-size-md px-md py-0 gap-xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
+        sm: "h-size-sm px-sm py-0 gap-2xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
+        xs: "h-size-xs px-xs py-0 gap-2xs typo-paragraph-xs-semibold [&_svg:not([class*='size-'])]:size-md",
         /* ── Icon Button sizes (Figma: 4838:17100)
               Regular=36×36 icon=20, Large=40×40 icon=20,
               Small=32×32 icon=18, Mini=24×24 r=4 icon=16

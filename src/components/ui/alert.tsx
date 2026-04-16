@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button"
  *     └─ flex row       — gap-sm (12px), w-full  [Figma: AL depth 1]
  *          ├─ icon div  — shrink-0, mt-[2px]     [Figma: Aligner]
  *          └─ flex col  — gap-0, flex-1           [Figma: AL depth 2 + Text merged]
- *               ├─ AlertTitle       — typo-paragraph-small-semibold
- *               ├─ AlertDescription — typo-paragraph-small (gap-0 from title)
+ *               ├─ AlertTitle       — typo-paragraph-sm-semibold
+ *               ├─ AlertDescription — typo-paragraph-sm (gap-0 from title)
  *               └─ AlertAction      — mt-xs (8px gap from text) via data-slot
  *     └─ AlertDismiss   — absolute right-[7px] top-[9px]
  *
@@ -106,7 +106,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-title"
-      className={cn("typo-paragraph-small-semibold", className)}
+      className={cn("typo-paragraph-sm-semibold", className)}
       {...props}
     />
   )
@@ -119,7 +119,7 @@ function AlertDescription({
   return (
     <div
       data-slot="alert-description"
-      className={cn("typo-paragraph-small [&_p]:leading-relaxed", className)}
+      className={cn("typo-paragraph-sm [&_p]:leading-relaxed", className)}
       {...props}
     />
   )
@@ -175,7 +175,7 @@ function AlertDismiss({
       type="button"
       data-slot="alert-dismiss"
       className={cn(
-        "absolute right-[7px] top-[9px] inline-flex items-center justify-center size-size-xs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:focus-ring transition-opacity cursor-pointer",
+        "absolute right-[7px] top-[9px] inline-flex items-center justify-center size-size-xs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:shadow-focus-ring transition-opacity cursor-pointer",
         className
       )}
       aria-label="Dismiss"

@@ -459,7 +459,7 @@ function FigmaMapping({
       <h2 className="font-heading font-semibold text-xl">
         Figma Component Mapping
       </h2>
-      <p className="typo-paragraph-small text-muted-foreground">
+      <p className="typo-paragraph-sm text-muted-foreground">
         Reference for mapping Figma component properties to code props, based
         on the{" "}
         <strong>[SprouX - DS] Foundation & Component</strong>
@@ -586,14 +586,14 @@ function PropertyTabs({ label, value, options, onChange }: {
   const normalized = options.map(o => Array.isArray(o) ? { value: o[0], label: o[1] } : o)
   return (
     <div className="space-y-xs">
-      <span className="typo-paragraph-mini text-muted-foreground">{label}</span>
+      <span className="typo-paragraph-xs text-muted-foreground">{label}</span>
       <div className="flex flex-wrap gap-xs">
         {normalized.map(opt => (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "px-xs py-3xs rounded-md typo-paragraph-mini border transition-colors",
+              "px-xs py-3xs rounded-md typo-paragraph-xs border transition-colors",
               value === opt.value
                 ? "bg-primary text-primary-foreground border-primary"
                 : "bg-card text-foreground border-border hover:bg-accent"
@@ -618,7 +618,7 @@ function PropertyToggle({ label, checked, onChange }: {
 }) {
   return (
     <div className="space-y-xs">
-      <p className="typo-paragraph-mini text-muted-foreground">{label}</p>
+      <p className="typo-paragraph-xs text-muted-foreground">{label}</p>
       <Switch checked={checked} onCheckedChange={onChange} />
     </div>
   )
@@ -843,7 +843,7 @@ function ColorsDocs() {
           Foundation / Colors
         </p>
         <h1 className="typo-heading-2">Colors</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           The SprouX color system provides 20 palettes with 11 shades each,
           plus semantic tokens for light and dark themes. Click any swatch to
           copy its hex value.
@@ -873,7 +873,7 @@ function ColorsDocs() {
       {/* Semantic Colors */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Semantic Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens adapt automatically between light and dark mode.
         </p>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
@@ -973,18 +973,18 @@ function TypographyDocs() {
     { class: "typo-paragraph-lg", label: "Large", font: "Geist", weight: "400", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
     { class: "typo-paragraph-lg-medium", label: "Large Medium", font: "Geist", weight: "500", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
     { class: "typo-paragraph-lg-semibold", label: "Large SemiBold", font: "Geist", weight: "600", size: "20px", lineHeight: "24px", letterSpacing: "-1px" },
-    { class: "typo-paragraph", label: "Regular", font: "Geist", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
-    { class: "typo-paragraph-medium", label: "Regular Medium", font: "Geist", weight: "500", size: "16px", lineHeight: "24px", letterSpacing: "0" },
-    { class: "typo-paragraph-semibold", label: "Regular SemiBold", font: "Geist", weight: "600", size: "16px", lineHeight: "24px", letterSpacing: "0" },
-    { class: "typo-paragraph-small", label: "Small", font: "Geist", weight: "400", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
-    { class: "typo-paragraph-small-medium", label: "Small Medium", font: "Geist", weight: "500", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
-    { class: "typo-paragraph-small-semibold", label: "Small SemiBold", font: "Geist", weight: "600", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
-    { class: "typo-paragraph-mini", label: "Mini", font: "Geist", weight: "400", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
-    { class: "typo-paragraph-mini-medium", label: "Mini Medium", font: "Geist", weight: "500", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
-    { class: "typo-paragraph-mini-semibold", label: "Mini SemiBold", font: "Geist", weight: "600", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
-    { class: "typo-paragraph-tiny", label: "Tiny", font: "Geist", weight: "400", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
-    { class: "typo-paragraph-tiny-medium", label: "Tiny Medium", font: "Geist", weight: "500", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
-    { class: "typo-paragraph-tiny-semibold", label: "Tiny SemiBold", font: "Geist", weight: "600", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "typo-paragraph-base", label: "Regular", font: "Geist", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "typo-paragraph-base-medium", label: "Regular Medium", font: "Geist", weight: "500", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "typo-paragraph-base-semibold", label: "Regular SemiBold", font: "Geist", weight: "600", size: "16px", lineHeight: "24px", letterSpacing: "0" },
+    { class: "typo-paragraph-sm", label: "Small", font: "Geist", weight: "400", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "typo-paragraph-sm-medium", label: "Small Medium", font: "Geist", weight: "500", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "typo-paragraph-sm-semibold", label: "Small SemiBold", font: "Geist", weight: "600", size: "14px", lineHeight: "20px", letterSpacing: "0.07px" },
+    { class: "typo-paragraph-xs", label: "Mini", font: "Geist", weight: "400", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "typo-paragraph-xs-medium", label: "Mini Medium", font: "Geist", weight: "500", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "typo-paragraph-xs-semibold", label: "Mini SemiBold", font: "Geist", weight: "600", size: "12px", lineHeight: "16px", letterSpacing: "0.18px" },
+    { class: "typo-paragraph-2xs", label: "Tiny", font: "Geist", weight: "400", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "typo-paragraph-2xs-medium", label: "Tiny Medium", font: "Geist", weight: "500", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
+    { class: "typo-paragraph-2xs-semibold", label: "Tiny SemiBold", font: "Geist", weight: "600", size: "10px", lineHeight: "12px", letterSpacing: "0.15px" },
     { class: "typo-monospaced", label: "Monospaced", font: "Geist Mono", weight: "400", size: "16px", lineHeight: "24px", letterSpacing: "0" },
   ]
 
@@ -997,7 +997,7 @@ function TypographyDocs() {
           Foundation / Typography
         </p>
         <h1 className="typo-heading-2">Typography</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           SprouX uses two typefaces: <strong>Fraunces</strong> for headings and
           display text, and <strong>Geist</strong> for body copy and UI elements.
           The type scale is designed for clarity and hierarchy.
@@ -1113,13 +1113,13 @@ function TypographyDocs() {
             title="Page title"
             description="Use Heading 1 or 2 for page-level titles."
             code={`<h1 className="typo-heading-2">Dashboard</h1>
-<p className="typo-paragraph-small text-muted-foreground">
+<p className="typo-paragraph-sm text-muted-foreground">
   Welcome back, here's your overview.
 </p>`}
           >
             <div>
               <h3 className="typo-heading-2">Dashboard</h3>
-              <p className="typo-paragraph-small text-muted-foreground">Welcome back, here's your overview.</p>
+              <p className="typo-paragraph-sm text-muted-foreground">Welcome back, here's your overview.</p>
             </div>
           </Example>
           <Example
@@ -1132,18 +1132,18 @@ function TypographyDocs() {
           <Example
             title="Card content"
             description="Combine paragraph sizes for content hierarchy."
-            code={`<p className="typo-paragraph-small-semibold">Order #12345</p>
-<p className="typo-paragraph-small text-muted-foreground">
+            code={`<p className="typo-paragraph-sm-semibold">Order #12345</p>
+<p className="typo-paragraph-sm text-muted-foreground">
   Shipped on Feb 10, 2026
 </p>
-<p className="typo-paragraph-mini text-muted-foreground">
+<p className="typo-paragraph-xs text-muted-foreground">
   Tracking: 1Z999AA10123456784
 </p>`}
           >
             <div className="space-y-0.5">
-              <p className="typo-paragraph-small-semibold">Order #12345</p>
-              <p className="typo-paragraph-small text-muted-foreground">Shipped on Feb 10, 2026</p>
-              <p className="typo-paragraph-mini text-muted-foreground">Tracking: 1Z999AA10123456784</p>
+              <p className="typo-paragraph-sm-semibold">Order #12345</p>
+              <p className="typo-paragraph-sm text-muted-foreground">Shipped on Feb 10, 2026</p>
+              <p className="typo-paragraph-xs text-muted-foreground">Tracking: 1Z999AA10123456784</p>
             </div>
           </Example>
         </div>
@@ -1194,7 +1194,7 @@ function SpacingDocs() {
           Foundation / Spacing
         </p>
         <h1 className="typo-heading-2">Spacing</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A consistent spacing scale based on a 4px grid, ranging from 2px to
           48px. Used for padding, margins, gaps, and layout composition.
         </p>
@@ -1354,7 +1354,7 @@ function BorderRadiusDocs() {
           Foundation / Border Radius
         </p>
         <h1 className="typo-heading-2">Border Radius</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A 4-step radius scale based on a base value of 8px (--radius). All
           values are derived from this base to maintain visual consistency.
         </p>
@@ -1674,14 +1674,14 @@ function IconsDocs() {
           Foundation / Icons
         </p>
         <h1 className="typo-heading-2">Icons</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           SprouX uses <strong>Lucide React</strong> as the primary icon library ({allLucideIcons.length} icons),
           plus a set of custom social/brand icons exported from Figma.
         </p>
       </header>
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="typo-paragraph-semibold">Import</h2>
+        <h2 className="typo-paragraph-base-semibold">Import</h2>
         <CodeBlock code={`// Lucide icons (primary library)\nimport { Home, Search, Plus, Check } from "lucide-react"\n\n// Custom social icons (SVG imports)\nimport tiktokIcon from "@/assets/icons/tiktok.svg"\nimport instagramIcon from "@/assets/icons/instagram.svg"`} />
       </section>
 
@@ -1838,7 +1838,7 @@ function IllustrationsDocs() {
           Foundation / Illustrations
         </p>
         <h1 className="typo-heading-2">Illustrations</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           {illustrations.length} illustration assets from the SprouX Figma design system.
           Used for empty states, success/error screens, onboarding, and feature highlights.
           Each illustration follows a circular safezone rule for consistent visual alignment.
@@ -1846,7 +1846,7 @@ function IllustrationsDocs() {
       </header>
 
       <section className="space-y-3 pt-xl border-t border-border">
-        <h2 className="typo-paragraph-semibold">Import</h2>
+        <h2 className="typo-paragraph-base-semibold">Import</h2>
         <CodeBlock code={`import illustSuccess from "@/assets/illustrations/success.svg"\nimport illustError from "@/assets/illustrations/error.svg"\nimport illustEmpty from "@/assets/illustrations/empty.svg"\n\n// Usage\n<img src={illustSuccess} alt="Success" className="w-48" />`} />
       </section>
 
@@ -1945,7 +1945,7 @@ function ButtonExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["button", "icon-button"] as const).map(t => (
-          <button key={t} onClick={() => setTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>{t === "button" ? "Button" : "Icon Button"}</button>
+          <button key={t} onClick={() => setTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", tab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>{t === "button" ? "Button" : "Icon Button"}</button>
         ))}
       </div>
 
@@ -2004,9 +2004,9 @@ function ButtonExploreBehavior() {
             ]} />
             <div className="flex flex-wrap gap-lg">
               <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
-              {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+              {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-xs text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
               <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
-              {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
+              {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-xs text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
             </div>
           </div>
         </>
@@ -2066,7 +2066,7 @@ function ButtonExploreBehavior() {
               { value: "Disabled", label: "Disabled" },
             ]} />
             <div className="space-y-xs max-w-[240px]">
-              <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+              <p className="typo-paragraph-xs text-muted-foreground">Icon</p>
               <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
             </div>
           </div>
@@ -2113,7 +2113,7 @@ function ButtonDocs() {
           Components / Actions
         </p>
         <h1 className="typo-heading-2">Button</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Buttons are used primarily for actions, such as "Add", "Close",
           "Cancel", or "Save". Plain buttons, which look similar to links, are
           used for less prominent actions or navigation.
@@ -2411,7 +2411,7 @@ function ButtonDocs() {
         {/* ── Icon Button Examples ── */}
         <div className="col-span-full pt-md">
           <h3 className="font-body font-semibold text-base">Icon Button</h3>
-          <p className="typo-paragraph-small text-muted-foreground mt-1">Icon-only buttons with proper padding and icon sizing per Figma (4838:17100).</p>
+          <p className="typo-paragraph-sm text-muted-foreground mt-1">Icon-only buttons with proper padding and icon sizing per Figma (4838:17100).</p>
         </div>
 
         <Example
@@ -2461,13 +2461,13 @@ function ButtonDocs() {
 <IconButton variant="ghost" size="xs" round><Search /></IconButton>`}
         >
           <div className="flex items-center gap-sm">
-            <span className="typo-paragraph-mini text-muted-foreground w-[60px]">Default</span>
+            <span className="typo-paragraph-xs text-muted-foreground w-[60px]">Default</span>
             <IconButton variant="default" aria-label="Add"><Plus /></IconButton>
             <IconButton variant="outline" aria-label="Settings"><Settings /></IconButton>
             <IconButton variant="ghost" size="xs" aria-label="Search"><Search /></IconButton>
           </div>
           <div className="flex items-center gap-sm">
-            <span className="typo-paragraph-mini text-muted-foreground w-[60px]">Round</span>
+            <span className="typo-paragraph-xs text-muted-foreground w-[60px]">Round</span>
             <IconButton variant="default" round aria-label="Add"><Plus /></IconButton>
             <IconButton variant="outline" round aria-label="Settings"><Settings /></IconButton>
             <IconButton variant="ghost" size="xs" round aria-label="Search"><Search /></IconButton>
@@ -2491,7 +2491,7 @@ function ButtonDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Button extends all native{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             {"<button>"}
@@ -2504,7 +2504,7 @@ function ButtonDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             src/index.css
@@ -2648,7 +2648,7 @@ function ButtonDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">
               Keyboard support
@@ -2857,7 +2857,7 @@ function ButtonGroupExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["button-group", "icon-button"] as const).map(t => (
-          <button key={t} onClick={() => setBgTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", bgTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setBgTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", bgTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "button-group" ? "Button Group" : "Icon Button"}
           </button>
         ))}
@@ -2903,9 +2903,9 @@ function ButtonGroupExploreBehavior() {
               ]} />
               <div className="flex flex-wrap gap-lg">
                 <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
-                {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+                {showLeftIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-xs text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
                 <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
-                {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
+                {showRightIcon && <div className="space-y-xs max-w-[240px]"><p className="typo-paragraph-xs text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
               </div>
             </div>
           </>
@@ -2944,7 +2944,7 @@ function ButtonGroupExploreBehavior() {
                 { value: "disabled", label: "Disabled" },
               ]} />
               <div className="space-y-xs max-w-[240px]">
-                <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+                <p className="typo-paragraph-xs text-muted-foreground">Icon</p>
                 <IconPicker value={ibIcon} onChange={setIbIcon} size="sm" />
               </div>
             </div>
@@ -2963,7 +2963,7 @@ function ButtonGroupDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Button Group</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Groups related buttons together with consistent spacing and merged borders. Includes text buttons with optional icons and icon-only buttons.
         </p>
       </header>
@@ -3392,9 +3392,9 @@ function InputExploreBehavior() {
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               className={cn(
-                "px-md py-sm typo-paragraph-small whitespace-nowrap border-b-2 transition-colors",
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
                 activeTab === tab.value
-                  ? "border-primary text-foreground typo-paragraph-small-medium"
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
@@ -3567,7 +3567,7 @@ function InputDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Input</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A text input field that allows users to enter and edit a single line
           of text. Supports multiple sizes and states including focus, error,
           and disabled.
@@ -4029,7 +4029,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       {/* ---- Props ---- */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Input extends all native{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             {"<input>"}
@@ -4042,7 +4042,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       {/* ---- Design Tokens ---- */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             src/index.css
@@ -4158,8 +4158,8 @@ const handleFormSubmit = (e: React.FormEvent) => {
         ["State", "Disabled", "disabled", "true"],
         ["Content", "Placeholder", "placeholder", '"Hint text"'],
         ["Content", "Value", "value / defaultValue", '"Entered text"'],
-        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-small (lg/default/sm)"],
-        ["Font", "Geist Regular 12/16", "—", "typo-paragraph-mini (xs/mini)"],
+        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-sm (lg/default/sm)"],
+        ["Font", "Geist Regular 12/16", "—", "typo-paragraph-xs (xs/mini)"],
         ["Show Decoration Left", "true", "decorationLeft", "<DecorationInput> slot"],
         ["Show Decoration Right", "true", "decorationRight", "<DecorationInput> slot"],
       ]} />
@@ -4167,7 +4167,7 @@ const handleFormSubmit = (e: React.FormEvent) => {
       {/* ---- Accessibility ---- */}
       <section className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">
               Keyboard support
@@ -4527,7 +4527,7 @@ function TextareaDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Textarea</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A multi-line text input for longer content like descriptions,
           messages, or comments. Supports the same states as Input: focus,
           error, and disabled.
@@ -4816,7 +4816,7 @@ const handleSubmit = (e: React.FormEvent) => {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Textarea extends all native{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             {"<textarea>"}
@@ -4829,7 +4829,7 @@ const handleSubmit = (e: React.FormEvent) => {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             src/index.css
@@ -4930,13 +4930,13 @@ const handleSubmit = (e: React.FormEvent) => {
         ["Value", "Empty", "—", "no value"],
         ["Value", "Placeholder", "placeholder", '"Type your message here."'],
         ["Value", "Value", "value / defaultValue", '"Entered text"'],
-        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-small"],
+        ["Font", "Geist Regular 14/20", "—", "typo-paragraph-sm"],
       ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">
               Keyboard support
@@ -5280,9 +5280,9 @@ function SelectExploreBehavior() {
           >
             {is2Lines ? (
               <span className="!flex flex-col min-w-0 flex-1">
-                <span className="typo-paragraph-mini-semibold text-muted-foreground truncate">Text</span>
+                <span className="typo-paragraph-xs-semibold text-muted-foreground truncate">Text</span>
                 <span className={cn(
-                  "typo-paragraph-small truncate",
+                  "typo-paragraph-sm truncate",
                   showValue ? "text-foreground" : "text-muted-foreground"
                 )}>
                   {showValue ? "Item selected" : "Select an item"}
@@ -5359,7 +5359,7 @@ function SelectDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Select</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A dropdown control for selecting a single option from a list. Built on
           Radix UI Select for full keyboard navigation, accessibility, and
           portal-based positioning.
@@ -5815,7 +5815,7 @@ const handleSubmit = (e) => {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Select is a compound component built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             @radix-ui/react-select
@@ -5828,7 +5828,7 @@ const handleSubmit = (e) => {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             src/index.css
@@ -5943,7 +5943,7 @@ const handleSubmit = (e) => {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">
               Keyboard support
@@ -6136,7 +6136,7 @@ function CheckboxExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["checkbox", "group", "rich", "richAdvanced"] as const).map(t => (
-          <button key={t} onClick={() => setCbTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", cbTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setCbTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", cbTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "checkbox" ? "Checkbox" : t === "group" ? "Group" : t === "rich" ? "Rich" : "Rich Advanced"}
           </button>
         ))}
@@ -6186,7 +6186,7 @@ function CheckboxExploreBehavior() {
                 disabled={grpState === "Disable"}
                 aria-invalid={grpState === "Error" || undefined}
               />
-              <Label className="typo-paragraph-small text-muted-foreground">Label</Label>
+              <Label className="typo-paragraph-sm text-muted-foreground">Label</Label>
             </div>
           </div>
           <div className="border-t border-border p-lg space-y-md">
@@ -6219,7 +6219,7 @@ function CheckboxExploreBehavior() {
                 <Checkbox checked={richChecked} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="typo-paragraph-small text-muted-foreground">Label</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Label</p>
                 {richShowLine2 && (
                   <p className="text-xs leading-[16px] text-muted-foreground">Secondary text</p>
                 )}
@@ -6260,7 +6260,7 @@ function CheckboxExploreBehavior() {
                       <Checkbox checked={raIsSelected} disabled={raIsDisabled} className="shrink-0" />
                     </div>
                     {(raSubTitle || raSubTitle2 || raSubTitle3) && (
-                      <div className="flex items-center gap-xs flex-wrap typo-paragraph-small text-card-foreground">
+                      <div className="flex items-center gap-xs flex-wrap typo-paragraph-sm text-card-foreground">
                         {raSubTitle && <span>Auto-tracked landing page</span>}
                         {raSubTitle && raSubTitle2 && <span className="text-muted-foreground">•</span>}
                         {raSubTitle2 && <span>1-2 days</span>}
@@ -6270,7 +6270,7 @@ function CheckboxExploreBehavior() {
                     )}
                   </div>
                   {raDescription && (
-                    <p className="typo-paragraph-small text-muted-foreground">Includes SEO optimization, custom domain support, and integration with marketing tools.</p>
+                    <p className="typo-paragraph-sm text-muted-foreground">Includes SEO optimization, custom domain support, and integration with marketing tools.</p>
                   )}
                 </div>
               </div>
@@ -6282,7 +6282,7 @@ function CheckboxExploreBehavior() {
                 raIsHover ? "shadow" : "",
               ].filter(Boolean).join(" ")}>
                 <RaIconComp className="size-lg shrink-0 text-muted-foreground" />
-                <span className="typo-paragraph-small text-foreground flex-1 min-w-0 truncate">Landing Page</span>
+                <span className="typo-paragraph-sm text-foreground flex-1 min-w-0 truncate">Landing Page</span>
                 <Checkbox checked={raIsSelected} disabled={raIsDisabled} className="shrink-0" />
               </div>
             )}
@@ -6302,7 +6302,7 @@ function CheckboxExploreBehavior() {
               { value: "Small", label: "Small" },
             ]} />
             <div className="space-y-xs max-w-[240px]">
-              <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+              <p className="typo-paragraph-xs text-muted-foreground">Icon</p>
               <IconPicker value={raIconName} onChange={setRaIconName} size="sm" />
             </div>
             {raIconSize === "Regular" && (
@@ -6383,7 +6383,7 @@ function CheckboxDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Checkbox</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A 16×16 toggle for boolean or tri-state values. Supports checked,
           unchecked, and indeterminate states with full keyboard navigation.
         </p>
@@ -6707,7 +6707,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
     <Checkbox id="rich" defaultChecked />
   </div>
   <div className="flex-1">
-    <label htmlFor="rich" className="typo-paragraph-small text-muted-foreground cursor-pointer">
+    <label htmlFor="rich" className="typo-paragraph-sm text-muted-foreground cursor-pointer">
       Marketing emails
     </label>
     <p className="text-xs leading-[16px] text-muted-foreground">
@@ -6719,7 +6719,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
             <div className="flex gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px]">
               <div className="shrink-0 flex items-center h-5"><Checkbox id="rich-demo" defaultChecked /></div>
               <div className="flex-1">
-                <label htmlFor="rich-demo" className="typo-paragraph-small text-muted-foreground cursor-pointer select-none">
+                <label htmlFor="rich-demo" className="typo-paragraph-sm text-muted-foreground cursor-pointer select-none">
                   Marketing emails
                 </label>
                 <p className="text-xs leading-[16px] text-muted-foreground">
@@ -6738,7 +6738,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
     <Checkbox id="flipped" />
   </div>
   <div className="flex-1">
-    <label htmlFor="flipped" className="typo-paragraph-small text-muted-foreground cursor-pointer">
+    <label htmlFor="flipped" className="typo-paragraph-sm text-muted-foreground cursor-pointer">
       Push notifications
     </label>
     <p className="text-xs leading-[16px] text-muted-foreground">
@@ -6750,7 +6750,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
             <div className="flex gap-xs px-sm py-xs rounded-[10px] border border-border bg-card w-[240px] flex-row-reverse">
               <div className="shrink-0 flex items-center h-5"><Checkbox id="flipped-demo" /></div>
               <div className="flex-1">
-                <label htmlFor="flipped-demo" className="typo-paragraph-small text-muted-foreground cursor-pointer select-none">
+                <label htmlFor="flipped-demo" className="typo-paragraph-sm text-muted-foreground cursor-pointer select-none">
                   Push notifications
                 </label>
                 <p className="text-xs leading-[16px] text-muted-foreground">
@@ -6772,12 +6772,12 @@ const someChecked = items.some(i => i.checked) && !allChecked
       <Badge variant="emphasis" level="secondary" size="sm">Recommended</Badge>
       <Checkbox defaultChecked />
     </div>
-    <div className="flex items-center gap-xs typo-paragraph-small text-card-foreground">
+    <div className="flex items-center gap-xs typo-paragraph-sm text-card-foreground">
       <span>Auto-tracked</span>
       <span className="text-muted-foreground">•</span>
       <span>1-2 days</span>
     </div>
-    <p className="typo-paragraph-small text-muted-foreground">SEO optimization and custom domain support.</p>
+    <p className="typo-paragraph-sm text-muted-foreground">SEO optimization and custom domain support.</p>
   </div>
 </div>`}
           >
@@ -6789,12 +6789,12 @@ const someChecked = items.some(i => i.checked) && !allChecked
                   <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Recommended</Badge>
                   <Checkbox defaultChecked className="shrink-0" />
                 </div>
-                <div className="flex items-center gap-xs typo-paragraph-small text-card-foreground">
+                <div className="flex items-center gap-xs typo-paragraph-sm text-card-foreground">
                   <span>Auto-tracked</span>
                   <span className="text-muted-foreground">•</span>
                   <span>1-2 days</span>
                 </div>
-                <p className="typo-paragraph-small text-muted-foreground">SEO optimization and custom domain support.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">SEO optimization and custom domain support.</p>
               </div>
             </div>
           </Example>
@@ -6805,13 +6805,13 @@ const someChecked = items.some(i => i.checked) && !allChecked
             description="Compact card checkbox — matches Figma Checkbox Group/Rich Advanced (Small)."
             code={`<div className="flex items-center gap-xs px-md py-sm rounded-xl border border-border bg-card w-full">
   <Bug className="size-lg shrink-0 text-muted-foreground" />
-  <span className="typo-paragraph-small text-foreground flex-1">Bug Report</span>
+  <span className="typo-paragraph-sm text-foreground flex-1">Bug Report</span>
   <Checkbox />
 </div>`}
           >
             <div className="flex items-center gap-xs px-md py-sm rounded-xl border border-border bg-card w-full max-w-[480px]">
               <Bug className="size-lg shrink-0 text-muted-foreground" />
-              <span className="typo-paragraph-small text-foreground flex-1">Bug Report</span>
+              <span className="typo-paragraph-sm text-foreground flex-1">Bug Report</span>
               <Checkbox className="shrink-0" />
             </div>
           </Example>
@@ -6822,7 +6822,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Extends{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             Radix CheckboxPrimitive.Root
@@ -6902,7 +6902,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">
             src/index.css
@@ -7029,7 +7029,7 @@ const someChecked = items.some(i => i.checked) && !allChecked
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">
               Keyboard support
@@ -7274,9 +7274,9 @@ function RichSwitchGroupTab() {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="typo-paragraph-small text-foreground-subtle">Label</p>
+            <p className="typo-paragraph-sm text-foreground-subtle">Label</p>
             {showLine2 && (
-              <p className="typo-paragraph-mini text-muted-foreground">Secondary text</p>
+              <p className="typo-paragraph-xs text-muted-foreground">Secondary text</p>
             )}
           </div>
         </div>
@@ -7320,7 +7320,7 @@ function SwitchExploreBehavior() {
               key={t.value}
               onClick={() => setTab(t.value)}
               className={cn(
-                "px-md py-sm typo-paragraph-small-medium transition-colors",
+                "px-md py-sm typo-paragraph-sm-medium transition-colors",
                 tab === t.value
                   ? "text-foreground border-b-2 border-primary"
                   : "text-muted-foreground hover:text-foreground"
@@ -7427,7 +7427,7 @@ function SwitchDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Switch</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A toggle control for binary on/off settings. Unlike Checkbox, the switch implies an immediate effect. Includes Switch, Switch Group with label, and Rich Switch Group with card-style layout. Built on Radix Switch primitive.
         </p>
       </header>
@@ -7484,20 +7484,20 @@ function SwitchDocs() {
           <Example
             title="Settings list"
             description="Multiple switches in a settings layout."
-            code={`<div className="divide-y divide-border">\n  <div className="flex items-center justify-between py-sm">\n    <div>\n      <Label>Email</Label>\n      <p className="typo-paragraph-mini text-muted-foreground">Receive alerts</p>\n    </div>\n    <Switch />\n  </div>\n  ...\n</div>`}
+            code={`<div className="divide-y divide-border">\n  <div className="flex items-center justify-between py-sm">\n    <div>\n      <Label>Email</Label>\n      <p className="typo-paragraph-xs text-muted-foreground">Receive alerts</p>\n    </div>\n    <Switch />\n  </div>\n  ...\n</div>`}
           >
             <div className="divide-y divide-border w-[260px]">
               <div className="flex items-center justify-between gap-xs py-sm">
                 <div>
-                  <p className="typo-paragraph-small-medium text-foreground">Email</p>
-                  <p className="typo-paragraph-mini text-muted-foreground">Receive alerts</p>
+                  <p className="typo-paragraph-sm-medium text-foreground">Email</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Receive alerts</p>
                 </div>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between gap-xs py-sm">
                 <div>
-                  <p className="typo-paragraph-small-medium text-foreground">Push</p>
-                  <p className="typo-paragraph-mini text-muted-foreground">Browser alerts</p>
+                  <p className="typo-paragraph-sm-medium text-foreground">Push</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Browser alerts</p>
                 </div>
                 <Switch />
               </div>
@@ -7518,10 +7518,10 @@ function SwitchDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Use Switch for settings that take immediate effect (e.g. dark mode, notifications)." />
         <DontItem text="Don't use Switch when the change requires a form submission — use Checkbox instead." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Always pair with a visible label describing what the switch controls." />
         <DontItem text="Don't use Switch for mutually exclusive options — use Radio Group instead." />
       </section>
@@ -7695,8 +7695,8 @@ function LabelPropsTable() {
 
 function LabelTokensTable() {
   return <DesignTokensTable tokens={[
-    { token: "typo-paragraph-small-medium", cssVar: "\u2014", value: "Geist 500 14/20", usage: "Small label text (default)" },
-    { token: "typo-paragraph-medium", cssVar: "\u2014", value: "Geist 500 16/24", usage: "Regular label text" },
+    { token: "typo-paragraph-sm-medium", cssVar: "\u2014", value: "Geist 500 14/20", usage: "Small label text (default)" },
+    { token: "typo-paragraph-base-medium", cssVar: "\u2014", value: "Geist 500 16/24", usage: "Regular label text" },
     { token: "text-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Label text color" },
     { token: "opacity-50", cssVar: "\u2014", value: "0.5", usage: "Disabled state opacity" },
   ]} />
@@ -7713,7 +7713,7 @@ function LabelDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Label</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Renders an accessible label associated with form controls.
           Two sizes per Figma spec (Small 14/20, Regular 16/24).
           Auto-dims when the associated control is disabled via peer-disabled utilities.
@@ -7776,7 +7776,7 @@ function LabelDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <LabelTokensTable />
@@ -7814,8 +7814,8 @@ function LabelDocs() {
 
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" nodeId="103:9453" rows={[
-        ["Size", "Small", "size='sm'", "typo-paragraph-small-medium (14/20)"],
-        ["Size", "Regular", "size='default'", "typo-paragraph-medium (16/24)"],
+        ["Size", "Small", "size='sm'", "typo-paragraph-sm-medium (14/20)"],
+        ["Size", "Regular", "size='default'", "typo-paragraph-base-medium (16/24)"],
         ["Layout", "Block", "—", "Label above input (fills width)"],
         ["Layout", "Inline", "—", "Label beside checkbox/switch"],
         ["State", "Default", "—", "text-foreground"],
@@ -7825,7 +7825,7 @@ function LabelDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -8055,7 +8055,7 @@ function SliderDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Slider</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A range input that allows users to select a value or range by dragging a thumb along a track. Supports single and dual thumb modes. Built on Radix Slider primitive.
         </p>
       </header>
@@ -8132,10 +8132,10 @@ function SliderDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Use Slider for numeric ranges like volume, price, or brightness." />
         <DontItem text="Don't use Slider when precise numeric input is needed — use Input type='number' instead." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Show the current value label alongside the slider for clarity." />
         <DontItem text="Don't use a slider with too many discrete steps — keep the experience smooth." />
       </section>
@@ -8350,9 +8350,9 @@ function ToggleButtonTab() {
         </div>
         <div className="flex flex-wrap gap-lg">
           <PropertyToggle label="Show Left Icon" checked={showLeftIcon} onChange={setShowLeftIcon} />
-          {showLeftIcon && <div className="space-y-xs"><p className="typo-paragraph-mini text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
+          {showLeftIcon && <div className="space-y-xs"><p className="typo-paragraph-xs text-muted-foreground">Left Icon</p><IconPicker value={leftIcon} onChange={setLeftIcon} size="sm" /></div>}
           <PropertyToggle label="Show Right Icon" checked={showRightIcon} onChange={setShowRightIcon} />
-          {showRightIcon && <div className="space-y-xs"><p className="typo-paragraph-mini text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
+          {showRightIcon && <div className="space-y-xs"><p className="typo-paragraph-xs text-muted-foreground">Right Icon</p><IconPicker value={rightIcon} onChange={setRightIcon} size="sm" /></div>}
         </div>
       </div>
     </div>
@@ -8496,7 +8496,7 @@ function TogglePropsTable() {
 function ToggleGroupPropsTable() {
   return (
     <div className="space-y-md">
-      <h3 className="typo-paragraph-semibold mt-lg">ToggleGroup</h3>
+      <h3 className="typo-paragraph-base-semibold mt-lg">ToggleGroup</h3>
       <div className="overflow-x-auto rounded-lg border border-border bg-card">
         <table className="w-full text-sm">
           <thead>
@@ -8541,7 +8541,7 @@ function ToggleGroupPropsTable() {
           </tbody>
         </table>
       </div>
-      <h3 className="typo-paragraph-semibold mt-lg">ToggleGroupItem</h3>
+      <h3 className="typo-paragraph-base-semibold mt-lg">ToggleGroupItem</h3>
       <div className="overflow-x-auto rounded-lg border border-border bg-card">
         <table className="w-full text-sm">
           <thead>
@@ -8604,7 +8604,7 @@ function ToggleDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Toggle</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Toggle: A two-state button that can be either on or off. Toggle Group: A set of two-state buttons that can be toggled on or off. A single Toggle can be created by using the "single" component variant.
         </p>
       </header>
@@ -8746,7 +8746,7 @@ function ToggleDocs() {
 
       <section id="props" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <h3 className="typo-paragraph-semibold">Toggle</h3>
+        <h3 className="typo-paragraph-base-semibold">Toggle</h3>
         <TogglePropsTable />
         <ToggleGroupPropsTable />
       </section>
@@ -8758,13 +8758,13 @@ function ToggleDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Always provide an aria-label when using icon-only toggles." />
         <DontItem text="Don't use text-only toggles without an icon — they look like plain buttons." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Use Toggle for binary on/off actions (bold, mute, bookmark)." />
         <DontItem text="Don't use Toggle for navigation — use Tabs or Buttons instead." />
-        <h3 className="typo-paragraph-semibold mt-lg">Toggle Group</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Toggle Group</h3>
         <DoItem text="Use type='single' for mutually exclusive options like text alignment." />
         <DoItem text="Use type='multiple' for independent options like bold + italic + underline." />
         <DontItem text="Don't mix standalone Toggle and ToggleGroup in the same toolbar." />
@@ -8906,7 +8906,7 @@ function ChipDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Chip</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Compact element for filters, tags, or selections. Supports icon prefix, closable action, and selected state.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Compact element for filters, tags, or selections. Supports icon prefix, closable action, and selected state.</p>
       </header>
 
       <section id="explore-behavior" className="space-y-4">
@@ -9100,7 +9100,7 @@ function CarouselExploreBehavior() {
     <div className="rounded-xl border border-border overflow-hidden bg-card">
       <div className="flex border-b border-border">
         {(["carousel", "carousel-image"] as const).map(t => (
-          <button key={t} onClick={() => setCarouselTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", carouselTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setCarouselTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", carouselTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "carousel" ? "Carousel" : "Carousel with Image"}
           </button>
         ))}
@@ -9125,7 +9125,7 @@ function CarouselDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Carousel</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Horizontal slide container with navigation buttons. Built on Embla Carousel for smooth touch gestures and snapping.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Horizontal slide container with navigation buttons. Built on Embla Carousel for smooth touch gestures and snapping.</p>
       </header>
 
       <section id="explore-behavior" className="space-y-4">
@@ -9282,7 +9282,7 @@ function CarouselDocs() {
 
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -9380,7 +9380,7 @@ function CardExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["card", "card-inner"] as const).map(t => (
-          <button key={t} onClick={() => setCardTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", cardTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setCardTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", cardTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "card" ? "Card" : "Card Inner"}
           </button>
         ))}
@@ -9406,7 +9406,7 @@ function CardDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Card</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -9468,7 +9468,7 @@ function CardDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -9501,7 +9501,7 @@ function CardDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -9600,8 +9600,8 @@ function AvatarTokensTable() {
     { token: "border-border", cssVar: "--border", value: "#e9e9e7", label: "border", usage: "Avatar border (1px inside)" },
     { token: "text-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Fallback text color" },
     { token: "ring-background", cssVar: "--background", value: "#f7f7f6", label: "background", usage: "Avatar Stack ring (separation)" },
-    { token: "typo-paragraph-small-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Fallback text (Regular, Small)" },
-    { token: "typo-paragraph-mini-semibold", cssVar: "—", value: "Geist 600 12/16", usage: "Fallback text (Tiny)" },
+    { token: "typo-paragraph-sm-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Fallback text (Regular, Small)" },
+    { token: "typo-paragraph-xs-semibold", cssVar: "—", value: "Geist 600 12/16", usage: "Fallback text (Tiny)" },
     { token: "size-[40px]", cssVar: "—", value: "40px", usage: "Regular size" },
     { token: "size-2xl", cssVar: "--spacing-2xl", value: "32px", usage: "Small size" },
     { token: "size-xl", cssVar: "--spacing-xl", value: "24px", usage: "Tiny size" },
@@ -9669,7 +9669,7 @@ function AvatarExploreBehavior() {
           { value: "Roundrect", label: "Roundrect" },
         ]} />
         <div className="space-y-xs max-w-[240px]">
-          <p className={cn("typo-paragraph-mini text-muted-foreground", value !== "Icon" && "opacity-50")}>Icon</p>
+          <p className={cn("typo-paragraph-xs text-muted-foreground", value !== "Icon" && "opacity-50")}>Icon</p>
           <IconPicker value={iconName} onChange={setIconName} disabled={value !== "Icon"} size="sm" />
         </div>
       </div>
@@ -9698,7 +9698,7 @@ function AvatarDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Avatar</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">User avatar with image and fallback support (initials or icon). Supports multiple sizes and round/roundrect shapes.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">User avatar with image and fallback support (initials or icon). Supports multiple sizes and round/roundrect shapes.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -9788,7 +9788,7 @@ function AvatarDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-avatar</code>.
           Supports all Radix Avatar props.
@@ -9799,7 +9799,7 @@ function AvatarDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>{" "}
           and sourced from the Figma file{" "}
@@ -9844,7 +9844,7 @@ function AvatarDocs() {
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" nodeId="18:1398" rows={[
         ["Value", "Picture", "AvatarImage", "Image fills container with aspect-square"],
-        ["Value", "Text", "AvatarFallback", "Initials (typo-paragraph-small-semibold)"],
+        ["Value", "Text", "AvatarFallback", "Initials (typo-paragraph-sm-semibold)"],
         ["Value", "Icon", "AvatarFallback", "Lucide icon inside fallback"],
         ["Size", "Regular (40px)", "—", "size-10 (default)"],
         ["Size", "Small (32px)", "className", "size-8"],
@@ -9857,8 +9857,8 @@ function AvatarDocs() {
         ["Border", "#e9e9e7 1px inside", "—", "border border-border"],
         ["Fallback BG", "#f3f3f2", "—", "bg-muted"],
         ["Fallback Text", "#252522", "—", "text-foreground (inherited)"],
-        ["Text (Reg/Sm)", "Geist 600 14/20", "—", "typo-paragraph-small-semibold"],
-        ["Text (Tiny)", "Geist 600 12/16", "—", "typo-paragraph-mini-semibold"],
+        ["Text (Reg/Sm)", "Geist 600 14/20", "—", "typo-paragraph-sm-semibold"],
+        ["Text (Tiny)", "Geist 600 12/16", "—", "typo-paragraph-xs-semibold"],
         ["Text (XTiny)", "Geist 600 8/12", "—", "text-[8px] leading-3 (custom)"],
         ["Icon (Regular)", "24px", "—", "size-xl"],
         ["Icon (Small)", "20px", "—", "size-lg"],
@@ -9872,7 +9872,7 @@ function AvatarDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">ARIA attributes</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -10053,7 +10053,7 @@ function ProgressDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Progress</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Determinate progress bar showing completion status. Two sizes (default 8px, small 4px) and two color variants (primary, success).
         </p>
       </header>
@@ -10114,10 +10114,10 @@ function ProgressDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Use progress when the completion percentage is known. Use Spinner for indeterminate loading." />
         <DontItem text="Animate progress backwards — always move forward to give a sense of accomplishment." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Use success variant when progress reaches 100% to signal completion." />
         <DontItem text="Stack multiple progress bars in a single view — consolidate into one if possible." />
       </section>
@@ -10162,7 +10162,7 @@ function ProgressDocs() {
 
       <section id="related" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+        <ul className="list-disc list-inside space-y-xs typo-paragraph-base text-muted-foreground">
           <li><strong>Spinner</strong> — Use for indeterminate loading with no known percentage.</li>
           <li><strong>Skeleton</strong> — Use for layout-aware content placeholders.</li>
         </ul>
@@ -10198,7 +10198,7 @@ function AlertPropsTable() {
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
             <tbody className="divide-y divide-border">
-              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Title text. Renders as div with typo-paragraph-small-semibold.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Title text. Renders as div with typo-paragraph-sm-semibold.</td></tr>
               <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes.</td></tr>
             </tbody>
           </table>
@@ -10210,7 +10210,7 @@ function AlertPropsTable() {
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
             <tbody className="divide-y divide-border">
-              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Description text. Renders as div with typo-paragraph-small.</td></tr>
+              <tr><td className="px-md py-sm font-mono text-primary">children</td><td className="px-md py-sm font-mono text-muted-foreground">ReactNode</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Description text. Renders as div with typo-paragraph-sm.</td></tr>
               <tr><td className="px-md py-sm font-mono text-primary">className</td><td className="px-md py-sm font-mono text-muted-foreground">string</td><td className="px-md py-sm font-mono text-muted-foreground">—</td><td className="px-md py-sm text-muted-foreground">Additional CSS classes.</td></tr>
             </tbody>
           </table>
@@ -10355,7 +10355,7 @@ function AlertExploreBehavior() {
           { value: "emphasis", label: "Emphasis" },
         ]} />
         <div className="space-y-xs max-w-[240px]">
-          <p className={cn("typo-paragraph-mini text-muted-foreground", type !== "default" && "opacity-50")}>Icon</p>
+          <p className={cn("typo-paragraph-xs text-muted-foreground", type !== "default" && "opacity-50")}>Icon</p>
           <IconPicker value={activeIconName} onChange={setIcon} disabled={type !== "default"} size="sm" />
         </div>
         <div className="flex flex-wrap gap-lg">
@@ -10393,7 +10393,7 @@ function AlertDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Feedback</p>
         <h1 className="typo-heading-2">Alert</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Inline alert messages for neutral, error, success, warning, and emphasis feedback.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Inline alert messages for neutral, error, success, warning, and emphasis feedback.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -10475,9 +10475,9 @@ function AlertDocs() {
           </Alert>
         </Example>
 
-        <Example title="In Card" description="Alert embedded inside a card — no border, card-subtle background, compact padding." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm">\n  <p className="typo-paragraph-small-semibold mb-sm">Payment details</p>\n  <Alert inCard>\n    <Info className="size-md" />\n    <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>\n  </Alert>\n</div>`}>
+        <Example title="In Card" description="Alert embedded inside a card — no border, card-subtle background, compact padding." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm">\n  <p className="typo-paragraph-sm-semibold mb-sm">Payment details</p>\n  <Alert inCard>\n    <Info className="size-md" />\n    <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>\n  </Alert>\n</div>`}>
           <div className="rounded-xl border border-border bg-card p-lg shadow-sm">
-            <p className="typo-paragraph-small-semibold mb-sm">Payment details</p>
+            <p className="typo-paragraph-sm-semibold mb-sm">Payment details</p>
             <Alert inCard icon={Info}>
               <AlertDescription>Your card ending in 4242 will be charged.</AlertDescription>
             </Alert>
@@ -10544,9 +10544,9 @@ function AlertDocs() {
           </Alert>
         </Example>
 
-        <Example title="In Card Variants" description="Multiple alert types inside a card context using the inCard prop." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">\n  <p className="typo-paragraph-small-semibold">Account settings</p>\n  <Alert variant="warning" inCard>\n    <TriangleAlert className="size-md" />\n    <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>\n  </Alert>\n  <Alert variant="success" inCard>\n    <CircleCheck className="size-md" />\n    <AlertDescription>Email verified successfully.</AlertDescription>\n  </Alert>\n</div>`}>
+        <Example title="In Card Variants" description="Multiple alert types inside a card context using the inCard prop." code={`<div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">\n  <p className="typo-paragraph-sm-semibold">Account settings</p>\n  <Alert variant="warning" inCard>\n    <TriangleAlert className="size-md" />\n    <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>\n  </Alert>\n  <Alert variant="success" inCard>\n    <CircleCheck className="size-md" />\n    <AlertDescription>Email verified successfully.</AlertDescription>\n  </Alert>\n</div>`}>
           <div className="rounded-xl border border-border bg-card p-lg shadow-sm space-y-sm">
-            <p className="typo-paragraph-small-semibold">Account settings</p>
+            <p className="typo-paragraph-sm-semibold">Account settings</p>
             <Alert variant="warning" inCard icon={TriangleAlert}>
               <AlertDescription>Two-factor authentication is not enabled.</AlertDescription>
             </Alert>
@@ -10561,7 +10561,7 @@ function AlertDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Pure HTML <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">div</code> elements with{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">class-variance-authority</code> for variant styling.
         </p>
@@ -10571,7 +10571,7 @@ function AlertDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           CSS custom properties used by the Alert component. All tokens support light and dark mode.
         </p>
         <AlertTokensTable />
@@ -10617,8 +10617,8 @@ function AlertDocs() {
         ["Type", "Success", "variant", '"success"'],
         ["Type", "Warning", "variant", '"warning"'],
         ["Type", "Emphasis", "variant", '"emphasis"'],
-        ["Sub-component", "Title", "AlertTitle", "typo-paragraph-small-semibold"],
-        ["Sub-component", "Description", "AlertDescription", "typo-paragraph-small"],
+        ["Sub-component", "Title", "AlertTitle", "typo-paragraph-sm-semibold"],
+        ["Sub-component", "Description", "AlertDescription", "typo-paragraph-sm"],
         ["Sub-component", "Action", "AlertAction", "flex gap-xs pt-xs"],
         ["Sub-component", "Dismiss", "AlertDismiss", "IconButton ghost xs + X icon"],
         ["Show Action", "True/False", "AlertAction", "Button secondary sm (primary action)"],
@@ -10633,7 +10633,7 @@ function AlertDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">ARIA attributes</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -10765,7 +10765,7 @@ function BadgeExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["label", "round", "dot"] as const).map(t => (
-          <button key={t} onClick={() => setBadgeTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", badgeTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setBadgeTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", badgeTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "label" ? "Label" : t === "round" ? "Round" : "Dot"}
           </button>
         ))}
@@ -10789,17 +10789,17 @@ function BadgeExploreBehavior() {
               <PropertyTabs label="State" value={labelState} onChange={setLabelState} options={[["Default","Default"],["Focus","Focus"]]} />
               <div className="flex flex-wrap gap-lg">
                 <div className="space-y-xs">
-                  <p className="typo-paragraph-mini text-muted-foreground">Label</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Label</p>
                   <Input value={labelText} onChange={(e) => setLabelText(e.target.value)} className="h-8 text-xs" />
                 </div>
                 <PropertyToggle label="Show Icon Left" checked={showIconLeft} onChange={setShowIconLeft} />
                 <div className="space-y-xs max-w-[240px]">
-                  <p className={cn("typo-paragraph-mini text-muted-foreground", !showIconLeft && "opacity-50")}>Icon Left</p>
+                  <p className={cn("typo-paragraph-xs text-muted-foreground", !showIconLeft && "opacity-50")}>Icon Left</p>
                   <IconPicker value={iconLeftName} onChange={setIconLeftName} disabled={!showIconLeft} size="sm" />
                 </div>
                 <PropertyToggle label="Show Icon Right" checked={showIconRight} onChange={setShowIconRight} />
                 <div className="space-y-xs max-w-[240px]">
-                  <p className={cn("typo-paragraph-mini text-muted-foreground", !showIconRight && "opacity-50")}>Icon Right</p>
+                  <p className={cn("typo-paragraph-xs text-muted-foreground", !showIconRight && "opacity-50")}>Icon Right</p>
                   <IconPicker value={iconRightName} onChange={setIconRightName} disabled={!showIconRight} size="sm" />
                 </div>
               </div>
@@ -10823,12 +10823,12 @@ function BadgeExploreBehavior() {
               <PropertyTabs label="Type" value={roundType} onChange={(v) => setRoundType(v as any)} options={[["numeric","Numeric"],["icon","Icon"]]} />
               {roundType === "numeric" ? (
                 <div className="space-y-xs">
-                  <p className="typo-paragraph-mini text-muted-foreground">Number</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Number</p>
                   <Input value={roundNumber} onChange={(e) => setRoundNumber(e.target.value)} className="h-8 text-xs" />
                 </div>
               ) : (
                 <div className="space-y-xs max-w-[240px]">
-                  <p className="typo-paragraph-mini text-muted-foreground">Icon</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Icon</p>
                   <IconPicker value={roundIconName} onChange={setRoundIconName} size="sm" />
                 </div>
               )}
@@ -10947,7 +10947,7 @@ function BadgeDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Badge</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Status tags, notification counts, and category labels. Three shapes: Label (pill with text), Round (circular with number/icon), and Dot (minimal indicator). Supports up to 8 color variants × 3 sizes.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Status tags, notification counts, and category labels. Three shapes: Label (pill with text), Round (circular with number/icon), and Dot (minimal indicator). Supports up to 8 color variants × 3 sizes.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -11053,7 +11053,7 @@ function BadgeDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Renders a{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">{"<span>"}</code>{" "}
           element with CVA-driven variant classes.
@@ -11064,7 +11064,7 @@ function BadgeDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Tokens from{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>{" "}
           sourced from Figma file{" "}
@@ -11128,10 +11128,10 @@ function BadgeDocs() {
         ["Size", "Large (28px)", "size", "\"lg\" — h-[28px] px-sm py-3xs"],
         ["Shape", "Pill (9999px)", "—", "rounded-full"],
         ["Icon Left/Right", "Instance Swap", "children", "SVG auto-sized via [&>svg]:size-sm/md"],
-        ["Text Primary Reg/Sm", "Geist 600 12/16", "—", "typo-paragraph-mini-semibold"],
-        ["Text Primary Lg", "Geist 500 14/20", "—", "typo-paragraph-small-medium"],
-        ["Text Secondary Reg/Sm", "Geist 400 12/16", "—", "typo-paragraph-mini"],
-        ["Text Secondary Lg", "Geist 400 14/20", "—", "typo-paragraph-small"],
+        ["Text Primary Reg/Sm", "Geist 600 12/16", "—", "typo-paragraph-xs-semibold"],
+        ["Text Primary Lg", "Geist 500 14/20", "—", "typo-paragraph-sm-medium"],
+        ["Text Secondary Reg/Sm", "Geist 400 12/16", "—", "typo-paragraph-xs"],
+        ["Text Secondary Lg", "Geist 400 14/20", "—", "typo-paragraph-sm"],
         ["State", "Default / Focus", "—", "focus:ring-[3px] focus:ring-ring"],
         ["Gap Reg/Sm", "4px", "—", "gap-3xs"],
         ["Gap Lg", "6px", "—", "gap-2xs"],
@@ -11146,8 +11146,8 @@ function BadgeDocs() {
         ["Shape", "Circle (9999px)", "—", "rounded-full"],
         ["Icon Sm/Reg", "12×12", "—", "[&>svg]:size-sm"],
         ["Icon Lg", "16×16", "—", "[&>svg]:size-md"],
-        ["Text Sm/Reg", "Geist 600 12/16", "—", "typo-paragraph-mini-semibold"],
-        ["Text Lg", "Geist 500 14/20", "—", "typo-paragraph-small-medium"],
+        ["Text Sm/Reg", "Geist 600 12/16", "—", "typo-paragraph-xs-semibold"],
+        ["Text Lg", "Geist 500 14/20", "—", "typo-paragraph-sm-medium"],
         ["State", "Default / Focus", "—", "focus:ring-[3px] focus:ring-ring"],
         ["Icon Swap", "Instance Swap", "children", "SVG icon via children prop"],
       ]} />
@@ -11168,7 +11168,7 @@ function BadgeDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Semantic HTML</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -11271,15 +11271,15 @@ function SeparatorDividerTab() {
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         {isVertical ? (
           <div className="flex items-center gap-md h-xl">
-            <span className="typo-paragraph-small text-muted-foreground">Left</span>
+            <span className="typo-paragraph-sm text-muted-foreground">Left</span>
             <Separator orientation="vertical" />
-            <span className="typo-paragraph-small text-muted-foreground">Right</span>
+            <span className="typo-paragraph-sm text-muted-foreground">Right</span>
           </div>
         ) : (
           <div className="flex flex-col gap-md items-center w-[200px]">
-            <span className="typo-paragraph-small text-muted-foreground">Content above</span>
+            <span className="typo-paragraph-sm text-muted-foreground">Content above</span>
             <Separator orientation="horizontal" />
-            <span className="typo-paragraph-small text-muted-foreground">Content below</span>
+            <span className="typo-paragraph-sm text-muted-foreground">Content below</span>
           </div>
         )}
       </div>
@@ -11300,15 +11300,15 @@ function SeparatorDotTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex items-center gap-xs">
-          <span className="typo-paragraph-small text-muted-foreground">Item 1</span>
+          <span className="typo-paragraph-sm text-muted-foreground">Item 1</span>
           <div className="size-[3px] rounded-full bg-muted-foreground" />
-          <span className="typo-paragraph-small text-muted-foreground">Item 2</span>
+          <span className="typo-paragraph-sm text-muted-foreground">Item 2</span>
           <div className="size-[3px] rounded-full bg-muted-foreground" />
-          <span className="typo-paragraph-small text-muted-foreground">Item 3</span>
+          <span className="typo-paragraph-sm text-muted-foreground">Item 3</span>
         </div>
       </div>
       <div className="border-t border-border bg-muted p-lg">
-        <p className="typo-paragraph-small text-muted-foreground">Dot separator has no configurable properties. 3×3px circle, color: muted-foreground.</p>
+        <p className="typo-paragraph-sm text-muted-foreground">Dot separator has no configurable properties. 3×3px circle, color: muted-foreground.</p>
       </div>
     </>
   )
@@ -11325,9 +11325,9 @@ function SeparatorExploreBehavior() {
             {separatorBehaviorTabs.map(tab => (
               <button key={tab.value} onClick={() => setActiveTab(tab.value)}
                 className={cn(
-                  "px-md py-sm typo-paragraph-small whitespace-nowrap border-b-2 transition-colors",
+                  "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
                   activeTab === tab.value
-                    ? "border-primary text-foreground typo-paragraph-small-medium"
+                    ? "border-primary text-foreground typo-paragraph-sm-medium"
                     : "border-transparent text-muted-foreground hover:text-foreground"
                 )}>{tab.label}</button>
             ))}
@@ -11393,7 +11393,7 @@ function SeparatorDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Separator</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line, or a dot between inline items.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line, or a dot between inline items.</p>
       </header>
 
       <SeparatorExploreBehavior />
@@ -11462,12 +11462,12 @@ function SeparatorDocs() {
       {/* ---- Best Practices ---- */}
       <section id="best-practices" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold">Structure</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <DoItem text="Use horizontal separators between stacked content sections." />
           <DontItem text="Don't use separators between every element — only between distinct groups." />
         </div>
-        <h3 className="typo-paragraph-semibold">Content</h3>
+        <h3 className="typo-paragraph-base-semibold">Content</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <DoItem text="Use dot separators between inline metadata items (e.g., author · date · category)." />
           <DontItem text="Don't mix divider and dot separators in the same context." />
@@ -11645,7 +11645,7 @@ function SkeletonDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Skeleton</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Loading placeholder with a pulse animation. Shape and size are fully controlled via className — compose multiple skeletons to match any content layout.
         </p>
       </header>
@@ -11724,10 +11724,10 @@ function SkeletonDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Match the skeleton shape and size to the actual content it replaces." />
         <DontItem text="Use skeleton for content that loads instantly — only for async loading states." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Use rounded-full for avatar placeholders and rounded-lg for text/card areas." />
         <DontItem text="Show a single skeleton for an entire page — compose multiple to match the layout." />
       </section>
@@ -11769,7 +11769,7 @@ function SkeletonDocs() {
 
       <section id="related" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+        <ul className="list-disc list-inside space-y-xs typo-paragraph-base text-muted-foreground">
           <li><strong>Spinner</strong> — Use for indeterminate loading without layout structure.</li>
           <li><strong>Progress</strong> — Use when loading progress percentage is known.</li>
         </ul>
@@ -11816,7 +11816,7 @@ function DataTableExploreBehavior() {
     <div className="rounded-xl border border-border overflow-hidden bg-card">
       <div className="flex border-b border-border">
         {(["header", "cell"] as const).map(t => (
-          <button key={t} onClick={() => setDtTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", dtTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setDtTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", dtTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "header" ? "Table Header" : "Table Cell"}
           </button>
         ))}
@@ -11827,9 +11827,9 @@ function DataTableExploreBehavior() {
         <>
           <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", headerBg, hBorder && "border-b border-border", hAlign === "right" && "justify-end")}>
-              {hContent === "text" && <span className={cn("font-semibold typo-paragraph-small", hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>}
+              {hContent === "text" && <span className={cn("font-semibold typo-paragraph-sm", hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>}
               {hContent === "sortable" && (
-                <button className="inline-flex items-center gap-xs font-semibold typo-paragraph-small">
+                <button className="inline-flex items-center gap-xs font-semibold typo-paragraph-sm">
                   <span className={cn(hTooltip && "decoration-dashed underline underline-offset-4 decoration-muted-foreground")}>Table heading</span>
                   <ArrowUpDown className="size-md text-muted-foreground" />
                 </button>
@@ -11857,20 +11857,20 @@ function DataTableExploreBehavior() {
         <>
           <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
             <div className={cn("h-[48px] p-xs flex items-center gap-xs w-[260px]", cellBg, cBorder && "border-b border-border", cAlign === "right" && "justify-end")}>
-              {cContent === "text-1" && <span className="typo-paragraph-small">Table cell</span>}
+              {cContent === "text-1" && <span className="typo-paragraph-sm">Table cell</span>}
               {cContent === "text-2" && (
-                <div><p className="typo-paragraph-small font-medium">Primary text</p><p className="text-xs text-muted-foreground">Secondary line</p></div>
+                <div><p className="typo-paragraph-sm font-medium">Primary text</p><p className="text-xs text-muted-foreground">Secondary line</p></div>
               )}
               {cContent === "text-label" && (
-                <div><p className="text-xs text-muted-foreground">Label</p><p className="typo-paragraph-small">Value text</p></div>
+                <div><p className="text-xs text-muted-foreground">Label</p><p className="typo-paragraph-sm">Value text</p></div>
               )}
               {cContent === "text-thumb" && (
-                <div className="flex items-center gap-xs"><div className="size-8 rounded bg-muted shrink-0" /><span className="typo-paragraph-small">With thumbnail</span></div>
+                <div className="flex items-center gap-xs"><div className="size-8 rounded bg-muted shrink-0" /><span className="typo-paragraph-sm">With thumbnail</span></div>
               )}
               {cContent === "checkbox" && <Checkbox />}
               {cContent === "badge" && <Badge>Active</Badge>}
               {cContent === "avatar-name" && (
-                <div className="flex items-center gap-xs"><Avatar className="size-8"><AvatarFallback>JD</AvatarFallback></Avatar><span className="typo-paragraph-small font-medium">Jane Doe</span></div>
+                <div className="flex items-center gap-xs"><Avatar className="size-8"><AvatarFallback>JD</AvatarFallback></Avatar><span className="typo-paragraph-sm font-medium">Jane Doe</span></div>
               )}
               {cContent === "avatar" && <Avatar className="size-8"><AvatarFallback>JD</AvatarFallback></Avatar>}
               {cContent === "buttons" && (
@@ -11879,7 +11879,7 @@ function DataTableExploreBehavior() {
               {cContent === "actions" && (
                 <div className="flex items-center gap-xs justify-end w-full"><IconButton variant="ghost" size="sm"><Eye /></IconButton><IconButton variant="ghost" size="sm"><MoreHorizontal /></IconButton></div>
               )}
-              {cContent === "input" && <input className="h-2xl w-full rounded-lg border border-border bg-input px-xs typo-paragraph-small" defaultValue="Editable" />}
+              {cContent === "input" && <input className="h-2xl w-full rounded-lg border border-border bg-input px-xs typo-paragraph-sm" defaultValue="Editable" />}
               {cContent === "blank" && null}
             </div>
           </div>
@@ -11925,7 +11925,7 @@ function DataTableDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Data Table</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Enhanced table with sortable headers, row selection, status badges, and action buttons. Composed from the base Table primitives plus Checkbox, Badge, and IconButton.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Enhanced table with sortable headers, row selection, status badges, and action buttons. Composed from the base Table primitives plus Checkbox, Badge, and IconButton.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -12046,7 +12046,7 @@ function DataTableDocs() {
 
         <div className="space-y-6">
           <h3 className="font-body font-semibold text-sm">Table Header (Figma: 19:6472)</h3>
-          <p className="typo-paragraph-small text-muted-foreground">36 variants across Content, Alignment, State, Show Tooltip, and Show border.</p>
+          <p className="typo-paragraph-sm text-muted-foreground">36 variants across Content, Alignment, State, Show Tooltip, and Show border.</p>
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Values</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
@@ -12064,7 +12064,7 @@ function DataTableDocs() {
 
         <div className="space-y-6">
           <h3 className="font-body font-semibold text-sm">Table Cell (Figma: 19:6314)</h3>
-          <p className="typo-paragraph-small text-muted-foreground">94 variants across Content, Alignment, and State.</p>
+          <p className="typo-paragraph-sm text-muted-foreground">94 variants across Content, Alignment, and State.</p>
           <div className="overflow-x-auto rounded-xl border border-border bg-card">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border bg-muted"><th className="text-left p-3 font-semibold">Prop</th><th className="text-left p-3 font-semibold">Values</th><th className="text-left p-3 font-semibold">Default</th><th className="text-left p-3 font-semibold">Description</th></tr></thead>
@@ -12134,7 +12134,7 @@ function DataTableDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -12236,7 +12236,7 @@ function TableDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Table</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Basic table with composable sub-components for header, body, footer, rows, and cells.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Basic table with composable sub-components for header, body, footer, rows, and cells.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -12330,7 +12330,7 @@ function TableDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -12363,7 +12363,7 @@ function TableDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -12552,7 +12552,7 @@ function DialogDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Dialog</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -12577,7 +12577,7 @@ function DialogDocs() {
               <div className="absolute right-md top-md opacity-70"><X className="size-md" /></div>
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Edit profile</h3>
-                <p className="typo-paragraph-small text-muted-foreground">Make changes to your profile here.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Make changes to your profile here.</p>
               </div>
               <div className="grid gap-md py-md">
                 <div className="grid grid-cols-4 items-center gap-md">
@@ -12600,7 +12600,7 @@ function DialogDocs() {
               <div className="absolute right-md top-md opacity-70"><X className="size-md" /></div>
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Confirm deletion</h3>
-                <p className="typo-paragraph-small text-muted-foreground">Are you sure you want to delete this item? This action cannot be undone.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Are you sure you want to delete this item? This action cannot be undone.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Cancel</Button>
@@ -12617,7 +12617,7 @@ function DialogDocs() {
             <div className="relative w-full border border-border rounded-xl bg-card p-md shadow grid gap-xs pointer-events-none">
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Terms of Service</h3>
-                <p className="typo-paragraph-small text-muted-foreground">Please read and accept the terms before continuing.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Please read and accept the terms before continuing.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Decline</Button>
@@ -12631,7 +12631,7 @@ function DialogDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-dialog</code>.
           Supports all Radix Dialog props.
@@ -12660,7 +12660,7 @@ function DialogDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -12697,7 +12697,7 @@ function DialogDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -12740,7 +12740,7 @@ function DialogDocs() {
         ["Content", "Modal Card", "DialogContent", "bg-card, border-border, sm:rounded-xl, shadow, p-md, sm:max-w-lg"],
         ["Header", "Title + Description", "DialogHeader", "flex flex-col gap-xs, text-center sm:text-left"],
         ["Title", "Heading", "DialogTitle", "typo-heading-4 text-foreground"],
-        ["Description", "Body text", "DialogDescription", "typo-paragraph-small text-muted-foreground"],
+        ["Description", "Body text", "DialogDescription", "typo-paragraph-sm text-muted-foreground"],
         ["Footer", "Action buttons", "DialogFooter", "flex flex-col-reverse gap-xs sm:flex-row sm:justify-end"],
         ["Close", "X button", "DialogClose / showCloseButton", "absolute right-md top-md, X icon size-md"],
       ]} />
@@ -12850,7 +12850,7 @@ function AlertDialogPropsTable() {
       ])}
       {renderTable("AlertDialogDescription", [
         { name: "children", type: "React.ReactNode", default: "—", description: "Description text content." },
-        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-small text-muted-foreground." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-sm text-muted-foreground." },
       ])}
       {renderTable("AlertDialogAction", [
         { name: "variant", type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"', default: '"default"', description: "Button visual variant. Forwarded to the wrapping Button component." },
@@ -12953,7 +12953,7 @@ function AlertDialogExploreBehavior() {
                 <img src={illustSuccess} alt="Congratulations" className="w-48" />
               </div>
             )}
-            <p className={["typo-paragraph-small", isSlotIllustration ? "text-muted-foreground text-center" : "text-foreground"].join(" ")}>{slotContent[slotVariant]}</p>
+            <p className={["typo-paragraph-sm", isSlotIllustration ? "text-muted-foreground text-center" : "text-foreground"].join(" ")}>{slotContent[slotVariant]}</p>
             {/* Button group */}
             {showAction && (
               <div className={["flex gap-xs", isMobile ? "flex-col" : "justify-end"].join(" ")}>
@@ -12987,7 +12987,7 @@ function AlertDialogExploreBehavior() {
         <div className="flex flex-wrap gap-lg">
           <PropertyToggle label="Show Icon" checked={showIcon} onChange={setShowIcon} />
           <div className="space-y-xs max-w-[240px]">
-            <p className={cn("typo-paragraph-mini text-muted-foreground", (!showIcon || isSlotIllustration) && "opacity-50")}>Icon</p>
+            <p className={cn("typo-paragraph-xs text-muted-foreground", (!showIcon || isSlotIllustration) && "opacity-50")}>Icon</p>
             <IconPicker value={iconName} onChange={setIconName} disabled={!showIcon || isSlotIllustration} size="sm" />
           </div>
           <PropertyToggle label="Show Title" checked={showTitle} onChange={setShowTitle} />
@@ -13020,7 +13020,7 @@ function AlertDialogDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Alert Dialog</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">A modal dialog that interrupts the user with important content and expects a response. Cannot be dismissed by clicking outside.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">A modal dialog that interrupts the user with important content and expects a response. Cannot be dismissed by clicking outside.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -13061,7 +13061,7 @@ function AlertDialogDocs() {
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Are you sure?</h3>
-                <p className="typo-paragraph-small text-muted-foreground">This action cannot be undone.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">This action cannot be undone.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Cancel</Button>
@@ -13090,7 +13090,7 @@ function AlertDialogDocs() {
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Are you absolutely sure?</h3>
-                <p className="typo-paragraph-small text-muted-foreground">This will permanently delete your account and remove your data from our servers.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">This will permanently delete your account and remove your data from our servers.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Cancel</Button>
@@ -13144,7 +13144,7 @@ function AlertDialogDocs() {
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
               <div className="flex flex-col gap-xs sm:text-left">
                 <h3 className="typo-heading-4 text-foreground">Log out of your account?</h3>
-                <p className="typo-paragraph-small text-muted-foreground">You will need to sign in again to access your dashboard and settings.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">You will need to sign in again to access your dashboard and settings.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button variant="outline">Stay Signed In</Button>
@@ -13172,7 +13172,7 @@ function AlertDialogDocs() {
             <div className="w-full border border-border rounded-xl bg-card p-xl shadow grid gap-lg pointer-events-none">
               <div className="flex flex-col items-center gap-lg text-center">
                 <img src={illustSuccess} alt="Congratulations" className="w-48" />
-                <p className="typo-paragraph-small text-muted-foreground">Congratulations! Your account has been successfully created. Welcome aboard!</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Congratulations! Your account has been successfully created. Welcome aboard!</p>
               </div>
               <div className="flex flex-col-reverse gap-xs sm:flex-row sm:justify-end">
                 <Button>Got it</Button>
@@ -13267,7 +13267,7 @@ function AlertDialogDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-alert-dialog</code>.
           Supports all Radix AlertDialog props in addition to the following:
@@ -13278,7 +13278,7 @@ function AlertDialogDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>{" "}
           and sourced from the Figma file{" "}
@@ -13325,7 +13325,7 @@ function AlertDialogDocs() {
         ["Overlay", "Black 50%", "AlertDialogOverlay", "bg-black/50, fixed inset-0, z-50"],
         ["Content", "bg-card, border-border, p-xl, rounded-xl", "AlertDialogContent", "max-w-lg, shadow (Figma shadow-sm), gap-lg"],
         ["Title", "heading 4 (Geist/600 20px/24px)", "AlertDialogTitle", "typo-heading-4 text-foreground"],
-        ["Description", "paragraph small (Geist/400 14px/20px)", "AlertDialogDescription", "typo-paragraph-small text-muted-foreground"],
+        ["Description", "paragraph small (Geist/400 14px/20px)", "AlertDialogDescription", "typo-paragraph-sm text-muted-foreground"],
         ["Button Group", "flex, gap-xs, justify-end", "AlertDialogFooter", "flex-col-reverse sm:flex-row sm:justify-end gap-xs"],
         ["Action", "Button default variant", "AlertDialogAction", "Wraps Radix in Button via asChild"],
         ["Cancel", "Button outline variant", "AlertDialogCancel", "Wraps Radix in Button via asChild"],
@@ -13337,7 +13337,7 @@ function AlertDialogDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -13583,7 +13583,7 @@ function SheetPropsTable() {
     <div className="space-y-md">
       {tables.map(t => (
         <div key={t.component}>
-          <h3 className="typo-paragraph-small-semibold text-foreground mb-xs">{t.component}</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground mb-xs">{t.component}</h3>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
@@ -13622,7 +13622,7 @@ function SheetTokensTable() {
     { token: "gap-md", cssVar: "--spacing-md", value: "16px", usage: "Content gap" },
     { token: "gap-xs", cssVar: "--spacing-xs", value: "8px", usage: "Header/footer gap" },
     { token: "typo-heading-4", cssVar: "—", value: "Geist 600 20/24", usage: "SheetTitle" },
-    { token: "typo-paragraph-small", cssVar: "—", value: "Geist 400 14/20", usage: "SheetDescription" },
+    { token: "typo-paragraph-sm", cssVar: "—", value: "Geist 400 14/20", usage: "SheetDescription" },
     { token: "text-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Title color" },
     { token: "text-muted-foreground", cssVar: "--muted-foreground", value: "#6f6f6a", label: "muted-fg", usage: "Description color" },
     { token: "size-md", cssVar: "--spacing-md", value: "16px", usage: "Close icon size" },
@@ -13641,7 +13641,7 @@ function SheetDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Sheet</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Slide-out panel from any edge of the screen. Great for navigation, filters,
           settings, or detail views. Supports scrollable content and 4 side directions.
         </p>
@@ -13740,7 +13740,7 @@ function SheetDocs() {
                 </SheetHeader>
                 <div className="space-y-xs py-md">
                   {["Dashboard", "Projects", "Settings", "Help"].map(item => (
-                    <div key={item} className="px-md py-xs rounded-md hover:bg-accent typo-paragraph-small cursor-pointer">{item}</div>
+                    <div key={item} className="px-md py-xs rounded-md hover:bg-accent typo-paragraph-sm cursor-pointer">{item}</div>
                   ))}
                 </div>
               </SheetContent>
@@ -13967,7 +13967,7 @@ function SheetDocs() {
           </table>
         </div>
         <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><code className="text-xs">role="dialog"</code> — Built on Radix Dialog, inherits dialog role.</li>
           <li><code className="text-xs">aria-labelledby</code> — Automatically linked to SheetTitle.</li>
           <li><code className="text-xs">aria-describedby</code> — Automatically linked to SheetDescription.</li>
@@ -13979,7 +13979,7 @@ function SheetDocs() {
       {/* ---- Related ---- */}
       <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><strong>Dialog</strong> — Centered modal for focused interactions requiring immediate attention.</li>
           <li><strong>Drawer</strong> — Bottom sheet alternative, especially suited for mobile touch interactions.</li>
           <li><strong>Alert Dialog</strong> — Blocking confirmation dialog for destructive or irreversible actions.</li>
@@ -14071,7 +14071,7 @@ function DrawerPropsTable() {
       ])}
       {renderTable("DrawerDescription", [
         { name: "children", type: "React.ReactNode", default: "—", description: "Description text content." },
-        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-small text-muted-foreground." },
+        { name: "className", type: "string", default: "—", description: "Additional CSS classes. Default: typo-paragraph-sm text-muted-foreground." },
       ])}
       {renderTable("DrawerClose", [
         { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element." },
@@ -14118,7 +14118,7 @@ function DrawerExploreBehavior() {
             <p className={drawerClassNames.description}>Swipe down or click overlay to close.</p>
           </div>
           <div className="px-md pb-md">
-            <p className="typo-paragraph-small text-muted-foreground">Drawer body content goes here. Drag the handle bar to dismiss.</p>
+            <p className="typo-paragraph-sm text-muted-foreground">Drawer body content goes here. Drag the handle bar to dismiss.</p>
           </div>
           <div className={drawerClassNames.footer}>
             <Button variant="outline" className="pointer-events-none">Cancel</Button>
@@ -14127,7 +14127,7 @@ function DrawerExploreBehavior() {
         </div>
       </div>
       <div className="border-t border-border bg-muted p-lg">
-        <p className="typo-paragraph-mini text-muted-foreground">Figma (151:12313): No variant properties. Content r=8 (rounded-t-lg), Handle 50×3px r=2 (rounded-sm), bg-card, shadow. Header/Footer gap synced with Dialog/AlertDialog/Sheet siblings.</p>
+        <p className="typo-paragraph-xs text-muted-foreground">Figma (151:12313): No variant properties. Content r=8 (rounded-t-lg), Handle 50×3px r=2 (rounded-sm), bg-card, shadow. Header/Footer gap synced with Dialog/AlertDialog/Sheet siblings.</p>
       </div>
     </div>
   )
@@ -14142,7 +14142,7 @@ function DrawerDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay</p>
         <h1 className="typo-heading-2">Drawer</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Mobile-first bottom drawer with swipe-to-close. Built on vaul.
           Includes a drag handle, overlay backdrop, and snap-to-close gesture support.
         </p>
@@ -14177,7 +14177,7 @@ function DrawerDocs() {
         <DrawerDescription>Set your daily activity goal.</DrawerDescription>
       </DrawerHeader>
       <div className="px-md pb-md">
-        <p className="typo-paragraph-small text-muted-foreground">Adjust your goal and submit.</p>
+        <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
       </div>
       <DrawerFooter>
         <Button>Submit</Button>
@@ -14192,10 +14192,10 @@ function DrawerDocs() {
               <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
               <div className="flex flex-col gap-xs p-md text-left">
                 <h3 className="typo-heading-4 text-foreground">Move Goal</h3>
-                <p className="typo-paragraph-small text-muted-foreground">Set your daily activity goal.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Set your daily activity goal.</p>
               </div>
               <div className="px-md pb-md">
-                <p className="typo-paragraph-small text-muted-foreground">Adjust your goal and submit.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
                 <Button variant="outline" className="pointer-events-none">Cancel</Button>
@@ -14226,7 +14226,7 @@ function DrawerDocs() {
               <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
               <div className="flex flex-col gap-xs p-md text-left">
                 <h3 className="typo-heading-4 text-foreground">Notifications</h3>
-                <p className="typo-paragraph-small text-muted-foreground">You have no new notifications.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">You have no new notifications.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
                 <Button variant="outline" className="pointer-events-none">Close</Button>
@@ -14256,7 +14256,7 @@ function DrawerDocs() {
               <div className="mx-auto mt-md h-[3px] w-[50px] rounded-sm bg-muted" />
               <div className="flex flex-col gap-xs p-md text-left">
                 <h3 className="typo-heading-4 text-foreground">Settings</h3>
-                <p className="typo-paragraph-small text-muted-foreground">Background does not scale when drawer opens.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Background does not scale when drawer opens.</p>
               </div>
               <div className="flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end">
                 <Button variant="outline" className="pointer-events-none">Done</Button>
@@ -14282,7 +14282,7 @@ function DrawerDocs() {
                     <DrawerDescription>Set your daily activity goal.</DrawerDescription>
                   </DrawerHeader>
                   <div className="px-md pb-md">
-                    <p className="typo-paragraph-small text-muted-foreground">Adjust your goal and submit.</p>
+                    <p className="typo-paragraph-sm text-muted-foreground">Adjust your goal and submit.</p>
                   </div>
                   <DrawerFooter>
                     <Button>Submit</Button>
@@ -14342,7 +14342,7 @@ function DrawerDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DrawerTokensTable />
@@ -14389,14 +14389,14 @@ function DrawerDocs() {
         ["Header", "flex col gap-xs p-md", "DrawerHeader", "flex flex-col gap-xs p-md text-center sm:text-left"],
         ["Footer", "flex col-reverse gap-xs p-md", "DrawerFooter", "flex flex-col-reverse gap-xs p-md sm:flex-row sm:justify-end"],
         ["Title", "heading 4 (Geist/600 20/24)", "DrawerTitle", "typo-heading-4 text-foreground"],
-        ["Description", "paragraph sm (Geist/400 14/20)", "DrawerDescription", "typo-paragraph-small text-muted-foreground"],
+        ["Description", "paragraph sm (Geist/400 14/20)", "DrawerDescription", "typo-paragraph-sm text-muted-foreground"],
         ["Scale Background", "true", "shouldScaleBackground", "true (default)"],
       ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -14574,7 +14574,7 @@ function PopoverExploreBehavior() {
         </div>
       </div>
       <div className="border-t border-border bg-muted p-lg">
-        <p className="typo-paragraph-mini text-muted-foreground">No Figma component — code-only. Tokens synced with HoverCard (303:246487): rounded-lg, bg-card, shadow. Padding p-md (16px) for interactive content.</p>
+        <p className="typo-paragraph-xs text-muted-foreground">No Figma component — code-only. Tokens synced with HoverCard (303:246487): rounded-lg, bg-card, shadow. Padding p-md (16px) for interactive content.</p>
       </div>
     </div>
   )
@@ -14589,7 +14589,7 @@ function PopoverDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Popover</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Floating content panel anchored to a trigger. For rich interactive content like forms, filters, and selection panels.
         </p>
       </header>
@@ -14656,13 +14656,13 @@ function PopoverDocs() {
     <Button variant="outline">Info</Button>
   </PopoverTrigger>
   <PopoverContent className="w-60">
-    <p className="typo-paragraph-small text-muted-foreground">
+    <p className="typo-paragraph-sm text-muted-foreground">
       This is a simple popover with informational content. Click the trigger to toggle.
     </p>
   </PopoverContent>
 </Popover>`}>
             <div className="w-60 rounded-lg border border-border bg-card p-md shadow pointer-events-none">
-              <p className="typo-paragraph-small text-muted-foreground">
+              <p className="typo-paragraph-sm text-muted-foreground">
                 This is a simple popover with informational content. Click the trigger to toggle.
               </p>
             </div>
@@ -14703,7 +14703,7 @@ function PopoverDocs() {
                 <Button variant="outline" size="sm">Simple Popover</Button>
               </PopoverTrigger>
               <PopoverContent className="w-60">
-                <p className="typo-paragraph-small text-muted-foreground">Simple informational content. Click the trigger to toggle.</p>
+                <p className="typo-paragraph-sm text-muted-foreground">Simple informational content. Click the trigger to toggle.</p>
               </PopoverContent>
             </Popover>
           </div>
@@ -14719,7 +14719,7 @@ function PopoverDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>. No dedicated Figma component — tokens synced with floating panel family (HoverCard, Dialog, Drawer).
         </p>
         <PopoverTokensTable />
@@ -14770,7 +14770,7 @@ function PopoverDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -14874,7 +14874,7 @@ function TooltipExploreBehavior() {
         {/* Static tooltip preview — displayed directly */}
         <div className="relative">
           {/* Tooltip bubble */}
-          <div className="bg-foreground px-xs py-2xs rounded-lg typo-paragraph-mini text-background whitespace-nowrap">
+          <div className="bg-foreground px-xs py-2xs rounded-lg typo-paragraph-xs text-background whitespace-nowrap">
             {text}
             {/* Arrow */}
             <div className={cn(
@@ -14893,7 +14893,7 @@ function TooltipExploreBehavior() {
           { value: "right", label: "Right" },
         ]} onChange={setSide} />
         <div className="space-y-xs">
-          <span className="typo-paragraph-mini text-muted-foreground">Text</span>
+          <span className="typo-paragraph-xs text-muted-foreground">Text</span>
           <Input value={text} onChange={(e) => setText(e.target.value)} className="max-w-xs" size="sm" />
         </div>
       </div>
@@ -14933,7 +14933,7 @@ function TooltipPropsTable() {
     <div className="space-y-md">
       {tables.map(t => (
         <div key={t.component}>
-          <h3 className="typo-paragraph-small-semibold text-foreground mb-xs">{t.component}</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground mb-xs">{t.component}</h3>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
@@ -14966,7 +14966,7 @@ function TooltipTokensTable() {
   return <DesignTokensTable tokens={[
     { token: "bg-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Tooltip background (inverted)" },
     { token: "text-background", cssVar: "--background", value: "#f7f7f6", label: "background", usage: "Tooltip text color (inverted)" },
-    { token: "typo-paragraph-mini", cssVar: "—", value: "Geist 400 12/16", usage: "Tooltip text style" },
+    { token: "typo-paragraph-xs", cssVar: "—", value: "Geist 400 12/16", usage: "Tooltip text style" },
     { token: "px-xs", cssVar: "--spacing-xs", value: "8px", usage: "Horizontal padding" },
     { token: "py-2xs", cssVar: "--spacing-2xs", value: "6px", usage: "Vertical padding" },
     { token: "rounded-lg", cssVar: "--radius-lg", value: "8px", usage: "Border radius" },
@@ -14983,7 +14983,7 @@ function TooltipDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Tooltip</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Informational popup shown on hover or focus. For brief, non-interactive hints
           that clarify the purpose of an element. Supports 4 side directions.
         </p>
@@ -15225,7 +15225,7 @@ function TooltipDocs() {
         ["Side", "Right", "side", '"right"'],
         ["Background", "#000000 (var)", "bg-foreground", "Inverted foreground color"],
         ["Text", "#ffffff (var)", "text-background", "Inverted background color"],
-        ["Text style", "Geist 12/16", "typo-paragraph-mini", "400 weight, 0.18 letter-spacing"],
+        ["Text style", "Geist 12/16", "typo-paragraph-xs", "400 weight, 0.18 letter-spacing"],
         ["Padding X", "8px", "px-xs", "Horizontal padding"],
         ["Padding Y", "6px", "py-2xs", "Vertical padding"],
         ["Radius", "8px", "rounded-lg", "Border radius"],
@@ -15257,7 +15257,7 @@ function TooltipDocs() {
           </table>
         </div>
         <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><code className="text-xs">aria-describedby</code> — Radix automatically links trigger to tooltip content.</li>
           <li><code className="text-xs">role="tooltip"</code> — Applied to TooltipContent for screen readers.</li>
           <li>Content is announced when trigger receives focus — no hover required for assistive tech.</li>
@@ -15268,7 +15268,7 @@ function TooltipDocs() {
       {/* ---- Related ---- */}
       <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><strong>Popover</strong> — Interactive floating content. Use when content includes form controls or links.</li>
           <li><strong>HoverCard</strong> — Rich preview card on hover with images and structured content.</li>
           <li><strong>Dropdown Menu</strong> — Action menu triggered by click rather than hover.</li>
@@ -15351,7 +15351,7 @@ function SonnerExploreBehavior() {
               <PropertyToggle label="Description" checked={showDescription} onChange={setShowDescription} />
               <PropertyToggle label="Action Button" checked={showAction} onChange={setShowAction} />
               <div className="space-y-1">
-                <label className="typo-paragraph-mini text-muted-foreground">Title</label>
+                <label className="typo-paragraph-xs text-muted-foreground">Title</label>
                 <Input className="h-2xl w-[200px]" value={title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} />
               </div>
             </>
@@ -15369,7 +15369,7 @@ function SonnerPropsTable() {
 
       {/* Toaster */}
       <div className="space-y-2">
-        <h3 className="typo-paragraph-small-semibold text-foreground">Toaster</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">Toaster</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left">
@@ -15389,7 +15389,7 @@ function SonnerPropsTable() {
 
       {/* toast() options */}
       <div className="space-y-2">
-        <h3 className="typo-paragraph-small-semibold text-foreground">toast() Options</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">toast() Options</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left">
@@ -15434,9 +15434,9 @@ function ToastDocs() {
       <TableOfContents sections={toastSections} />
 
       <header className="space-y-md pb-3xl">
-        <p className="typo-paragraph-mini text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
+        <p className="typo-paragraph-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Toast (Sonner)</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">An opinionated toast notification component for React. Uses the sonner library. Place {"<Toaster />"} at root, trigger with toast() function.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">An opinionated toast notification component for React. Uses the sonner library. Place {"<Toaster />"} at root, trigger with toast() function.</p>
       </header>
 
       <SonnerExploreBehavior />
@@ -15504,7 +15504,7 @@ function ToastDocs() {
         <h2 className="typo-heading-3 font-heading">Best Practices</h2>
 
         <div className="space-y-4">
-          <h3 className="typo-paragraph-small-semibold text-foreground">Content</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground">Content</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use toast for non-critical, temporary feedback: "Item saved", "Email sent".</p>
@@ -15520,7 +15520,7 @@ function ToastDocs() {
         </div>
 
         <div className="space-y-4">
-          <h3 className="typo-paragraph-small-semibold text-foreground">Structure</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground">Structure</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use action buttons for reversible operations like "Undo".</p>
@@ -15537,8 +15537,8 @@ function ToastDocs() {
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" nodeId="295:240815" rows={[
         ["Container", "bg-card", "toastOptions.classNames.toast", "bg-card border-border shadow rounded-[10px]"],
-        ["Title", "paragraph-sm-bold", "—", "typo-paragraph-small-semibold text-foreground"],
-        ["Description", "paragraph-sm", "description", "typo-paragraph-small text-muted-foreground"],
+        ["Title", "paragraph-sm-bold", "—", "typo-paragraph-sm-semibold text-foreground"],
+        ["Description", "paragraph-sm", "description", "typo-paragraph-sm text-muted-foreground"],
         ["Icon", "24px", "icons prop", "size-xl per variant"],
         ["Action Button", "bg-secondary", "action", "bg-primary text-primary-foreground"],
         ["Cancel Button", "bg-muted", "cancel", "bg-muted text-muted-foreground"],
@@ -15552,7 +15552,7 @@ function ToastDocs() {
         <h2 className="typo-heading-3 font-heading">Accessibility</h2>
         <div className="space-y-3">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
-            <h3 className="typo-paragraph-small-semibold text-foreground">Keyboard Support</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b border-border text-left">
@@ -15566,7 +15566,7 @@ function ToastDocs() {
             </div>
           </div>
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
-            <h3 className="typo-paragraph-small-semibold text-foreground">ARIA & Labeling</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground">ARIA & Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
               <li>Uses <code className="bg-muted px-1 rounded font-mono">role="status"</code> with <code className="bg-muted px-1 rounded font-mono">aria-live="polite"</code> — screen readers announce toast content.</li>
               <li>Action/cancel buttons are keyboard-focusable with visible focus ring.</li>
@@ -15648,7 +15648,7 @@ function TabsGroupTab() {
           </TabsList>
           {Array.from({ length: Number(parts) }, (_, i) => (
             <TabsContent key={i} value={`tab${i + 1}`}>
-              <p className="typo-paragraph-small text-muted-foreground p-sm">Content for tab {i + 1}.</p>
+              <p className="typo-paragraph-sm text-muted-foreground p-sm">Content for tab {i + 1}.</p>
             </TabsContent>
           ))}
         </Tabs>
@@ -15740,7 +15740,7 @@ function TabsPropsTable() {
       <h2 className="font-heading font-semibold text-xl">Props</h2>
 
       <div className="space-y-6">
-        <h3 className="typo-paragraph-small-semibold text-foreground">Tabs (Root)</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">Tabs (Root)</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
@@ -15753,7 +15753,7 @@ function TabsPropsTable() {
           </table>
         </div>
 
-        <h3 className="typo-paragraph-small-semibold text-foreground">TabsTrigger</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">TabsTrigger</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
@@ -15764,7 +15764,7 @@ function TabsPropsTable() {
           </table>
         </div>
 
-        <h3 className="typo-paragraph-small-semibold text-foreground">TabsContent</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">TabsContent</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
@@ -15792,7 +15792,7 @@ function TabsTokensTable() {
     { token: "rounded-xl", cssVar: "--radius-xl", value: "12px", usage: "TabsList container border radius" },
     { token: "p-3xs", cssVar: "--spacing-3xs", value: "4px", usage: "TabsList inner padding" },
     { token: "px-xs", cssVar: "--spacing-xs", value: "8px", usage: "Tab trigger horizontal padding" },
-    { token: "typo-paragraph-small-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Tab trigger text style" },
+    { token: "typo-paragraph-sm-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Tab trigger text style" },
   ]} />
 }
 
@@ -15804,7 +15804,7 @@ function TabsDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Tabs</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Tabbed interface for switching between different views or content panels.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Tabbed interface for switching between different views or content panels.</p>
       </header>
 
       <TabsExploreBehavior />
@@ -15872,8 +15872,8 @@ function TabsDocs() {
                 <TabsTrigger value="tab2">Normal</TabsTrigger>
                 <TabsTrigger value="tab3" disabled>Disabled</TabsTrigger>
               </TabsList>
-              <TabsContent value="tab1"><p className="typo-paragraph-small text-muted-foreground p-sm">First tab content.</p></TabsContent>
-              <TabsContent value="tab2"><p className="typo-paragraph-small text-muted-foreground p-sm">Second tab content.</p></TabsContent>
+              <TabsContent value="tab1"><p className="typo-paragraph-sm text-muted-foreground p-sm">First tab content.</p></TabsContent>
+              <TabsContent value="tab2"><p className="typo-paragraph-sm text-muted-foreground p-sm">Second tab content.</p></TabsContent>
             </Tabs>
           </Example>
 
@@ -15884,9 +15884,9 @@ function TabsDocs() {
                 <TabsTrigger value="notifications"><Bell className="size-lg" />Notifications</TabsTrigger>
                 <TabsTrigger value="profile"><User className="size-lg" />Profile</TabsTrigger>
               </TabsList>
-              <TabsContent value="settings"><p className="typo-paragraph-small text-muted-foreground p-sm">Settings content.</p></TabsContent>
-              <TabsContent value="notifications"><p className="typo-paragraph-small text-muted-foreground p-sm">Notifications content.</p></TabsContent>
-              <TabsContent value="profile"><p className="typo-paragraph-small text-muted-foreground p-sm">Profile content.</p></TabsContent>
+              <TabsContent value="settings"><p className="typo-paragraph-sm text-muted-foreground p-sm">Settings content.</p></TabsContent>
+              <TabsContent value="notifications"><p className="typo-paragraph-sm text-muted-foreground p-sm">Notifications content.</p></TabsContent>
+              <TabsContent value="profile"><p className="typo-paragraph-sm text-muted-foreground p-sm">Profile content.</p></TabsContent>
             </Tabs>
           </Example>
 
@@ -15899,11 +15899,11 @@ function TabsDocs() {
                 <TabsTrigger value="tab4">Settings</TabsTrigger>
                 <TabsTrigger value="tab5">Export</TabsTrigger>
               </TabsList>
-              <TabsContent value="tab1"><p className="typo-paragraph-small text-muted-foreground p-sm">Overview content.</p></TabsContent>
-              <TabsContent value="tab2"><p className="typo-paragraph-small text-muted-foreground p-sm">Analytics content.</p></TabsContent>
-              <TabsContent value="tab3"><p className="typo-paragraph-small text-muted-foreground p-sm">Reports content.</p></TabsContent>
-              <TabsContent value="tab4"><p className="typo-paragraph-small text-muted-foreground p-sm">Settings content.</p></TabsContent>
-              <TabsContent value="tab5"><p className="typo-paragraph-small text-muted-foreground p-sm">Export content.</p></TabsContent>
+              <TabsContent value="tab1"><p className="typo-paragraph-sm text-muted-foreground p-sm">Overview content.</p></TabsContent>
+              <TabsContent value="tab2"><p className="typo-paragraph-sm text-muted-foreground p-sm">Analytics content.</p></TabsContent>
+              <TabsContent value="tab3"><p className="typo-paragraph-sm text-muted-foreground p-sm">Reports content.</p></TabsContent>
+              <TabsContent value="tab4"><p className="typo-paragraph-sm text-muted-foreground p-sm">Settings content.</p></TabsContent>
+              <TabsContent value="tab5"><p className="typo-paragraph-sm text-muted-foreground p-sm">Export content.</p></TabsContent>
             </Tabs>
           </Example>
         </div>
@@ -15944,7 +15944,7 @@ function TabsDocs() {
       {/* ---- Figma Mapping ---- */}
       <FigmaMapping id="figma-mapping" nodeId="288:173625" rows={[
         ["TabsList BG", "accent #f3f3f2", "bg-muted", "rounded-xl p-3xs"],
-        ["Tab Inactive", "transparent", "—", "typo-paragraph-small-semibold text-foreground"],
+        ["Tab Inactive", "transparent", "—", "typo-paragraph-sm-semibold text-foreground"],
         ["Tab Inactive Hover", "accent #f3f3f2", "hover:bg-accent", "rounded-[var(--radius-abs-10)]"],
         ["Tab Active", "card #ffffff", "data-[state=active]:bg-card", "shadow"],
         ["Tab Active Focus", "ring #e9e9e7", "focus-visible:ring-[3px]", "ring-ring"],
@@ -15957,7 +15957,7 @@ function TabsDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -16138,7 +16138,7 @@ function BreadcrumbTokensTable() {
     { token: "text-muted-foreground", cssVar: "--muted-foreground", value: "#6f6f6a", label: "muted-fg", usage: "Link text and separator icon color" },
     { token: "text-foreground", cssVar: "--foreground", value: "#252522", label: "foreground", usage: "Current page text" },
     { token: "gap-xs", cssVar: "--spacing-xs", value: "8px", usage: "Gap between items and separators" },
-    { token: "typo-paragraph-small", cssVar: "—", value: "Geist 400 14/20", usage: "Link and page text style" },
+    { token: "typo-paragraph-sm", cssVar: "—", value: "Geist 400 14/20", usage: "Link and page text style" },
     { token: "font-semibold", cssVar: "—", value: "600", usage: "Current page font weight" },
     { token: "[&>svg]:size-3.5", cssVar: "—", value: "14px", usage: "Separator icon size" },
     { token: "size-md", cssVar: "--spacing-md", value: "16px", usage: "Ellipsis icon size" },
@@ -16153,7 +16153,7 @@ function BreadcrumbDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Breadcrumb</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -16216,7 +16216,7 @@ function BreadcrumbDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Breadcrumb is composed of multiple sub-components. Each extends its native HTML element props.
         </p>
         <BreadcrumbPropsTable />
@@ -16225,7 +16225,7 @@ function BreadcrumbDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <BreadcrumbTokensTable />
@@ -16264,7 +16264,7 @@ function BreadcrumbDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -16429,7 +16429,7 @@ function PaginationPropsTable() {
 
       {/* Pagination */}
       <div className="space-y-2">
-        <h3 className="typo-paragraph-small-semibold text-foreground">Pagination</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">Pagination</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left">
@@ -16444,7 +16444,7 @@ function PaginationPropsTable() {
 
       {/* PaginationLink */}
       <div className="space-y-2">
-        <h3 className="typo-paragraph-small-semibold text-foreground">PaginationLink</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">PaginationLink</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left">
@@ -16461,7 +16461,7 @@ function PaginationPropsTable() {
 
       {/* PaginationPrevious / PaginationNext */}
       <div className="space-y-2">
-        <h3 className="typo-paragraph-small-semibold text-foreground">PaginationPrevious / PaginationNext</h3>
+        <h3 className="typo-paragraph-sm-semibold text-foreground">PaginationPrevious / PaginationNext</h3>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
           <table className="w-full text-xs">
             <thead><tr className="bg-muted border-b border-border text-left">
@@ -16499,9 +16499,9 @@ function PaginationDocs() {
       <TableOfContents sections={paginationSections} />
 
       <header className="space-y-md pb-3xl">
-        <p className="typo-paragraph-mini text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
+        <p className="typo-paragraph-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Pagination</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Pagination with page navigation, next and previous links.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Pagination with page navigation, next and previous links.</p>
       </header>
 
       <PaginationExploreBehavior />
@@ -16590,7 +16590,7 @@ function PaginationDocs() {
         <h2 className="typo-heading-3 font-heading">Best Practices</h2>
 
         <div className="space-y-4">
-          <h3 className="typo-paragraph-small-semibold text-foreground">Content</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground">Content</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Use Pagination for large datasets that benefit from page-based browsing.</p>
@@ -16606,7 +16606,7 @@ function PaginationDocs() {
         </div>
 
         <div className="space-y-4">
-          <h3 className="typo-paragraph-small-semibold text-foreground">Structure</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground">Structure</h3>
           <div className="flex gap-4">
             <DoItem>
               <p>Disable Previous on first page and Next on last page.</p>
@@ -16637,7 +16637,7 @@ function PaginationDocs() {
         <h2 className="typo-heading-3 font-heading">Accessibility</h2>
         <div className="space-y-3">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
-            <h3 className="typo-paragraph-small-semibold text-foreground">Keyboard Support</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead><tr className="border-b border-border text-left">
@@ -16652,7 +16652,7 @@ function PaginationDocs() {
             </div>
           </div>
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
-            <h3 className="typo-paragraph-small-semibold text-foreground">ARIA & Labeling</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground">ARIA & Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
               <li>Renders inside <code className="bg-muted px-1 rounded font-mono">nav</code> with <code className="bg-muted px-1 rounded font-mono">aria-label="pagination"</code>.</li>
               <li>Active page link has <code className="bg-muted px-1 rounded font-mono">aria-current="page"</code>.</li>
@@ -16848,7 +16848,7 @@ function DropdownMenuPropsTable() {
     <div className="space-y-md">
       {tables.map(t => (
         <div key={t.component}>
-          <h3 className="typo-paragraph-small-semibold text-foreground mb-xs">{t.component}</h3>
+          <h3 className="typo-paragraph-sm-semibold text-foreground mb-xs">{t.component}</h3>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-sm">
               <thead>
@@ -16889,9 +16889,9 @@ function DropdownMenuTokensTable() {
     { token: "rounded-md", cssVar: "--radius-md", value: "6px", usage: "Item border radius" },
     { token: "gap-xs", cssVar: "--spacing-xs", value: "8px", usage: "Item icon-text gap" },
     { token: "focus:bg-accent", cssVar: "--accent", value: "#f3f3f2", label: "accent", usage: "Item hover/focus background" },
-    { token: "typo-paragraph-small", cssVar: "—", value: "Geist 400 14/20", usage: "Item text" },
-    { token: "typo-paragraph-small-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Label text" },
-    { token: "typo-paragraph-mini", cssVar: "—", value: "Geist 400 12/16", usage: "Shortcut text" },
+    { token: "typo-paragraph-sm", cssVar: "—", value: "Geist 400 14/20", usage: "Item text" },
+    { token: "typo-paragraph-sm-semibold", cssVar: "—", value: "Geist 600 14/20", usage: "Label text" },
+    { token: "typo-paragraph-xs", cssVar: "—", value: "Geist 400 12/16", usage: "Shortcut text" },
     { token: "[&_svg]:size-md", cssVar: "--spacing-md", value: "16px", usage: "Icon size" },
     { token: "opacity-50", cssVar: "—", value: "0.5", usage: "Disabled item" },
   ]} />
@@ -16910,7 +16910,7 @@ function DropdownMenuDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Dropdown Menu</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Contextual menu triggered by a button. Supports labels, separators, checkbox items,
           radio groups, sub-menus, keyboard shortcuts, and icons.
         </p>
@@ -17221,7 +17221,7 @@ function DropdownMenuDocs() {
           </table>
         </div>
         <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><code className="text-xs">role="menu"</code> — Applied to DropdownMenuContent.</li>
           <li><code className="text-xs">role="menuitem"</code> — Applied to each DropdownMenuItem.</li>
           <li><code className="text-xs">role="menuitemcheckbox"</code> — Applied to DropdownMenuCheckboxItem with <code className="text-xs">aria-checked</code>.</li>
@@ -17233,7 +17233,7 @@ function DropdownMenuDocs() {
       {/* ---- Related ---- */}
       <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><strong>Context Menu</strong> — Right-click triggered menu with the same item pattern.</li>
           <li><strong>Menubar</strong> — Horizontal menu bar with multiple dropdown menus.</li>
           <li><strong>Command</strong> — Searchable command palette for keyboard-first users.</li>
@@ -17281,7 +17281,7 @@ function CommandDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Command</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -17302,7 +17302,7 @@ function CommandDocs() {
             </Command>
           </div>
           <div className="border-t border-border bg-muted p-lg">
-            <p className="typo-paragraph-mini text-muted-foreground">Interactive command palette. Figma (66:5046): bg-background, rounded-xl, border-border. Item selected state = bg-accent (NOT bg-muted). Search icon = size-md text-muted-foreground.</p>
+            <p className="typo-paragraph-xs text-muted-foreground">Interactive command palette. Figma (66:5046): bg-background, rounded-xl, border-border. Item selected state = bg-accent (NOT bg-muted). Search icon = size-md text-muted-foreground.</p>
           </div>
         </div>
       </section>
@@ -17370,7 +17370,7 @@ function CommandDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">cmdk</code>.
           Supports all cmdk props.
@@ -17401,7 +17401,7 @@ function CommandDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -17434,7 +17434,7 @@ function CommandDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -17491,10 +17491,10 @@ function CommandDocs() {
         ["66:5046", "Command", "Command", "rounded-xl, border-border, bg-background, py-xs"],
         ["66:5600", "Command Item", "CommandItem", "rounded-md, px-xs py-[6px], gap-xs, data-[selected=true]:bg-accent"],
         ["—", "Input wrapper", "CommandInput", "border-b, px-xs, pt-[2px] pb-[6px], Search icon size-md"],
-        ["—", "Group heading", "CommandGroup", "px-xs py-xs, typo-paragraph-mini, text-muted-foreground"],
+        ["—", "Group heading", "CommandGroup", "px-xs py-xs, typo-paragraph-xs, text-muted-foreground"],
         ["—", "Separator", "CommandSeparator", "h-px bg-border"],
-        ["—", "Shortcut", "CommandShortcut", "ml-auto typo-paragraph-mini text-muted-foreground"],
-        ["—", "Empty", "CommandEmpty", "py-xl text-center typo-paragraph-small"],
+        ["—", "Shortcut", "CommandShortcut", "ml-auto typo-paragraph-xs text-muted-foreground"],
+        ["—", "Empty", "CommandEmpty", "py-xl text-center typo-paragraph-sm"],
         ["—", "Dialog mode", "CommandDialog", "Wraps Command inside Dialog with overflow-hidden p-0"],
       ]} />
 
@@ -17624,7 +17624,7 @@ function AccordionExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["trigger", "content"] as const).map(t => (
-          <button key={t} onClick={() => setActiveTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", activeTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setActiveTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", activeTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "trigger" ? "Accordion Trigger" : "Accordion Content"}
           </button>
         ))}
@@ -17672,7 +17672,7 @@ function AccordionExploreBehavior() {
         <>
           <div className="p-4xl flex items-center justify-center min-h-[200px] bg-card-subtle">
             <div className="w-full max-w-md">
-              <p className="typo-paragraph-small text-foreground">
+              <p className="typo-paragraph-sm text-foreground">
                 This is the content shown when opening an accordion.
               </p>
             </div>
@@ -17707,7 +17707,7 @@ function AccordionDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Accordion</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">A vertically stacked set of interactive headings that each reveal a section of content.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">A vertically stacked set of interactive headings that each reveal a section of content.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -17792,7 +17792,7 @@ function AccordionDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-accordion</code>.
           Supports all Radix Accordion props in addition to the following:
@@ -17803,7 +17803,7 @@ function AccordionDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>{" "}
           and sourced from the Figma file{" "}
@@ -17851,11 +17851,11 @@ function AccordionDocs() {
         ["Type", "Open / Closed", "data-state", "Chevron rotates 180° on open, content slides down"],
         ["End Item", "True / False", "—", "last:border-b-0 removes bottom border on last item"],
         ["Trigger", "flex, gap-xs, py-sm", "AccordionTrigger", "Horizontal flex, 8px gap, 12px py, no radius (0 default)"],
-        ["Label", "Paragraph Small SemiBold (14/20 ls:0.07)", "children", "typo-paragraph-small-semibold text-foreground"],
+        ["Label", "Paragraph Small SemiBold (14/20 ls:0.07)", "children", "typo-paragraph-sm-semibold text-foreground"],
         ["Icon", "chevron-down 16×16", "ChevronDown", "size-md text-ghost-foreground, rotates 180° on open"],
-        ["Content", "Paragraph Small (14/20 ls:0.07), pb-sm", "AccordionContent", "typo-paragraph-small text-foreground, pb-sm"],
+        ["Content", "Paragraph Small (14/20 ls:0.07), pb-sm", "AccordionContent", "typo-paragraph-sm text-foreground, pb-sm"],
         ["Border", "1px --border", "AccordionItem", "border-b border-border (hidden on last item)"],
-        ["Focus Ring", "0 0 0 3px --ring", "—", "focus-visible:rounded-lg focus-visible:focus-ring outline-none"],
+        ["Focus Ring", "0 0 0 3px --ring", "—", "focus-visible:rounded-lg focus-visible:shadow-focus-ring outline-none"],
         ["Disabled", "opacity-50", "disabled", "disabled:pointer-events-none disabled:opacity-50 (Shadcn)"],
         ["Animation", "Open / Close", "—", "animate-accordion-down / animate-accordion-up"],
       ]} />
@@ -17863,7 +17863,7 @@ function AccordionDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -18017,7 +18017,7 @@ function CollapsibleDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Collapsible</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Toggle visibility of a content section with "Show more / Show less" text triggers. Simpler than Accordion for single-item toggling.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Toggle visibility of a content section with "Show more / Show less" text triggers. Simpler than Accordion for single-item toggling.</p>
       </header>
 
       {/* ---- Explore Behavior ---- */}
@@ -18026,17 +18026,17 @@ function CollapsibleDocs() {
         <div className="rounded-xl border border-border overflow-hidden bg-card">
           <div className="p-4xl flex items-center justify-center min-h-[200px] bg-muted">
             <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-[400px]">
-              <p className="typo-paragraph-small text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
+              <p className="typo-paragraph-sm text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
               <CollapsibleContent>
-                <p className="typo-paragraph-small text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
+                <p className="typo-paragraph-sm text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
               </CollapsibleContent>
-              <CollapsibleTrigger className="typo-paragraph-small font-medium text-primary hover:underline mt-xs inline-block">
+              <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs inline-block">
                 {isOpen ? "Show less" : "Show more"}
               </CollapsibleTrigger>
             </Collapsible>
           </div>
           <div className="border-t border-border bg-muted p-lg">
-            <p className="typo-paragraph-mini text-muted-foreground">Click "Show more" to expand. Collapsible uses "Show more / Show less" text trigger pattern (NOT Accordion cards). Animation: collapsible-down/up 0.2s ease-out.</p>
+            <p className="typo-paragraph-xs text-muted-foreground">Click "Show more" to expand. Collapsible uses "Show more / Show less" text trigger pattern (NOT Accordion cards). Animation: collapsible-down/up 0.2s ease-out.</p>
           </div>
         </div>
       </section>
@@ -18050,35 +18050,35 @@ function CollapsibleDocs() {
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Example title="Show More / Less" description="Classic text truncation pattern with a toggle trigger." code={`<Collapsible open={isOpen} onOpenChange={setIsOpen}>\n  <p className="typo-paragraph-small text-muted-foreground">\n    SprouX is a comprehensive design system built for SaaS applications...\n  </p>\n  <CollapsibleContent>\n    <p className="typo-paragraph-small text-muted-foreground mt-xs">\n      It includes over 40 production-ready components with dark mode support...\n    </p>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-small font-medium text-primary hover:underline mt-xs">\n    {isOpen ? "Show less" : "Show more"}\n  </CollapsibleTrigger>\n</Collapsible>`}>
+        <Example title="Show More / Less" description="Classic text truncation pattern with a toggle trigger." code={`<Collapsible open={isOpen} onOpenChange={setIsOpen}>\n  <p className="typo-paragraph-sm text-muted-foreground">\n    SprouX is a comprehensive design system built for SaaS applications...\n  </p>\n  <CollapsibleContent>\n    <p className="typo-paragraph-sm text-muted-foreground mt-xs">\n      It includes over 40 production-ready components with dark mode support...\n    </p>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs">\n    {isOpen ? "Show less" : "Show more"}\n  </CollapsibleTrigger>\n</Collapsible>`}>
           <Collapsible open={isOpen2} onOpenChange={setIsOpen2} className="max-w-sm">
-            <p className="typo-paragraph-small text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
+            <p className="typo-paragraph-sm text-muted-foreground">SprouX is a comprehensive design system built for SaaS applications, providing a unified set of components, tokens, and patterns.</p>
             <CollapsibleContent>
-              <p className="typo-paragraph-small text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
+              <p className="typo-paragraph-sm text-muted-foreground mt-xs">It includes over 40 production-ready components with dark mode support, accessibility baked in, and full Figma-to-code parity. Each component follows strict design tokens for consistent spacing, color, and typography.</p>
             </CollapsibleContent>
-            <CollapsibleTrigger className="typo-paragraph-small font-medium text-primary hover:underline mt-xs inline-block">
+            <CollapsibleTrigger className="typo-paragraph-sm font-medium text-primary hover:underline mt-xs inline-block">
               {isOpen2 ? "Show less" : "Show more"}
             </CollapsibleTrigger>
           </Collapsible>
         </Example>
 
-        <Example title="List Reveal" description="Show first item, reveal the rest on click." code={`<Collapsible className="space-y-xs">\n  <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/primitives</div>\n  <CollapsibleContent className="space-y-xs">\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/tokens</div>\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/react</div>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-mini font-medium text-primary hover:underline">\n    Show 2 more\n  </CollapsibleTrigger>\n</Collapsible>`}>
+        <Example title="List Reveal" description="Show first item, reveal the rest on click." code={`<Collapsible className="space-y-xs">\n  <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/primitives</div>\n  <CollapsibleContent className="space-y-xs">\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/tokens</div>\n    <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/react</div>\n  </CollapsibleContent>\n  <CollapsibleTrigger className="typo-paragraph-xs font-medium text-primary hover:underline">\n    Show 2 more\n  </CollapsibleTrigger>\n</Collapsible>`}>
           <Collapsible open={isOpen3} onOpenChange={setIsOpen3} className="space-y-xs max-w-sm">
-            <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/primitives</div>
+            <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/primitives</div>
             <CollapsibleContent className="space-y-xs">
-              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/tokens</div>
-              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-small">@sproux/react</div>
+              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/tokens</div>
+              <div className="rounded-lg border border-border px-md py-xs typo-paragraph-sm">@sproux/react</div>
             </CollapsibleContent>
-            <CollapsibleTrigger className="typo-paragraph-mini font-medium text-primary hover:underline">
+            <CollapsibleTrigger className="typo-paragraph-xs font-medium text-primary hover:underline">
               {isOpen3 ? "Show less" : "Show 2 more"}
             </CollapsibleTrigger>
           </Collapsible>
         </Example>
 
-        <Example title="Disabled" description="Prevents interaction when disabled prop is set." code={`<Collapsible disabled>\n  <p className="typo-paragraph-small text-muted-foreground">This content cannot be expanded.</p>\n  <CollapsibleTrigger className="typo-paragraph-small font-medium text-muted-foreground/50 mt-xs cursor-not-allowed">\n    Show more\n  </CollapsibleTrigger>\n</Collapsible>`}>
+        <Example title="Disabled" description="Prevents interaction when disabled prop is set." code={`<Collapsible disabled>\n  <p className="typo-paragraph-sm text-muted-foreground">This content cannot be expanded.</p>\n  <CollapsibleTrigger className="typo-paragraph-sm font-medium text-muted-foreground/50 mt-xs cursor-not-allowed">\n    Show more\n  </CollapsibleTrigger>\n</Collapsible>`}>
           <Collapsible disabled className="max-w-sm">
-            <p className="typo-paragraph-small text-muted-foreground">This content cannot be expanded because the section is locked.</p>
-            <CollapsibleTrigger className="typo-paragraph-small font-medium text-muted-foreground/50 mt-xs inline-block cursor-not-allowed">
+            <p className="typo-paragraph-sm text-muted-foreground">This content cannot be expanded because the section is locked.</p>
+            <CollapsibleTrigger className="typo-paragraph-sm font-medium text-muted-foreground/50 mt-xs inline-block cursor-not-allowed">
               Show more
             </CollapsibleTrigger>
           </Collapsible>
@@ -18089,7 +18089,7 @@ function CollapsibleDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-collapsible</code>.
           Supports all Radix Collapsible props.
@@ -18119,7 +18119,7 @@ function CollapsibleDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -18150,7 +18150,7 @@ function CollapsibleDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -18223,7 +18223,7 @@ function ScrollAreaExploreBehavior() {
               <div className="flex gap-md p-md">
                 {Array.from({ length: 12 }, (_, i) => (
                   <div key={i} className="shrink-0 flex items-center justify-center rounded-lg border border-border bg-muted size-3xl">
-                    <span className="typo-paragraph-small-semibold text-muted-foreground">{i + 1}</span>
+                    <span className="typo-paragraph-sm-semibold text-muted-foreground">{i + 1}</span>
                   </div>
                 ))}
               </div>
@@ -18236,7 +18236,7 @@ function ScrollAreaExploreBehavior() {
                   <div key={i} className="flex gap-md py-2xs">
                     {Array.from({ length: 6 }, (_, j) => (
                       <div key={j} className="shrink-0 flex items-center justify-center rounded-md border border-border bg-muted size-2xl">
-                        <span className="typo-paragraph-mini text-muted-foreground">{i * 6 + j + 1}</span>
+                        <span className="typo-paragraph-xs text-muted-foreground">{i * 6 + j + 1}</span>
                       </div>
                     ))}
                   </div>
@@ -18251,7 +18251,7 @@ function ScrollAreaExploreBehavior() {
                 {Array.from({ length: 20 }, (_, i) => (
                   <div key={i} className="flex items-center gap-sm rounded-md border border-border px-sm py-xs">
                     <div className="size-xs rounded-full bg-primary" />
-                    <span className="typo-paragraph-small">Item {i + 1}</span>
+                    <span className="typo-paragraph-sm">Item {i + 1}</span>
                   </div>
                 ))}
               </div>
@@ -18300,13 +18300,13 @@ function ScrollAreaPropsTable() {
   return (
     <section id="props" className="space-y-6 pt-xl border-t border-border">
       <h2 className="font-heading font-semibold text-xl">Props</h2>
-      <p className="typo-paragraph-small text-muted-foreground">
+      <p className="typo-paragraph-sm text-muted-foreground">
         Built on <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-scroll-area</code>. All native Radix props are forwarded.
       </p>
       <div className="space-y-md">
         {tables.map((t) => (
           <div key={t.component}>
-            <h3 className="typo-paragraph-small-semibold text-foreground mb-xs">{t.component}</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground mb-xs">{t.component}</h3>
             <div className="overflow-x-auto rounded-xl border border-border bg-card">
               <table className="w-full text-xs">
                 <thead>
@@ -18364,7 +18364,7 @@ function ScrollAreaDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Scroll Area</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Custom scrollbar overlay for constrained regions. Cross-browser consistent, keyboard accessible.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Custom scrollbar overlay for constrained regions. Cross-browser consistent, keyboard accessible.</p>
       </header>
 
       <ScrollAreaExploreBehavior />
@@ -18378,13 +18378,13 @@ function ScrollAreaDocs() {
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Example title="Vertical — Tag List" description="Scrollable list with custom scrollbar and separators." code={`<ScrollArea className="h-72 w-48 rounded-lg border border-border">\n  <div className="p-md">\n    <h4 className="typo-paragraph-small-medium mb-md">Tags</h4>\n    {tags.map((tag) => (\n      <>\n        <div className="typo-paragraph-small py-xs">{tag}</div>\n        <Separator />\n      </>\n    ))}\n  </div>\n</ScrollArea>`}>
+          <Example title="Vertical — Tag List" description="Scrollable list with custom scrollbar and separators." code={`<ScrollArea className="h-72 w-48 rounded-lg border border-border">\n  <div className="p-md">\n    <h4 className="typo-paragraph-sm-medium mb-md">Tags</h4>\n    {tags.map((tag) => (\n      <>\n        <div className="typo-paragraph-sm py-xs">{tag}</div>\n        <Separator />\n      </>\n    ))}\n  </div>\n</ScrollArea>`}>
             <ScrollArea className="h-72 w-48 rounded-lg border border-border">
               <div className="p-md">
-                <h4 className="typo-paragraph-small-medium mb-md">Tags</h4>
+                <h4 className="typo-paragraph-sm-medium mb-md">Tags</h4>
                 {tags.map((tag) => (
                   <div key={tag}>
-                    <div className="typo-paragraph-small py-xs">{tag}</div>
+                    <div className="typo-paragraph-sm py-xs">{tag}</div>
                     <Separator />
                   </div>
                 ))}
@@ -18392,15 +18392,15 @@ function ScrollAreaDocs() {
             </ScrollArea>
           </Example>
 
-          <Example title="Horizontal — Artwork Gallery" description="Horizontally scrollable row of artwork cards." code={`<ScrollArea className="w-96 whitespace-nowrap rounded-lg border border-border">\n  <div className="flex gap-md p-md">\n    {artwork.map((art) => (\n      <figure className="shrink-0 w-[150px]">\n        <div className="rounded-lg bg-muted aspect-[3/4]" />\n        <figcaption className="pt-xs">\n          <span className="typo-paragraph-small-medium">{art.title}</span>\n          <span className="typo-paragraph-mini text-muted-foreground">{art.artist}</span>\n        </figcaption>\n      </figure>\n    ))}\n  </div>\n  <ScrollBar orientation="horizontal" />\n</ScrollArea>`}>
+          <Example title="Horizontal — Artwork Gallery" description="Horizontally scrollable row of artwork cards." code={`<ScrollArea className="w-96 whitespace-nowrap rounded-lg border border-border">\n  <div className="flex gap-md p-md">\n    {artwork.map((art) => (\n      <figure className="shrink-0 w-[150px]">\n        <div className="rounded-lg bg-muted aspect-[3/4]" />\n        <figcaption className="pt-xs">\n          <span className="typo-paragraph-sm-medium">{art.title}</span>\n          <span className="typo-paragraph-xs text-muted-foreground">{art.artist}</span>\n        </figcaption>\n      </figure>\n    ))}\n  </div>\n  <ScrollBar orientation="horizontal" />\n</ScrollArea>`}>
             <ScrollArea className="w-96 whitespace-nowrap rounded-lg border border-border">
               <div className="flex gap-md p-md">
                 {artwork.map((art) => (
                   <figure key={art.title} className="shrink-0 w-[150px]">
                     <div className="rounded-lg bg-muted aspect-[3/4]" />
                     <figcaption className="pt-xs whitespace-normal">
-                      <span className="typo-paragraph-small-medium block">{art.title}</span>
-                      <span className="typo-paragraph-mini text-muted-foreground">{art.artist}</span>
+                      <span className="typo-paragraph-sm-medium block">{art.title}</span>
+                      <span className="typo-paragraph-xs text-muted-foreground">{art.artist}</span>
                     </figcaption>
                   </figure>
                 ))}
@@ -18437,13 +18437,13 @@ function ScrollAreaDocs() {
             </ScrollArea>
           </Example>
 
-          <Example title="Always Visible" description="Scrollbar always visible using type='always'." code={`<ScrollArea className="h-48 w-64 rounded-lg border border-border" type="always">\n  <div className="p-md space-y-xs">\n    {items.map(item => (\n      <div className="typo-paragraph-small">{item}</div>\n    ))}\n  </div>\n</ScrollArea>`}>
+          <Example title="Always Visible" description="Scrollbar always visible using type='always'." code={`<ScrollArea className="h-48 w-64 rounded-lg border border-border" type="always">\n  <div className="p-md space-y-xs">\n    {items.map(item => (\n      <div className="typo-paragraph-sm">{item}</div>\n    ))}\n  </div>\n</ScrollArea>`}>
             <ScrollArea className="h-48 w-64 rounded-lg border border-border" type="always">
               <div className="p-md space-y-xs">
                 {Array.from({ length: 20 }, (_, i) => (
                   <div key={i} className="flex items-center gap-sm rounded-md px-sm py-xs hover:bg-muted transition-colors">
-                    <span className="typo-paragraph-mini-semibold text-muted-foreground w-xl text-right">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="typo-paragraph-small">Notification item {i + 1}</span>
+                    <span className="typo-paragraph-xs-semibold text-muted-foreground w-xl text-right">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="typo-paragraph-sm">Notification item {i + 1}</span>
                   </div>
                 ))}
               </div>
@@ -18456,7 +18456,7 @@ function ScrollAreaDocs() {
 
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Tokens from <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <ScrollAreaTokensTable />
@@ -18777,13 +18777,13 @@ function DatePickerDayTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className={cn(
-          "inline-flex flex-col items-center justify-center typo-paragraph-small font-normal transition-colors cursor-default overflow-clip",
+          "inline-flex flex-col items-center justify-center typo-paragraph-sm font-normal transition-colors cursor-default overflow-clip",
           daySize, posClass, stateClass
         )}>
           <span>{activeState === "outside" ? "30" : "15"}</span>
           {isCustom && (
             <span className={cn(
-              "typo-paragraph-mini whitespace-nowrap",
+              "typo-paragraph-xs whitespace-nowrap",
               activeState === "selected" || activeState === "focus" || activeState === "selected-disable"
                 ? "opacity-70"
                 : "text-muted-foreground"
@@ -18882,10 +18882,10 @@ function DatePickerInputTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex flex-col gap-[4px]">
-          {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Date</label>}
+          {showLabel && <label className="typo-paragraph-xs text-muted-foreground">Date</label>}
           <div
             className={cn(
-              "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-small w-[197px] transition-colors",
+              "flex h-9 items-center gap-xs rounded-lg border bg-input px-sm typo-paragraph-sm w-[197px] transition-colors",
               state === "focus" ? "border-border ring-[3px] ring-ring" : "border-border",
               state === "value" ? "text-foreground" : "text-muted-foreground"
             )}
@@ -18921,10 +18921,10 @@ function TimePickerInputTab() {
     <>
       <div className="p-4xl flex items-center justify-center min-h-[160px] bg-card-subtle">
         <div className="flex flex-col gap-[4px]">
-          {showLabel && <label className="typo-paragraph-mini text-muted-foreground">Time</label>}
+          {showLabel && <label className="typo-paragraph-xs text-muted-foreground">Time</label>}
           <div
             className={cn(
-              "h-9 w-[100px] rounded-lg border border-border bg-input px-sm typo-paragraph-small transition-colors inline-flex items-center",
+              "h-9 w-[100px] rounded-lg border border-border bg-input px-sm typo-paragraph-sm transition-colors inline-flex items-center",
               state === "focus" ? "ring-[3px] ring-ring" : "",
               state === "value" ? "text-foreground" : "text-muted-foreground"
             )}
@@ -18971,7 +18971,7 @@ function DatePickerExploreBehavior() {
             key={t.value}
             onClick={() => setTab(t.value)}
             className={cn(
-              "px-md py-sm typo-paragraph-small-medium transition-colors whitespace-nowrap",
+              "px-md py-sm typo-paragraph-sm-medium transition-colors whitespace-nowrap",
               tab === t.value
                 ? "text-foreground border-b-2 border-primary"
                 : "text-muted-foreground hover:text-foreground"
@@ -19052,7 +19052,7 @@ function DatePickerDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Date Picker</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Date and time selection components. Includes Calendar, Date Picker (popover), Day cells, and input triggers for date/time fields.
         </p>
       </header>
@@ -19114,7 +19114,7 @@ function DatePickerDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           DatePicker and DateRangePicker compose an Input-style trigger + Popover + Calendar internally.
         </p>
         <DatePickerPropsTable />
@@ -19123,7 +19123,7 @@ function DatePickerDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DatePickerTokensTable />
@@ -19184,14 +19184,14 @@ function DatePickerDocs() {
         ["Type", "1 Month", "month_caption", "Single month title, prev/next nav buttons"],
         ["Type", "2 Months", "months", "Two month grids side-by-side, gap-md (16px)"],
         ["Nav", "Prev/Next buttons", "button_previous/next", "size-2xl (32px), rounded-lg, border, p-[7px]"],
-        ["Title", "Month Year", "caption_label", "typo-paragraph-small font-semibold (Geist 600 14px)"],
+        ["Title", "Month Year", "caption_label", "typo-paragraph-sm font-semibold (Geist 600 14px)"],
         ["Weekday", "Su Mo Tu...", "weekday", "text-[12px] w-[48px] h-[32px] text-muted-foreground"],
       ]} />
 
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard support</h3>
             <div className="overflow-x-auto">
@@ -19283,7 +19283,7 @@ function ComboboxDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Combobox</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">Searchable select dropdown. Composition of Command + Popover.</p>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Searchable select dropdown. Composition of Command + Popover.</p>
       </header>
 
       <Playground controls={[]} render={() => (
@@ -19412,7 +19412,7 @@ function RadioExploreBehavior() {
       {/* ── Tabs ── */}
       <div className="flex border-b border-border">
         {(["radio", "group", "rich", "richAdvanced"] as const).map(t => (
-          <button key={t} onClick={() => setRdTab(t)} className={cn("px-lg py-xs typo-paragraph-small font-medium transition-colors border-b-2 -mb-px", rdTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+          <button key={t} onClick={() => setRdTab(t)} className={cn("px-lg py-xs typo-paragraph-sm font-medium transition-colors border-b-2 -mb-px", rdTab === t ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
             {t === "radio" ? "Radio" : t === "group" ? "Radio Group" : t === "rich" ? "Rich" : "Rich Advanced"}
           </button>
         ))}
@@ -19493,13 +19493,13 @@ function RadioExploreBehavior() {
               )}
               <div className="flex-1 min-w-0 space-y-[2px]">
                 <div className="flex items-center gap-2xs">
-                  <span className="typo-paragraph-small text-foreground flex-1 min-w-0">Label</span>
+                  <span className="typo-paragraph-sm text-foreground flex-1 min-w-0">Label</span>
                   {richShowBadge && !richFlipped && (
                     <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Best</Badge>
                   )}
                 </div>
                 {richShowLine2 && (
-                  <p className="typo-paragraph-mini text-muted-foreground">Secondary text</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Secondary text</p>
                 )}
               </div>
               {richFlipped && (
@@ -19540,7 +19540,7 @@ function RadioExploreBehavior() {
               ].filter(Boolean).join(" ")}>
                 <div className="space-y-3xs">
                   <div className="flex items-center gap-sm h-xl">
-                    <span className="typo-paragraph-semibold text-foreground flex-1">Title</span>
+                    <span className="typo-paragraph-base-semibold text-foreground flex-1">Title</span>
                     {raRecommended && (
                       <Badge variant="emphasis" level="secondary" size="sm" className="shrink-0">Recommended</Badge>
                     )}
@@ -19549,12 +19549,12 @@ function RadioExploreBehavior() {
                     </RadioGroup>
                   </div>
                   {raDescription && (
-                    <p className="typo-paragraph-small text-muted-foreground">Description</p>
+                    <p className="typo-paragraph-sm text-muted-foreground">Description</p>
                   )}
                 </div>
                 {raShowBody && (
                   <div className="flex items-center justify-center h-[48px] rounded-lg border border-dashed border-[#9747ff]">
-                    <span className="typo-paragraph-small-semibold text-[#c89dff]">Slot</span>
+                    <span className="typo-paragraph-sm-semibold text-[#c89dff]">Slot</span>
                   </div>
                 )}
               </div>
@@ -19571,7 +19571,7 @@ function RadioExploreBehavior() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-sm">
-                    <span className="typo-paragraph-small text-foreground flex-1">Title</span>
+                    <span className="typo-paragraph-sm text-foreground flex-1">Title</span>
                     <RadioGroup value={raIsSelected ? "item" : ""} disabled={raIsDisabled}>
                       <RadioGroupItem value="item" className="shrink-0" />
                     </RadioGroup>
@@ -19608,7 +19608,7 @@ function RadioDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Radio</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A set of checkable buttons — known as radio buttons — where only one can be checked at a time.
         </p>
       </header>
@@ -19768,7 +19768,7 @@ function RadioDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -19817,7 +19817,7 @@ function RadioDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -20064,10 +20064,10 @@ function InputOtpSlotTab() {
     xs: { left: "rounded-l-sm", right: "rounded-r-sm", middle: "" },
   }
   const textMap: Record<string, string> = {
-    lg: "typo-paragraph-small",
-    default: "typo-paragraph-small",
-    sm: "typo-paragraph-small",
-    xs: "typo-paragraph-mini",
+    lg: "typo-paragraph-sm",
+    default: "typo-paragraph-sm",
+    sm: "typo-paragraph-sm",
+    xs: "typo-paragraph-xs",
   }
   const caretMap: Record<string, string> = {
     lg: "h-md",
@@ -20145,9 +20145,9 @@ function InputOtpExploreBehavior() {
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               className={cn(
-                "px-md py-sm typo-paragraph-small whitespace-nowrap border-b-2 transition-colors",
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
                 activeTab === tab.value
-                  ? "border-primary text-foreground typo-paragraph-small-medium"
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
@@ -20215,8 +20215,8 @@ function InputOtpTokensTable() {
     { token: "ring-ring", cssVar: "--ring", value: "#e9e9e7", label: "ring", usage: "Focus ring (3px)" },
     { token: "ring-ring-error", cssVar: "--ring-error", value: "#fecaca", label: "ring-error", usage: "Error focus ring" },
     { token: "border-destructive-border", cssVar: "--destructive-border", value: "#ef4444", label: "destructive-border", usage: "Error border" },
-    { token: "typo-paragraph-small", cssVar: "—", value: "Geist 400 14/20", usage: "Text — Large/Default/Small" },
-    { token: "typo-paragraph-mini", cssVar: "—", value: "Geist 400 12/16", usage: "Text — Mini" },
+    { token: "typo-paragraph-sm", cssVar: "—", value: "Geist 400 14/20", usage: "Text — Large/Default/Small" },
+    { token: "typo-paragraph-xs", cssVar: "—", value: "Geist 400 12/16", usage: "Text — Mini" },
     { token: "h-md", cssVar: "--spacing-md", value: "16px", usage: "Caret height — Large/Default" },
     { token: "h-sm", cssVar: "--spacing-sm", value: "12px", usage: "Caret height — Small" },
     { token: "h-xs", cssVar: "--spacing-xs", value: "8px", usage: "Caret height — Mini" },
@@ -20236,7 +20236,7 @@ function InputOTPDocs() {
           Components / Forms
         </p>
         <h1 className="typo-heading-2">Input OTP</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Multi-cell one-time-password input built on input-otp. Supports 4 sizes
           (Large, Default, Small, Mini), error states via aria-invalid, and automatic
           focus management between cells.
@@ -20402,7 +20402,7 @@ function InputOTPDocs() {
                   <InputOTPSlot index={5} />
                 </InputOTPGroup>
               </InputOTP>
-              <p className="typo-paragraph-mini text-muted-foreground">
+              <p className="typo-paragraph-xs text-muted-foreground">
                 Value: "{otpValue}" ({otpValue.length}/6)
               </p>
             </div>
@@ -20513,7 +20513,7 @@ function InputOTPDocs() {
           </table>
         </div>
         <h3 className="font-heading font-semibold text-base mt-md">ARIA Attributes</h3>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><code className="text-xs">aria-invalid</code> — Set on the root InputOTP to indicate validation error. Propagates to all slots via CSS.</li>
           <li><code className="text-xs">role="separator"</code> — InputOTPSeparator uses separator role for screen readers.</li>
           <li><code className="text-xs">data-active</code> — Applied to the currently focused slot.</li>
@@ -20523,7 +20523,7 @@ function InputOTPDocs() {
       {/* ---- Related ---- */}
       <section id="related" className="space-y-md pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc pl-lg space-y-xs typo-paragraph-small text-muted-foreground">
+        <ul className="list-disc pl-lg space-y-xs typo-paragraph-sm text-muted-foreground">
           <li><strong>Input</strong> — Standard single-line text input for general text entry.</li>
           <li><strong>Label</strong> — Pair with InputOTP for accessible form labeling.</li>
           <li><strong>Button</strong> — Submit/verify button after OTP entry.</li>
@@ -20540,7 +20540,7 @@ function SpinnerDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Spinner</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Animated loading indicator with continuous rotation. Available in three sizes: sm (16px), default (24px), and lg (32px).
         </p>
       </header>
@@ -20581,11 +20581,11 @@ function SpinnerDocs() {
           <Example
             title="With text"
             description="Pair with a loading label for context."
-            code={`<div className="flex items-center gap-xs">\n  <Spinner size="sm" />\n  <span className="typo-paragraph-small text-muted-foreground">Loading...</span>\n</div>`}
+            code={`<div className="flex items-center gap-xs">\n  <Spinner size="sm" />\n  <span className="typo-paragraph-sm text-muted-foreground">Loading...</span>\n</div>`}
           >
             <div className="flex items-center gap-xs">
               <Spinner size="sm" />
-              <span className="typo-paragraph-small text-muted-foreground">Loading...</span>
+              <span className="typo-paragraph-sm text-muted-foreground">Loading...</span>
             </div>
           </Example>
 
@@ -20613,10 +20613,10 @@ function SpinnerDocs() {
 
       <section id="best-practices" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
-        <h3 className="typo-paragraph-semibold mt-lg">Content</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Content</h3>
         <DoItem text="Pair with a descriptive label when the loading context isn't obvious." />
         <DontItem text="Use a spinner as the only feedback — provide text context for accessibility." />
-        <h3 className="typo-paragraph-semibold mt-lg">Structure</h3>
+        <h3 className="typo-paragraph-base-semibold mt-lg">Structure</h3>
         <DoItem text="Use the sm size inside buttons or inline elements." />
         <DontItem text="Use the lg size inside compact UI areas like table cells." />
         <DoItem text="Center the spinner in its container for visual balance." />
@@ -20663,7 +20663,7 @@ function SpinnerDocs() {
 
       <section id="related" className="space-y-md pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Related Components</h2>
-        <ul className="list-disc list-inside space-y-xs typo-paragraph text-muted-foreground">
+        <ul className="list-disc list-inside space-y-xs typo-paragraph-base text-muted-foreground">
           <li><strong>Button</strong> — Use Spinner inside a button to indicate loading state.</li>
           <li><strong>Skeleton</strong> — Content placeholder for layout-aware loading.</li>
         </ul>
@@ -20768,18 +20768,18 @@ function HoverCardExploreBehavior() {
         <div className={cn(hoverCardClassNames.content, "pointer-events-none")}>
           <div className="flex gap-md">
             <div className="size-10 shrink-0 rounded-full bg-muted border border-border flex items-center justify-center">
-              <span className="typo-paragraph-small-semibold text-muted-foreground">N</span>
+              <span className="typo-paragraph-sm-semibold text-muted-foreground">N</span>
             </div>
             <div className="flex flex-col gap-3xs">
-              <p className="typo-paragraph-small-semibold text-foreground">@nextjs</p>
-              <p className="typo-paragraph-small text-foreground">The React Framework – created and maintained by @vercel.</p>
-              <p className="typo-paragraph-mini text-muted-foreground">Joined December 2021</p>
+              <p className="typo-paragraph-sm-semibold text-foreground">@nextjs</p>
+              <p className="typo-paragraph-sm text-foreground">The React Framework – created and maintained by @vercel.</p>
+              <p className="typo-paragraph-xs text-muted-foreground">Joined December 2021</p>
             </div>
           </div>
         </div>
       </div>
       <div className="border-t border-border bg-muted p-lg">
-        <p className="typo-paragraph-mini text-muted-foreground">Figma (303:246487): No variant properties. Content r=8 (rounded-lg), p=8 (p-xs), border, bg-card, shadow. Inner content gap=16 (gap-md), text stack gap=4 (gap-3xs).</p>
+        <p className="typo-paragraph-xs text-muted-foreground">Figma (303:246487): No variant properties. Content r=8 (rounded-lg), p=8 (p-xs), border, bg-card, shadow. Inner content gap=16 (gap-md), text stack gap=4 (gap-3xs).</p>
       </div>
     </div>
   )
@@ -20794,7 +20794,7 @@ function HoverCardDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Hover Card</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Rich preview card that appears on hover. Built on Radix HoverCard.
           Shows content previews like user profiles or article summaries without click interaction.
         </p>
@@ -20849,8 +20849,8 @@ function HoverCardDocs() {
     <div className="flex gap-md">
       <div className="size-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">D</div>
       <div className="flex flex-col gap-3xs">
-        <h4 className="typo-paragraph-small-semibold">Designer</h4>
-        <p className="typo-paragraph-small text-muted-foreground">Design system engineer. Building components one token at a time.</p>
+        <h4 className="typo-paragraph-sm-semibold">Designer</h4>
+        <p className="typo-paragraph-sm text-muted-foreground">Design system engineer. Building components one token at a time.</p>
       </div>
     </div>
   </HoverCardContent>
@@ -20859,8 +20859,8 @@ function HoverCardDocs() {
               <div className="flex gap-md">
                 <div className="size-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">D</div>
                 <div className="flex flex-col gap-3xs">
-                  <h4 className="typo-paragraph-small-semibold">Designer</h4>
-                  <p className="typo-paragraph-small text-muted-foreground">Design system engineer. Building components one token at a time.</p>
+                  <h4 className="typo-paragraph-sm-semibold">Designer</h4>
+                  <p className="typo-paragraph-sm text-muted-foreground">Design system engineer. Building components one token at a time.</p>
                 </div>
               </div>
             </div>
@@ -20876,9 +20876,9 @@ function HoverCardDocs() {
         <AvatarFallback>N</AvatarFallback>
       </Avatar>
       <div className="flex flex-col gap-3xs">
-        <p className="typo-paragraph-small-semibold">@nextjs</p>
-        <p className="typo-paragraph-small text-foreground">The React Framework – created and maintained by @vercel.</p>
-        <p className="typo-paragraph-mini text-muted-foreground">Joined December 2021</p>
+        <p className="typo-paragraph-sm-semibold">@nextjs</p>
+        <p className="typo-paragraph-sm text-foreground">The React Framework – created and maintained by @vercel.</p>
+        <p className="typo-paragraph-xs text-muted-foreground">Joined December 2021</p>
       </div>
     </div>
   </HoverCardContent>
@@ -20886,12 +20886,12 @@ function HoverCardDocs() {
             <div className="w-80 rounded-lg border border-border bg-card p-xs shadow pointer-events-none">
               <div className="flex gap-md">
                 <div className="size-10 shrink-0 rounded-full bg-muted border border-border flex items-center justify-center">
-                  <span className="typo-paragraph-small-semibold text-muted-foreground">N</span>
+                  <span className="typo-paragraph-sm-semibold text-muted-foreground">N</span>
                 </div>
                 <div className="flex flex-col gap-3xs">
-                  <p className="typo-paragraph-small-semibold text-foreground">@nextjs</p>
-                  <p className="typo-paragraph-small text-foreground">The React Framework – created and maintained by @vercel.</p>
-                  <p className="typo-paragraph-mini text-muted-foreground">Joined December 2021</p>
+                  <p className="typo-paragraph-sm-semibold text-foreground">@nextjs</p>
+                  <p className="typo-paragraph-sm text-foreground">The React Framework – created and maintained by @vercel.</p>
+                  <p className="typo-paragraph-xs text-muted-foreground">Joined December 2021</p>
                 </div>
               </div>
             </div>
@@ -20906,7 +20906,7 @@ function HoverCardDocs() {
           <div className="p-lg flex flex-wrap gap-sm">
             <HoverCard>
               <HoverCardTrigger asChild>
-                <a href="#" className="typo-paragraph-small-semibold underline">@sproux</a>
+                <a href="#" className="typo-paragraph-sm-semibold underline">@sproux</a>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="space-y-2">
@@ -20917,14 +20917,14 @@ function HoverCardDocs() {
             </HoverCard>
             <HoverCard>
               <HoverCardTrigger asChild>
-                <a href="#" className="typo-paragraph-small-semibold underline">@designer</a>
+                <a href="#" className="typo-paragraph-sm-semibold underline">@designer</a>
               </HoverCardTrigger>
               <HoverCardContent className="w-72">
                 <div className="flex gap-md">
                   <div className="size-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">D</div>
                   <div className="flex flex-col gap-3xs">
-                    <h4 className="typo-paragraph-small-semibold">Designer</h4>
-                    <p className="typo-paragraph-small text-muted-foreground">Design system engineer. Building components one token at a time.</p>
+                    <h4 className="typo-paragraph-sm-semibold">Designer</h4>
+                    <p className="typo-paragraph-sm text-muted-foreground">Design system engineer. Building components one token at a time.</p>
                   </div>
                 </div>
               </HoverCardContent>
@@ -20942,7 +20942,7 @@ function HoverCardDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code>, sourced from Figma <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <HoverCardTokensTable />
@@ -20986,9 +20986,9 @@ function HoverCardDocs() {
         ["Content", "Hover Card (r=8, p=8, bg-card, shadow)", "HoverCardContent", "rounded-lg border border-border bg-card p-xs shadow"],
         ["Inner layout", "HORIZONTAL gap=16", "—", "flex gap-md (content example)"],
         ["Text stack", "VERTICAL gap=4", "—", "flex flex-col gap-3xs"],
-        ["Title text", "Geist 600 14/20 --foreground", "—", "typo-paragraph-small-semibold text-foreground"],
-        ["Body text", "Geist 400 14/20 --foreground", "—", "typo-paragraph-small text-foreground"],
-        ["Meta text", "Geist 400 12/16 --muted-foreground", "—", "typo-paragraph-mini text-muted-foreground"],
+        ["Title text", "Geist 600 14/20 --foreground", "—", "typo-paragraph-sm-semibold text-foreground"],
+        ["Body text", "Geist 400 14/20 --foreground", "—", "typo-paragraph-sm text-foreground"],
+        ["Meta text", "Geist 400 12/16 --muted-foreground", "—", "typo-paragraph-xs text-muted-foreground"],
         ["Alignment", "Center (default)", "align", '"center"'],
         ["Side Offset", "4px", "sideOffset", "4"],
       ]} />
@@ -20996,7 +20996,7 @@ function HoverCardDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -21108,8 +21108,8 @@ function AspectRatioExploreBehavior() {
         <div className="w-[320px]">
           <AspectRatio ratio={ratioMap[ratio]} className="bg-muted rounded-lg flex items-center justify-center border border-border">
             <div className="text-center">
-              <p className="typo-paragraph-semibold text-foreground">{ratioLabel[ratio]}</p>
-              <p className="typo-paragraph-small text-muted-foreground">
+              <p className="typo-paragraph-base-semibold text-foreground">{ratioLabel[ratio]}</p>
+              <p className="typo-paragraph-sm text-muted-foreground">
                 {Math.round(320)}×{Math.round(320 / ratioMap[ratio])}px
               </p>
             </div>
@@ -21144,7 +21144,7 @@ function AspectRatioDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Aspect Ratio</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Constrains child content to a specified width-to-height ratio. Built on Radix Aspect Ratio primitive.
         </p>
       </header>
@@ -21229,7 +21229,7 @@ function AspectRatioDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-aspect-ratio</code>.
           Supports all Radix AspectRatio props.
@@ -21240,7 +21240,7 @@ function AspectRatioDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Aspect Ratio is a layout utility wrapper — it has no visual styling tokens of its own. The Radix primitive renders an unstyled container that constrains children to the given ratio. All visual styling (background, border, radius, etc.) should be applied to the child content.
         </p>
         <div className="overflow-x-auto rounded-xl border border-border bg-card">
@@ -21286,7 +21286,7 @@ function AspectRatioDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">ARIA attributes</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -21388,7 +21388,7 @@ function ContextMenuDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Context Menu</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Right-click context menu. Built on Radix Context Menu.
         </p>
       </header>
@@ -21399,7 +21399,7 @@ function ContextMenuDocs() {
         <div className="rounded-xl border border-border overflow-hidden bg-card">
           <div className="p-4xl flex items-center justify-center min-h-[200px] bg-muted">
             <ContextMenu>
-              <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-small text-muted-foreground select-none">
+              <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
                 Right click here
               </ContextMenuTrigger>
               <ContextMenuContent className="w-56">
@@ -21420,7 +21420,7 @@ function ContextMenuDocs() {
             </ContextMenu>
           </div>
           <div className="border-t border-border bg-muted p-lg">
-            <p className="typo-paragraph-mini text-muted-foreground">Right-click the dashed area to open. Figma: bg-card, border-border, rounded-md, shadow-md. Items: rounded-md, focus:bg-accent, gap-xs.</p>
+            <p className="typo-paragraph-xs text-muted-foreground">Right-click the dashed area to open. Figma: bg-card, border-border, rounded-md, shadow-md. Items: rounded-md, focus:bg-accent, gap-xs.</p>
           </div>
         </div>
       </section>
@@ -21438,10 +21438,10 @@ function ContextMenuDocs() {
         <Example
           title="With Sub-menu & Shortcuts"
           description="Right-click to open. Includes nested sub-menu and keyboard shortcuts."
-          code={`<ContextMenu>\n  <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-small text-muted-foreground">\n    Right click here\n  </ContextMenuTrigger>\n  <ContextMenuContent className="w-56">\n    <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuSeparator />\n    <ContextMenuSub>\n      <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>\n      <ContextMenuSubContent className="w-48">\n        <ContextMenuItem>Save Page As…</ContextMenuItem>\n        <ContextMenuItem>Create Shortcut…</ContextMenuItem>\n      </ContextMenuSubContent>\n    </ContextMenuSub>\n    <ContextMenuSeparator />\n    <ContextMenuItem>Inspect</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`}
+          code={`<ContextMenu>\n  <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground">\n    Right click here\n  </ContextMenuTrigger>\n  <ContextMenuContent className="w-56">\n    <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>\n    <ContextMenuSeparator />\n    <ContextMenuSub>\n      <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>\n      <ContextMenuSubContent className="w-48">\n        <ContextMenuItem>Save Page As…</ContextMenuItem>\n        <ContextMenuItem>Create Shortcut…</ContextMenuItem>\n      </ContextMenuSubContent>\n    </ContextMenuSub>\n    <ContextMenuSeparator />\n    <ContextMenuItem>Inspect</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`}
         >
           <ContextMenu>
-            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-small text-muted-foreground select-none">
+            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
               Right click here
             </ContextMenuTrigger>
             <ContextMenuContent className="w-56">
@@ -21468,7 +21468,7 @@ function ContextMenuDocs() {
           code={`<ContextMenu>\n  <ContextMenuTrigger>Right click here</ContextMenuTrigger>\n  <ContextMenuContent className="w-56">\n    <ContextMenuLabel>Appearance</ContextMenuLabel>\n    <ContextMenuSeparator />\n    <ContextMenuCheckboxItem checked={showBookmarks} onCheckedChange={setShowBookmarks}>Show Bookmarks</ContextMenuCheckboxItem>\n    <ContextMenuCheckboxItem checked={showUrls} onCheckedChange={setShowUrls}>Show Full URLs</ContextMenuCheckboxItem>\n    <ContextMenuSeparator />\n    <ContextMenuLabel>People</ContextMenuLabel>\n    <ContextMenuSeparator />\n    <ContextMenuRadioGroup value={person} onValueChange={setPerson}>\n      <ContextMenuRadioItem value="pedro">Pedro</ContextMenuRadioItem>\n      <ContextMenuRadioItem value="colm">Colm</ContextMenuRadioItem>\n    </ContextMenuRadioGroup>\n  </ContextMenuContent>\n</ContextMenu>`}
         >
           <ContextMenu>
-            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-small text-muted-foreground select-none">
+            <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-lg border border-dashed border-border typo-paragraph-sm text-muted-foreground select-none">
               Right click here
             </ContextMenuTrigger>
             <ContextMenuContent className="w-56">
@@ -21492,7 +21492,7 @@ function ContextMenuDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-context-menu</code>.
           Supports all Radix ContextMenu props.
@@ -21522,7 +21522,7 @@ function ContextMenuDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -21557,7 +21557,7 @@ function ContextMenuDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -21596,7 +21596,7 @@ function ContextMenuDocs() {
         ["—", "Sub-menu", "ContextMenuSub + SubTrigger + SubContent", "ChevronRight indicator, nested dropdown"],
         ["—", "Checkbox Item", "ContextMenuCheckboxItem", "Check icon indicator, pl-2xl"],
         ["—", "Radio Item", "ContextMenuRadioItem", "Circle icon indicator, pl-2xl"],
-        ["—", "Shortcut", "ContextMenuShortcut", "ml-auto typo-paragraph-mini text-muted-foreground"],
+        ["—", "Shortcut", "ContextMenuShortcut", "ml-auto typo-paragraph-xs text-muted-foreground"],
         ["—", "Separator", "ContextMenuSeparator", "h-px bg-border"],
       ]} />
 
@@ -21648,7 +21648,7 @@ function NavigationMenuDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Navigation Menu</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Top-level site navigation with animated dropdown content panels.
           Built on Radix Navigation Menu for full keyboard and screen reader support.
         </p>
@@ -21668,24 +21668,24 @@ function NavigationMenuDocs() {
                       <li className="row-span-3">
                         <NavigationMenuLink asChild>
                           <a className="flex h-full w-full select-none flex-col justify-end rounded-lg bg-gradient-to-b from-muted/50 to-muted p-xl no-underline outline-none focus:shadow-md" href="#">
-                            <div className="mb-xs mt-md typo-paragraph-semibold">SprouX DS</div>
-                            <p className="typo-paragraph-mini text-muted-foreground">Beautifully designed components built with Radix UI and Tailwind CSS.</p>
+                            <div className="mb-xs mt-md typo-paragraph-base-semibold">SprouX DS</div>
+                            <p className="typo-paragraph-xs text-muted-foreground">Beautifully designed components built with Radix UI and Tailwind CSS.</p>
                           </a>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
-                            <div className="typo-paragraph-small-semibold">Introduction</div>
-                            <p className="typo-paragraph-mini text-muted-foreground">Re-usable components built using Radix UI and Tailwind CSS.</p>
+                            <div className="typo-paragraph-sm-semibold">Introduction</div>
+                            <p className="typo-paragraph-xs text-muted-foreground">Re-usable components built using Radix UI and Tailwind CSS.</p>
                           </a>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
-                            <div className="typo-paragraph-small-semibold">Installation</div>
-                            <p className="typo-paragraph-mini text-muted-foreground">How to install dependencies and structure your app.</p>
+                            <div className="typo-paragraph-sm-semibold">Installation</div>
+                            <p className="typo-paragraph-xs text-muted-foreground">How to install dependencies and structure your app.</p>
                           </a>
                         </NavigationMenuLink>
                       </li>
@@ -21705,8 +21705,8 @@ function NavigationMenuDocs() {
                         <li key={title}>
                           <NavigationMenuLink asChild>
                             <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
-                              <div className="typo-paragraph-small-semibold">{title}</div>
-                              <p className="typo-paragraph-mini text-muted-foreground">{desc}</p>
+                              <div className="typo-paragraph-sm-semibold">{title}</div>
+                              <p className="typo-paragraph-xs text-muted-foreground">{desc}</p>
                             </a>
                           </NavigationMenuLink>
                         </li>
@@ -21723,7 +21723,7 @@ function NavigationMenuDocs() {
             </NavigationMenu>
           </div>
           <div className="border-t border-border bg-muted p-lg rounded-b-xl">
-            <p className="typo-paragraph-mini text-muted-foreground">Click triggers to open dropdown content panels. Figma component (294:233298) uses Ghost Button instances with rounded-lg (8px), text-muted-foreground default, hover:bg-accent.</p>
+            <p className="typo-paragraph-xs text-muted-foreground">Click triggers to open dropdown content panels. Figma component (294:233298) uses Ghost Button instances with rounded-lg (8px), text-muted-foreground default, hover:bg-accent.</p>
           </div>
         </div>
       </section>
@@ -21752,8 +21752,8 @@ function NavigationMenuDocs() {
                     <li>
                       <NavigationMenuLink asChild>
                         <a className="block select-none space-y-3xs rounded-md p-sm leading-none no-underline outline-none transition-colors hover:bg-accent focus:bg-accent" href="#">
-                          <div className="typo-paragraph-small-semibold">Introduction</div>
-                          <p className="typo-paragraph-mini text-muted-foreground">Re-usable components for your applications.</p>
+                          <div className="typo-paragraph-sm-semibold">Introduction</div>
+                          <p className="typo-paragraph-xs text-muted-foreground">Re-usable components for your applications.</p>
                         </a>
                       </NavigationMenuLink>
                     </li>
@@ -21785,7 +21785,7 @@ function NavigationMenuDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-navigation-menu</code>.
           Supports all Radix NavigationMenu props.
@@ -21817,7 +21817,7 @@ function NavigationMenuDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -21852,7 +21852,7 @@ function NavigationMenuDocs() {
 
       <FigmaMapping id="figma-mapping" rows={[
         ["294:233298", "Navigation Menu", "NavigationMenu", "Root container, viewport prop controls shared dropdown container"],
-        ["Button/Ghost", "Trigger", "NavigationMenuTrigger", "h-9, rounded-lg (8px), px-md py-xs, typo-paragraph-small-semibold, hover:bg-accent"],
+        ["Button/Ghost", "Trigger", "NavigationMenuTrigger", "h-9, rounded-lg (8px), px-md py-xs, typo-paragraph-sm-semibold, hover:bg-accent"],
         ["—", "Content Panel", "NavigationMenuContent", "Animated dropdown, bg-card border-border shadow-md"],
         ["—", "Link Item", "NavigationMenuLink", "rounded-md, p-xs gap-3xs, hover:bg-accent, focus:ring-[3px]"],
         ["—", "Viewport", "NavigationMenuViewport", "Shared container for content panels, rounded-md, animated"],
@@ -21862,7 +21862,7 @@ function NavigationMenuDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -21949,7 +21949,7 @@ function MenubarDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Menubar</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A horizontal menu bar with dropdown menus, checkbox items, radio groups, and sub-menus.
           Follows desktop application menu patterns (File, Edit, View).
         </p>
@@ -22018,7 +22018,7 @@ function MenubarDocs() {
             </Menubar>
           </div>
           <div className="border-t border-border bg-muted p-lg">
-            <p className="typo-paragraph-mini text-muted-foreground">Click on File, Edit, View, or Profiles to open dropdown menus. No Figma variant properties — code-only component following DropdownMenu/ContextMenu pattern.</p>
+            <p className="typo-paragraph-xs text-muted-foreground">Click on File, Edit, View, or Profiles to open dropdown menus. No Figma variant properties — code-only component following DropdownMenu/ContextMenu pattern.</p>
           </div>
         </div>
       </section>
@@ -22093,7 +22093,7 @@ function MenubarDocs() {
       {/* ---- Props ---- */}
       <section id="props" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Props</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           Built on{" "}
           <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">@radix-ui/react-menubar</code>.
           Supports all Radix Menubar props.
@@ -22124,7 +22124,7 @@ function MenubarDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -22159,10 +22159,10 @@ function MenubarDocs() {
       <FigmaMapping id="figma-mapping" rows={[
         ["—", "—", "—", "No Figma component — code-only, follows DropdownMenu/ContextMenu pattern"],
         ["Root", "Bar container", "Menubar", "auto-height, p-3xs, border, rounded-md, shadow-xs"],
-        ["Trigger", "Menu name", "MenubarTrigger", "typo-paragraph-small-semibold, rounded-md, focus:bg-accent"],
+        ["Trigger", "Menu name", "MenubarTrigger", "typo-paragraph-sm-semibold, rounded-md, focus:bg-accent"],
         ["Content", "Dropdown", "MenubarContent", "border, bg-card, shadow-md, rounded-md, animated"],
         ["Item", "Menu item", "MenubarItem", "rounded-md, focus:bg-accent, gap-xs, inset prop"],
-        ["Shortcut", "Kbd hint", "MenubarShortcut", "Right-aligned, typo-paragraph-mini, text-muted-foreground"],
+        ["Shortcut", "Kbd hint", "MenubarShortcut", "Right-aligned, typo-paragraph-xs, text-muted-foreground"],
         ["Separator", "Divider", "MenubarSeparator", "h-px bg-border"],
         ["CheckboxItem", "Toggle item", "MenubarCheckboxItem", "Check icon, rounded-md, focus:bg-accent"],
         ["RadioItem", "Radio item", "MenubarRadioItem", "Circle icon, rounded-md, focus:bg-accent"],
@@ -22172,7 +22172,7 @@ function MenubarDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Keyboard Support</h3>
             <div className="overflow-x-auto">
@@ -22257,13 +22257,13 @@ function ResizableExploreBehavior() {
             >
               <ResizablePanel defaultSize={panels === "3" ? 25 : 50}>
                 <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
-                  <span className="typo-paragraph-small-semibold">{panels === "3" ? "Sidebar" : "One"}</span>
+                  <span className="typo-paragraph-sm-semibold">{panels === "3" ? "Sidebar" : "One"}</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle={withHandle} />
               <ResizablePanel defaultSize={50}>
                 <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
-                  <span className="typo-paragraph-small-semibold">{panels === "3" ? "Content" : "Two"}</span>
+                  <span className="typo-paragraph-sm-semibold">{panels === "3" ? "Content" : "Two"}</span>
                 </div>
               </ResizablePanel>
               {panels === "3" && (
@@ -22271,7 +22271,7 @@ function ResizableExploreBehavior() {
                   <ResizableHandle withHandle={withHandle} />
                   <ResizablePanel defaultSize={25}>
                     <div className={cn("flex items-center justify-center p-xl", orientation === "horizontal" ? "h-[200px]" : "h-full")}>
-                      <span className="typo-paragraph-small-semibold">Details</span>
+                      <span className="typo-paragraph-sm-semibold">Details</span>
                     </div>
                   </ResizablePanel>
                 </>
@@ -22331,13 +22331,13 @@ function ResizablePropsTable() {
   return (
     <section id="props" className="space-y-6 pt-xl border-t border-border">
       <h2 className="font-heading font-semibold text-xl">Props</h2>
-      <p className="typo-paragraph-small text-muted-foreground">
+      <p className="typo-paragraph-sm text-muted-foreground">
         Built on <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">react-resizable-panels</code>. All native props are forwarded.
       </p>
       <div className="space-y-md">
         {tables.map((t) => (
           <div key={t.component}>
-            <h3 className="typo-paragraph-small-semibold text-foreground mb-xs">{t.component}</h3>
+            <h3 className="typo-paragraph-sm-semibold text-foreground mb-xs">{t.component}</h3>
             <div className="overflow-x-auto rounded-xl border border-border bg-card">
               <table className="w-full text-xs">
                 <thead><tr className="bg-muted border-b border-border text-left"><th className="px-md py-sm font-semibold">Prop</th><th className="px-md py-sm font-semibold">Type</th><th className="px-md py-sm font-semibold">Default</th><th className="px-md py-sm font-semibold">Description</th></tr></thead>
@@ -22378,7 +22378,7 @@ function ResizableDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Resizable</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Resizable panel groups with draggable handles. Supports horizontal and vertical layouts
           with optional grip indicators. Built on react-resizable-panels.
         </p>
@@ -22398,18 +22398,18 @@ function ResizableDocs() {
           <Example
             title="Horizontal"
             description="Two resizable panels side by side with a drag handle."
-            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">One</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Two</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">One</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Two</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
           >
             <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
               <ResizablePanel defaultSize={50}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">One</span>
+                  <span className="typo-paragraph-sm-semibold">One</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={50}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Two</span>
+                  <span className="typo-paragraph-sm-semibold">Two</span>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -22418,18 +22418,18 @@ function ResizableDocs() {
           <Example
             title="Vertical"
             description="Stacked panels with vertical resizing."
-            code={`<ResizablePanelGroup orientation="vertical" className="min-h-[200px] rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Header</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+            code={`<ResizablePanelGroup orientation="vertical" className="min-h-[200px] rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Header</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-full items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
           >
             <ResizablePanelGroup orientation="vertical" className="max-w-md min-h-[200px] rounded-lg border border-border">
               <ResizablePanel defaultSize={25}>
                 <div className="flex h-full items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Header</span>
+                  <span className="typo-paragraph-sm-semibold">Header</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={75}>
                 <div className="flex h-full items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Content</span>
+                  <span className="typo-paragraph-sm-semibold">Content</span>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -22438,24 +22438,24 @@ function ResizableDocs() {
           <Example
             title="Three panels"
             description="Three panels with handles — sidebar + content + details."
-            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Details</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={50}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle />\n  <ResizablePanel defaultSize={25}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Details</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
           >
             <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
               <ResizablePanel defaultSize={25}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Sidebar</span>
+                  <span className="typo-paragraph-sm-semibold">Sidebar</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle />
               <ResizablePanel defaultSize={50}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Content</span>
+                  <span className="typo-paragraph-sm-semibold">Content</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle />
               <ResizablePanel defaultSize={25}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Details</span>
+                  <span className="typo-paragraph-sm-semibold">Details</span>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -22464,18 +22464,18 @@ function ResizableDocs() {
           <Example
             title="Collapsible sidebar"
             description="Left panel collapses to 0% on double-click or keyboard."
-            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25} minSize={15} collapsible collapsedSize={0}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-small-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
+            code={`<ResizablePanelGroup orientation="horizontal" className="rounded-lg border border-border">\n  <ResizablePanel defaultSize={25} minSize={15} collapsible collapsedSize={0}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Sidebar</span>\n    </div>\n  </ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={75}>\n    <div className="flex h-[200px] items-center justify-center p-xl">\n      <span className="typo-paragraph-sm-semibold">Content</span>\n    </div>\n  </ResizablePanel>\n</ResizablePanelGroup>`}
           >
             <ResizablePanelGroup orientation="horizontal" className="max-w-md rounded-lg border border-border">
               <ResizablePanel defaultSize={25} minSize={15} collapsible collapsedSize={0}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Sidebar</span>
+                  <span className="typo-paragraph-sm-semibold">Sidebar</span>
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={75}>
                 <div className="flex h-[200px] items-center justify-center p-xl">
-                  <span className="typo-paragraph-small-semibold">Content</span>
+                  <span className="typo-paragraph-sm-semibold">Content</span>
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -22607,7 +22607,7 @@ function SidebarDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Sidebar</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Application sidebar navigation. Supports collapsible, icon-only, and mobile-responsive modes.
           The most complex layout component in the design system.
         </p>
@@ -22640,7 +22640,7 @@ function SidebarDocs() {
       />
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="typo-paragraph-semibold">Examples</h2>
+        <h2 className="typo-paragraph-base-semibold">Examples</h2>
 
         <Example
           title="Basic sidebar"
@@ -22690,7 +22690,7 @@ function SidebarDocs() {
       </section>
 
       <section className="space-y-4 pt-3xl">
-        <h2 className="typo-paragraph-semibold">Features</h2>
+        <h2 className="typo-paragraph-base-semibold">Features</h2>
         <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
           <li>Collapsible modes: offcanvas, icon-only, none</li>
           <li>Variants: sidebar, floating, inset</li>
@@ -22706,7 +22706,7 @@ function SidebarDocs() {
       {/* ---- Design Tokens ---- */}
       <section id="design-tokens" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Design Tokens</h2>
-        <p className="typo-paragraph-small text-muted-foreground">
+        <p className="typo-paragraph-sm text-muted-foreground">
           These tokens are defined in <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">src/index.css</code> and sourced from the Figma file <strong>[SprouX - DS] Foundation & Component</strong>.
         </p>
         <DesignTokensTable tokens={[
@@ -22722,7 +22722,7 @@ function SidebarDocs() {
       {/* ---- Accessibility ---- */}
       <section id="accessibility" className="space-y-4 pt-3xl">
         <h2 className="font-heading font-semibold text-xl">Accessibility</h2>
-        <div className="space-y-3 typo-paragraph-small text-muted-foreground">
+        <div className="space-y-3 typo-paragraph-sm text-muted-foreground">
           <div className="rounded-xl border border-border bg-card p-5 space-y-3 text-xs">
             <h3 className="font-body font-semibold text-sm text-foreground">Labeling</h3>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
@@ -23093,9 +23093,9 @@ function RightDecorationTab() {
       case "text-button": return <TextButton variant="primary">Text Button</TextButton>
       case "button": return <Button size="sm">Label</Button>
       case "button-group": return <><Button size="sm">Label</Button><Button size="sm" variant="outline">Label</Button></>
-      case "tabs": return <div className="bg-accent flex items-center p-3xs rounded-xl"><div className="bg-card px-xs py-[2px] rounded-[10px] shadow typo-paragraph-small-semibold">Label</div><div className="px-xs py-[2px] typo-paragraph-small-semibold text-foreground">Label</div></div>
-      case "select": return <div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-small text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div>
-      case "text-select": return <><span className="typo-paragraph-small text-foreground-subtle">Label</span><div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-small text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div></>
+      case "tabs": return <div className="bg-accent flex items-center p-3xs rounded-xl"><div className="bg-card px-xs py-[2px] rounded-[10px] shadow typo-paragraph-sm-semibold">Label</div><div className="px-xs py-[2px] typo-paragraph-sm-semibold text-foreground">Label</div></div>
+      case "select": return <div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-sm text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div>
+      case "text-select": return <><span className="typo-paragraph-sm text-foreground-subtle">Label</span><div className="bg-input border border-border flex gap-[6px] items-center h-2xl overflow-clip px-xs rounded-lg w-[96px]"><span className="flex-1 typo-paragraph-sm text-foreground truncate">Value</span><ChevronRight className="size-md text-muted-foreground rotate-90" /></div></>
       case "count-character": return <><span>0/{`{number}`}</span><span>characters</span></>
       case "count-word": return <><span>0/{`{number}`}</span><span>words</span></>
       case "payment-card": return <><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-destructive">MC</span></div><div className="bg-card border border-border h-[14px] w-[20px] rounded-[2px] overflow-clip flex items-center justify-center"><span className="text-[6px] font-bold text-primary">V</span></div></>
@@ -23153,9 +23153,9 @@ function TitleExploreBehavior() {
               key={tab.value}
               onClick={() => setActiveTab(tab.value)}
               className={cn(
-                "px-md py-sm typo-paragraph-small whitespace-nowrap border-b-2 transition-colors",
+                "px-md py-sm typo-paragraph-sm whitespace-nowrap border-b-2 transition-colors",
                 activeTab === tab.value
-                  ? "border-primary text-foreground typo-paragraph-small-medium"
+                  ? "border-primary text-foreground typo-paragraph-sm-medium"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               )}
             >
@@ -23345,25 +23345,25 @@ function TitlePropsTable() {
 function TitleTokensTable() {
   const tokens = [
     { component: "TitlePage", property: "Title font", token: "typo-heading-2", value: "Fraunces 600 30/32 -1px" },
-    { component: "TitlePage", property: "Subtitle font", token: "typo-paragraph", value: "Geist 400 16/24" },
+    { component: "TitlePage", property: "Subtitle font", token: "typo-paragraph-base", value: "Geist 400 16/24" },
     { component: "TitlePage", property: "Gap", token: "gap-sm", value: "12px" },
-    { component: "TitleSection", property: "Title font", token: "typo-paragraph-semibold", value: "Geist 600 16/24" },
-    { component: "TitleSection", property: "Description font", token: "typo-paragraph-small", value: "Geist 400 14/20" },
+    { component: "TitleSection", property: "Title font", token: "typo-paragraph-base-semibold", value: "Geist 600 16/24" },
+    { component: "TitleSection", property: "Description font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
     { component: "TitleSection", property: "Gap", token: "gap-3xs", value: "4px" },
     { component: "TitleSection", property: "Min height", token: "min-h-2xl", value: "32px" },
-    { component: "TitleCard", property: "Title font", token: "typo-paragraph-small-semibold", value: "Geist 600 14/20" },
+    { component: "TitleCard", property: "Title font", token: "typo-paragraph-sm-semibold", value: "Geist 600 14/20" },
     { component: "TitleCard", property: "Title color", token: "text-foreground-subtle", value: "#6f6f6a / slate-700" },
     { component: "TitleCard", property: "Back icon", token: "size-md", value: "16px" },
-    { component: "TitleInput", property: "Label (Normal)", token: "typo-paragraph-small-medium", value: "Geist 500 14/20" },
-    { component: "TitleInput", property: "Label (Small)", token: "typo-paragraph-mini-medium", value: "Geist 500 12/16" },
+    { component: "TitleInput", property: "Label (Normal)", token: "typo-paragraph-sm-medium", value: "Geist 500 14/20" },
+    { component: "TitleInput", property: "Label (Small)", token: "typo-paragraph-xs-medium", value: "Geist 500 12/16" },
     { component: "TitleInput", property: "Label color", token: "text-foreground", value: "#252522" },
-    { component: "TitleInformation", property: "Large font", token: "typo-paragraph-semibold", value: "Geist 600 16/24" },
-    { component: "TitleInformation", property: "Default font", token: "typo-paragraph-small", value: "Geist 400 14/20" },
+    { component: "TitleInformation", property: "Large font", token: "typo-paragraph-base-semibold", value: "Geist 600 16/24" },
+    { component: "TitleInformation", property: "Default font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
     { component: "TitleInformation", property: "Icon circle", token: "size-xl, border-border", value: "24px, rounded-full" },
-    { component: "InformationText", property: "Default", token: "typo-paragraph-small", value: "Geist 400 14/20" },
-    { component: "InformationText", property: "Medium", token: "typo-paragraph-semibold", value: "Geist 600 16/24" },
+    { component: "InformationText", property: "Default", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
+    { component: "InformationText", property: "Medium", token: "typo-paragraph-base-semibold", value: "Geist 600 16/24" },
     { component: "InformationText", property: "High", token: "typo-paragraph-xl-semibold", value: "Geist 600 30/32 -1px" },
-    { component: "TextValue", property: "Font", token: "typo-paragraph-small", value: "Geist 400 14/20" },
+    { component: "TextValue", property: "Font", token: "typo-paragraph-sm", value: "Geist 400 14/20" },
     { component: "TextValue", property: "Color", token: "text-foreground-subtle", value: "slate-700 / slate-400" },
   ]
 
@@ -23402,7 +23402,7 @@ function TitleSystemDocs() {
       <header className="space-y-md pb-3xl">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Title System</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           Composable title components for page headers, section headings, card titles, input labels, information displays, and value text. Each component maps to a specific Figma component set with full variant support.
         </p>
       </header>
@@ -23658,7 +23658,7 @@ function ComponentsGrid({ onNavigate }: { onNavigate: (id: ComponentId) => void 
     <div className="space-y-3xl">
       <div className="space-y-sm">
         <h1 className="typo-heading-2">SprouX Design System</h1>
-        <p className="typo-paragraph text-muted-foreground max-w-3xl">
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
           A comprehensive design system with foundations and 43 components built with
           React 19, Tailwind CSS v4, Radix UI primitives, and more.
         </p>

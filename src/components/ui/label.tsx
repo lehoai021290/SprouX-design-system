@@ -18,8 +18,8 @@ const labelVariants = cva(
   {
     variants: {
       size: {
-        sm: "typo-paragraph-small-medium",
-        default: "typo-paragraph-medium",
+        sm: "typo-paragraph-sm-medium",
+        default: "typo-paragraph-base-medium",
       },
     },
     defaultVariants: {
