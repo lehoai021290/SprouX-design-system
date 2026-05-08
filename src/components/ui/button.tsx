@@ -56,7 +56,7 @@ const buttonVariants = cva(
         lg: "h-size-lg px-xl py-0 gap-xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
         default: "h-size-md px-md py-0 gap-xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
         sm: "h-size-sm px-sm py-0 gap-2xs typo-paragraph-sm-semibold [&_svg:not([class*='size-'])]:size-md",
-        xs: "h-size-xs px-xs py-0 gap-2xs typo-paragraph-xs-semibold [&_svg:not([class*='size-'])]:size-md",
+        xs: "h-size-xxs px-xs py-0 gap-2xs typo-paragraph-xs-semibold [&_svg:not([class*='size-'])]:size-md",
         /* ── Icon Button sizes (Figma: 4838:17100)
               Regular=36×36 icon=20, Large=40×40 icon=20,
               Small=32×32 icon=18, Mini=24×24 r=4 icon=16
@@ -64,7 +64,7 @@ const buttonVariants = cva(
         icon: "size-size-md p-0 gap-0 [&_svg:not([class*='size-'])]:size-lg",
         "icon-lg": "size-size-lg p-0 gap-0 [&_svg:not([class*='size-'])]:size-lg",
         "icon-sm": "size-size-sm p-0 gap-0 [&_svg:not([class*='size-'])]:size-[18px]",
-        "icon-xs": "size-size-xs p-0 gap-0 !rounded-sm [&_svg:not([class*='size-'])]:size-md",
+        "icon-xs": "size-size-xxs p-0 gap-0 !rounded-sm [&_svg:not([class*='size-'])]:size-md",
       },
     },
     defaultVariants: {

@@ -785,6 +785,565 @@ function DesignTokensTable({ tokens }: { tokens: { token: string; cssVar: string
 }
 
 /* ================================================================
+   Foundation: Component Size (9 sizes synced 1:1 with Figma `size/*`)
+   ================================================================ */
+function ComponentSizeSection() {
+  const sizes = [
+    { name: "xxxs", value: "20px", css: "--spacing-size-xxxs", figma: "size/xxxs", use: "Micro chips, ultra-compact rails" },
+    { name: "xxs",  value: "24px", css: "--spacing-size-xxs",  figma: "size/xxs",  use: "Mini — compact toolbars, dismiss buttons (Button size=\"xs\")" },
+    { name: "xs",   value: "28px", css: "--spacing-size-xs",   figma: "size/xs",   use: "Compact controls between Mini and Small" },
+    { name: "sm",   value: "32px", css: "--spacing-size-sm",   figma: "size/sm",   use: "Small — dense tables, sidebar items" },
+    { name: "md",   value: "36px", css: "--spacing-size-md",   figma: "size/md",   use: "Default — standard buttons, inputs, selects" },
+    { name: "lg",   value: "40px", css: "--spacing-size-lg",   figma: "size/lg",   use: "Large — hero CTAs, primary form actions" },
+    { name: "xl",   value: "48px", css: "--spacing-size-xl",   figma: "size/xl",   use: "Extra Large — splash CTAs (WCAG min)" },
+    { name: "xxl",  value: "64px", css: "--spacing-size-xxl",  figma: "size/xxl",  use: "Hero buttons / oversized touch targets" },
+    { name: "xxxl", value: "76px", css: "--spacing-size-xxxl", figma: "size/xxxl", use: "Marketing hero / extra-tall splash actions" },
+  ]
+  return (
+    <section className="space-y-md pt-2xl">
+      <h2 className="typo-heading-3 font-heading">Component Size</h2>
+      <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+        9 fixed-height tokens (Figma <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">spacing / size/*</code>) for buttons, inputs, selects to align side-by-side. Mode-stable across desktop/tablet/mobile.
+      </p>
+      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-md py-sm font-semibold">Figma name</th>
+              <th className="px-md py-sm font-semibold">Value</th>
+              <th className="px-md py-sm font-semibold">CSS variable</th>
+              <th className="px-md py-sm font-semibold">Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sizes.map((s) => (
+              <tr key={s.name} className="border-b border-border last:border-0">
+                <td className="px-md py-sm font-mono">{s.figma}</td>
+                <td className="px-md py-sm font-mono font-semibold">{s.value}</td>
+                <td className="px-md py-sm font-mono text-muted-foreground">{s.css}</td>
+                <td className="px-md py-sm text-muted-foreground">{s.use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
+/* ================================================================
+   Foundation: Shadows (7 elevation + 7 focus rings)
+   ================================================================ */
+function ShadowsSection() {
+  const elevation = [
+    { name: "shadow-2xs", figma: "2xs", css: "--shadow-2xs", value: "0 1px 0 0 #0000000d", use: "Hairline lift (sticky headers, table rows)" },
+    { name: "shadow-xs",  figma: "xs",  css: "--shadow-xs",  value: "0 1px 2px 0 #0000000d", use: "Subtle lift (resting input, neutral chip)" },
+    { name: "shadow-sm",  figma: "sm",  css: "--shadow-sm",  value: "0 1px 3px 0 #0000001a, 0 1px 2px -1px #0000001a", use: "Default card elevation" },
+    { name: "shadow-md",  figma: "md",  css: "--shadow-md",  value: "0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a", use: "Hover-elevated cards, dropdowns" },
+    { name: "shadow-lg",  figma: "lg",  css: "--shadow-lg",  value: "0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a", use: "Floating panels, popovers" },
+    { name: "shadow-xl",  figma: "xl",  css: "--shadow-xl",  value: "0 20px 25px -5px #0000001a, 0 8px 10px -6px #0000001a", use: "Modal dialogs, sheets" },
+    { name: "shadow-2xl", figma: "2xl", css: "--shadow-2xl", value: "0 25px 50px -12px #00000040", use: "Maximum elevation — fullscreen overlays" },
+  ]
+  const focusRings = [
+    { name: "shadow-focus-ring",          figma: "focus-ring/default/*",  ringColor: "var(--ring)" },
+    { name: "shadow-focus-ring-sidebar",  figma: "focus-ring/sidebar/*",  ringColor: "var(--sidebar-ring)" },
+    { name: "shadow-focus-ring-brand",    figma: "focus-ring/brand/*",    ringColor: "var(--ring-brand)" },
+    { name: "shadow-focus-ring-error",    figma: "focus-ring/error/*",    ringColor: "var(--ring-error)" },
+    { name: "shadow-focus-ring-success",  figma: "focus-ring/success/*",  ringColor: "var(--ring-success)" },
+    { name: "shadow-focus-ring-warning",  figma: "focus-ring/warning/*",  ringColor: "var(--ring-warning)" },
+    { name: "shadow-focus-ring-emphasis", figma: "focus-ring/emphasis/*", ringColor: "var(--ring-emphasis)" },
+  ]
+  return (
+    <section className="space-y-md pt-2xl">
+      <h2 className="typo-heading-3 font-heading">Shadows</h2>
+      <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+        Figma <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">shadow</code> collection — 7 elevation levels (decomposed into x/y/blur/spread/color sub-vars) + 7 focus-ring composites. Light & dark modes use identical color values.
+      </p>
+
+      <h3 className="font-heading font-semibold text-lg pt-md">Elevation</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+        {elevation.map((e) => (
+          <div key={e.name} className="rounded-xl border border-border bg-card p-md space-y-xs">
+            <div className="size-16 rounded-lg bg-card mx-auto" style={{ boxShadow: e.value }} />
+            <div className="space-y-3xs">
+              <p className="font-mono text-xs font-semibold">{e.name}</p>
+              <p className="font-mono text-xs text-muted-foreground">Figma: {e.figma}</p>
+              <p className="text-xs text-muted-foreground">{e.use}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h3 className="font-heading font-semibold text-lg pt-md">Focus Rings</h3>
+      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-muted border-b border-border text-left">
+              <th className="px-md py-sm font-semibold">CSS class</th>
+              <th className="px-md py-sm font-semibold">Figma path</th>
+              <th className="px-md py-sm font-semibold">Color binding</th>
+              <th className="px-md py-sm font-semibold">Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            {focusRings.map((r) => (
+              <tr key={r.name} className="border-b border-border last:border-0">
+                <td className="px-md py-sm font-mono">{r.name}</td>
+                <td className="px-md py-sm font-mono text-muted-foreground">{r.figma}</td>
+                <td className="px-md py-sm font-mono text-muted-foreground">{r.ringColor}</td>
+                <td className="px-md py-sm">
+                  <div className="size-6 rounded bg-card" style={{ boxShadow: `0 0 0 3px ${r.ringColor.startsWith("var") ? r.ringColor : `hsl(${r.ringColor})`}` }} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}
+
+/* ================================================================
+   Foundation: Grid (2 product profiles × 4 breakpoints)
+   ================================================================ */
+function GridSection() {
+  const discovery = [
+    { bp: "discovery-sm",     count: 4,  gutter: "16 (md)",  offset: "16 (md)",  use: "Mobile (< 768)" },
+    { bp: "discovery-md",     count: 6,  gutter: "24 (xl)",  offset: "24 (xl)",  use: "Tablet (768–1279)" },
+    { bp: "discovery-lg",     count: 12, gutter: "24 (xl)",  offset: "32 (2xl)", use: "Desktop (≥ 1280)" },
+    { bp: "discovery-lg-max", count: 12, gutter: "24 (xl)",  offset: "section-size 88px", use: "Wide showcase" },
+  ]
+  const creator = [
+    { bp: "creator-sm",            count: 4,  gutter: "16 (md)", offset: "16 (md)",  use: "Mobile editor" },
+    { bp: "creator-md",            count: 6,  gutter: "16 (md)", offset: "24 (xl)",  use: "Tablet workspace" },
+    { bp: "creator-lg",            count: 12, gutter: "16 (md)", offset: "32 (2xl)", use: "Desktop workspace" },
+    { bp: "creator-lg-max-large",  count: 12, gutter: "16 (md)", offset: "section-size 80px", use: "Wide canvas (large content)" },
+    { bp: "creator-lg-max-small",  count: 8,  gutter: "16 (md)", offset: "section-size 78px", use: "Wide canvas (compact data)" },
+  ]
+  const renderTable = (rows: typeof discovery) => (
+    <div className="overflow-x-auto rounded-xl border border-border bg-card">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="bg-muted border-b border-border text-left">
+            <th className="px-md py-sm font-semibold">Breakpoint</th>
+            <th className="px-md py-sm font-semibold">Columns</th>
+            <th className="px-md py-sm font-semibold">Gutter</th>
+            <th className="px-md py-sm font-semibold">Offset</th>
+            <th className="px-md py-sm font-semibold">Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.bp} className="border-b border-border last:border-0">
+              <td className="px-md py-sm font-mono">{r.bp}</td>
+              <td className="px-md py-sm font-mono">{r.count}</td>
+              <td className="px-md py-sm font-mono text-muted-foreground">{r.gutter}</td>
+              <td className="px-md py-sm font-mono text-muted-foreground">{r.offset}</td>
+              <td className="px-md py-sm text-muted-foreground">{r.use}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+  return (
+    <section className="space-y-md pt-2xl">
+      <h2 className="typo-heading-3 font-heading">Grid</h2>
+      <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+        Figma <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">grid</code> collection — 27 layout breakpoint tokens across 2 product profiles. CSS prefix <code className="font-mono text-xs">--grid-{`{product}`}-{`{bp}`}-{`{property}`}</code>.
+      </p>
+      <h3 className="font-heading font-semibold text-lg pt-md">Discovery (marketing / public surfaces)</h3>
+      {renderTable(discovery)}
+      <h3 className="font-heading font-semibold text-lg pt-md">Creator (in-app workspace)</h3>
+      {renderTable(creator)}
+    </section>
+  )
+}
+
+/* ================================================================
+   Foundation: Layout (component-specific tokens — sidebar/screen/section/card/modal)
+   ================================================================ */
+function LayoutTokensSection() {
+  const groups = [
+    {
+      title: "Sidebar (10 tokens)",
+      desc: "Top bar + Left rail. CSS prefix --layout-sidebar-{position}-{property}",
+      rows: [
+        { token: "sidebar-left-width-expand",   value: "240px", note: "Expanded width" },
+        { token: "sidebar-left-width-collapse", value: "60px",  note: "Collapsed width" },
+        { token: "sidebar-left-padding-{l,r}",  value: "20 / 12 / 12", note: "Desktop / Tablet / Mobile" },
+        { token: "sidebar-left-padding-{t,b}",  value: "16",    note: "All modes" },
+        { token: "sidebar-top-height",          value: "60px",  note: "Top bar height" },
+        { token: "sidebar-top-padding-{l,r}",   value: "32 / 24 / 16", note: "Desktop / Tablet / Mobile" },
+        { token: "sidebar-top-gap",             value: "32 / 24 / 16", note: "Desktop / Tablet / Mobile" },
+      ],
+    },
+    {
+      title: "Screen (15 tokens)",
+      desc: "Page-level title bar + action bar + max-widths. CSS prefix --layout-screen-*",
+      rows: [
+        { token: "screen-page-margin-bottom",   value: "24",    note: "All modes" },
+        { token: "screen-title-padding-{l,r}",  value: "32 / 24 / 16", note: "" },
+        { token: "screen-title-padding-top",    value: "32 / 24 / 24", note: "" },
+        { token: "screen-title-padding-bottom", value: "16 / 8 / 8",   note: "" },
+        { token: "screen-title-gap",            value: "12",    note: "All modes" },
+        { token: "screen-action-padding-{l,r}", value: "32 / 24 / 16", note: "" },
+        { token: "screen-action-padding-{t,b}", value: "16",    note: "All modes" },
+        { token: "screen-action-gap",           value: "8",     note: "All modes" },
+        { token: "screen-max-width-setup",      value: "800px", note: "Setup wizard" },
+        { token: "screen-max-width-main",       value: "1200px",note: "Main content" },
+        { token: "screen-max-width-discovery",  value: "1384px",note: "Discovery (marketing)" },
+        { token: "screen-max-width-authorize",  value: "552px", note: "Auth screens" },
+      ],
+    },
+    {
+      title: "Section (19 tokens)",
+      desc: "Section title + 3 slot variants (creator / authorization / discovery). CSS prefix --layout-section-*",
+      rows: [
+        { token: "section-title-padding-{l,r}",  value: "32 / 24 / 16", note: "" },
+        { token: "section-title-padding-{t,b}",  value: "16 / 4",       note: "Top / Bottom" },
+        { token: "section-title-gap",            value: "4",            note: "All modes" },
+        { token: "section-slot-creator-margin-{l,r}",      value: "32 / 24 / 16", note: "" },
+        { token: "section-slot-creator-margin-{t,b}",      value: "16",           note: "All modes" },
+        { token: "section-slot-creator-gap",                value: "16",           note: "All modes" },
+        { token: "section-slot-authorization-margin-{l,r}", value: "32 / 24 / 0",  note: "Mobile = 0" },
+        { token: "section-slot-authorization-margin-{t,b}", value: "64 / 64 / 0",  note: "Mobile = 0" },
+        { token: "section-slot-discovery-margin-{l,r}",     value: "32 / 24 / 16", note: "" },
+        { token: "section-slot-discovery-margin-{t,b}",     value: "16",           note: "All modes" },
+        { token: "section-slot-discovery-gap",              value: "24 / 24 / 16", note: "Mobile shrinks" },
+      ],
+    },
+    {
+      title: "Card (26 tokens)",
+      desc: "Card slot × 4 sizes (0/16/24/32px) + Card title × 2 sizes. CSS prefix --layout-card-*",
+      rows: [
+        { token: "card-slot-0-padding-*",   value: "0",        note: "Borderless cards" },
+        { token: "card-slot-16-padding-*",  value: "16",       note: "Compact cards" },
+        { token: "card-slot-24-padding-*",  value: "24/20/16", note: "Default cards (responsive)" },
+        { token: "card-slot-32-padding-*",  value: "32",       note: "Spacious cards" },
+        { token: "card-title-16-padding-{l,r,t}", value: "16",            note: "Compact card title" },
+        { token: "card-title-16-padding-bottom",  value: "0",             note: "" },
+        { token: "card-title-16-gap",             value: "4",             note: "" },
+        { token: "card-title-24-padding-{l,r,t}", value: "24/20/16",      note: "Default card title (responsive)" },
+        { token: "card-title-24-padding-bottom",  value: "0",             note: "" },
+        { token: "card-title-24-gap",             value: "4",             note: "" },
+      ],
+    },
+    {
+      title: "Modal (8 tokens)",
+      desc: "Modal slot × 2 sizes (8/16px). CSS prefix --layout-modal-slot-{size}-padding-*",
+      rows: [
+        { token: "modal-slot-8-padding-*",  value: "8",  note: "Compact modal" },
+        { token: "modal-slot-16-padding-*", value: "16", note: "Default modal" },
+      ],
+    },
+  ]
+  return (
+    <section className="space-y-md pt-2xl">
+      <h2 className="typo-heading-3 font-heading">Layout (component-specific)</h2>
+      <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+        Figma <code className="font-mono text-xs bg-muted px-1.5 py-0.5 rounded">spacing</code> collection (78 component tokens under <code className="font-mono text-xs">abs/{`{component}`}/*</code>) — responsive padding/margin/width/gap for sidebar, screen, section, card, modal. Mode-aware (desktop / tablet / mobile via `@media`).
+      </p>
+      {groups.map((g) => (
+        <div key={g.title} className="space-y-2xs">
+          <h3 className="font-heading font-semibold text-lg pt-md">{g.title}</h3>
+          <p className="typo-paragraph-sm text-muted-foreground">{g.desc}</p>
+          <div className="overflow-x-auto rounded-xl border border-border bg-card">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-muted border-b border-border text-left">
+                  <th className="px-md py-sm font-semibold">Token (--layout-*)</th>
+                  <th className="px-md py-sm font-semibold">Value (Desktop / Tablet / Mobile)</th>
+                  <th className="px-md py-sm font-semibold">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {g.rows.map((r) => (
+                  <tr key={r.token} className="border-b border-border last:border-0">
+                    <td className="px-md py-sm font-mono">{r.token}</td>
+                    <td className="px-md py-sm font-mono text-muted-foreground">{r.value}</td>
+                    <td className="px-md py-sm text-muted-foreground">{r.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </section>
+  )
+}
+
+/* ================================================================
+   Foundation: Styles (Figma local styles — Text / Effect / Grid)
+   23 text styles + 14 effect styles + 9 grid styles
+   ================================================================ */
+function StylesDocs() {
+  const sections = [
+    { id: "styles-text",   label: "Text Styles" },
+    { id: "styles-effect", label: "Effect Styles" },
+    { id: "styles-grid",   label: "Grid Styles" },
+  ]
+
+  const headingStyles = [
+    { name: "heading/1", font: "Fraunces", weight: "SemiBold", size: 48, lh: 48, ls: -1.5 },
+    { name: "heading/2", font: "Fraunces", weight: "SemiBold", size: 30, lh: 32, ls: -1 },
+    { name: "heading/3", font: "Fraunces", weight: "SemiBold", size: 24, lh: 28.8, ls: -1 },
+    { name: "heading/4", font: "Geist",    weight: "SemiBold", size: 20, lh: 24, ls: 0 },
+  ]
+  const paragraphStyles = [
+    { name: "paragraph/xl/regular",   weight: "Regular",  size: 30, lh: 32, ls: -1 },
+    { name: "paragraph/xl/medium",    weight: "Medium",   size: 30, lh: 32, ls: -1 },
+    { name: "paragraph/xl/semibold",  weight: "SemiBold", size: 30, lh: 32, ls: -1 },
+    { name: "paragraph/lg/regular",   weight: "Regular",  size: 20, lh: 24, ls: -1 },
+    { name: "paragraph/lg/medium",    weight: "Medium",   size: 20, lh: 24, ls: -1 },
+    { name: "paragraph/lg/semibold",  weight: "SemiBold", size: 20, lh: 24, ls: -1 },
+    { name: "paragraph/base/regular", weight: "Regular",  size: 16, lh: 24, ls: 0 },
+    { name: "paragraph/base/medium",  weight: "Medium",   size: 16, lh: 24, ls: 0 },
+    { name: "paragraph/base/semibold",weight: "SemiBold", size: 16, lh: 24, ls: 0 },
+    { name: "paragraph/sm/regular",   weight: "Regular",  size: 14, lh: 20, ls: "0.5%" },
+    { name: "paragraph/sm/medium",    weight: "Medium",   size: 14, lh: 20, ls: "0.5%" },
+    { name: "paragraph/sm/semibold",  weight: "SemiBold", size: 14, lh: 20, ls: "0.5%" },
+    { name: "paragraph/xs/regular",   weight: "Regular",  size: 12, lh: 16, ls: "1.5%" },
+    { name: "paragraph/xs/medium",    weight: "Medium",   size: 12, lh: 16, ls: "1.5%" },
+    { name: "paragraph/xs/semibold",  weight: "SemiBold", size: 12, lh: 16, ls: "1.5%" },
+    { name: "paragraph/2xs/regular",  weight: "Regular",  size: 10, lh: 12, ls: "1.5%" },
+    { name: "paragraph/2xs/medium",   weight: "Medium",   size: 10, lh: 12, ls: "1.5%" },
+    { name: "paragraph/2xs/semibold", weight: "SemiBold", size: 10, lh: 12, ls: "1.5%" },
+  ]
+
+  const effectStyles = [
+    { name: "shadow-2xs", boxShadow: "0 1px 0 0 rgba(0,0,0,0.05)" },
+    { name: "shadow-xs",  boxShadow: "0 1px 2px 0 rgba(0,0,0,0.05)" },
+    { name: "shadow-sm",  boxShadow: "0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)" },
+    { name: "shadow-md",  boxShadow: "0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)" },
+    { name: "shadow-lg",  boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)" },
+    { name: "shadow-xl",  boxShadow: "0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)" },
+    { name: "shadow-2xl", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)" },
+  ]
+  const focusRings = [
+    { name: "focus ring",          color: "#E9E9E7", token: "ring (slate/200)" },
+    { name: "focus ring sidebar",  color: "#E9E9E7", token: "sidebar-ring (slate/200)" },
+    { name: "focus ring brand",    color: "#99F6E4", token: "ring-brand (teal/200)" },
+    { name: "focus ring error",    color: "#FECACA", token: "ring-error (red/200)" },
+    { name: "focus ring success",  color: "#BBF7D0", token: "ring-success (green/200)" },
+    { name: "focus ring warning",  color: "#FED7AA", token: "ring-warning (orange/200)" },
+    { name: "focus ring emphasis", color: "#BFDBFE", token: "ring-emphasis (blue/200)" },
+  ]
+
+  const gridStyles = [
+    { name: "grid-discovery-sm",     pattern: "COLUMNS", count: 4,  gutter: 16, offset: 16, alignment: "STRETCH" },
+    { name: "grid-discovery-md",     pattern: "COLUMNS", count: 6,  gutter: 24, offset: 24, alignment: "STRETCH" },
+    { name: "grid-discovery-lg",     pattern: "COLUMNS", count: 12, gutter: 24, offset: 32, alignment: "STRETCH" },
+    { name: "grid-discovery-lg-max", pattern: "COLUMNS", count: 12, gutter: 24, sectionSize: 88, alignment: "CENTER" },
+    { name: "grid-creator-sm",       pattern: "COLUMNS", count: 4,  gutter: 16, offset: 16, alignment: "STRETCH" },
+    { name: "grid-creator-md",       pattern: "COLUMNS", count: 6,  gutter: 16, offset: 24, alignment: "STRETCH" },
+    { name: "grid-creator-lg",       pattern: "COLUMNS", count: 12, gutter: 16, offset: 32, alignment: "STRETCH" },
+    { name: "grid-creator-lg-max-large", pattern: "COLUMNS", count: 12, gutter: 16, sectionSize: 80, alignment: "CENTER" },
+    { name: "grid-creator-lg-max-small", pattern: "COLUMNS", count: 8,  gutter: 16, sectionSize: 78, alignment: "CENTER" },
+  ]
+
+  return (
+    <div className="space-y-xl">
+      <TableOfContents sections={sections} />
+      <header className="space-y-2xs pb-xs">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Foundation / Styles</p>
+        <h1 className="typo-heading-2">Foundation Styles</h1>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+          Figma local styles — composed presets that bundle multiple atomic tokens into reusable named entries: <strong>Text Styles</strong> (font + size + line-height + letter-spacing), <strong>Effect Styles</strong> (shadow x/y/blur/spread/color), <strong>Grid Styles</strong> (column count + gutter + offset).
+        </p>
+      </header>
+
+      {/* ---- Text Styles ---- */}
+      <section id="styles-text" className="space-y-md pt-md">
+        <h2 className="typo-heading-3 font-heading">Text Styles <span className="font-mono text-sm text-muted-foreground">({headingStyles.length + paragraphStyles.length + 1})</span></h2>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+          23 text styles registered as Figma library entries. Headings use Fraunces (serif), paragraphs use Geist (sans), monospaced uses Geist Mono.
+        </p>
+
+        <h3 className="font-heading font-semibold text-lg pt-md">Heading <span className="font-mono text-sm text-muted-foreground">({headingStyles.length})</span></h3>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma name</th>
+                <th className="px-md py-sm font-semibold">Font</th>
+                <th className="px-md py-sm font-semibold">Weight</th>
+                <th className="px-md py-sm font-semibold">Size / LH / LS</th>
+                <th className="px-md py-sm font-semibold">Preview</th>
+              </tr>
+            </thead>
+            <tbody>
+              {headingStyles.map((s) => (
+                <tr key={s.name} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{s.name}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{s.font}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{s.weight}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{s.size} / {s.lh} / {s.ls}</td>
+                  <td className="px-md py-sm">
+                    <span style={{ fontFamily: s.font, fontWeight: 600, fontSize: Math.min(s.size, 28), lineHeight: 1, letterSpacing: typeof s.ls === "number" ? `${s.ls}px` : s.ls }}>The quick brown fox</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="font-heading font-semibold text-lg pt-md">Paragraph <span className="font-mono text-sm text-muted-foreground">({paragraphStyles.length})</span> + Monospaced</h3>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma name</th>
+                <th className="px-md py-sm font-semibold">Weight</th>
+                <th className="px-md py-sm font-semibold">Size / LH / LS</th>
+                <th className="px-md py-sm font-semibold">Preview</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paragraphStyles.map((s) => (
+                <tr key={s.name} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{s.name}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{s.weight}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{s.size} / {s.lh} / {s.ls}</td>
+                  <td className="px-md py-sm">
+                    <span style={{ fontFamily: "Geist", fontWeight: s.weight === "Regular" ? 400 : s.weight === "Medium" ? 500 : 600, fontSize: s.size, lineHeight: `${s.lh}px`, letterSpacing: typeof s.ls === "number" ? `${s.ls}px` : s.ls }}>The quick brown fox</span>
+                  </td>
+                </tr>
+              ))}
+              <tr className="border-b border-border last:border-0">
+                <td className="px-md py-sm font-mono">monospaced</td>
+                <td className="px-md py-sm font-mono text-muted-foreground">Regular</td>
+                <td className="px-md py-sm font-mono text-muted-foreground">16 / 24 / 0</td>
+                <td className="px-md py-sm">
+                  <span style={{ fontFamily: "Geist Mono", fontSize: 16, lineHeight: "24px" }}>const x = 42;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ---- Effect Styles ---- */}
+      <section id="styles-effect" className="space-y-md pt-2xl">
+        <h2 className="typo-heading-3 font-heading">Effect Styles <span className="font-mono text-sm text-muted-foreground">({effectStyles.length + focusRings.length})</span></h2>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+          14 effect styles — 7 elevation drop shadows + 7 focus-ring composites. Bundled into Figma effect entries from x/y/blur/spread/color sub-vars.
+        </p>
+
+        <h3 className="font-heading font-semibold text-lg pt-md">Elevation <span className="font-mono text-sm text-muted-foreground">({effectStyles.length})</span></h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+          {effectStyles.map((e) => (
+            <div key={e.name} className="rounded-xl border border-border bg-card p-md flex flex-col items-center gap-sm">
+              <div className="size-16 rounded-lg bg-card" style={{ boxShadow: e.boxShadow }} />
+              <p className="font-mono text-xs font-semibold">{e.name}</p>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="font-heading font-semibold text-lg pt-md">Focus Rings <span className="font-mono text-sm text-muted-foreground">({focusRings.length})</span></h3>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma style</th>
+                <th className="px-md py-sm font-semibold">Color value</th>
+                <th className="px-md py-sm font-semibold">Bound to (semantic)</th>
+                <th className="px-md py-sm font-semibold">Preview (3px ring)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {focusRings.map((r) => (
+                <tr key={r.name} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{r.name}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{r.color}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{r.token}</td>
+                  <td className="px-md py-sm">
+                    <div className="size-6 rounded bg-card" style={{ boxShadow: `0 0 0 3px ${r.color}` }} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* ---- Grid Styles ---- */}
+      <section id="styles-grid" className="space-y-md pt-2xl">
+        <h2 className="typo-heading-3 font-heading">Grid Styles <span className="font-mono text-sm text-muted-foreground">({gridStyles.length})</span></h2>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+          9 layout grid styles — 4 Discovery profiles (marketing) + 5 Creator profiles (in-app workspace). Pattern: COLUMNS. Alignment STRETCH (auto-flex offset) or CENTER (fixed sectionSize).
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma style</th>
+                <th className="px-md py-sm font-semibold">Pattern</th>
+                <th className="px-md py-sm font-semibold">Count</th>
+                <th className="px-md py-sm font-semibold">Gutter</th>
+                <th className="px-md py-sm font-semibold">Offset / Section</th>
+                <th className="px-md py-sm font-semibold">Alignment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gridStyles.map((g) => (
+                <tr key={g.name} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{g.name}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{g.pattern}</td>
+                  <td className="px-md py-sm font-mono">{g.count}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{g.gutter}px</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">
+                    {g.offset !== undefined ? `offset ${g.offset}px` : `section ${g.sectionSize}px`}
+                  </td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{g.alignment}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+/* ================================================================
+   Foundation: Tokens (unified page combining all variable tokens)
+   ================================================================ */
+function TokensDocs() {
+  const sections = [
+    { id: "tokens-colors",     label: "Colors" },
+    { id: "tokens-typography", label: "Typography" },
+    { id: "tokens-spacing",    label: "Spacing" },
+    { id: "tokens-size",       label: "Component Size" },
+    { id: "tokens-radius",     label: "Border Radius" },
+    { id: "tokens-shadows",    label: "Shadows" },
+    { id: "tokens-grid",       label: "Grid" },
+    { id: "tokens-layout",     label: "Layout" },
+  ]
+  return (
+    <div className="space-y-xl">
+      <TableOfContents sections={sections} />
+      <header className="space-y-2xs pb-xs">
+        <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Foundation / Tokens</p>
+        <h1 className="typo-heading-2">Foundation Tokens</h1>
+        <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
+          All variable tokens from the SprouX Figma foundation, synced 1:1 — Colors, Typography, Spacing, Component Size, Border Radius, Shadows, Grid, and component-specific Layout tokens.
+        </p>
+      </header>
+      <section id="tokens-colors"><ColorsDocs /></section>
+      <section id="tokens-typography"><TypographyDocs /></section>
+      <section id="tokens-spacing"><SpacingDocs /></section>
+      <section id="tokens-size"><ComponentSizeSection /></section>
+      <section id="tokens-radius"><BorderRadiusDocs /></section>
+      <section id="tokens-shadows"><ShadowsSection /></section>
+      <section id="tokens-grid"><GridSection /></section>
+      <section id="tokens-layout"><LayoutTokensSection /></section>
+    </div>
+  )
+}
+
+/* ================================================================
    Foundation: Colors
    ================================================================ */
 
@@ -796,6 +1355,7 @@ function ColorsDocs() {
     { name: "Neutral", shades: ["#fafafa", "#f5f5f5", "#e5e5e5", "#d4d4d4", "#a3a3a3", "#737373", "#525252", "#404040", "#262626", "#171717", "#0a0a0a"] },
     { name: "Zinc", shades: ["#fafafa", "#f4f4f5", "#e4e4e7", "#d4d4d8", "#a1a1aa", "#71717a", "#52525b", "#3f3f46", "#27272a", "#18181b", "#09090b"] },
     { name: "Stone", shades: ["#fafaf9", "#f5f5f4", "#e7e5e4", "#d6d3d1", "#a8a29e", "#78716c", "#57534e", "#44403c", "#292524", "#1c1917", "#0c0a09"] },
+    { name: "Gray", shades: ["#f9fafb", "#f3f4f6", "#e5e7eb", "#d1d5db", "#9ca3af", "#6b7280", "#4b5563", "#374151", "#1f2937", "#111827", "#030712"] },
     { name: "Teal", shades: ["#f0fdfa", "#ccfbf1", "#99f6e4", "#5eead4", "#2dd4bf", "#14b8a6", "#0d9488", "#0f766e", "#115e59", "#134e4a", "#042f2e"] },
     { name: "Emerald", shades: ["#ecfdf5", "#d1fae5", "#a7f3d0", "#6ee7b7", "#34d399", "#10b981", "#059669", "#047857", "#065f46", "#064e3b", "#022c22"] },
     { name: "Green", shades: ["#f0fdf4", "#dcfce7", "#bbf7d0", "#86efac", "#4ade80", "#22c55e", "#16a34a", "#15803d", "#166534", "#14532d", "#052e16"] },
@@ -809,42 +1369,170 @@ function ColorsDocs() {
     { name: "Indigo", shades: ["#eef2ff", "#e0e7ff", "#c7d2fe", "#a5b4fc", "#818cf8", "#6366f1", "#4f46e5", "#4338ca", "#3730a3", "#312e81", "#1e1b4b"] },
     { name: "Violet", shades: ["#f5f3ff", "#ede9fe", "#ddd6fe", "#c4b5fd", "#a78bfa", "#8b5cf6", "#7c3aed", "#6d28d9", "#5b21b6", "#4c1d95", "#2e1065"] },
     { name: "Purple", shades: ["#faf5ff", "#f3e8ff", "#e9d5ff", "#d8b4fe", "#c084fc", "#a855f7", "#9333ea", "#7e22ce", "#6b21a8", "#581c87", "#3b0764"] },
+    { name: "Fuchsia", shades: ["#fdf4ff", "#fae8ff", "#f5d0fe", "#f0abfc", "#e879f9", "#d946ef", "#c026d3", "#a21caf", "#86198f", "#701a75", "#4a044e"] },
     { name: "Pink", shades: ["#fdf2f8", "#fce7f3", "#fbcfe8", "#f9a8d4", "#f472b6", "#ec4899", "#db2777", "#be185d", "#9d174d", "#831843", "#500724"] },
     { name: "Rose", shades: ["#fff1f2", "#ffe4e6", "#fecdd3", "#fda4af", "#fb7185", "#f43f5e", "#e11d48", "#be123c", "#9f1239", "#881337", "#4c0519"] },
     { name: "Lime", shades: ["#f7fee7", "#ecfccb", "#d9f99d", "#bef264", "#a3e635", "#84cc16", "#65a30d", "#4d7c0f", "#3f6212", "#365314", "#1a2e05"] },
   ]
 
   const groups = [
-    { name: "Neutrals", items: ["Slate", "Neutral", "Zinc", "Stone"] },
+    { name: "Neutrals", items: ["Slate", "Neutral", "Zinc", "Stone", "Gray"] },
     { name: "Brand", items: ["Teal", "Emerald", "Green"] },
     { name: "Feedback", items: ["Red", "Amber", "Orange", "Yellow"] },
-    { name: "Accent", items: ["Blue", "Cyan", "Sky", "Indigo", "Violet", "Purple", "Pink", "Rose", "Lime"] },
+    { name: "Accent", items: ["Blue", "Cyan", "Sky", "Indigo", "Violet", "Purple", "Fuchsia", "Pink", "Rose", "Lime"] },
   ]
 
-  const semanticTokens = [
-    { token: "--background", light: "#ffffff", dark: "#252522", usage: "Page background" },
-    { token: "--foreground", light: "#252522", dark: "#f7f7f6", usage: "Primary text color" },
-    { token: "--primary", light: "#0f766e", dark: "#0d9488", usage: "Brand primary / CTA buttons" },
-    { token: "--primary-hover", light: "#0d9488", dark: "#0f766e", usage: "Primary hover state" },
-    { token: "--secondary", light: "#e9e9e7", dark: "#4f4f4a", usage: "Secondary button background" },
-    { token: "--muted", light: "#f3f3f2", dark: "#4f4f4a", usage: "Muted backgrounds (cards, badges)" },
-    { token: "--muted-foreground", light: "#afafab", dark: "#c6c6c2", usage: "Secondary/placeholder text" },
-    { token: "--destructive", light: "#dc2626", dark: "#7f2d2d", usage: "Error / destructive actions" },
-    { token: "--border", light: "#e9e9e7", dark: "#4f4f4a", usage: "Default borders" },
-    { token: "--border-strong", light: "#afafab", dark: "#6f6f6a", usage: "Emphasized borders" },
-    { token: "--ring", light: "#e9e9e7", dark: "#4f4f4a", usage: "Focus ring" },
-    { token: "--ring-error", light: "#fecaca", dark: "#6b2e2e", usage: "Error focus ring" },
+  // Full 142 semantic tokens organized by 7 functional groups (synced with Figma `semantic` collection)
+  const semanticGroups = [
+    {
+      title: "Surface",
+      desc: "Page-level and container backgrounds + the text/icon color that sits on them.",
+      tokens: [
+        { token: "background", light: "#F7F7F6", dark: "#252522", usage: "Top-level page bg, app shell" },
+        { token: "foreground", light: "#252522", dark: "#F7F7F6", usage: "Primary text on background" },
+        { token: "foreground-subtle", light: "#6F6F6A", dark: "#C6C6C2", usage: "Secondary text, captions, helper text" },
+        { token: "card", light: "#FFFFFF", dark: "#252522", usage: "Card / panel container bg" },
+        { token: "card-foreground", light: "#252522", dark: "#F7F7F6", usage: "Text on card" },
+        { token: "card-subtle", light: "#F7F7F6", dark: "#2F2F2B", usage: "Nested card variant" },
+        { token: "card-subtle-foreground", light: "#6F6F6A", dark: "#C6C6C2", usage: "Text on card-subtle" },
+        { token: "popover", light: "#000000", dark: "#252522", usage: "Tooltip / popover bg (inverted in light)" },
+        { token: "popover-foreground", light: "#FFFFFF", dark: "#F7F7F6", usage: "Text on popover" },
+      ],
+    },
+    {
+      title: "Brand",
+      desc: "SprouX teal identity. Use sparingly to anchor brand recognition.",
+      tokens: [
+        { token: "brand", light: "#0F766E", dark: "#0D9488", usage: "Brand-marked CTAs, brand logo fills" },
+        { token: "brand-hover", light: "#115E59", dark: "#0F766E", usage: "Hover state for brand surfaces" },
+        { token: "brand-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text/icon on brand" },
+        { token: "brand-subtle", light: "#F0FDFA", dark: "#042F2E", usage: "Branded info banner, brand chip bg" },
+        { token: "brand-subtle-foreground", light: "#0F766E", dark: "#2DD4BF", usage: "Text on brand-subtle" },
+        { token: "brand-subtle-foreground-hover", light: "#115E59", dark: "#5EEAD4", usage: "Hover variant of subtle FG" },
+        { token: "brand-border", light: "#0D9488", dark: "#0D9488", usage: "Borders separating branded areas" },
+      ],
+    },
+    {
+      title: "Action — Primary / Secondary / Accent / Muted / Ghost",
+      desc: "Interactive controls. 5 sub-variants cover the spectrum from emphasized to invisible.",
+      tokens: [
+        { token: "primary", light: "#0F766E", dark: "#0D9488", usage: "Primary button bg / CTA" },
+        { token: "primary-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text on primary" },
+        { token: "primary-hover", light: "#0D9488", dark: "#0F766E", usage: "Primary hover state" },
+        { token: "secondary", light: "#E9E9E7", dark: "#4F4F4A", usage: "Secondary / Outline button bg" },
+        { token: "secondary-foreground", light: "#2F2F2B", dark: "#F7F7F6", usage: "Text on secondary" },
+        { token: "secondary-hover", light: "#F3F3F2", dark: "#2F2F2B", usage: "Secondary / Outline button hover" },
+        { token: "accent", light: "#F3F3F2", dark: "#4F4F4A", usage: "Highlighted bg (menu hover, active row)" },
+        { token: "accent-foreground", light: "#2F2F2B", dark: "#F7F7F6", usage: "Text on accent" },
+        { token: "accent-selected", light: "#DADAD7", dark: "#6F6F6A", usage: "Currently selected row/menu item" },
+        { token: "muted", light: "#F3F3F2", dark: "#4F4F4A", usage: "Muted bg — cards, badges, skeleton" },
+        { token: "muted-foreground", light: "#6F6F6A", dark: "#C6C6C2", usage: "Placeholder text, tertiary text" },
+        { token: "ghost", light: "#FFFFFF00", dark: "#00000000", usage: "Transparent button bg (alpha=0)" },
+        { token: "ghost-foreground", light: "#6F6F6A", dark: "#8F8F8A", usage: "Ghost button text/icon" },
+        { token: "ghost-hover", light: "#0000000D", dark: "#FFFFFF19", usage: "Ghost button hover bg" },
+      ],
+    },
+    {
+      title: "Status — Destructive / Success / Warning / Emphasis",
+      desc: "State communication. 4 statuses × 5-variant pattern (base / -foreground / -subtle / -subtle-foreground / -border).",
+      tokens: [
+        { token: "destructive", light: "#DC2626", dark: "#7F1D1D", usage: "Delete buttons, error toast" },
+        { token: "destructive-foreground", light: "#FFFFFF", dark: "#FAFAFA", usage: "Text on destructive" },
+        { token: "destructive-subtle", light: "#FEF2F2", dark: "#450A0A", usage: "Error alert bg" },
+        { token: "destructive-subtle-foreground", light: "#DC2626", dark: "#EF4444", usage: "Text on destructive-subtle" },
+        { token: "destructive-border", light: "#EF4444", dark: "#EF4444", usage: "Error input/alert border" },
+        { token: "success", light: "#16A34A", dark: "#22C55E", usage: "Confirmation, positive state" },
+        { token: "success-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text on success" },
+        { token: "success-subtle", light: "#F0FDF4", dark: "#052E16", usage: "Success banner bg" },
+        { token: "success-subtle-foreground", light: "#16A34A", dark: "#22C55E", usage: "Text on success-subtle" },
+        { token: "success-border", light: "#22C55E", dark: "#22C55E", usage: "Success alert border" },
+        { token: "warning", light: "#D97706", dark: "#F59E0B", usage: "Caution, reversible warning" },
+        { token: "warning-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text on warning" },
+        { token: "warning-subtle", light: "#FFFBEB", dark: "#451A03", usage: "Warning banner bg" },
+        { token: "warning-subtle-foreground", light: "#D97706", dark: "#F59E0B", usage: "Text on warning-subtle" },
+        { token: "warning-border", light: "#F59E0B", dark: "#F59E0B", usage: "Warning alert border" },
+        { token: "emphasis", light: "#2563EB", dark: "#60A5FA", usage: "Info / neutral primary alt" },
+        { token: "emphasis-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text on emphasis" },
+        { token: "emphasis-subtle", light: "#EFF6FF", dark: "#172554", usage: "Info banner bg" },
+        { token: "emphasis-subtle-foreground", light: "#2563EB", dark: "#60A5FA", usage: "Text on emphasis-subtle" },
+        { token: "emphasis-border", light: "#3B82F6", dark: "#3B82F6", usage: "Info alert border" },
+      ],
+    },
+    {
+      title: "Form (Input / Border / Ring / Outline / Backdrop)",
+      desc: "Form controls and structural separators.",
+      tokens: [
+        { token: "input", light: "#FFFFFF", dark: "#2F2F2B", usage: "Input bg" },
+        { token: "input-readonly", light: "#F3F3F2", dark: "#4F4F4A", usage: "Read-only input bg" },
+        { token: "border", light: "#E9E9E7", dark: "#4F4F4A", usage: "Default — cards, inputs, dividers, Outline button" },
+        { token: "border-subtle", light: "#F3F3F2", dark: "#2F2F2B", usage: "Nested cards, low-emphasis dividers" },
+        { token: "border-strong", light: "#AFAFAB", dark: "#8F8F8A", usage: "High-contrast separators (rare)" },
+        { token: "ring", light: "#E9E9E7", dark: "#4F4F4A", usage: "Focus ring (default)" },
+        { token: "ring-error", light: "#FECACA", dark: "#7F1D1D", usage: "Error state focus ring" },
+        { token: "ring-brand", light: "#99F6E4", dark: "#115E59", usage: "Brand action focus ring" },
+        { token: "ring-success", light: "#BBF7D0", dark: "#166534", usage: "Success action focus ring" },
+        { token: "ring-warning", light: "#FED7AA", dark: "#92400E", usage: "Warning action focus ring" },
+        { token: "ring-emphasis", light: "#BFDBFE", dark: "#1E40AF", usage: "Info action focus ring" },
+        { token: "outline", light: "#FFFFFF1A", dark: "#FFFFFF0C", usage: "Subtle 1px outline on dark/glass" },
+        { token: "outline-hover", light: "#33415508", dark: "#FFFFFF19", usage: "Hover for outline" },
+        { token: "backdrop", light: "#33415599", dark: "#00000099", usage: "Modal/dialog backdrop overlay" },
+      ],
+    },
+    {
+      title: "Sidebar",
+      desc: "Sidebar nav has its own palette so the nav stays visually distinct from main canvas.",
+      tokens: [
+        { token: "sidebar", light: "#FFFFFF", dark: "#2F2F2B", usage: "Sidebar container bg" },
+        { token: "sidebar-foreground", light: "#252522", dark: "#F3F3F2", usage: "Sidebar text" },
+        { token: "sidebar-primary", light: "#0F766E", dark: "#0D9488", usage: "Branded item / current section highlight" },
+        { token: "sidebar-primary-foreground", light: "#FFFFFF", dark: "#FFFFFF", usage: "Text on sidebar-primary" },
+        { token: "sidebar-accent", light: "#F3F3F2", dark: "#4F4F4A", usage: "Hover/active nav item bg" },
+        { token: "sidebar-accent-foreground", light: "#6F6F6A", dark: "#F3F3F2", usage: "Text on sidebar-accent" },
+        { token: "sidebar-accent-hover", light: "#F7F7F6", dark: "#252522", usage: "Hover state for accent" },
+        { token: "sidebar-muted", light: "#AFAFAB", dark: "#8F8F8A", usage: "Section labels, dividers" },
+        { token: "sidebar-border", light: "#E9E9E7", dark: "#4F4F4A", usage: "Sidebar's edge / dividers" },
+        { token: "sidebar-ring", light: "#E9E9E7", dark: "#252522", usage: "Focus ring inside sidebar" },
+      ],
+    },
   ]
+
+  // Data Viz: 5 chart series + 28 area (7 colors × 4 variants) + 35 static (7 colors × 5 shades) = 68 tokens
+  const chartTokens = [
+    { token: "chart-1", light: "#1F77B4", dark: "#1447E6" },
+    { token: "chart-2", light: "#FF7F0E", dark: "#00BC7D" },
+    { token: "chart-3", light: "#2CA02C", dark: "#FD9A00" },
+    { token: "chart-4", light: "#D62728", dark: "#AD46FF" },
+    { token: "chart-5", light: "#9467BD", dark: "#FF2056" },
+  ]
+  const areaColors = ["amber", "blue", "green", "orange", "purple", "rose", "teal"]
+  const areaData: Record<string, { fill: [string, string]; "fill-2": [string, string]; stroke: [string, string]; "stroke-2": [string, string] }> = {
+    amber:  { fill: ["#FFEDACB2","#746221B2"], "fill-2": ["#FED699B2","#734B0EB2"], stroke: ["#FFD230","#FFD230"],     "stroke-2": ["#FE9A00","#FFA50A"] },
+    blue:   { fill: ["#BFDEFFB2","#475D75B2"], "fill-2": ["#AACCFFB2","#1F4176B2"], stroke: ["#8EC5FF","#8EC5FF"],     "stroke-2": ["#3F8DFF","#539BFF"] },
+    green:  { fill: ["#B9FBD2B2","#3F6E51B2"], "fill-2": ["#82E2A9B2","#0E5E2EB2"], stroke: ["#7BF1AB","#7BF1A8"],     "stroke-2": ["#19D163","#19D163"] },
+    orange: { fill: ["#FDD09CB2","#755738B2"], "fill-2": ["#F8B07EB2","#76380EB2"], stroke: ["#FFB86A","#FFB86A"],     "stroke-2": ["#FF6900","#FF7915"] },
+    purple: { fill: ["#F0E0FFB2","#655576B2"], "fill-2": ["#DEB5FFB2","#532A77B2"], stroke: ["#DAB2FF","#DAB2FF"],     "stroke-2": ["#C67EFF","#A96ADD"] },
+    rose:   { fill: ["#FFD9DEB2","#754E53B2"], "fill-2": ["#F491A8B2","#741B30B2"], stroke: ["#FFA1AD","#FFA1AD"],     "stroke-2": ["#FF4F79","#FF4670"] },
+    teal:   { fill: ["#A9F4E8B2","#409388B2"], "fill-2": ["#7CE7DCB2","#0E5951B2"], stroke: ["#46EDD5","#46EDD5"],     "stroke-2": ["#07C0AC","#1CCFB9"] },
+  }
+  const staticData: Record<string, [string, string, string, string, string]> = {
+    amber:  ["#FFD230", "#FE9A00", "#E17100", "#BB4D00", "#973C00"],
+    blue:   ["#8EC5FF", "#2B7FFF", "#155DFC", "#1447E6", "#193CB8"],
+    green:  ["#7BF1A8", "#00C951", "#00A63E", "#008236", "#016630"],
+    orange: ["#FFB86A", "#FF6900", "#F54A00", "#CA3500", "#9F2D00"],
+    purple: ["#DAB2FF", "#AD46FF", "#9810FA", "#8200DB", "#6E11B0"],
+    rose:   ["#FFA1AD", "#FF2056", "#EC003F", "#C70036", "#A50036"],
+    teal:   ["#46EDD5", "#00BBA7", "#009689", "#00786F", "#005F5A"],
+  }
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Colors
         </p>
         <h1 className="typo-heading-2">Colors</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
-          The SprouX color system provides 20 palettes with 11 shades each,
+          The SprouX color system provides 22 palettes with 11 shades each,
           plus semantic tokens for light and dark themes. Click any swatch to
           copy its hex value.
         </p>
@@ -870,45 +1558,156 @@ function ColorsDocs() {
         </section>
       ))}
 
-      {/* Semantic Colors */}
-      <section className="space-y-4 pt-3xl">
-        <h2 className="font-heading font-semibold text-xl">Semantic Tokens</h2>
-        <p className="typo-paragraph-sm text-muted-foreground">
-          These tokens adapt automatically between light and dark mode.
+      {/* Semantic Colors — full 142 tokens grouped by 7 functional sub-groups + Data Viz */}
+      <section className="space-y-md pt-2xl">
+        <h2 className="font-heading font-semibold text-xl">Semantic Tokens <span className="font-mono text-sm text-muted-foreground">(142)</span></h2>
+        <p className="typo-paragraph-sm text-muted-foreground max-w-3xl">
+          All 142 tokens from the Figma <code className="font-mono bg-muted px-1.5 py-0.5 rounded">semantic</code> collection — light + dark mode aware. Bind these in designs and components.
         </p>
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="bg-muted border-b border-border text-left">
-                <th className="px-md py-sm font-semibold">Token</th>
-                <th className="px-md py-sm font-semibold">Light</th>
-                <th className="px-md py-sm font-semibold">Dark</th>
-                <th className="px-md py-sm font-semibold">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              {semanticTokens.map((t) => (
-                <tr key={t.token} className="border-b border-border last:border-0">
-                  <td className="px-md py-sm font-mono font-semibold whitespace-nowrap">
-                    {t.token}
-                  </td>
-                  <td className="px-md py-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="size-5 rounded border border-border" style={{ backgroundColor: t.light }} />
-                      <span className="font-mono text-muted-foreground">{t.light}</span>
-                    </div>
-                  </td>
-                  <td className="px-md py-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="size-5 rounded border border-border" style={{ backgroundColor: t.dark }} />
-                      <span className="font-mono text-muted-foreground">{t.dark}</span>
-                    </div>
-                  </td>
-                  <td className="px-md py-sm text-muted-foreground">{t.usage}</td>
+
+        {semanticGroups.map((g) => (
+          <div key={g.title} className="space-y-2xs pt-md">
+            <h3 className="font-heading font-semibold text-lg">{g.title} <span className="font-mono text-sm text-muted-foreground">({g.tokens.length})</span></h3>
+            <p className="typo-paragraph-sm text-muted-foreground">{g.desc}</p>
+            <div className="overflow-x-auto rounded-xl border border-border bg-card">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="bg-muted border-b border-border text-left">
+                    <th className="px-md py-sm font-semibold whitespace-nowrap">Token</th>
+                    <th className="px-md py-sm font-semibold">Light</th>
+                    <th className="px-md py-sm font-semibold">Dark</th>
+                    <th className="px-md py-sm font-semibold">Usage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {g.tokens.map((t) => (
+                    <tr key={t.token} className="border-b border-border last:border-0">
+                      <td className="px-md py-sm font-mono font-semibold whitespace-nowrap">--{t.token}</td>
+                      <td className="px-md py-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="size-5 rounded border border-border" style={{ backgroundColor: t.light === "transparent" ? "transparent" : t.light }} />
+                          <span className="font-mono text-muted-foreground whitespace-nowrap">{t.light}</span>
+                        </div>
+                      </td>
+                      <td className="px-md py-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="size-5 rounded border border-border" style={{ backgroundColor: t.dark === "transparent" ? "transparent" : t.dark }} />
+                          <span className="font-mono text-muted-foreground whitespace-nowrap">{t.dark}</span>
+                        </div>
+                      </td>
+                      <td className="px-md py-sm text-muted-foreground">{t.usage}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+
+        {/* Data Visualization sub-section */}
+        <div className="space-y-md pt-md">
+          <h3 className="font-heading font-semibold text-lg">Data Visualization <span className="font-mono text-sm text-muted-foreground">(68)</span></h3>
+          <p className="typo-paragraph-sm text-muted-foreground">
+            Chart series colors, area fills/strokes, theme-stable static palettes — for analytics, charts, dashboards.
+          </p>
+
+          {/* Chart-1..5 */}
+          <h4 className="font-heading font-semibold text-base pt-2xs">Chart series <span className="font-mono text-sm text-muted-foreground">(5)</span></h4>
+          <div className="overflow-x-auto rounded-xl border border-border bg-card">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-muted border-b border-border text-left">
+                  <th className="px-md py-sm font-semibold whitespace-nowrap">Token</th>
+                  <th className="px-md py-sm font-semibold">Light</th>
+                  <th className="px-md py-sm font-semibold">Dark</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {chartTokens.map((t) => (
+                  <tr key={t.token} className="border-b border-border last:border-0">
+                    <td className="px-md py-sm font-mono font-semibold whitespace-nowrap">--{t.token}</td>
+                    <td className="px-md py-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="size-5 rounded border border-border" style={{ backgroundColor: t.light }} />
+                        <span className="font-mono text-muted-foreground">{t.light}</span>
+                      </div>
+                    </td>
+                    <td className="px-md py-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="size-5 rounded border border-border" style={{ backgroundColor: t.dark }} />
+                        <span className="font-mono text-muted-foreground">{t.dark}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Area fills+strokes — 7 colors × 4 variants = 28 */}
+          <h4 className="font-heading font-semibold text-base pt-2xs">Area chart fills + strokes <span className="font-mono text-sm text-muted-foreground">(28)</span></h4>
+          <p className="typo-paragraph-sm text-muted-foreground">7 colors × 4 variants (fill, fill-2, stroke, stroke-2). Light + dark variants differ.</p>
+          <div className="overflow-x-auto rounded-xl border border-border bg-card">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-muted border-b border-border text-left">
+                  <th className="px-md py-sm font-semibold">Color</th>
+                  <th className="px-md py-sm font-semibold">fill (L / D)</th>
+                  <th className="px-md py-sm font-semibold">fill-2 (L / D)</th>
+                  <th className="px-md py-sm font-semibold">stroke (L / D)</th>
+                  <th className="px-md py-sm font-semibold">stroke-2 (L / D)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {areaColors.map((c) => (
+                  <tr key={c} className="border-b border-border last:border-0">
+                    <td className="px-md py-sm font-mono font-semibold whitespace-nowrap">--area-{c}-*</td>
+                    {(["fill", "fill-2", "stroke", "stroke-2"] as const).map((v) => (
+                      <td key={v} className="px-md py-sm">
+                        <div className="flex items-center gap-1">
+                          <div className="size-4 rounded border border-border" style={{ backgroundColor: areaData[c][v][0] }} title={`Light ${areaData[c][v][0]}`} />
+                          <div className="size-4 rounded border border-border" style={{ backgroundColor: areaData[c][v][1] }} title={`Dark ${areaData[c][v][1]}`} />
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Static — 7 colors × 5 shades = 35 */}
+          <h4 className="font-heading font-semibold text-base pt-2xs">Static (theme-stable) <span className="font-mono text-sm text-muted-foreground">(35)</span></h4>
+          <p className="typo-paragraph-sm text-muted-foreground">7 colors × 5 shades. Same hex in light + dark — for charts that must NOT theme-flip.</p>
+          <div className="overflow-x-auto rounded-xl border border-border bg-card">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="bg-muted border-b border-border text-left">
+                  <th className="px-md py-sm font-semibold">Color</th>
+                  <th className="px-md py-sm font-semibold">1</th>
+                  <th className="px-md py-sm font-semibold">2</th>
+                  <th className="px-md py-sm font-semibold">3</th>
+                  <th className="px-md py-sm font-semibold">4</th>
+                  <th className="px-md py-sm font-semibold">5</th>
+                </tr>
+              </thead>
+              <tbody>
+                {areaColors.map((c) => (
+                  <tr key={c} className="border-b border-border last:border-0">
+                    <td className="px-md py-sm font-mono font-semibold whitespace-nowrap">--static-{c}-*</td>
+                    {staticData[c].map((hex, i) => (
+                      <td key={i} className="px-md py-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="size-5 rounded border border-border" style={{ backgroundColor: hex }} />
+                          <span className="font-mono text-muted-foreground text-[10px]">{hex}</span>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -991,8 +1790,8 @@ function TypographyDocs() {
   const allStyles = [...headings, ...bodyStyles]
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Typography
         </p>
@@ -1175,6 +1974,8 @@ function TypographyDocs() {
 
 function SpacingDocs() {
   const spacingScale = [
+    { name: "0", value: "0px", css: "--spacing-0", tailwind: "p-0, m-0, gap-0" },
+    { name: "4xs", value: "2px", css: "--spacing-4xs", tailwind: "p-4xs, m-4xs, gap-4xs" },
     { name: "3xs", value: "4px", css: "--spacing-3xs", tailwind: "p-3xs, m-3xs, gap-3xs" },
     { name: "2xs", value: "6px", css: "--spacing-2xs", tailwind: "p-2xs, m-2xs, gap-2xs" },
     { name: "xs", value: "8px", css: "--spacing-xs", tailwind: "p-xs, m-xs, gap-xs" },
@@ -1185,11 +1986,12 @@ function SpacingDocs() {
     { name: "2xl", value: "32px", css: "--spacing-2xl", tailwind: "p-2xl, m-2xl, gap-2xl" },
     { name: "3xl", value: "40px", css: "--spacing-3xl", tailwind: "p-3xl, m-3xl, gap-3xl" },
     { name: "4xl", value: "48px", css: "--spacing-4xl", tailwind: "p-4xl, m-4xl, gap-4xl" },
+    { name: "5xl", value: "64px", css: "--spacing-5xl", tailwind: "p-5xl, m-5xl, gap-5xl" },
   ]
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Spacing
         </p>
@@ -1315,6 +2117,72 @@ function SpacingDocs() {
         </div>
       </section>
 
+      {/* Absolute Primitives — internal layer */}
+      <section className="space-y-md pt-2xl">
+        <h2 className="font-heading font-semibold text-xl">Absolute Primitives <span className="font-mono text-sm text-muted-foreground">(35)</span></h2>
+        <p className="typo-paragraph-sm text-muted-foreground max-w-3xl">
+          Internal primitive layer — Figma <code className="font-mono bg-muted px-1.5 py-0.5 rounded">spacing / abs/{`{n}`}</code>. Consumed by Semantic Scale aliases above; <strong>not used directly</strong> in designs/components.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma name</th>
+                <th className="px-md py-sm font-semibold">Value</th>
+                <th className="px-md py-sm font-semibold">CSS variable</th>
+                <th className="px-md py-sm font-semibold">Used by Semantic</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { figma: "abs/0",        css: "--spacing-abs-0",       value: "0px",   alias: "0" },
+                { figma: "abs/0,5",      css: "--spacing-abs-0_5",     value: "2px",   alias: "4xs" },
+                { figma: "abs/1",        css: "--spacing-abs-1",       value: "4px",   alias: "3xs" },
+                { figma: "abs/1,5",      css: "--spacing-abs-1_5",     value: "6px",   alias: "2xs" },
+                { figma: "abs/2",        css: "--spacing-abs-2",       value: "8px",   alias: "xs" },
+                { figma: "abs/2,5",      css: "--spacing-abs-2_5",     value: "10px",  alias: "—" },
+                { figma: "abs/3",        css: "--spacing-abs-3",       value: "12px",  alias: "sm" },
+                { figma: "abs/3,5",      css: "--spacing-abs-3_5",     value: "14px",  alias: "—" },
+                { figma: "abs/4",        css: "--spacing-abs-4",       value: "16px",  alias: "md" },
+                { figma: "abs/5",        css: "--spacing-abs-5",       value: "20px",  alias: "lg" },
+                { figma: "abs/6",        css: "--spacing-abs-6",       value: "24px",  alias: "xl" },
+                { figma: "abs/7",        css: "--spacing-abs-7",       value: "28px",  alias: "—" },
+                { figma: "abs/8",        css: "--spacing-abs-8",       value: "32px",  alias: "2xl" },
+                { figma: "abs/9",        css: "--spacing-abs-9",       value: "36px",  alias: "—" },
+                { figma: "abs/10",       css: "--spacing-abs-10",      value: "40px",  alias: "3xl" },
+                { figma: "abs/11",       css: "--spacing-abs-11",      value: "44px",  alias: "—" },
+                { figma: "abs/12",       css: "--spacing-abs-12",      value: "48px",  alias: "4xl" },
+                { figma: "abs/14",       css: "--spacing-abs-14",      value: "56px",  alias: "—" },
+                { figma: "abs/16",       css: "--spacing-abs-16",      value: "64px",  alias: "5xl" },
+                { figma: "abs/20",       css: "--spacing-abs-20",      value: "80px",  alias: "—" },
+                { figma: "abs/24",       css: "--spacing-abs-24",      value: "96px",  alias: "—" },
+                { figma: "abs/28",       css: "--spacing-abs-28",      value: "112px", alias: "—" },
+                { figma: "abs/32",       css: "--spacing-abs-32",      value: "128px", alias: "—" },
+                { figma: "abs/36",       css: "--spacing-abs-36",      value: "144px", alias: "—" },
+                { figma: "abs/40",       css: "--spacing-abs-40",      value: "160px", alias: "—" },
+                { figma: "abs/44",       css: "--spacing-abs-44",      value: "176px", alias: "—" },
+                { figma: "abs/48",       css: "--spacing-abs-48",      value: "192px", alias: "—" },
+                { figma: "abs/52",       css: "--spacing-abs-52",      value: "208px", alias: "—" },
+                { figma: "abs/56",       css: "--spacing-abs-56",      value: "224px", alias: "—" },
+                { figma: "abs/60",       css: "--spacing-abs-60",      value: "240px", alias: "—" },
+                { figma: "abs/64",       css: "--spacing-abs-64",      value: "256px", alias: "—" },
+                { figma: "abs/72",       css: "--spacing-abs-72",      value: "288px", alias: "—" },
+                { figma: "abs/80",       css: "--spacing-abs-80",      value: "320px", alias: "—" },
+                { figma: "abs/96",       css: "--spacing-abs-96",      value: "384px", alias: "—" },
+                { figma: "abs/infinite", css: "--spacing-abs-infinite",value: "9999px",alias: "—" },
+              ].map((p) => (
+                <tr key={p.figma} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{p.figma}</td>
+                  <td className="px-md py-sm font-mono font-semibold">{p.value}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{p.css}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{p.alias === "—" ? <span className="opacity-50">—</span> : <code className="bg-muted px-1.5 py-0.5 rounded">{p.alias}</code>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Best Practices */}
       <section className="space-y-6 pb-12">
         <h2 className="font-heading font-semibold text-xl">Best Practices</h2>
@@ -1341,15 +2209,20 @@ function SpacingDocs() {
 
 function BorderRadiusDocs() {
   const radii = [
-    { name: "sm", value: "4px", css: "--radius-sm", tailwind: "rounded-sm", usage: "Mini inputs, badges, tags" },
-    { name: "md", value: "6px", css: "--radius-md", tailwind: "rounded-md", usage: "Small buttons, tooltips" },
-    { name: "lg", value: "8px", css: "--radius-lg", tailwind: "rounded-lg", usage: "Default buttons, inputs, cards" },
-    { name: "xl", value: "12px", css: "--radius-xl", tailwind: "rounded-xl", usage: "Large cards, modals, popovers" },
+    { name: "none", value: "0px",   css: "--radius-none", tailwind: "rounded-none", usage: "Sharp corners (table cells, full-bleed images)" },
+    { name: "xs",   value: "2px",   css: "--radius-xs",   tailwind: "rounded-xs",   usage: "Tags, micro-chips, code-inline highlight" },
+    { name: "sm",   value: "4px",   css: "--radius-sm",   tailwind: "rounded-sm",   usage: "Mini inputs, badges, dense tags" },
+    { name: "md",   value: "6px",   css: "--radius-md",   tailwind: "rounded-md",   usage: "Small buttons, tooltips" },
+    { name: "lg",   value: "8px",   css: "--radius-lg",   tailwind: "rounded-lg",   usage: "⭐ Default — buttons, inputs, cards" },
+    { name: "xl",   value: "12px",  css: "--radius-xl",   tailwind: "rounded-xl",   usage: "Large cards, modals, popovers" },
+    { name: "2xl",  value: "16px",  css: "--radius-2xl",  tailwind: "rounded-2xl",  usage: "Hero cards, marketing modules" },
+    { name: "3xl",  value: "24px",  css: "--radius-3xl",  tailwind: "rounded-3xl",  usage: "Featured / promotional containers" },
+    { name: "full", value: "9999px",css: "--radius-full", tailwind: "rounded-full", usage: "Pills, avatars, circular buttons, status dots" },
   ]
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Border Radius
         </p>
@@ -1446,6 +2319,51 @@ function BorderRadiusDocs() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      {/* Absolute Primitives — internal layer */}
+      <section className="space-y-md pt-2xl">
+        <h2 className="font-heading font-semibold text-xl">Absolute Primitives <span className="font-mono text-sm text-muted-foreground">(11)</span></h2>
+        <p className="typo-paragraph-sm text-muted-foreground max-w-3xl">
+          Internal primitive layer — Figma <code className="font-mono bg-muted px-1.5 py-0.5 rounded">radius / abs/{`{n}`}</code>. Consumed by Semantic Radius aliases above; <strong>not used directly</strong> in designs/components.
+        </p>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted border-b border-border text-left">
+                <th className="px-md py-sm font-semibold">Figma name</th>
+                <th className="px-md py-sm font-semibold">Value</th>
+                <th className="px-md py-sm font-semibold">CSS variable</th>
+                <th className="px-md py-sm font-semibold">Used by Semantic</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { figma: "abs/0",        css: "--radius-abs-0",       value: "0px",   alias: "none" },
+                { figma: "abs/2",        css: "--radius-abs-2",       value: "2px",   alias: "xs" },
+                { figma: "abs/4",        css: "--radius-abs-4",       value: "4px",   alias: "sm" },
+                { figma: "abs/6",        css: "--radius-abs-6",       value: "6px",   alias: "md" },
+                { figma: "abs/8",        css: "--radius-abs-8",       value: "8px",   alias: "lg" },
+                { figma: "abs/10",       css: "--radius-abs-10",      value: "10px",  alias: "⚠ orphaned" },
+                { figma: "abs/12",       css: "--radius-abs-12",      value: "12px",  alias: "xl" },
+                { figma: "abs/16",       css: "--radius-abs-16",      value: "16px",  alias: "2xl" },
+                { figma: "abs/24",       css: "--radius-abs-24",      value: "24px",  alias: "3xl" },
+                { figma: "abs/32",       css: "--radius-abs-32",      value: "32px",  alias: "⚠ orphaned" },
+                { figma: "abs/infinite", css: "--radius-abs-infinite",value: "9999px",alias: "full" },
+              ].map((p) => (
+                <tr key={p.figma} className="border-b border-border last:border-0">
+                  <td className="px-md py-sm font-mono">{p.figma}</td>
+                  <td className="px-md py-sm font-mono font-semibold">{p.value}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{p.css}</td>
+                  <td className="px-md py-sm font-mono text-muted-foreground">{p.alias.startsWith("⚠") ? <span className="text-amber-600">{p.alias}</span> : <code className="bg-muted px-1.5 py-0.5 rounded">{p.alias}</code>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="typo-paragraph-sm text-muted-foreground">
+          ⚠ <strong>Orphaned</strong>: <code className="font-mono bg-muted px-1.5 py-0.5 rounded">abs/10</code> (10px) and <code className="font-mono bg-muted px-1.5 py-0.5 rounded">abs/32</code> (32px) have no semantic alias — currently not reachable through the system.
+        </p>
       </section>
 
       {/* Best Practices */}
@@ -1668,8 +2586,8 @@ function IconsDocs() {
   useEffect(() => { setPage(0) }, [iconSearch])
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Icons
         </p>
@@ -1832,8 +2750,8 @@ const illustrations = [
 
 function IllustrationsDocs() {
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Foundation / Illustrations
         </p>
@@ -2104,11 +3022,11 @@ function ButtonDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={buttonSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Actions
         </p>
@@ -2956,11 +3874,11 @@ function ButtonGroupExploreBehavior() {
 
 function ButtonGroupDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={buttonGroupSections} />
 
       {/* HEADER */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Button Group</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -3558,11 +4476,11 @@ function InputDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={inputSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -4518,11 +5436,11 @@ function TextareaDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={textareaSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -5350,11 +6268,11 @@ function SelectDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={selectSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -6374,11 +7292,11 @@ function CheckboxDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={checkboxSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -7421,10 +8339,10 @@ function SwitchDocs() {
   const [checked, setChecked] = useState(false)
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={switchSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Switch</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -7704,11 +8622,11 @@ function LabelTokensTable() {
 
 function LabelDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={labelSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -8049,10 +8967,10 @@ const sliderSections: TocSection[] = [
 
 function SliderDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={sliderSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Slider</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -8598,10 +9516,10 @@ const toggleSections: TocSection[] = [
 
 function ToggleDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={toggleSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Toggle</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -8900,10 +9818,10 @@ function ChipDocs() {
   const [selected, setSelected] = useState<string[]>(["React"])
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={chipSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Chip</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Compact element for filters, tags, or selections. Supports icon prefix, closable action, and selected state.</p>
@@ -9119,10 +10037,10 @@ function CarouselExploreBehavior() {
 
 function CarouselDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={carouselSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Carousel</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Horizontal slide container with navigation buttons. Built on Embla Carousel for smooth touch gestures and snapping.</p>
@@ -9400,10 +10318,10 @@ function CardExploreBehavior() {
 
 function CardDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={cardSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Card</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Content container with composable sub-components: Header, Title, Description, Content, Footer.</p>
@@ -9691,11 +10609,11 @@ const avatarSections: TocSection[] = [
 
 function AvatarDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={avatarSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Avatar</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">User avatar with image and fallback support (initials or icon). Supports multiple sizes and round/roundrect shapes.</p>
@@ -10048,9 +10966,9 @@ function ProgressTokensTable() {
 
 function ProgressDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={progressSections} />
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Progress</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -10272,7 +11190,7 @@ function AlertTokensTable() {
     { token: "size-md", cssVar: "--spacing-md", value: "16px", usage: "Icon size" },
     { token: "gap-xs", cssVar: "--spacing-xs", value: "8px", usage: "Action buttons gap / text-to-action gap" },
     { token: "pt-xs", cssVar: "--spacing-xs", value: "8px", usage: "AlertAction top spacing" },
-    { token: "size-size-xs", cssVar: "--spacing-size-xs", value: "24px", usage: "Dismiss button size (IconButton xs)" },
+    { token: "size-size-xxs", cssVar: "--spacing-size-xxs", value: "24px", usage: "Dismiss button size (IconButton xs)" },
     { token: "rounded-sm", cssVar: "--radius-sm", value: "4px", usage: "Dismiss button border radius" },
   ]} />
 }
@@ -10386,11 +11304,11 @@ const alertSections: TocSection[] = [
 
 function AlertDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={alertSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Feedback</p>
         <h1 className="typo-heading-2">Alert</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Inline alert messages for neutral, error, success, warning, and emphasis feedback.</p>
@@ -10940,11 +11858,11 @@ const badgeSections: TocSection[] = [
 
 function BadgeDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={badgeSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Badge</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Status tags, notification counts, and category labels. Three shapes: Label (pill with text), Round (circular with number/icon), and Dot (minimal indicator). Supports up to 8 color variants × 3 sizes.</p>
@@ -11388,9 +12306,9 @@ function SeparatorTokensTable() {
 
 function SeparatorDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={separatorSections} />
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Separator</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Visually separates content with a horizontal or vertical line, or a dot between inline items.</p>
@@ -11640,9 +12558,9 @@ function SkeletonTokensTable() {
 
 function SkeletonDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={skeletonSections} />
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Skeleton</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -11919,10 +12837,10 @@ function DataTableDocs() {
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={dataTableSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Data Table</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Enhanced table with sortable headers, row selection, status badges, and action buttons. Composed from the base Table primitives plus Checkbox, Badge, and IconButton.</p>
@@ -11943,7 +12861,7 @@ function DataTableDocs() {
       {/* ---- Examples ---- */}
       <section id="examples" className="space-y-6 pt-xl border-t border-border">
         <h2 className="font-heading font-semibold text-xl">Examples</h2>
-        <div className="space-y-8">
+        <div className="space-y-xl">
           <Example title="Full Data Table" description="Realistic data table with checkbox selection, sortable headers, avatar + name cells, status badges, and row actions." code={`<Table>
   <TableHeader>
     <TableRow>
@@ -12230,10 +13148,10 @@ const tableSections: TocSection[] = [
 
 function TableDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={tableSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Table</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Basic table with composable sub-components for header, body, footer, rows, and cells.</p>
@@ -12546,10 +13464,10 @@ function DialogExploreBehavior() {
 
 function DialogDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={dialogSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Dialog</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Modal dialog with overlay. Interrupts the user with important content and expects a response.</p>
@@ -13013,11 +13931,11 @@ const alertDialogSections: TocSection[] = [
 
 function AlertDialogDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={alertDialogSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Alert Dialog</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">A modal dialog that interrupts the user with important content and expects a response. Cannot be dismissed by clicking outside.</p>
@@ -13634,11 +14552,11 @@ function SheetTokensTable() {
 
 function SheetDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={sheetSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Sheet</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -14135,11 +15053,11 @@ function DrawerExploreBehavior() {
 
 function DrawerDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={drawerSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay</p>
         <h1 className="typo-heading-2">Drawer</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -14582,11 +15500,11 @@ function PopoverExploreBehavior() {
 
 function PopoverDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={popoverSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Popover</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -14976,11 +15894,11 @@ function TooltipTokensTable() {
 
 function TooltipDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={tooltipSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Tooltip</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -15430,10 +16348,10 @@ function SonnerTokensTable() {
 
 function ToastDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={toastSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="typo-paragraph-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Toast (Sonner)</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">An opinionated toast notification component for React. Uses the sonner library. Place {"<Toaster />"} at root, trigger with toast() function.</p>
@@ -15798,10 +16716,10 @@ function TabsTokensTable() {
 
 function TabsDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={tabsSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Tabs</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Tabbed interface for switching between different views or content panels.</p>
@@ -16147,10 +17065,10 @@ function BreadcrumbTokensTable() {
 
 function BreadcrumbDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={breadcrumbSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Breadcrumb</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Breadcrumb navigation trail showing the user's location in a hierarchy.</p>
@@ -16495,10 +17413,10 @@ function PaginationTokensTable() {
 
 function PaginationDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={paginationSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="typo-paragraph-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Pagination</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Pagination with page navigation, next and previous links.</p>
@@ -16903,11 +17821,11 @@ function DropdownMenuDocs() {
   const [person, setPerson] = useState("pedro")
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={dropdownMenuSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Dropdown Menu</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -17275,10 +18193,10 @@ function CommandDocs() {
   }, [])
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={commandSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Command</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Command palette with search. Built on cmdk. Use as inline menu or as a dialog.</p>
@@ -17700,11 +18618,11 @@ const accordionSections: TocSection[] = [
 
 function AccordionDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={accordionSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Accordion</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">A vertically stacked set of interactive headings that each reveal a section of content.</p>
@@ -18011,10 +18929,10 @@ function CollapsibleDocs() {
   const [isOpen3, setIsOpen3] = useState(false)
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={collapsibleSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Collapsible</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Toggle visibility of a content section with "Show more / Show less" text triggers. Simpler than Accordion for single-item toggling.</p>
@@ -18358,10 +19276,10 @@ function ScrollAreaDocs() {
   ]
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={scrollAreaSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Scroll Area</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Custom scrollbar overlay for constrained regions. Cross-browser consistent, keyboard accessible.</p>
@@ -19046,10 +19964,10 @@ function DatePickerTokensTable() {
 
 function DatePickerDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={datePickerSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Date Picker</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -19279,8 +20197,8 @@ function ComboboxDocs() {
   ]
 
   return (
-    <div className="space-y-12">
-      <header className="space-y-md pb-3xl">
+    <div className="space-y-xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Forms</p>
         <h1 className="typo-heading-2">Combobox</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">Searchable select dropdown. Composition of Command + Popover.</p>
@@ -19599,11 +20517,11 @@ function RadioExploreBehavior() {
 
 function RadioDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={radioSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -20227,11 +21145,11 @@ function InputOTPDocs() {
   const [otpValue, setOtpValue] = useState("")
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={inputOtpSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">
           Components / Forms
         </p>
@@ -20535,9 +21453,9 @@ function InputOTPDocs() {
 
 function SpinnerDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={spinnerSections} />
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Spinner</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -20787,11 +21705,11 @@ function HoverCardExploreBehavior() {
 
 function HoverCardDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={hoverCardSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Overlay & Feedback</p>
         <h1 className="typo-heading-2">Hover Card</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -21137,11 +22055,11 @@ const aspectRatioSections: TocSection[] = [
 
 function AspectRatioDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={aspectRatioSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Aspect Ratio</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -21382,10 +22300,10 @@ function ContextMenuDocs() {
   const [person, setPerson] = useState("pedro")
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={contextMenuSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Context Menu</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -21642,10 +22560,10 @@ const navigationMenuSections: TocSection[] = [
 
 function NavigationMenuDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={navigationMenuSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Navigation Menu</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -21943,10 +22861,10 @@ function MenubarDocs() {
   const [person, setPerson] = useState("pedro")
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={menubarSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Navigation</p>
         <h1 className="typo-heading-2">Menubar</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -22372,10 +23290,10 @@ function ResizableTokensTable() {
 
 function ResizableDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={resizableSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Resizable</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -22601,10 +23519,10 @@ const sidebarSections: TocSection[] = [
 
 function SidebarDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={sidebarSections} />
 
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Layout</p>
         <h1 className="typo-heading-2">Sidebar</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -23395,11 +24313,11 @@ function TitleTokensTable() {
 
 function TitleSystemDocs() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-xl">
       <TableOfContents sections={titleSections} />
 
       {/* ---- Header ---- */}
-      <header className="space-y-md pb-3xl">
+      <header className="space-y-2xs pb-xs">
         <p className="text-xs text-muted-foreground font-mono tracking-wide uppercase">Components / Data Display</p>
         <h1 className="typo-heading-2">Title System</h1>
         <p className="typo-paragraph-base text-muted-foreground max-w-3xl">
@@ -23552,10 +24470,8 @@ function TitleSystemDocs() {
    ================================================================ */
 
 const foundations = [
-  { id: "colors", label: "Colors" },
-  { id: "typography", label: "Typography" },
-  { id: "spacing", label: "Spacing" },
-  { id: "border-radius", label: "Border Radius" },
+  { id: "tokens", label: "Foundation Tokens" },
+  { id: "styles", label: "Foundation Styles" },
   { id: "icons", label: "Icons" },
   { id: "illustrations", label: "Illustrations" },
 ] as const
@@ -23793,25 +24709,20 @@ function App() {
                 ))}
               </div>
             </div>
-            <div className="space-y-md">
-              <p className="text-[11px] font-semibold text-foreground uppercase tracking-wider px-sm">Components</p>
-              {componentGroups.map(g => (
-                <div key={g.group}>
-                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-0.5 px-sm">{g.group}</p>
-                  <div className="flex flex-col gap-0.5">
-                    {g.items.map(c => (
-                      <button key={c.id} onClick={() => setActive(c.id)}
-                        className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
-                          active === c.id
-                            ? "bg-secondary font-medium text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}>
-                        {c.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div>
+              <p className="text-[11px] font-semibold text-foreground uppercase tracking-wider mb-xs px-sm">Components</p>
+              <div className="flex flex-col gap-0.5">
+                {[...components].sort((a, b) => a.label.localeCompare(b.label)).map(c => (
+                  <button key={c.id} onClick={() => setActive(c.id)}
+                    className={`w-full text-left px-sm py-1 rounded-md text-sm transition-colors ${
+                      active === c.id
+                        ? "bg-secondary font-medium text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}>
+                    {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </nav>
         </aside>
@@ -23819,12 +24730,10 @@ function App() {
 
       {/* ---- Main Content ---- */}
       <main id="main-content" className={`${active !== null && sidebarOpen ? "ml-[260px]" : ""} pt-16 h-screen overflow-y-auto transition-[margin] duration-200`}>
-        <div className={`mx-auto px-2xl py-3xl overflow-x-hidden ${active !== null ? "max-w-5xl" : "max-w-6xl"}`}>
+        <div className={`mx-auto px-2xl py-3xl overflow-x-hidden ${active !== null ? "max-w-[1024px]" : "max-w-[1280px]"}`}>
           {active === null && <ComponentsGrid onNavigate={setActive} />}
-          {active === "colors" && <ColorsDocs />}
-          {active === "typography" && <TypographyDocs />}
-          {active === "spacing" && <SpacingDocs />}
-          {active === "border-radius" && <BorderRadiusDocs />}
+          {active === "tokens" && <TokensDocs />}
+          {active === "styles" && <StylesDocs />}
           {active === "icons" && <IconsDocs />}
           {active === "illustrations" && <IllustrationsDocs />}
           {active === "button" && <ButtonDocs />}

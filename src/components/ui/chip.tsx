@@ -55,7 +55,7 @@ function Chip({
       type="button"
       className={cn(
         "inline-flex items-center gap-[4px] rounded-full border typo-paragraph-sm-semibold transition-colors",
-        size === "sm" ? "h-size-xs" : "h-size-sm",
+        size === "sm" ? "h-size-xxs" : "h-size-sm",
         selected
           ? "border-primary text-foreground"
           : "border-border text-muted-foreground hover:bg-accent",
