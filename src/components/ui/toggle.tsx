@@ -27,7 +27,7 @@ const toggleVariants = cva(
         default: "h-size-md px-xs min-w-size-md gap-xs",
         sm: "h-size-sm px-2xs min-w-size-sm gap-2xs",
         lg: "h-size-lg px-sm min-w-size-lg gap-xs",
-        mini: "h-size-xs px-3xs min-w-size-xs rounded-sm gap-3xs typo-paragraph-xs-semibold",
+        mini: "h-size-xxs px-3xs min-w-size-xxs rounded-sm gap-3xs typo-paragraph-xs-semibold",
       },
     },
     defaultVariants: {

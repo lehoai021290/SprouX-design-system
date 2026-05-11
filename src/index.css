@@ -467,15 +467,42 @@
   --spacing-abs-infinite: 9999px;
 
   /* --- Component Size (height/width tokens for consistent component sizing) ---
-   * Figma collection: "Size" — ensures components align when placed side by side.
-   * size-xs=24 (Mini), size-sm=32 (Small), size-md=36 (Default),
-   * size-lg=40 (Large), size-xl=48 (Extra Large)
+   * Figma collection: "spacing/size" — ensures components align when placed side by side.
+   * 9 sizes synced 1:1 with Figma (May 8, 2026):
+   *   size-xxxs=20, size-xxs=24 (Mini), size-xs=28, size-sm=32 (Small),
+   *   size-md=36 (Default), size-lg=40 (Large), size-xl=48 (Extra Large),
+   *   size-xxl=64, size-xxxl=76
    */
-  --spacing-size-xs: 24px;
+  --spacing-size-xxxs: 20px;
+  --spacing-size-xxs: 24px;
+  --spacing-size-xs: 28px;
   --spacing-size-sm: 32px;
   --spacing-size-md: 36px;
   --spacing-size-lg: 40px;
   --spacing-size-xl: 48px;
+  --spacing-size-xxl: 64px;
+  --spacing-size-xxxl: 76px;
+
+
+  /* --- Container Scale (CSS vars only — actual max-w-* utilities are
+   *     overridden via @utility directives at the bottom of this file
+   *     because Tailwind v4 sources max-w-{name} from --spacing-{name}
+   *     instead of --container-{name}, conflicting with our semantic
+   *     spacing t-shirt scale.)
+   */
+  --container-3xs: 16rem;   /* 256px */
+  --container-2xs: 18rem;   /* 288px */
+  --container-xs:  20rem;   /* 320px */
+  --container-sm:  24rem;   /* 384px */
+  --container-md:  28rem;   /* 448px */
+  --container-lg:  32rem;   /* 512px */
+  --container-xl:  36rem;   /* 576px */
+  --container-2xl: 42rem;   /* 672px */
+  --container-3xl: 48rem;   /* 768px */
+  --container-4xl: 56rem;   /* 896px */
+  --container-5xl: 64rem;   /* 1024px */
+  --container-6xl: 72rem;   /* 1152px */
+  --container-7xl: 80rem;   /* 1280px */
 
 
   /* --- Border Radius (from Figma "border radius" collection) ---
@@ -1311,119 +1338,195 @@
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
 
 /* ============================================================
-   Compound Layout Tokens (from Figma "Spacing/Compound" collection)
-   Responsive: Desktop (default) → Tablet (≤1024px) → Mobile (≤640px)
+   Component-specific Layout Tokens — mirror Figma `spacing` collection
+   `abs/{sidebar|screen|section|card|modal}/*` (76 tokens, 3 modes)
+
+   Naming: `--layout-{component}-{path}` where path mirrors Figma flat path.
+   - abs/sidebar/left/padding-left → --layout-sidebar-left-padding-left
+   - abs/screen/title/gap → --layout-screen-title-gap
+   - abs/section/slot/creator/margin-left → --layout-section-slot-creator-margin-left
+   - abs/card/slot/16px/padding-left → --layout-card-slot-16-padding-left
+   - abs/modal/slot/8px/padding-left → --layout-modal-slot-8-padding-left
+
+   Modes: Desktop (default at :root) → Tablet (≤1024px) → Mobile (≤640px)
    ============================================================ */
 :root {
-  /* --- Card 16px (non-responsive) --- */
-  --layout-card-16-p: var(--spacing-abs-4);
-  --layout-card-16-title-pb: var(--spacing-abs-0);
-  --layout-card-title-gap: var(--spacing-abs-1);
-
-  /* --- Card 24px (responsive) --- */
-  --layout-card-24-p: var(--spacing-abs-6);
-  --layout-card-24-title-pb: var(--spacing-abs-0);
-
-  /* --- Dialog 16px (non-responsive) --- */
-  --layout-dialog-16-p: var(--spacing-abs-4);
-
-  /* --- Dialog 24px (responsive) --- */
-  --layout-dialog-24-p: var(--spacing-abs-6);
-
-  /* --- Dialog Fullscreen Margin (responsive) --- */
-  --layout-dialog-fullscreen-m: var(--spacing-abs-6);
-
-  /* --- Dialog Popup Margin (non-responsive) --- */
-  --layout-dialog-popup-m: var(--spacing-abs-6);
-
-  /* --- Screen Title (responsive) --- */
-  --layout-screen-title-px: var(--spacing-abs-8);
-  --layout-screen-title-pt: var(--spacing-abs-8);
-  --layout-screen-title-pb: var(--spacing-abs-4);
-  --layout-screen-title-gap: var(--spacing-abs-3);
-
-  /* --- Screen Action (responsive px) --- */
-  --layout-screen-action-px: var(--spacing-abs-8);
-  --layout-screen-action-py: var(--spacing-abs-4);
-  --layout-screen-action-gap: var(--spacing-abs-2);
-
-  /* --- Screen Max Widths (non-responsive) --- */
-  --layout-screen-maxwidth-authorize: 552px;
-  --layout-screen-maxwidth-setup: 800px;
-  --layout-screen-maxwidth-main: 1200px;
-  --layout-screen-maxwidth-discovery: 1384px;
-  --layout-screen-page-mb: var(--spacing-abs-6);
-
-  /* --- Sidebar Left (responsive px) --- */
-  --layout-sidebar-left-px: var(--spacing-abs-5);
-  --layout-sidebar-left-py: var(--spacing-abs-4);
-  --layout-sidebar-left-width-expand: var(--spacing-abs-60);
+  /* ── Sidebar (10) ─────────────────────────────────────────────── */
+  --layout-sidebar-left-width-expand: 240px;
   --layout-sidebar-left-width-collapse: 60px;
-
-  /* --- Sidebar Top (responsive) --- */
-  --layout-sidebar-top-px: var(--spacing-abs-8);
-  --layout-sidebar-top-gap: var(--spacing-abs-8);
+  --layout-sidebar-left-padding-left: var(--spacing-abs-5);   /* 20 (tablet/mobile: 12) */
+  --layout-sidebar-left-padding-right: var(--spacing-abs-5);  /* 20 (tablet/mobile: 12) */
+  --layout-sidebar-left-padding-top: var(--spacing-abs-4);    /* 16 */
+  --layout-sidebar-left-padding-bottom: var(--spacing-abs-4); /* 16 */
   --layout-sidebar-top-height: 60px;
+  --layout-sidebar-top-padding-left: var(--spacing-abs-8);    /* 32 (tablet: 24, mobile: 16) */
+  --layout-sidebar-top-padding-right: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 16) */
+  --layout-sidebar-top-gap: var(--spacing-abs-8);             /* 32 (tablet: 24, mobile: 16) */
 
-  /* --- Section Title (responsive px) --- */
-  --layout-section-title-px: var(--spacing-abs-8);
-  --layout-section-title-pt: var(--spacing-abs-4);
-  --layout-section-title-pb: var(--spacing-abs-1);
-  --layout-section-title-gap: var(--spacing-abs-1);
+  /* ── Screen (15) ──────────────────────────────────────────────── */
+  --layout-screen-page-margin-bottom: var(--spacing-abs-6);   /* 24 */
+  --layout-screen-title-padding-left: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 16) */
+  --layout-screen-title-padding-right: var(--spacing-abs-8);  /* 32 (tablet: 24, mobile: 16) */
+  --layout-screen-title-padding-top: var(--spacing-abs-8);    /* 32 (tablet/mobile: 24) */
+  --layout-screen-title-padding-bottom: var(--spacing-abs-4); /* 16 (tablet/mobile: 8) */
+  --layout-screen-title-gap: var(--spacing-abs-3);            /* 12 */
+  --layout-screen-action-padding-left: var(--spacing-abs-8);  /* 32 (tablet: 24, mobile: 16) */
+  --layout-screen-action-padding-right: var(--spacing-abs-8); /* 32 (tablet: 24, mobile: 16) */
+  --layout-screen-action-padding-top: var(--spacing-abs-4);   /* 16 */
+  --layout-screen-action-padding-bottom: var(--spacing-abs-4);/* 16 */
+  --layout-screen-action-gap: var(--spacing-abs-2);           /* 8 */
+  --layout-screen-max-width-setup: 800px;
+  --layout-screen-max-width-main: 1200px;
+  --layout-screen-max-width-discovery: 1384px;
+  --layout-screen-max-width-authorize: 552px;
 
-  /* --- Section Slot: Creator (responsive mx) --- */
-  --layout-section-creator-mx: var(--spacing-abs-8);
-  --layout-section-creator-my: var(--spacing-abs-4);
-  --layout-section-creator-gap: var(--spacing-abs-4);
+  /* ── Section title (5) + slots (14) ───────────────────────────── */
+  --layout-section-title-padding-left: var(--spacing-abs-8);    /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-title-padding-right: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-title-padding-top: var(--spacing-abs-4);     /* 16 */
+  --layout-section-title-padding-bottom: var(--spacing-abs-1);  /* 4 */
+  --layout-section-title-gap: var(--spacing-abs-1);             /* 4 */
 
-  /* --- Section Slot: Authorization (responsive mx/mb) --- */
-  --layout-section-auth-mx: var(--spacing-abs-8);
-  --layout-section-auth-mt: var(--spacing-abs-16);
-  --layout-section-auth-mb: var(--spacing-abs-16);
+  /* Section slot — creator (in-app workspace) */
+  --layout-section-slot-creator-margin-left: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-slot-creator-margin-right: var(--spacing-abs-8);  /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-slot-creator-margin-top: var(--spacing-abs-4);    /* 16 */
+  --layout-section-slot-creator-margin-bottom: var(--spacing-abs-4); /* 16 */
+  --layout-section-slot-creator-gap: var(--spacing-abs-4);           /* 16 */
 
-  /* --- Section Slot: Discovery (responsive mx/gap) --- */
-  --layout-section-discovery-mx: var(--spacing-abs-8);
-  --layout-section-discovery-my: var(--spacing-abs-4);
-  --layout-section-discovery-gap: var(--spacing-abs-6);
+  /* Section slot — authorization (auth screens) */
+  --layout-section-slot-authorization-margin-left: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 0) */
+  --layout-section-slot-authorization-margin-right: var(--spacing-abs-8);  /* 32 (tablet: 24, mobile: 0) */
+  --layout-section-slot-authorization-margin-top: var(--spacing-abs-16);   /* 64 (mobile: 0) */
+  --layout-section-slot-authorization-margin-bottom: var(--spacing-abs-16);/* 64 (mobile: 0) */
+
+  /* Section slot — discovery (marketing/landing) */
+  --layout-section-slot-discovery-margin-left: var(--spacing-abs-8);    /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-slot-discovery-margin-right: var(--spacing-abs-8);   /* 32 (tablet: 24, mobile: 16) */
+  --layout-section-slot-discovery-margin-top: var(--spacing-abs-4);     /* 16 */
+  --layout-section-slot-discovery-margin-bottom: var(--spacing-abs-4);  /* 16 */
+  --layout-section-slot-discovery-gap: var(--spacing-abs-6);            /* 24 (mobile: 16) */
+
+  /* ── Card slot — 4 size variants (16) ─────────────────────────── */
+  --layout-card-slot-0-padding-left: var(--spacing-abs-0);
+  --layout-card-slot-0-padding-right: var(--spacing-abs-0);
+  --layout-card-slot-0-padding-top: var(--spacing-abs-0);
+  --layout-card-slot-0-padding-bottom: var(--spacing-abs-0);
+
+  --layout-card-slot-16-padding-left: var(--spacing-abs-4);
+  --layout-card-slot-16-padding-right: var(--spacing-abs-4);
+  --layout-card-slot-16-padding-top: var(--spacing-abs-4);
+  --layout-card-slot-16-padding-bottom: var(--spacing-abs-4);
+
+  --layout-card-slot-24-padding-left: var(--spacing-abs-6);    /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-slot-24-padding-right: var(--spacing-abs-6);   /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-slot-24-padding-top: var(--spacing-abs-6);     /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-slot-24-padding-bottom: var(--spacing-abs-6);  /* 24 (tablet: 20, mobile: 16) */
+
+  --layout-card-slot-32-padding-left: var(--spacing-abs-8);
+  --layout-card-slot-32-padding-right: var(--spacing-abs-8);
+  --layout-card-slot-32-padding-top: var(--spacing-abs-8);
+  --layout-card-slot-32-padding-bottom: var(--spacing-abs-8);
+
+  /* ── Card title — 2 size variants (10) ────────────────────────── */
+  --layout-card-title-16-padding-left: var(--spacing-abs-4);
+  --layout-card-title-16-padding-right: var(--spacing-abs-4);
+  --layout-card-title-16-padding-top: var(--spacing-abs-4);
+  --layout-card-title-16-padding-bottom: var(--spacing-abs-0);
+  --layout-card-title-16-gap: var(--spacing-abs-1);
+
+  --layout-card-title-24-padding-left: var(--spacing-abs-6);    /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-title-24-padding-right: var(--spacing-abs-6);   /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-title-24-padding-top: var(--spacing-abs-6);     /* 24 (tablet: 20, mobile: 16) */
+  --layout-card-title-24-padding-bottom: var(--spacing-abs-0);
+  --layout-card-title-24-gap: var(--spacing-abs-1);
+
+  /* ── Modal slot — 2 size variants (8) ─────────────────────────── */
+  --layout-modal-slot-8-padding-left: var(--spacing-abs-2);
+  --layout-modal-slot-8-padding-right: var(--spacing-abs-2);
+  --layout-modal-slot-8-padding-top: var(--spacing-abs-2);
+  --layout-modal-slot-8-padding-bottom: var(--spacing-abs-2);
+
+  --layout-modal-slot-16-padding-left: var(--spacing-abs-4);
+  --layout-modal-slot-16-padding-right: var(--spacing-abs-4);
+  --layout-modal-slot-16-padding-top: var(--spacing-abs-4);
+  --layout-modal-slot-16-padding-bottom: var(--spacing-abs-4);
 }
 
-/* Tablet overrides (≤1024px) */
+/* Tablet overrides (≤1024px) — only tokens that change between modes */
 @media (max-width: 1024px) {
   :root {
-    --layout-card-24-p: var(--spacing-abs-5);
-    --layout-dialog-24-p: var(--spacing-abs-5);
-    --layout-screen-title-px: var(--spacing-abs-6);
-    --layout-screen-title-pt: var(--spacing-abs-6);
-    --layout-screen-title-pb: var(--spacing-abs-2);
-    --layout-screen-action-px: var(--spacing-abs-6);
-    --layout-sidebar-left-px: var(--spacing-abs-3);
-    --layout-sidebar-top-px: var(--spacing-abs-6);
-    --layout-sidebar-top-gap: var(--spacing-abs-6);
-    --layout-section-title-px: var(--spacing-abs-6);
-    --layout-section-creator-mx: var(--spacing-abs-6);
-    --layout-section-auth-mx: var(--spacing-abs-6);
-    --layout-section-discovery-mx: var(--spacing-abs-6);
+    /* Sidebar */
+    --layout-sidebar-left-padding-left: var(--spacing-abs-3);   /* 12 */
+    --layout-sidebar-left-padding-right: var(--spacing-abs-3);  /* 12 */
+    --layout-sidebar-top-padding-left: var(--spacing-abs-6);    /* 24 */
+    --layout-sidebar-top-padding-right: var(--spacing-abs-6);   /* 24 */
+    --layout-sidebar-top-gap: var(--spacing-abs-6);             /* 24 */
+
+    /* Screen */
+    --layout-screen-title-padding-left: var(--spacing-abs-6);   /* 24 */
+    --layout-screen-title-padding-right: var(--spacing-abs-6);  /* 24 */
+    --layout-screen-title-padding-top: var(--spacing-abs-6);    /* 24 */
+    --layout-screen-title-padding-bottom: var(--spacing-abs-2); /* 8 */
+    --layout-screen-action-padding-left: var(--spacing-abs-6);  /* 24 */
+    --layout-screen-action-padding-right: var(--spacing-abs-6); /* 24 */
+
+    /* Section */
+    --layout-section-title-padding-left: var(--spacing-abs-6);
+    --layout-section-title-padding-right: var(--spacing-abs-6);
+    --layout-section-slot-creator-margin-left: var(--spacing-abs-6);
+    --layout-section-slot-creator-margin-right: var(--spacing-abs-6);
+    --layout-section-slot-authorization-margin-left: var(--spacing-abs-6);
+    --layout-section-slot-authorization-margin-right: var(--spacing-abs-6);
+    --layout-section-slot-discovery-margin-left: var(--spacing-abs-6);
+    --layout-section-slot-discovery-margin-right: var(--spacing-abs-6);
+
+    /* Card */
+    --layout-card-slot-24-padding-left: var(--spacing-abs-5);   /* 20 */
+    --layout-card-slot-24-padding-right: var(--spacing-abs-5);  /* 20 */
+    --layout-card-slot-24-padding-top: var(--spacing-abs-5);    /* 20 */
+    --layout-card-slot-24-padding-bottom: var(--spacing-abs-5); /* 20 */
+    --layout-card-title-24-padding-left: var(--spacing-abs-5);  /* 20 */
+    --layout-card-title-24-padding-right: var(--spacing-abs-5); /* 20 */
+    --layout-card-title-24-padding-top: var(--spacing-abs-5);   /* 20 */
   }
 }
 
 /* Mobile overrides (≤640px) */
 @media (max-width: 640px) {
   :root {
-    --layout-card-24-p: var(--spacing-abs-4);
-    --layout-dialog-24-p: var(--spacing-abs-4);
-    --layout-dialog-fullscreen-m: var(--spacing-abs-0);
-    --layout-screen-title-px: var(--spacing-abs-4);
-    --layout-screen-title-pt: var(--spacing-abs-6);
-    --layout-screen-title-pb: var(--spacing-abs-2);
-    --layout-screen-action-px: var(--spacing-abs-4);
-    --layout-sidebar-top-px: var(--spacing-abs-4);
-    --layout-sidebar-top-gap: var(--spacing-abs-4);
-    --layout-section-title-px: var(--spacing-abs-4);
-    --layout-section-creator-mx: var(--spacing-abs-4);
-    --layout-section-auth-mx: var(--spacing-abs-0);
-    --layout-section-auth-mb: var(--spacing-abs-0);
-    --layout-section-discovery-mx: var(--spacing-abs-4);
-    --layout-section-discovery-gap: var(--spacing-abs-4);
+    /* Sidebar */
+    --layout-sidebar-top-padding-left: var(--spacing-abs-4);    /* 16 */
+    --layout-sidebar-top-padding-right: var(--spacing-abs-4);   /* 16 */
+    --layout-sidebar-top-gap: var(--spacing-abs-4);             /* 16 */
+
+    /* Screen */
+    --layout-screen-title-padding-left: var(--spacing-abs-4);   /* 16 */
+    --layout-screen-title-padding-right: var(--spacing-abs-4);  /* 16 */
+    --layout-screen-action-padding-left: var(--spacing-abs-4);  /* 16 */
+    --layout-screen-action-padding-right: var(--spacing-abs-4); /* 16 */
+
+    /* Section */
+    --layout-section-title-padding-left: var(--spacing-abs-4);
+    --layout-section-title-padding-right: var(--spacing-abs-4);
+    --layout-section-slot-creator-margin-left: var(--spacing-abs-4);
+    --layout-section-slot-creator-margin-right: var(--spacing-abs-4);
+    --layout-section-slot-authorization-margin-left: var(--spacing-abs-0);
+    --layout-section-slot-authorization-margin-right: var(--spacing-abs-0);
+    --layout-section-slot-authorization-margin-top: var(--spacing-abs-0);
+    --layout-section-slot-authorization-margin-bottom: var(--spacing-abs-0);
+    --layout-section-slot-discovery-margin-left: var(--spacing-abs-4);
+    --layout-section-slot-discovery-margin-right: var(--spacing-abs-4);
+    --layout-section-slot-discovery-gap: var(--spacing-abs-4); /* 16 (was 24) */
+
+    /* Card */
+    --layout-card-slot-24-padding-left: var(--spacing-abs-4);   /* 16 */
+    --layout-card-slot-24-padding-right: var(--spacing-abs-4);  /* 16 */
+    --layout-card-slot-24-padding-top: var(--spacing-abs-4);    /* 16 */
+    --layout-card-slot-24-padding-bottom: var(--spacing-abs-4); /* 16 */
+    --layout-card-title-24-padding-left: var(--spacing-abs-4);  /* 16 */
+    --layout-card-title-24-padding-right: var(--spacing-abs-4); /* 16 */
+    --layout-card-title-24-padding-top: var(--spacing-abs-4);   /* 16 */
   }
 }
 
@@ -1443,10 +1546,15 @@
 
 /* ---- Headings (Figma "heading 1..4") ---- */
 
-@utility typo-heading-1 { font-family: var(--font-heading); font-weight: var(--typo-heading-1-weight); font-size: var(--typo-heading-1-font-size); line-height: var(--typo-heading-1-line-height); letter-spacing: var(--typo-heading-1-letter-spacing); margin-bottom: var(--typo-heading-1-spacing); }
-@utility typo-heading-2 { font-family: var(--font-heading); font-weight: var(--typo-heading-2-weight); font-size: var(--typo-heading-2-font-size); line-height: var(--typo-heading-2-line-height); letter-spacing: var(--typo-heading-2-letter-spacing); margin-bottom: var(--typo-heading-2-spacing); }
-@utility typo-heading-3 { font-family: var(--font-heading); font-weight: var(--typo-heading-3-weight); font-size: var(--typo-heading-3-font-size); line-height: var(--typo-heading-3-line-height); letter-spacing: var(--typo-heading-3-letter-spacing); margin-bottom: var(--typo-heading-3-spacing); }
-@utility typo-heading-4 { font-family: var(--font-body); font-weight: var(--typo-heading-4-weight); font-size: var(--typo-heading-4-font-size); line-height: var(--typo-heading-4-line-height); letter-spacing: var(--typo-heading-4-letter-spacing); margin-bottom: var(--typo-heading-4-spacing); }
+/* Heading typo classes: margin-bottom intentionally OMITTED.
+   The Figma `heading-{N}/spacing` token (--typo-heading-N-spacing) defines the
+   editorial-style margin AFTER a heading; baking it into the @utility forces
+   30px+ gap below every heading and prevents parent layout (gap/space-y) from
+   controlling vertical rhythm. Use the parent gap/space-y instead. */
+@utility typo-heading-1 { font-family: var(--font-heading); font-weight: var(--typo-heading-1-weight); font-size: var(--typo-heading-1-font-size); line-height: var(--typo-heading-1-line-height); letter-spacing: var(--typo-heading-1-letter-spacing); }
+@utility typo-heading-2 { font-family: var(--font-heading); font-weight: var(--typo-heading-2-weight); font-size: var(--typo-heading-2-font-size); line-height: var(--typo-heading-2-line-height); letter-spacing: var(--typo-heading-2-letter-spacing); }
+@utility typo-heading-3 { font-family: var(--font-heading); font-weight: var(--typo-heading-3-weight); font-size: var(--typo-heading-3-font-size); line-height: var(--typo-heading-3-line-height); letter-spacing: var(--typo-heading-3-letter-spacing); }
+@utility typo-heading-4 { font-family: var(--font-body); font-weight: var(--typo-heading-4-weight); font-size: var(--typo-heading-4-font-size); line-height: var(--typo-heading-4-line-height); letter-spacing: var(--typo-heading-4-letter-spacing); }
 
 /* ---- Paragraph Extra Large (Figma "paragraph extra large/*") — Geist 30/32 ls:-1.0 ---- */
 
@@ -1545,3 +1653,25 @@
 @utility grid-creator-lg-max-large { display: grid; grid-template-columns: repeat(var(--grid-creator-lg-max-large-count), var(--grid-creator-lg-max-large-section-size)); gap: var(--grid-creator-lg-max-large-gutter); justify-content: center; }
 
 @utility grid-creator-lg-max-small { display: grid; grid-template-columns: repeat(var(--grid-creator-lg-max-small-count), var(--grid-creator-lg-max-small-section-size)); gap: var(--grid-creator-lg-max-small-gutter); justify-content: center; }
+
+
+/* ============================================================
+   max-w-* overrides — Tailwind v4 sources max-w-{name} from --spacing-{name}
+   which collides with the SprouX semantic spacing t-shirt scale (e.g.
+   --spacing-3xl=40px would make max-w-3xl=40px instead of 768px).
+   These @utility overrides force max-w-{name} to use the --container-* scale
+   matching Tailwind's default container values + legacy SprouX max-width scale.
+   ============================================================ */
+@utility max-w-3xs { max-width: var(--container-3xs) !important; }
+@utility max-w-2xs { max-width: var(--container-2xs) !important; }
+@utility max-w-xs  { max-width: var(--container-xs)  !important; }
+@utility max-w-sm  { max-width: var(--container-sm)  !important; }
+@utility max-w-md  { max-width: var(--container-md)  !important; }
+@utility max-w-lg  { max-width: var(--container-lg)  !important; }
+@utility max-w-xl  { max-width: var(--container-xl)  !important; }
+@utility max-w-2xl { max-width: var(--container-2xl) !important; }
+@utility max-w-3xl { max-width: var(--container-3xl) !important; }
+@utility max-w-4xl { max-width: var(--container-4xl) !important; }
+@utility max-w-5xl { max-width: var(--container-5xl) !important; }
+@utility max-w-6xl { max-width: var(--container-6xl) !important; }
+@utility max-w-7xl { max-width: var(--container-7xl) !important; }

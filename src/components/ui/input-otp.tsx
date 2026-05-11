@@ -26,7 +26,7 @@ const slotSizeClass = {
   lg: "size-size-lg",       // 40px
   default: "size-size-md",  // 36px
   sm: "size-size-sm",       // 32px
-  xs: "size-size-xs",       // 24px
+  xs: "size-size-xxs",      // 24px (Figma size/xxs)
 } as const
 
 /** Border radius per size — Left position */

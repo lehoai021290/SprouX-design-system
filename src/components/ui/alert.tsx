@@ -175,7 +175,7 @@ function AlertDismiss({
       type="button"
       data-slot="alert-dismiss"
       className={cn(
-        "absolute right-[7px] top-[9px] inline-flex items-center justify-center size-size-xs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:shadow-focus-ring transition-opacity cursor-pointer",
+        "absolute right-[7px] top-[9px] inline-flex items-center justify-center size-size-xxs !p-3xs rounded-sm text-current opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:shadow-focus-ring transition-opacity cursor-pointer",
         className
       )}
       aria-label="Dismiss"

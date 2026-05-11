@@ -69,9 +69,9 @@ function AppSidebar() {
       {/* Logo */}
       <div className="flex items-center gap-xs px-md h-[60px] border-b border-border">
         <div className="flex items-center justify-center size-xl rounded-lg bg-primary">
-          <span className="typo-paragraph-sm-bold text-primary-foreground">S</span>
+          <span className="typo-paragraph-sm-semibold text-primary-foreground">S</span>
         </div>
-        <span className="typo-paragraph-sm-bold text-foreground">SprouX</span>
+        <span className="typo-paragraph-sm-semibold text-foreground">SprouX</span>
       </div>
 
       {/* Nav */}
@@ -105,7 +105,7 @@ function TopBar() {
         <HelpCircle className="size-md" />
       </button>
       <Avatar className="size-xl">
-        <AvatarFallback className="typo-paragraph-xs-bold bg-foreground text-background">CN</AvatarFallback>
+        <AvatarFallback className="typo-paragraph-xs-semibold bg-foreground text-background">CN</AvatarFallback>
       </Avatar>
     </header>
   )
@@ -155,7 +155,7 @@ function DeliveryPage() {
           {/* My Earnings */}
           <section className="flex flex-col gap-md">
             <div className="flex items-center justify-between">
-              <h2 className="typo-paragraph-large-semibold text-foreground">My earnings</h2>
+              <h2 className="typo-paragraph-lg-semibold text-foreground">My earnings</h2>
               <TextButton variant="primary" size="default">Transaction history</TextButton>
             </div>
 
@@ -174,7 +174,7 @@ function DeliveryPage() {
 
           {/* Campaigns */}
           <section className="flex flex-col gap-md">
-            <h2 className="typo-paragraph-large-semibold text-foreground">Campaigns</h2>
+            <h2 className="typo-paragraph-lg-semibold text-foreground">Campaigns</h2>
 
             {/* Filters */}
             <div className="flex items-center justify-between gap-md">

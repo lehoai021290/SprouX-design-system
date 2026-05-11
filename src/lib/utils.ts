@@ -11,7 +11,7 @@ import { extendTailwindMerge } from "tailwind-merge"
 const twMerge = extendTailwindMerge({
   extend: {
     theme: {
-      spacing: ["0", "4xs", "3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "size-xs", "size-sm", "size-md", "size-lg", "size-xl"],
+      spacing: ["0", "4xs", "3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl", "5xl", "size-xxxs", "size-xxs", "size-xs", "size-sm", "size-md", "size-lg", "size-xl", "size-xxl", "size-xxxl"],
     },
     classGroups: {
       "font-size": [
@@ -20,10 +20,10 @@ const twMerge = extendTailwindMerge({
             "heading-1", "heading-2", "heading-3", "heading-4",
             "paragraph-xl", "paragraph-xl-medium", "paragraph-xl-semibold",
             "paragraph-lg", "paragraph-lg-medium", "paragraph-lg-semibold",
-            "paragraph", "paragraph-medium", "paragraph-semibold",
-            "paragraph-small", "paragraph-small-medium", "paragraph-small-semibold",
-            "paragraph-mini", "paragraph-mini-medium", "paragraph-mini-semibold",
-            "paragraph-tiny", "paragraph-tiny-medium", "paragraph-tiny-semibold",
+            "paragraph-base", "paragraph-base-medium", "paragraph-base-semibold",
+            "paragraph-sm", "paragraph-sm-medium", "paragraph-sm-semibold",
+            "paragraph-xs", "paragraph-xs-medium", "paragraph-xs-semibold",
+            "paragraph-2xs", "paragraph-2xs-medium", "paragraph-2xs-semibold",
             "monospaced",
           ],
         },
